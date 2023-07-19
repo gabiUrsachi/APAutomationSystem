@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface CompanyRepository extends MongoRepository<Company, UUID> {
     Set<Company> findAllByName(String name);
+    Company findByName(String name);
 }

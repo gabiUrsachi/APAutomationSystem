@@ -5,7 +5,10 @@ import org.springframework.stereotype.Component;
 import org.system.persistence.collections.PurchaseOrder;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface PurchaseOrderRepository extends MongoRepository<PurchaseOrder, String> {
-    Optional<PurchaseOrder> findByIdentifier(String Identifier);
+public interface PurchaseOrderRepository extends MongoRepository<PurchaseOrder, UUID> {
+    Optional<PurchaseOrder> findByIdentifier(UUID Identifier);
+
+
 }

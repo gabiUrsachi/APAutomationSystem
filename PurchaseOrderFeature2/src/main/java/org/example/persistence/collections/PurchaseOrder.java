@@ -2,19 +2,21 @@ package org.system.persistence.collections;
 
 
 import com.mongodb.lang.NonNull;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Item;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.system.persistence.utils.OrderStatus;
 
 import java.util.Set;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Document
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class PurchaseOrder {
     @Id
     private UUID identifier;
@@ -26,6 +28,8 @@ public class PurchaseOrder {
     private Company seller;
 
     private Set<Item> items;
+
+    private OrderStatus orderStatus;
 
     private String deliveryTerms;
 
