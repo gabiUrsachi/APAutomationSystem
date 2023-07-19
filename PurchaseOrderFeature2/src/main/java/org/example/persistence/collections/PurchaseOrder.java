@@ -1,14 +1,14 @@
-package org.system.persistence.collections;
+package org.example.persistence.collections;
 
 
 import com.mongodb.lang.NonNull;
-import lombok.*;
-
-import org.example.persistence.collections.Company;
-import org.example.persistence.collections.Item;
+import lombok.Builder;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
+import org.example.persistence.utils.OrderStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.system.persistence.utils.OrderStatus;
 
 import java.util.Set;
 import java.util.UUID;
@@ -18,7 +18,9 @@ import java.util.UUID;
 @Document
 @Builder
 public class PurchaseOrder {
+
     @Id
+    @Generated
     private UUID identifier;
 
     @NonNull

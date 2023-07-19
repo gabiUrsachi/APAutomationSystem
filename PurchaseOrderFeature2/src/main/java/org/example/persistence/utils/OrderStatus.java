@@ -1,4 +1,4 @@
-package org.system.persistence.utils;
+package org.example.persistence.utils;
 
 public enum OrderStatus {
     CREATED, SAVED, APPROVED
