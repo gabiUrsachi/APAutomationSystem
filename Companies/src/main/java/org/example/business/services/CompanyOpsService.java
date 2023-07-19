@@ -11,8 +11,10 @@ public class CompanyOpsService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    public Company getCompanyByName(String name){
-        return companyRepository.findByName(name);
+    public CompanyDTO getCompanyByName(String name){
+        Company company = companyRepository.findByName(name);
+
+        return mapToDTO(company);
     }
 
     public Company mapToEntity(CompanyDTO companyDTO){
