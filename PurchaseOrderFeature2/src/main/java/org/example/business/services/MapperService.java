@@ -5,6 +5,7 @@ import org.example.business.models.OrderResponseDTO;
 import org.example.persistence.collections.PurchaseOrder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,9 +35,9 @@ public class MapperService {
                 .build();
     }
 
-    public Set<OrderResponseDTO> mapToDTO(Set<PurchaseOrder> purchaseOrders){
+    public List<OrderResponseDTO> mapToDTO(List<PurchaseOrder> purchaseOrders){
         return purchaseOrders.stream()
                 .map(this::mapToDTO)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 }

@@ -9,7 +9,9 @@ import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.OrderStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -38,6 +40,12 @@ public class OrderOperationsService {
         copyOrderProperties(newPurchaseOrder, oldPurchaseOrder);
 
         purchaseOrderRepository.save(newPurchaseOrder);
+    }
+
+    public List<OrderResponseDTO> getPurchaseOrders(){
+        List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findAll();
+
+        return mapperService.mapToDTO(purchaseOrders);
     }
 
     private PurchaseOrder verifyOrderExistence(UUID identifier){
