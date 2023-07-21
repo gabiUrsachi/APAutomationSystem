@@ -37,7 +37,7 @@ public class InvoiceController {
 
     @PostMapping("/fromOR")
     public ResponseEntity<InvoiceDTO> createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO ){
-        InvoiceDTO responseInvoice = invoiceService.createInvoiceFromPurchaseOrder(orderResponseDTO);
+        InvoiceDTO responseInvoice = invoiceService.createInvoiceDTOFromPurchaseOrder(orderResponseDTO);
         return new ResponseEntity<>(responseInvoice, HttpStatus.CREATED);
     }
 
