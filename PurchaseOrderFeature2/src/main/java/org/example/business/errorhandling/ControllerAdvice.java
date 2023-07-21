@@ -1,5 +1,6 @@
 package org.example.business.errorhandling;
 
+import org.example.business.errorhandling.customexceptions.InvalidUpdateException;
 import org.example.business.errorhandling.customexceptions.OrderNotFoundException;
 import org.example.business.models.ExceptionResponseDTO;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,16 @@ public class ControllerAdvice {
     public ResponseEntity<ExceptionResponseDTO> handleObjectNotFoundException(OrderNotFoundException ex) {
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.NOT_FOUND;
+
+        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
+
+        return new ResponseEntity<>(exceptionResponse, status);
+    }
+
+    @ExceptionHandler(InvalidUpdateException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(InvalidUpdateException ex) {
+        String details = ex.getMessage();
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
 

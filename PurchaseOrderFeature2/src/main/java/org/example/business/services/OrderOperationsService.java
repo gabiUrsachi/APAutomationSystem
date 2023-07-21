@@ -1,6 +1,7 @@
 package org.example.business.services;
 
 import org.example.business.errorhandling.ErrorMessages;
+import org.example.business.errorhandling.customexceptions.InvalidUpdateException;
 import org.example.business.errorhandling.customexceptions.OrderNotFoundException;
 import org.example.business.models.OrderRequestDTO;
 import org.example.business.models.OrderResponseDTO;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -35,6 +35,7 @@ public class OrderOperationsService {
 
     public void updatePurchaseOrder(UUID identifier, OrderRequestDTO orderRequestDTO){
         PurchaseOrder oldPurchaseOrder = verifyOrderExistence(identifier);
+        validateOrderUpdate(oldPurchaseOrder);
 
         PurchaseOrder newPurchaseOrder = mapperService.mapToEntity(orderRequestDTO);
         copyOrderProperties(newPurchaseOrder, oldPurchaseOrder);
@@ -56,6 +57,12 @@ public class OrderOperationsService {
         }
 
         return oldPurchaseOrder.get();
+    }
+
+    private void validateOrderUpdate(PurchaseOrder purchaseOrder){
+        if(!purchaseOrder.getOrderStatus().equals(OrderStatus.CREATED)){
+            throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, purchaseOrder.getIdentifier());
+        }
     }
 
     private void initOrderProperties(PurchaseOrder purchaseOrder){
