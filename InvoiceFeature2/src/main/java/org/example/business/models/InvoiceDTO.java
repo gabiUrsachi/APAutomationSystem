@@ -14,9 +14,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class InvoiceDTO {
-    @NonNull
+
     private CompanyDTO buyer;
-    @NonNull
+
     private CompanyDTO seller;
 
     private Set<Item> items;
