@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/orders")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class PurchaseOrderController {
     @Autowired
     private OrderOperationsService orderOperationsService;
@@ -30,6 +31,13 @@ public class PurchaseOrderController {
         orderOperationsService.updatePurchaseOrder(identifier, orderRequestDTO);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{identifier}")
+    public ResponseEntity<OrderResponseDTO> getPurchaseOrder(@PathVariable UUID identifier){
+        OrderResponseDTO orderResponseDTO = orderOperationsService.getPurchaseOrder(identifier);
+
+        return new ResponseEntity<>(orderResponseDTO, HttpStatus.OK);
     }
 
     @GetMapping
