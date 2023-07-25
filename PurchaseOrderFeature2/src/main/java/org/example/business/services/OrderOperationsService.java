@@ -43,6 +43,16 @@ public class OrderOperationsService {
         purchaseOrderRepository.save(newPurchaseOrder);
     }
 
+    public OrderResponseDTO savePurchaseOrder(UUID identifier){
+        PurchaseOrder purchaseOrder = verifyOrderExistence(identifier);
+
+        purchaseOrder.setOrderStatus(OrderStatus.SAVED);
+
+        PurchaseOrder savedPurchaseOrder = purchaseOrderRepository.save(purchaseOrder);
+
+        return mapperService.mapToDTO(savedPurchaseOrder);
+    }
+
     public OrderResponseDTO getPurchaseOrder(UUID identifier){
        PurchaseOrder purchaseOrder = verifyOrderExistence(identifier);
 

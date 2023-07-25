@@ -33,6 +33,13 @@ public class PurchaseOrderController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PatchMapping("/{identifier}")
+    public ResponseEntity<OrderResponseDTO> savePurchaseOrder(@PathVariable UUID identifier){
+        OrderResponseDTO orderResponseDTO = orderOperationsService.savePurchaseOrder(identifier);
+
+        return new ResponseEntity<>(orderResponseDTO, HttpStatus.OK);
+    }
+
     @GetMapping("/{identifier}")
     public ResponseEntity<OrderResponseDTO> getPurchaseOrder(@PathVariable UUID identifier){
         OrderResponseDTO orderResponseDTO = orderOperationsService.getPurchaseOrder(identifier);
