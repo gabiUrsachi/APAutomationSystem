@@ -18,6 +18,7 @@
         <module>Companies</module>
         <module>PurchaseOrderFeature2</module>
         <module>InvoiceFeature2</module>
+        <module>core</module>
     </modules>
     <properties>
         <java.version>11</java.version>
