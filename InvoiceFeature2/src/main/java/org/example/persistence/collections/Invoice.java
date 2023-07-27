@@ -19,9 +19,9 @@ public class Invoice {
     @Id
     private UUID identifier;
 
-    private Company buyer;
+    private UUID buyerId;
 
-    private Company seller;
+    private UUID sellerId;
 
     private Set<Item> items;
 

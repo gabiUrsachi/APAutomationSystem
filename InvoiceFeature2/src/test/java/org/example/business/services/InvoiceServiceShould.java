@@ -1,14 +1,10 @@
 package org.example.business.services;
 
-import org.example.business.errorhandling.customexceptions.OrderNotFoundException;
 import org.example.business.exceptions.InvoiceNotFoundException;
 import org.example.business.models.InvoiceDTO;
-import org.example.business.models.OrderRequestDTO;
 import org.example.business.models.OrderResponseDTO;
 import org.example.persistence.collections.Invoice;
-import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.InvoiceRepository;
-import org.example.persistence.repository.PurchaseOrderRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,19 +12,17 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class InvoiceServiceShould {
     @Mock
-    MapperService mapperService;
+    InvoiceMapperService mapperService;
 
     @Mock
     InvoiceRepository invoiceRepository;

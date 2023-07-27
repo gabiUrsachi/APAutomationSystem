@@ -1,17 +1,20 @@
 package org.example.business.services;
 
+import org.example.business.models.CompanyDTO;
 import org.example.business.models.InvoiceDTO;
 import org.example.business.models.OrderResponseDTO;
 import org.example.persistence.collections.Invoice;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-public class MapperService {
+public class InvoiceMapperService {
     private final CompanyOpsService companyOpsService;
 
-    public MapperService(CompanyOpsService companyOpsService) {
+    public InvoiceMapperService(CompanyOpsService companyOpsService) {
         this.companyOpsService = companyOpsService;
     }
 
@@ -20,8 +23,8 @@ public class MapperService {
         UUID invoiceIdentifier = UUID.randomUUID();
         return Invoice.builder()
                 .identifier(invoiceIdentifier)
-                .buyer(companyOpsService.mapToEntity(invoiceDTO.getBuyer()))
-                .seller(companyOpsService.mapToEntity(invoiceDTO.getSeller()))
+                .buyerId(invoiceDTO.getBuyer().getCompanyIdentifier())
+                .sellerId(invoiceDTO.getSeller().getCompanyIdentifier())
                 .items(invoiceDTO.getItems())
                 .build();
 
@@ -29,11 +32,18 @@ public class MapperService {
 
     public InvoiceDTO mapToDTO(Invoice invoice) {
 
+        CompanyDTO buyer = companyOpsService.getCompanyById(invoice.getBuyerId());
+        CompanyDTO seller = companyOpsService.getCompanyById(invoice.getSellerId());
         return InvoiceDTO.builder()
-                .buyer(companyOpsService.mapToDTO(invoice.getBuyer()))
-                .seller(companyOpsService.mapToDTO(invoice.getSeller()))
+                .buyer(buyer)
+                .seller(seller)
                 .items(invoice.getItems())
                 .build();
+    }
+    public List<InvoiceDTO> mapToDTO(List<Invoice> invoices){
+        return invoices.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     public InvoiceDTO mapToDTO(OrderResponseDTO orderResponseDTO) {

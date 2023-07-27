@@ -25,36 +25,31 @@ public class InvoiceController {
     private CompanyOpsService companyOpsService;
 
     @PostMapping
-    public ResponseEntity<InvoiceDTO> createInvoice(@RequestBody InvoiceDTO invoiceDTO) {
-        InvoiceDTO responseInvoice = invoiceService.createInvoice(invoiceDTO);
-        return new ResponseEntity<>(responseInvoice, HttpStatus.CREATED);
+    public InvoiceDTO createInvoice(@RequestBody InvoiceDTO invoiceDTO) {
+        return invoiceService.createInvoice(invoiceDTO);
 
     }
 
     @GetMapping
-    public ResponseEntity<List<Invoice>> getInvoices() {
-        return new ResponseEntity<>(invoiceService.getInvoices(), HttpStatus.OK);
+    public List<InvoiceDTO> getInvoices() {
+        return invoiceService.getInvoices();
     }
 
     @PostMapping("/fromOR")
-    public ResponseEntity<InvoiceDTO> createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO) {
-        InvoiceDTO responseInvoice = invoiceService.createInvoiceDTOFromPurchaseOrder(orderResponseDTO);
-        return new ResponseEntity<>(responseInvoice, HttpStatus.CREATED);
+    public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO) {
+        return invoiceService.createInvoiceDTOFromPurchaseOrder(orderResponseDTO);
     }
 
     @GetMapping("/{identifier}")
-    public ResponseEntity<Invoice> getById(@PathVariable UUID identifier) {
-        Optional<Invoice> invoice = invoiceService.getInvoice(identifier);
-        System.out.println(identifier);
+    public InvoiceDTO getById(@PathVariable UUID identifier) {
+        return invoiceService.getInvoice(identifier);
 
-        return new ResponseEntity<>(invoice.get(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{identifier}")
-    public ResponseEntity<Void> deleteById(@PathVariable UUID identifier) {
+    public void deleteById(@PathVariable UUID identifier) {
 
         invoiceService.deleteInvoice(identifier);
 
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

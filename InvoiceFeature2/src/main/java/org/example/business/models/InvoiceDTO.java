@@ -8,12 +8,15 @@ import lombok.NoArgsConstructor;
 import org.example.persistence.collections.Item;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class InvoiceDTO {
+
+    private UUID identifier;
 
     private CompanyDTO buyer;
 

@@ -5,9 +5,7 @@ import org.example.business.models.OrderResponseDTO;
 import org.example.business.models.InvoiceDTO;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
-import org.example.persistence.repository.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -18,38 +16,39 @@ public class InvoiceService {
     @Autowired
     private InvoiceRepository invoiceRepository;
     @Autowired
-    private MapperService mapperService;
+    private InvoiceMapperService invoiceMapperService;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, MapperService mapperService) {
+    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceMapperService invoiceMapperService) {
         this.invoiceRepository = invoiceRepository;
-        this.mapperService = mapperService;
+        this.invoiceMapperService = invoiceMapperService;
     }
 
     public InvoiceDTO createInvoice(@RequestBody InvoiceDTO invoiceDTO) {
 
-        Invoice invoice = mapperService.mapToEntity(invoiceDTO);
+        Invoice invoice = invoiceMapperService.mapToEntity(invoiceDTO);
         Invoice responseInvoice = invoiceRepository.insert(invoice);
 
-        return mapperService.mapToDTO(responseInvoice);
+        return invoiceMapperService.mapToDTO(responseInvoice);
     }
 
-    public List<Invoice> getInvoices() {
-        return invoiceRepository.findAll();
+    public List<InvoiceDTO> getInvoices() {
+
+        return invoiceMapperService.mapToDTO(invoiceRepository.findAll());
     }
 
     public InvoiceDTO createInvoiceDTOFromPurchaseOrder(OrderResponseDTO orderResponseDTO) {
 
-        return mapperService.mapToDTO(orderResponseDTO);
+        return invoiceMapperService.mapToDTO(orderResponseDTO);
     }
 
-    public Optional<Invoice> getInvoice(UUID identifier) {
+    public InvoiceDTO getInvoice(UUID identifier) {
 
         Optional<Invoice> invoice;
         invoice = invoiceRepository.findByIdentifier(identifier);
         if (invoice.isEmpty()) {
             throw new InvoiceNotFoundException("Couldn't find invoice with identifier ");
         }
-        return invoice;
+        return invoiceMapperService.mapToDTO(invoice.get());
     }
 
     public void deleteInvoice(UUID identifier) {

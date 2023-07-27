@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface InvoiceRepository extends MongoRepository<Invoice, String> {
 
-
     Optional<Invoice> findByIdentifier(UUID identifier);
+
     void deleteByIdentifier(UUID identifier);
 }
