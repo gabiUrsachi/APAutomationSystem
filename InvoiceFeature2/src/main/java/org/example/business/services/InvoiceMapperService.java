@@ -1,8 +1,6 @@
 package org.example.business.services;
 
-import org.example.business.models.CompanyDTO;
-import org.example.business.models.InvoiceDTO;
-import org.example.business.models.OrderResponseDTO;
+import org.example.business.models.*;
 import org.example.persistence.collections.Invoice;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +16,20 @@ public class InvoiceMapperService {
         this.companyOpsService = companyOpsService;
     }
 
+    public Invoice mapToEntity(InvoiceDPO invoiceDPO) {
+
+        return Invoice.builder()
+                .identifier(invoiceDPO.getIdentifier())
+                .buyerId(invoiceDPO.getBuyerId())
+                .sellerId(invoiceDPO.getSellerId())
+                .items(invoiceDPO.getItems())
+                .build();
+
+    }
     public Invoice mapToEntity(InvoiceDTO invoiceDTO) {
 
-        UUID invoiceIdentifier = UUID.randomUUID();
         return Invoice.builder()
-                .identifier(invoiceIdentifier)
+                .identifier(invoiceDTO.getIdentifier())
                 .buyerId(invoiceDTO.getBuyer().getCompanyIdentifier())
                 .sellerId(invoiceDTO.getSeller().getCompanyIdentifier())
                 .items(invoiceDTO.getItems())
@@ -35,14 +42,36 @@ public class InvoiceMapperService {
         CompanyDTO buyer = companyOpsService.getCompanyById(invoice.getBuyerId());
         CompanyDTO seller = companyOpsService.getCompanyById(invoice.getSellerId());
         return InvoiceDTO.builder()
+                .identifier(invoice.getIdentifier())
                 .buyer(buyer)
                 .seller(seller)
                 .items(invoice.getItems())
                 .build();
     }
-    public List<InvoiceDTO> mapToDTO(List<Invoice> invoices){
+
+    public InvoiceDDO mapToDDO(Invoice invoice) {
+
+        CompanyDTO buyer = companyOpsService.getCompanyById(invoice.getBuyerId());
+        CompanyDTO seller = companyOpsService.getCompanyById(invoice.getSellerId());
+        return InvoiceDDO.builder()
+                .identifier(invoice.getIdentifier())
+                .buyerName(buyer.getName())
+                .sellerName(seller.getName())
+                .build();
+    }
+
+    public InvoiceDPO mapToDPO(Invoice invoice) {
+
+        return InvoiceDPO.builder()
+                .identifier(invoice.getIdentifier())
+                .buyerId(invoice.getBuyerId())
+                .sellerId(invoice.getSellerId())
+                .items(invoice.getItems())
+                .build();
+    }
+    public List<InvoiceDDO> mapToDDO(List<Invoice> invoices){
         return invoices.stream()
-                .map(this::mapToDTO)
+                .map(this::mapToDDO)
                 .collect(Collectors.toList());
     }
 

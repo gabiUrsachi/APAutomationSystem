@@ -16,37 +16,40 @@ public class CompanyOpsService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    public CompanyDTO getCompanyByName(String name){
+    public CompanyDTO getCompanyByName(String name) {
         Company company = companyRepository.findByName(name);
 
         return mapToDTO(company);
     }
 
-    public CompanyDTO getCompanyById(UUID uuid){
+    public CompanyDTO getCompanyById(UUID uuid) {
         Optional<Company> company = companyRepository.findById(uuid);
 
-        return mapToDTO(company.get());
+        // De pus exceptie pe viitor
+        return company.map(this::mapToDTO).orElse(null);
     }
-    public Company mapToEntity(CompanyDTO companyDTO){
+
+    public Company mapToEntity(CompanyDTO companyDTO) {
         return Company.builder()
                 .companyIdentifier(companyDTO.getCompanyIdentifier())
                 .name(companyDTO.getName())
                 .build();
     }
 
-    public CompanyDTO mapToDTO(Company company){
+    public CompanyDTO mapToDTO(Company company) {
         return CompanyDTO.builder()
                 .companyIdentifier(company.getCompanyIdentifier())
                 .name(company.getName())
                 .build();
     }
 
-    public List<CompanyDTO> mapToDTO(List<Company> companies){
+    public List<CompanyDTO> mapToDTO(List<Company> companies) {
 
         return companies.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
+
     public CompanyDTO createCompany(CompanyDTO companyDTO) {
 
         Company company = mapToEntity(companyDTO);
