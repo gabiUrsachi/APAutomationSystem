@@ -22,10 +22,17 @@ public class CompanyController {
 
     @PostMapping
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
-
-        Company company = companyMapperService.mapToEntity(companyDTO);
+        CompanyDTO initializedCompany = initializeCompany(companyDTO);
+        Company company = companyMapperService.mapToEntity(initializedCompany);
         return companyMapperService.mapToDTO(companyOpsService.createCompany(company));
 
+    }
+
+    private CompanyDTO initializeCompany(CompanyDTO companyDTO) {
+        UUID identifier = UUID.randomUUID();
+        companyDTO.setCompanyIdentifier(identifier);
+
+        return companyDTO;
     }
 
     @GetMapping
