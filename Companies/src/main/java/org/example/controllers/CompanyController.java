@@ -1,6 +1,7 @@
 package org.example.controllers;
 
 import org.example.business.models.CompanyDTO;
+import org.example.business.services.CompanyMapperService;
 import org.example.business.services.CompanyOpsService;
 import org.example.persistence.collections.Company;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +17,27 @@ public class CompanyController {
     @Autowired
     private CompanyOpsService companyOpsService;
 
+    @Autowired
+    private CompanyMapperService companyMapperService;
 
     @PostMapping
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
-        return companyOpsService.createCompany(companyDTO);
+
+        Company company = companyMapperService.mapToEntity(companyDTO);
+        return companyMapperService.mapToDTO(companyOpsService.createCompany(company));
 
     }
 
     @GetMapping
     public List<CompanyDTO> getCompanies() {
 
-        return companyOpsService.getCompanies();
+        return companyMapperService.mapToDTO(companyOpsService.getCompanies());
     }
 
 
     @GetMapping("/{identifier}")
     public CompanyDTO getById(@PathVariable UUID identifier) {
-        return companyOpsService.getCompanyById(identifier);
+        return companyMapperService.mapToDTO(companyOpsService.getCompanyById(identifier));
 
     }
 

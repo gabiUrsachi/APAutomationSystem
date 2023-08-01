@@ -11,16 +11,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class MapperService {
-    private final CompanyOpsService companyOpsService;
+    private final CompanyMapperService companyMapperService;
 
-    public MapperService(CompanyOpsService companyOpsService) {
-        this.companyOpsService = companyOpsService;
+    public MapperService(CompanyMapperService companyMapperService) {
+        this.companyMapperService = companyMapperService;
     }
 
     public PurchaseOrder mapToEntity(OrderRequestDTO orderRequestDTO){
         return PurchaseOrder.builder()
-                .buyer(companyOpsService.mapToEntity(orderRequestDTO.getBuyer()))
-                .seller(companyOpsService.mapToEntity(orderRequestDTO.getSeller()))
+                .buyer(companyMapperService.mapToEntity(orderRequestDTO.getBuyer()))
+                .seller(companyMapperService.mapToEntity(orderRequestDTO.getSeller()))
                 .items(orderRequestDTO.getItems())
                 .build();
     }
@@ -28,8 +28,8 @@ public class MapperService {
     public OrderResponseDTO mapToDTO(PurchaseOrder purchaseOrder){
         return OrderResponseDTO.builder()
                 .identifier(purchaseOrder.getIdentifier())
-                .buyer(companyOpsService.mapToDTO(purchaseOrder.getBuyer()))
-                .seller(companyOpsService.mapToDTO(purchaseOrder.getSeller()))
+                .buyer(companyMapperService.mapToDTO(purchaseOrder.getBuyer()))
+                .seller(companyMapperService.mapToDTO(purchaseOrder.getSeller()))
                 .items(purchaseOrder.getItems())
                 .orderStatus(purchaseOrder.getOrderStatus())
                 .build();

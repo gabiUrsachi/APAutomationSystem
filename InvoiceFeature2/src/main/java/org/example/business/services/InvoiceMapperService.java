@@ -1,19 +1,21 @@
 package org.example.business.services;
 
 import org.example.business.models.*;
+import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class InvoiceMapperService {
     private final CompanyOpsService companyOpsService;
+    private final CompanyMapperService companyMapperService;
 
-    public InvoiceMapperService(CompanyOpsService companyOpsService) {
+    public InvoiceMapperService(CompanyOpsService companyOpsService, CompanyMapperService companyMapperService) {
         this.companyOpsService = companyOpsService;
+        this.companyMapperService = companyMapperService;
     }
 
     public Invoice mapToEntity(InvoiceDPO invoiceDPO) {
@@ -39,20 +41,20 @@ public class InvoiceMapperService {
 
     public InvoiceDTO mapToDTO(Invoice invoice) {
 
-        CompanyDTO buyer = companyOpsService.getCompanyById(invoice.getBuyerId());
-        CompanyDTO seller = companyOpsService.getCompanyById(invoice.getSellerId());
+        Company buyer = companyOpsService.getCompanyById(invoice.getBuyerId());
+        Company seller = companyOpsService.getCompanyById(invoice.getSellerId());
         return InvoiceDTO.builder()
                 .identifier(invoice.getIdentifier())
-                .buyer(buyer)
-                .seller(seller)
+                .buyer(companyMapperService.mapToDTO(buyer))
+                .seller(companyMapperService.mapToDTO(seller))
                 .items(invoice.getItems())
                 .build();
     }
 
     public InvoiceDDO mapToDDO(Invoice invoice) {
 
-        CompanyDTO buyer = companyOpsService.getCompanyById(invoice.getBuyerId());
-        CompanyDTO seller = companyOpsService.getCompanyById(invoice.getSellerId());
+        Company buyer = companyOpsService.getCompanyById(invoice.getBuyerId());
+        Company seller = companyOpsService.getCompanyById(invoice.getSellerId());
         return InvoiceDDO.builder()
                 .identifier(invoice.getIdentifier())
                 .buyerName(buyer.getName())

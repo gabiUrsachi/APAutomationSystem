@@ -16,48 +16,26 @@ public class CompanyOpsService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    public CompanyDTO getCompanyByName(String name) {
-        Company company = companyRepository.findByName(name);
+    public Company getCompanyByName(String name) {
 
-        return mapToDTO(company);
+        return companyRepository.findByName(name);
     }
 
-    public CompanyDTO getCompanyById(UUID uuid) {
+    public Company getCompanyById(UUID uuid) {
         Optional<Company> company = companyRepository.findById(uuid);
 
         // De pus exceptie pe viitor
-        return company.map(this::mapToDTO).orElse(null);
+        return company.orElse(null);
     }
 
-    public Company mapToEntity(CompanyDTO companyDTO) {
-        return Company.builder()
-                .companyIdentifier(companyDTO.getCompanyIdentifier())
-                .name(companyDTO.getName())
-                .build();
+
+    public Company createCompany(Company company) {
+
+        return companyRepository.insert(company);
     }
 
-    public CompanyDTO mapToDTO(Company company) {
-        return CompanyDTO.builder()
-                .companyIdentifier(company.getCompanyIdentifier())
-                .name(company.getName())
-                .build();
-    }
-
-    public List<CompanyDTO> mapToDTO(List<Company> companies) {
-
-        return companies.stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
-    }
-
-    public CompanyDTO createCompany(CompanyDTO companyDTO) {
-
-        Company company = mapToEntity(companyDTO);
-        return mapToDTO(companyRepository.insert(company));
-    }
-
-    public List<CompanyDTO> getCompanies() {
-        return mapToDTO(companyRepository.findAll());
+    public List<Company> getCompanies() {
+        return companyRepository.findAll();
     }
 
     public void deleteCompany(UUID identifier) {
