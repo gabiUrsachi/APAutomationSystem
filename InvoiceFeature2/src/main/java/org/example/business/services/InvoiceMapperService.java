@@ -78,6 +78,7 @@ public class InvoiceMapperService {
     public InvoiceDTO mapToDTO(OrderResponseDTO orderResponseDTO) {
 
         return InvoiceDTO.builder()
+                .identifier(orderResponseDTO.getIdentifier())
                 .buyer(orderResponseDTO.getBuyer())
                 .seller(orderResponseDTO.getSeller())
                 .items(orderResponseDTO.getItems())
