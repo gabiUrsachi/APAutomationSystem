@@ -61,6 +61,7 @@ class InvoiceControllerIntTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                //de ver obiect nenul
                 .andExpect(content().json("{'buyerId':'8be9a53b-997b-4559-8fb7-d120209e63e9'}"));
     }
 
@@ -70,6 +71,7 @@ class InvoiceControllerIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
         assertNotNull(result.getResponse());
+        //inserat un invoice si verificat  ca e prezent in get
 
     }
 

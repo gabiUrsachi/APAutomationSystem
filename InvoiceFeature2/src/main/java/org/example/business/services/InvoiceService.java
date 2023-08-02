@@ -25,7 +25,8 @@ public class InvoiceService {
 
     public Invoice createInvoice(@RequestBody Invoice invoiceEntity) {
 
-        return invoiceRepository.insert(invoiceEntity);
+        Invoice initializedInvoice = initializeInvoice(invoiceEntity);
+        return invoiceRepository.insert(initializedInvoice);
     }
 
     public List<Invoice> getInvoices() {
@@ -47,4 +48,12 @@ public class InvoiceService {
         invoiceRepository.deleteByIdentifier(identifier);
     }
 
+    public Invoice initializeInvoice(Invoice invoice) {
+
+        UUID identifier = UUID.randomUUID();
+        invoice.setIdentifier(identifier);
+
+        return invoice;
+
+    }
 }

@@ -31,8 +31,8 @@ public class InvoiceController {
 
     @PostMapping
     public InvoiceDPO createInvoice(@RequestBody InvoiceDPO invoiceDPO) {
-        InvoiceDPO initializedInvoice = initializeInvoice(invoiceDPO);
-        Invoice invoiceEntity = invoiceMapperService.mapToEntity(initializedInvoice);
+
+        Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
 
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
         return invoiceMapperService.mapToDPO(responseInvoice);
@@ -64,12 +64,4 @@ public class InvoiceController {
 
     }
 
-    public InvoiceDPO initializeInvoice(InvoiceDPO invoiceDPO) {
-
-        UUID identifier = UUID.randomUUID();
-        invoiceDPO.setIdentifier(identifier);
-
-        return invoiceDPO;
-
-    }
 }

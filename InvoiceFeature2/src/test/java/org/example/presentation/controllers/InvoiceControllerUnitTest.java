@@ -22,8 +22,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class InvoiceControllerUnitTest {
 
-    @Mock
-    List<Invoice> invoiceList;
 
 
     @Test
