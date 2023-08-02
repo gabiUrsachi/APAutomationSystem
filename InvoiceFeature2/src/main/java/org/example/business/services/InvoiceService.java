@@ -1,13 +1,13 @@
 package org.example.business.services;
 
 import org.example.business.exceptions.InvoiceNotFoundException;
+import org.example.business.models.InvoiceDDO;
+import org.example.business.models.InvoiceDPO;
 import org.example.business.models.OrderResponseDTO;
 import org.example.business.models.InvoiceDTO;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
-import org.example.persistence.repository.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -17,43 +17,43 @@ import java.util.*;
 public class InvoiceService {
     @Autowired
     private InvoiceRepository invoiceRepository;
-    @Autowired
-    private MapperService mapperService;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, MapperService mapperService) {
+    public InvoiceService(InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
-        this.mapperService = mapperService;
     }
 
-    public InvoiceDTO createInvoice(@RequestBody InvoiceDTO invoiceDTO) {
 
-        Invoice invoice = mapperService.mapToEntity(invoiceDTO);
-        Invoice responseInvoice = invoiceRepository.insert(invoice);
+    public Invoice createInvoice(@RequestBody Invoice invoiceEntity) {
 
-        return mapperService.mapToDTO(responseInvoice);
+        Invoice initializedInvoice = initializeInvoice(invoiceEntity);
+        return invoiceRepository.insert(initializedInvoice);
     }
 
     public List<Invoice> getInvoices() {
+
         return invoiceRepository.findAll();
     }
 
-    public InvoiceDTO createInvoiceDTOFromPurchaseOrder(OrderResponseDTO orderResponseDTO) {
-
-        return mapperService.mapToDTO(orderResponseDTO);
-    }
-
-    public Optional<Invoice> getInvoice(UUID identifier) {
+    public Invoice getInvoice(UUID identifier) {
 
         Optional<Invoice> invoice;
         invoice = invoiceRepository.findByIdentifier(identifier);
         if (invoice.isEmpty()) {
             throw new InvoiceNotFoundException("Couldn't find invoice with identifier ");
         }
-        return invoice;
+        return invoice.get();
     }
 
     public void deleteInvoice(UUID identifier) {
         invoiceRepository.deleteByIdentifier(identifier);
     }
 
+    public Invoice initializeInvoice(Invoice invoice) {
+
+        UUID identifier = UUID.randomUUID();
+        invoice.setIdentifier(identifier);
+
+        return invoice;
+
+    }
 }

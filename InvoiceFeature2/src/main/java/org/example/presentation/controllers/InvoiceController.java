@@ -1,60 +1,67 @@
 package org.example.presentation.controllers;
 
+import lombok.AllArgsConstructor;
+import org.example.business.models.InvoiceDDO;
+import org.example.business.models.InvoiceDPO;
 import org.example.business.models.OrderResponseDTO;
-import org.example.business.services.CompanyOpsService;
 import org.example.business.models.InvoiceDTO;
+import org.example.business.services.InvoiceMapperService;
 import org.example.business.services.InvoiceService;
 import org.example.persistence.collections.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
 @RestController
 @RequestMapping("/api/invoices")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class InvoiceController {
-    @Autowired
-    private InvoiceService invoiceService;
+    private final InvoiceService invoiceService;
+
+    private final InvoiceMapperService invoiceMapperService;
 
     @Autowired
-    private CompanyOpsService companyOpsService;
+    public InvoiceController(InvoiceService invoiceService, InvoiceMapperService invoiceMapperService) {
+        this.invoiceService = invoiceService;
+        this.invoiceMapperService = invoiceMapperService;
+    }
 
     @PostMapping
-    public ResponseEntity<InvoiceDTO> createInvoice(@RequestBody InvoiceDTO invoiceDTO) {
-        InvoiceDTO responseInvoice = invoiceService.createInvoice(invoiceDTO);
-        return new ResponseEntity<>(responseInvoice, HttpStatus.CREATED);
+    public InvoiceDPO createInvoice(@RequestBody InvoiceDPO invoiceDPO) {
+
+        Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
+
+        Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
+        return invoiceMapperService.mapToDPO(responseInvoice);
 
     }
 
     @GetMapping
-    public ResponseEntity<List<Invoice>> getInvoices() {
-        return new ResponseEntity<>(invoiceService.getInvoices(), HttpStatus.OK);
+    public List<InvoiceDDO> getInvoices() {
+        return invoiceMapperService.mapToDDO(invoiceService.getInvoices());
+
     }
 
     @PostMapping("/fromOR")
-    public ResponseEntity<InvoiceDTO> createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO) {
-        InvoiceDTO responseInvoice = invoiceService.createInvoiceDTOFromPurchaseOrder(orderResponseDTO);
-        return new ResponseEntity<>(responseInvoice, HttpStatus.CREATED);
+    public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO) {
+        return invoiceMapperService.mapToDTO(orderResponseDTO);
     }
 
     @GetMapping("/{identifier}")
-    public ResponseEntity<Invoice> getById(@PathVariable UUID identifier) {
-        Optional<Invoice> invoice = invoiceService.getInvoice(identifier);
-        System.out.println(identifier);
+    public InvoiceDTO getById(@PathVariable UUID identifier) {
 
-        return new ResponseEntity<>(invoice.get(), HttpStatus.OK);
+        return invoiceMapperService.mapToDTO(invoiceService.getInvoice(identifier));
+
     }
 
     @DeleteMapping("/{identifier}")
-    public ResponseEntity<Void> deleteById(@PathVariable UUID identifier) {
+    public void deleteById(@PathVariable UUID identifier) {
 
         invoiceService.deleteInvoice(identifier);
 
-        return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

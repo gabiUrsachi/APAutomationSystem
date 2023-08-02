@@ -1,22 +1,21 @@
-package org.example.persistence.collections;
+package org.example.business.models;
 
 
-import com.mongodb.lang.NonNull;
 import lombok.*;
+import org.example.persistence.collections.Item;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Set;
 import java.util.UUID;
 
-@Document
-@Setter
-@Getter
+//DPO = Data Publishing Object
+//VV similar to Invoice??
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Invoice {
-    @Id
+public class InvoiceDPO {
     private UUID identifier;
 
     private UUID buyerId;

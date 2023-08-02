@@ -1,11 +1,14 @@
 package org.example.business.models;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.UUID;
 
 @Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class CompanyDTO {
     UUID companyIdentifier;

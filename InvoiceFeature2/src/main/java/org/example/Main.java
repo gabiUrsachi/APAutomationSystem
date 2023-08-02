@@ -11,8 +11,7 @@ public class Main {
     public static void main(String[] args) {
         SpringApplication.run(org.example.Main.class, args);
     }
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
+    @Bean public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {

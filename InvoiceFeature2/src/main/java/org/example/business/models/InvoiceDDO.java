@@ -10,18 +10,18 @@ import org.example.persistence.collections.Item;
 import java.util.Set;
 import java.util.UUID;
 
+//DDO = Data Display Object
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InvoiceDTO {
+public class InvoiceDDO {
 
     private UUID identifier;
 
-    private CompanyDTO buyer;
+    private String buyerName;
 
-    private CompanyDTO seller;
+    private String sellerName;
 
-    private Set<Item> items;
 
 }
