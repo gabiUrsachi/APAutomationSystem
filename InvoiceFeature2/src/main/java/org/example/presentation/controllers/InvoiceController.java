@@ -1,5 +1,6 @@
 package org.example.presentation.controllers;
 
+import lombok.AllArgsConstructor;
 import org.example.business.models.InvoiceDDO;
 import org.example.business.models.InvoiceDPO;
 import org.example.business.models.OrderResponseDTO;
@@ -18,11 +19,15 @@ import java.util.UUID;
 @RequestMapping("/api/invoices")
 @CrossOrigin(origins = "http://localhost:4200/")
 public class InvoiceController {
-    @Autowired
-    private InvoiceService invoiceService;
+    private final InvoiceService invoiceService;
+
+    private final InvoiceMapperService invoiceMapperService;
 
     @Autowired
-    private InvoiceMapperService invoiceMapperService;
+    public InvoiceController(InvoiceService invoiceService, InvoiceMapperService invoiceMapperService) {
+        this.invoiceService = invoiceService;
+        this.invoiceMapperService = invoiceMapperService;
+    }
 
     @PostMapping
     public InvoiceDPO createInvoice(@RequestBody InvoiceDPO invoiceDPO) {
