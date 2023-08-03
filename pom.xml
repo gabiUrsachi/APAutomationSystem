@@ -16,7 +16,7 @@
     <description>AP automation workflow system</description>
     <modules>
         <module>Companies</module>
-        <module>PurchaseOrderFeature2</module>
+        <module>PurchaseOrder</module>
         <module>InvoiceFeature2</module>
         <module>core</module>
     </modules>
