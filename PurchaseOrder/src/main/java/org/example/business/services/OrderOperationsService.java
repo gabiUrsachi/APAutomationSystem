@@ -54,6 +54,12 @@ public class OrderOperationsService {
         return purchaseOrderRepository.findAll();
     }
 
+    public void deletePurchaseOrder(UUID identifier){
+        PurchaseOrder purchaseOrder = getPurchaseOrder(identifier);
+
+        this.purchaseOrderRepository.delete(purchaseOrder);
+    }
+
     private void validateOrderUpdate(PurchaseOrder purchaseOrder) {
         if (!purchaseOrder.getOrderStatus().equals(OrderStatus.CREATED)) {
             throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, purchaseOrder.getIdentifier());

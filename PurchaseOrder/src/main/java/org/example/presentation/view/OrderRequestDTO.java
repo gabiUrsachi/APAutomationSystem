@@ -1,9 +1,7 @@
 package org.example.presentation.view;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.mongodb.lang.NonNull;
+import lombok.*;
 import org.example.persistence.collections.Item;
 
 import java.util.Set;
@@ -13,10 +11,15 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
+@Getter
 public class OrderRequestDTO {
+    @NonNull
     private UUID buyer;
 
+    @NonNull
     private UUID seller;
 
+    @NonNull
     private Set<Item> items;
 }

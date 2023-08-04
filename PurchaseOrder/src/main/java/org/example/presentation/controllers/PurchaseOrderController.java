@@ -8,11 +8,11 @@ import org.example.persistence.collections.PurchaseOrder;
 import org.example.presentation.utils.MapperService;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.presentation.view.OrderResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,11 +21,42 @@ import java.util.UUID;
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = "http://localhost:4200/")
 public class PurchaseOrderController {
-    @Autowired
-    private OrderOperationsService orderOperationsService;
+    private final OrderOperationsService orderOperationsService;
+    private final MapperService mapperService;
 
-    @Autowired
-    private  MapperService mapperService;
+    public PurchaseOrderController(OrderOperationsService orderOperationsService, MapperService mapperService) {
+        this.orderOperationsService = orderOperationsService;
+        this.mapperService = mapperService;
+    }
+
+    @Operation(summary = "get purchase order by identifier")
+    @ApiResponses(value =
+            {
+                    @ApiResponse(responseCode = "200", description = "Found purchase order"),
+                    @ApiResponse(responseCode = "404", description = "Order not found")
+            })
+    @GetMapping("/{identifier}")
+    public ResponseEntity<OrderResponseDTO> getPurchaseOrder(@PathVariable UUID identifier){
+        PurchaseOrder purchaseOrder = orderOperationsService.getPurchaseOrder(identifier);
+
+        OrderResponseDTO orderResponseDTO = mapperService.mapToDTO(purchaseOrder);
+
+        return new ResponseEntity<>(orderResponseDTO, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get all purchase orders")
+    @ApiResponses(value =
+            {
+                    @ApiResponse(responseCode = "200", description = "Found purchase orders")
+            })
+    @GetMapping
+    public ResponseEntity<List<OrderResponseDTO>> getPurchaseOrders(){
+        List<PurchaseOrder> purchaseOrders = orderOperationsService.getPurchaseOrders();
+
+        List<OrderResponseDTO> orderResponseDTOs = mapperService.mapToDTO(purchaseOrders);
+
+        return new ResponseEntity<>(orderResponseDTOs, HttpStatus.OK);
+    }
 
     @Operation(summary = "creates new purchase order")
     @ApiResponses(value =
@@ -76,34 +107,16 @@ public class PurchaseOrderController {
         return new ResponseEntity<>(orderResponseDTO, HttpStatus.OK);
     }
 
-    @Operation(summary = "get purchase order by identifier")
+    @Operation(summary = "remove purchase order by id")
     @ApiResponses(value =
             {
-                    @ApiResponse(responseCode = "200", description = "Found purchase order"),
+                    @ApiResponse(responseCode = "200", description = "Successfully removed purchase order"),
                     @ApiResponse(responseCode = "404", description = "Order not found")
             })
-    @GetMapping("/{identifier}")
-    public ResponseEntity<OrderResponseDTO> getPurchaseOrder(@PathVariable UUID identifier){
-        PurchaseOrder purchaseOrder = orderOperationsService.getPurchaseOrder(identifier);
+    @DeleteMapping("/{identifier}")
+    public ResponseEntity<Void> removePurchaseOrder(@PathVariable UUID identifier){
+        orderOperationsService.deletePurchaseOrder(identifier);
 
-        OrderResponseDTO orderResponseDTO = mapperService.mapToDTO(purchaseOrder);
-
-        return new ResponseEntity<>(orderResponseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @Operation(summary = "get all purchase orders")
-    @ApiResponses(value =
-            {
-                    @ApiResponse(responseCode = "200", description = "Found purchase orders")
-            })
-    @GetMapping
-    public ResponseEntity<List<OrderResponseDTO>> getPurchaseOrders(){
-        List<PurchaseOrder> purchaseOrders = orderOperationsService.getPurchaseOrders();
-
-        List<OrderResponseDTO> orderResponseDTOs = mapperService.mapToDTO(purchaseOrders);
-
-        return new ResponseEntity<>(orderResponseDTOs, HttpStatus.OK);
-    }
-
-
 }
