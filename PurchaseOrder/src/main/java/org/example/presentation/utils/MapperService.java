@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This service is used for entity <-> dto conversions
+ */
 @Service
 public class MapperService {
     @Autowired
@@ -19,7 +22,13 @@ public class MapperService {
     @Autowired
     private CompanyOpsService companyOpsService;
 
-    public PurchaseOrder mapToEntity(OrderRequestDTO orderRequestDTO){
+    /**
+     * It creates an entity with the same properties as the received dto
+     *
+     * @param orderRequestDTO DTO to be converted
+     * @return created entity
+     */
+    public PurchaseOrder mapToEntity(OrderRequestDTO orderRequestDTO) {
         return PurchaseOrder.builder()
                 .buyer(orderRequestDTO.getBuyer())
                 .seller(orderRequestDTO.getSeller())
@@ -27,7 +36,13 @@ public class MapperService {
                 .build();
     }
 
-    public OrderResponseDTO mapToDTO(PurchaseOrder purchaseOrder){
+    /**
+     * It creates a Data Transfer Object with the same properties as the received entity
+     *
+     * @param purchaseOrder entity to be converted
+     * @return created DTO
+     */
+    public OrderResponseDTO mapToDTO(PurchaseOrder purchaseOrder) {
         return OrderResponseDTO.builder()
                 .identifier(purchaseOrder.getIdentifier())
                 .buyer(companyMapperService.mapToDTO(companyOpsService.getCompanyById(purchaseOrder.getBuyer())))
@@ -37,7 +52,13 @@ public class MapperService {
                 .build();
     }
 
-    public List<OrderResponseDTO> mapToDTO(List<PurchaseOrder> purchaseOrders){
+    /**
+     * It creates a list of Data Transfer Object with the same properties as the received entities
+     *
+     * @param purchaseOrders entities to be converted
+     * @return created DTOs
+     */
+    public List<OrderResponseDTO> mapToDTO(List<PurchaseOrder> purchaseOrders) {
         return purchaseOrders.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
