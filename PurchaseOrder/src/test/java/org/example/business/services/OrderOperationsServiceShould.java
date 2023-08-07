@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.assertThrows;
@@ -23,7 +24,6 @@ import static org.mockito.Mockito.verify;
 public class OrderOperationsServiceShould {
     @Mock
     PurchaseOrderRepository purchaseOrderRepository;
-    @Mock
     PurchaseOrder purchaseOrder;
 
     OrderOperationsService orderOperationsService;
@@ -36,7 +36,6 @@ public class OrderOperationsServiceShould {
     @Test
     public void throwExceptionWhenTryingToUpdateNonexistentOrder() {
         UUID uuid = UUID.randomUUID();
-
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.empty());
 
         assertThrows(OrderNotFoundException.class, () -> orderOperationsService.updatePurchaseOrder(uuid, purchaseOrder));
@@ -46,9 +45,8 @@ public class OrderOperationsServiceShould {
     @Test
     public void throwExceptionWhenTryingToUpdateASavedOrder() {
         UUID uuid = UUID.randomUUID();
-
+        purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.SAVED, uuid);
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.of(purchaseOrder));
-        given(purchaseOrder.getOrderStatus()).willReturn(OrderStatus.SAVED);
 
         assertThrows(InvalidUpdateException.class, () -> orderOperationsService.updatePurchaseOrder(uuid, purchaseOrder));
         verify(purchaseOrderRepository).findById(uuid);
@@ -57,34 +55,76 @@ public class OrderOperationsServiceShould {
     @Test
     public void successfullyUpdateAValidPurchaseOrder() {
         UUID uuid = UUID.randomUUID();
-
-        given(purchaseOrder.getOrderStatus()).willReturn(OrderStatus.CREATED);
+        purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.CREATED, uuid);
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.of(purchaseOrder));
         given(purchaseOrderRepository.save(purchaseOrder)).willReturn(purchaseOrder);
 
         PurchaseOrder savedPurchaseOrder = orderOperationsService.updatePurchaseOrder(uuid, purchaseOrder);
 
+        verify(purchaseOrderRepository).findById(uuid);
         verify(purchaseOrderRepository).save(purchaseOrder);
-        Assertions.assertNotNull(savedPurchaseOrder);
+        Assertions.assertEquals(uuid, savedPurchaseOrder.getIdentifier());
+        Assertions.assertEquals(purchaseOrder.getOrderStatus(), savedPurchaseOrder.getOrderStatus());
     }
 
     @Test
     public void successfullyCreateNewPurchaseOrder() {
+        purchaseOrder = createRandomPurchaseOrder();
         given(purchaseOrderRepository.save(purchaseOrder)).willReturn(purchaseOrder);
 
         PurchaseOrder savedPurchaseOrder = orderOperationsService.createPurchaseOrder(purchaseOrder);
 
         verify(purchaseOrderRepository).save(purchaseOrder);
-        Assertions.assertNotNull(savedPurchaseOrder);
+        Assertions.assertEquals(OrderStatus.CREATED, savedPurchaseOrder.getOrderStatus());
     }
 
     @Test
     public void returnExistentOrderById() {
         UUID uuid = UUID.randomUUID();
+        purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.CREATED, uuid);
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.of(purchaseOrder));
 
         PurchaseOrder queriedPurchaseOrder = orderOperationsService.getPurchaseOrder(uuid);
 
         Assertions.assertEquals(purchaseOrder, queriedPurchaseOrder);
+    }
+
+    @Test
+    public void throwExceptionWhenTryingToQueryNonexistentOrder() {
+        UUID uuid = UUID.randomUUID();
+        given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.empty());
+
+        assertThrows(OrderNotFoundException.class, () -> orderOperationsService.getPurchaseOrder(uuid));
+        verify(purchaseOrderRepository).findById(uuid);
+    }
+
+    @Test
+    public void throwExceptionWhenTryingToDeleteNonexistentOrder() {
+        UUID uuid = UUID.randomUUID();
+        given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.empty());
+
+        assertThrows(OrderNotFoundException.class, () -> orderOperationsService.deletePurchaseOrder(uuid));
+        verify(purchaseOrderRepository).findById(uuid);
+    }
+
+
+    private PurchaseOrder createPurchaseOrderWithStatusAndUUID(OrderStatus orderStatus, UUID uuid) {
+        return PurchaseOrder.builder()
+                .identifier(uuid)
+                .buyer(UUID.randomUUID())
+                .seller(UUID.randomUUID())
+                .orderStatus(orderStatus)
+                .items(Set.of())
+                .build();
+    }
+
+    private PurchaseOrder createRandomPurchaseOrder() {
+        return PurchaseOrder.builder()
+                .identifier(UUID.randomUUID())
+                .buyer(UUID.randomUUID())
+                .seller(UUID.randomUUID())
+                .orderStatus(OrderStatus.APPROVED)
+                .items(Set.of())
+                .build();
     }
 }

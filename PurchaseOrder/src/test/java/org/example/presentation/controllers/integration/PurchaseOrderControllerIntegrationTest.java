@@ -7,20 +7,20 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
 import org.example.persistence.collections.Item;
+import org.example.persistence.collections.PurchaseOrder;
+import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.OrderStatus;
+import org.example.presentation.controllers.HttpRequestBuilder;
 import org.example.presentation.view.OrderRequestDTO;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.UnsupportedEncodingException;
@@ -29,7 +29,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -43,6 +42,9 @@ public class PurchaseOrderControllerIntegrationTest {
 
     private JSONParser jsonParser;
 
+    @Autowired
+    private PurchaseOrderRepository purchaseOrderRepository;
+
     @BeforeEach
     public void setUp() {
         this.mapper = new ObjectMapper();
@@ -50,62 +52,171 @@ public class PurchaseOrderControllerIntegrationTest {
     }
 
     @Test
-    public void testController() throws Exception {
-        // create purchase order
+    public void getPurchaseOrderById() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        PurchaseOrder purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.CREATED, uuid);
+
+        purchaseOrderRepository.save(purchaseOrder);
+
+        RequestBuilder getOrderRequest = HttpRequestBuilder.createGetRequest(uuid);
+        JSONArray orderItems = parseItemSetToJSONArray(purchaseOrder.getItems());
+
+        this.mockMvc.perform(getOrderRequest)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.identifier").value(uuid.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.buyer.companyIdentifier").value(purchaseOrder.getBuyer().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.seller.companyIdentifier").value(purchaseOrder.getSeller().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items").value(Matchers.containsInAnyOrder(orderItems.toArray())));
+
+        purchaseOrderRepository.deleteById(uuid);
+    }
+
+    @Test
+    public void createPurchaseOrder() throws Exception {
         OrderRequestDTO orderDTO = createOrderDTO();
-        RequestBuilder addOrderRequest = createPostRequest(orderDTO);
+        RequestBuilder addOrderRequest = HttpRequestBuilder.createPostRequest(orderDTO);
 
         MvcResult mvcResult = this.mockMvc.perform(addOrderRequest)
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.orderStatus").value(OrderStatus.CREATED.toString()))
                 .andReturn();
 
-        // get newly created purchase order
         UUID orderUUID = getOrderIdFromMvcResult(mvcResult);
-        RequestBuilder getOrderRequest = createGetRequest(orderUUID);
-        JSONArray initialOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
+        purchaseOrderRepository.deleteById(orderUUID);
+    }
 
-        this.mockMvc.perform(getOrderRequest)
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.identifier").value(orderUUID.toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.buyer.companyIdentifier").value(orderDTO.getBuyer().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.seller.companyIdentifier").value(orderDTO.getSeller().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items").value(Matchers.containsInAnyOrder(initialOrderItems.toArray())))
-        ;
+    @Test
+    public void updatePurchaseOrder() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        PurchaseOrder purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.CREATED, uuid);
 
-        // update purchase order
-        updateOrderItems(orderDTO);
-        RequestBuilder updateOrderRequest = createPutRequest(orderUUID, orderDTO);
+        purchaseOrderRepository.save(purchaseOrder);
+
+        // first update
+        OrderRequestDTO orderDTO = createOrderDTO();
+        RequestBuilder updateOrderRequest = HttpRequestBuilder.createPutRequest(uuid, orderDTO);
+        JSONArray initialUpdatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
 
         this.mockMvc.perform(updateOrderRequest)
-                .andExpect(status().isOk());
-
-        // get updated order
-        JSONArray updatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
-
-        this.mockMvc.perform(getOrderRequest)
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.identifier").value(orderUUID.toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items").value(Matchers.containsInAnyOrder(updatedOrderItems.toArray())))
-        ;
+                .andExpect(MockMvcResultMatchers.jsonPath("$.orderStatus").value(OrderStatus.CREATED.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items").value(Matchers.containsInAnyOrder(initialUpdatedOrderItems.toArray())));
 
-        // save purchase order
-        RequestBuilder saveOrderRequest = createPatchRequest(orderUUID);
+        // second update
+        updateOrderItems(orderDTO);
+        updateOrderRequest = HttpRequestBuilder.createPutRequest(uuid, orderDTO);
+        JSONArray finalUpdatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
+
+        this.mockMvc.perform(updateOrderRequest)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.orderStatus").value(OrderStatus.CREATED.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items").value(Matchers.containsInAnyOrder(finalUpdatedOrderItems.toArray())));
+
+        purchaseOrderRepository.deleteById(uuid);
+    }
+
+    @Test
+    public void savePurchaseOrder() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        PurchaseOrder purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.CREATED, uuid);
+
+        purchaseOrderRepository.save(purchaseOrder);
+
+        RequestBuilder saveOrderRequest = HttpRequestBuilder.createPatchRequest(uuid);
 
         this.mockMvc.perform(saveOrderRequest)
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.identifier").value(orderUUID.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.identifier").value(uuid.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.orderStatus").value(OrderStatus.SAVED.toString()));
 
-        // delete purchase order
-        RequestBuilder deleteOrderRequest = createDeleteRequest(orderUUID);
+        purchaseOrderRepository.deleteById(uuid);
+    }
 
+    @Test
+    public void deletePurchaseOrder() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        PurchaseOrder purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.CREATED, uuid);
+
+        purchaseOrderRepository.save(purchaseOrder);
+
+        RequestBuilder deleteOrderRequest = HttpRequestBuilder.createDeleteRequest(uuid);
+
+        // delete purchase order
         this.mockMvc.perform(deleteOrderRequest)
                 .andExpect(status().isOk());
 
-        // delete again
+        // try to delete again
         this.mockMvc.perform(deleteOrderRequest)
                 .andExpect(status().isNotFound());
+    }
+
+//    @Test
+//    public void testController() throws Exception {
+//        // create purchase order
+//        OrderRequestDTO orderDTO = createOrderDTO();
+//        RequestBuilder addOrderRequest = HttpRequestBuilder.createPostRequest(orderDTO);
+//
+//        MvcResult mvcResult = this.mockMvc.perform(addOrderRequest)
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.orderStatus").value(OrderStatus.CREATED.toString()))
+//                .andReturn();
+//
+//        // get newly created purchase order
+//        UUID orderUUID = getOrderIdFromMvcResult(mvcResult);
+//        RequestBuilder getOrderRequest = HttpRequestBuilder.createGetRequest(orderUUID);
+//        JSONArray initialOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
+//
+//        this.mockMvc.perform(getOrderRequest)
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.identifier").value(orderUUID.toString()))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.buyer.companyIdentifier").value(orderDTO.getBuyer().toString()))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.seller.companyIdentifier").value(orderDTO.getSeller().toString()))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.items").value(Matchers.containsInAnyOrder(initialOrderItems.toArray())))
+//        ;
+//
+//        // update purchase order
+//        updateOrderItems(orderDTO);
+//        RequestBuilder updateOrderRequest = HttpRequestBuilder.createPutRequest(orderUUID, orderDTO);
+//
+//        this.mockMvc.perform(updateOrderRequest)
+//                .andExpect(status().isOk());
+//
+//        // get updated order
+//        JSONArray updatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
+//
+//        this.mockMvc.perform(getOrderRequest)
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.identifier").value(orderUUID.toString()))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.items").value(Matchers.containsInAnyOrder(updatedOrderItems.toArray())))
+//        ;
+//
+//        // save purchase order
+//        RequestBuilder saveOrderRequest = HttpRequestBuilder.createPatchRequest(orderUUID);
+//
+//        this.mockMvc.perform(saveOrderRequest)
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.identifier").value(orderUUID.toString()))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.orderStatus").value(OrderStatus.SAVED.toString()));
+//
+//        // delete purchase order
+//        RequestBuilder deleteOrderRequest = HttpRequestBuilder.createDeleteRequest(orderUUID);
+//
+//        this.mockMvc.perform(deleteOrderRequest)
+//                .andExpect(status().isOk());
+//
+//        // delete again
+//        this.mockMvc.perform(deleteOrderRequest)
+//                .andExpect(status().isNotFound());
+//    }
+
+    private PurchaseOrder createPurchaseOrderWithStatusAndUUID(OrderStatus orderStatus, UUID uuid) {
+        return PurchaseOrder.builder()
+                .identifier(uuid)
+                .buyer(generateCompanyIdentifier())
+                .seller(generateCompanyIdentifier())
+                .orderStatus(orderStatus)
+                .items(Set.of())
+                .build();
     }
 
     private void updateOrderItems(OrderRequestDTO orderDTO) {
@@ -116,7 +227,6 @@ public class PurchaseOrderControllerIntegrationTest {
     }
 
     private JSONArray parseItemSetToJSONArray(Set<Item> items) throws JsonProcessingException, ParseException {
-
         return (JSONArray) jsonParser.parse(this.mapper.writeValueAsString(items));
     }
 
@@ -144,34 +254,5 @@ public class PurchaseOrderControllerIntegrationTest {
 
     private UUID generateCompanyIdentifier() {
         return UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0");
-    }
-
-    private RequestBuilder createPostRequest(OrderRequestDTO orderRequestDTO) throws JsonProcessingException {
-        return MockMvcRequestBuilders
-                .post(ORDER_API_URL)
-                .content(this.mapper.writeValueAsString(orderRequestDTO))
-                .contentType(MediaType.APPLICATION_JSON);
-    }
-
-    private RequestBuilder createPutRequest(UUID orderIdentifier, OrderRequestDTO orderRequestDTO) throws JsonProcessingException {
-        return MockMvcRequestBuilders
-                .put(ORDER_API_URL + "/{identifier}", orderIdentifier)
-                .content(this.mapper.writeValueAsString(orderRequestDTO))
-                .contentType(MediaType.APPLICATION_JSON);
-    }
-
-    private RequestBuilder createDeleteRequest(UUID orderIdentifier) {
-        return MockMvcRequestBuilders
-                .delete(ORDER_API_URL + "/{identifier}", orderIdentifier);
-    }
-
-    private RequestBuilder createGetRequest(UUID orderIdentifier) {
-        return MockMvcRequestBuilders
-                .get(ORDER_API_URL + "/{identifier}", orderIdentifier);
-    }
-
-    private RequestBuilder createPatchRequest(UUID orderIdentifier) {
-        return MockMvcRequestBuilders
-                .patch(ORDER_API_URL + "/{identifier}", orderIdentifier);
     }
 }

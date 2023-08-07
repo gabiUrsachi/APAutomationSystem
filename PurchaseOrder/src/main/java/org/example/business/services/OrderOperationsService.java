@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * This service is used for performing database CRUD operations
+ * This service is used for performing CRUD operations
  */
 @Service
 public class OrderOperationsService {
@@ -27,7 +27,7 @@ public class OrderOperationsService {
      * It creates a new purchase order with random identifier and CREATED status
      *
      * @param purchaseOrder order to be saved
-     * @return inserted order
+     * @return saved order
      */
     public PurchaseOrder createPurchaseOrder(PurchaseOrder purchaseOrder) {
         initOrderProperties(purchaseOrder);
@@ -36,7 +36,7 @@ public class OrderOperationsService {
     }
 
     /**
-     * It verifies if the received order is not already in SAVED state, and then it replaces its content
+     * It verifies if the received order is in CREATED state, and then it replaces its content
      *
      * @param identifier       order UUID
      * @param newPurchaseOrder updated order content
@@ -66,7 +66,7 @@ public class OrderOperationsService {
     }
 
     /**
-     * It queries database for an order with requested identifier
+     * It searches for an order with requested identifier
      *
      * @param identifier order UUID
      * @return searched order if exists, otherwise it throws OrderNotFoundException
@@ -79,23 +79,25 @@ public class OrderOperationsService {
     }
 
     /**
-     * It queries database for all existing purchase orders
+     * It searches all existing purchase orders
      *
-     * @return the list of orders
+     * @return the list of existing orders
      */
     public List<PurchaseOrder> getPurchaseOrders() {
         return purchaseOrderRepository.findAll();
     }
 
     /**
-     * It removes the order identified by the given UUID from database
+     * It removes the order identified by the given UUID from existing order list
      *
      * @param identifier order UUID
      */
     public void deletePurchaseOrder(UUID identifier) {
-        PurchaseOrder purchaseOrder = getPurchaseOrder(identifier);
+        int deletedRowsCount = this.purchaseOrderRepository.customDeleteById(identifier);
 
-        this.purchaseOrderRepository.delete(purchaseOrder);
+        if(deletedRowsCount == 0){
+            throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier);
+        }
     }
 
     private void validateOrderUpdate(PurchaseOrder purchaseOrder) {
