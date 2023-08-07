@@ -3,7 +3,7 @@ package org.example.presentation.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.example.business.services.OrderOperationsService;
+import org.example.business.services.PurchaseOrderService;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.presentation.utils.MapperService;
 import org.example.presentation.view.OrderRequestDTO;
@@ -18,11 +18,11 @@ import java.util.UUID;
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = "http://localhost:4200/")
 public class PurchaseOrderController {
-    private final OrderOperationsService orderOperationsService;
+    private final PurchaseOrderService purchaseOrderService;
     private final MapperService mapperService;
 
-    public PurchaseOrderController(OrderOperationsService orderOperationsService, MapperService mapperService) {
-        this.orderOperationsService = orderOperationsService;
+    public PurchaseOrderController(PurchaseOrderService purchaseOrderService, MapperService mapperService) {
+        this.purchaseOrderService = purchaseOrderService;
         this.mapperService = mapperService;
     }
 
@@ -34,7 +34,7 @@ public class PurchaseOrderController {
             })
     @GetMapping("/{identifier}")
     public OrderResponseDTO getPurchaseOrder(@PathVariable UUID identifier){
-        PurchaseOrder purchaseOrder = orderOperationsService.getPurchaseOrder(identifier);
+        PurchaseOrder purchaseOrder = purchaseOrderService.getPurchaseOrder(identifier);
 
         return mapperService.mapToDTO(purchaseOrder);
     }
@@ -46,7 +46,7 @@ public class PurchaseOrderController {
             })
     @GetMapping
     public List<OrderResponseDTO> getPurchaseOrders(){
-        List<PurchaseOrder> purchaseOrders = orderOperationsService.getPurchaseOrders();
+        List<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders();
 
         return mapperService.mapToDTO(purchaseOrders);
     }
@@ -60,7 +60,7 @@ public class PurchaseOrderController {
     public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO){
         PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
 
-        PurchaseOrder createdPurchaseOrder = orderOperationsService.createPurchaseOrder(purchaseOrderRequest);
+        PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
         return mapperService.mapToDTO(createdPurchaseOrder);
     }
@@ -76,7 +76,7 @@ public class PurchaseOrderController {
     public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO){
         PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
 
-        PurchaseOrder updatedPurchaseOrder = orderOperationsService.updatePurchaseOrder(identifier, purchaseOrderRequest);
+        PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(identifier, purchaseOrderRequest);
 
         return mapperService.mapToDTO(updatedPurchaseOrder);
     }
@@ -89,7 +89,7 @@ public class PurchaseOrderController {
             })
     @PatchMapping("/{identifier}")
     public OrderResponseDTO savePurchaseOrder(@PathVariable UUID identifier){
-        PurchaseOrder purchaseOrder = orderOperationsService.savePurchaseOrder(identifier);
+        PurchaseOrder purchaseOrder = purchaseOrderService.savePurchaseOrder(identifier);
 
         return mapperService.mapToDTO(purchaseOrder);
     }
@@ -102,7 +102,7 @@ public class PurchaseOrderController {
             })
     @DeleteMapping("/{identifier}")
     public void removePurchaseOrder(@PathVariable UUID identifier){
-        orderOperationsService.deletePurchaseOrder(identifier);
+        purchaseOrderService.deletePurchaseOrder(identifier);
 
     }
 }

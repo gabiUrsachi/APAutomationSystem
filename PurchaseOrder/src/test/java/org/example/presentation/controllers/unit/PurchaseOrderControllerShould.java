@@ -2,7 +2,7 @@ package org.example.presentation.controllers.unit;
 
 import org.example.business.errorhandling.customexceptions.InvalidUpdateException;
 import org.example.business.errorhandling.customexceptions.OrderNotFoundException;
-import org.example.business.services.OrderOperationsService;
+import org.example.business.services.PurchaseOrderService;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.OrderStatus;
 import org.example.presentation.controllers.PurchaseOrderController;
@@ -25,21 +25,21 @@ import static org.mockito.BDDMockito.given;
 public class PurchaseOrderControllerShould {
     PurchaseOrderController purchaseOrderController;
     @Mock
-    OrderOperationsService orderOperationsService;
+    PurchaseOrderService purchaseOrderService;
     @Mock
     MapperService mapperService;
 
 
     @Before
     public void setUp() {
-        purchaseOrderController = new PurchaseOrderController(orderOperationsService, mapperService);
+        purchaseOrderController = new PurchaseOrderController(purchaseOrderService, mapperService);
     }
 
     @Test
     public void returnNotFoundStatusWhenOrderDoesNotExist() {
         UUID searchedUUID = createUUID();
 
-        given(orderOperationsService.getPurchaseOrder(searchedUUID)).willThrow(OrderNotFoundException.class);
+        given(purchaseOrderService.getPurchaseOrder(searchedUUID)).willThrow(OrderNotFoundException.class);
 
         assertThrows(OrderNotFoundException.class, () -> purchaseOrderController.getPurchaseOrder(searchedUUID));
     }
@@ -51,7 +51,7 @@ public class PurchaseOrderControllerShould {
         PurchaseOrder purchaseOrder = createPurchaseOrderWithStatus(OrderStatus.SAVED);
 
         given(mapperService.mapToEntity(orderRequestDTO)).willReturn(purchaseOrder);
-        given(orderOperationsService.updatePurchaseOrder(searchedUUID, purchaseOrder)).willThrow(InvalidUpdateException.class);
+        given(purchaseOrderService.updatePurchaseOrder(searchedUUID, purchaseOrder)).willThrow(InvalidUpdateException.class);
 
         assertThrows(InvalidUpdateException.class, () -> purchaseOrderController.updatePurchaseOrder(searchedUUID, orderRequestDTO));
     }

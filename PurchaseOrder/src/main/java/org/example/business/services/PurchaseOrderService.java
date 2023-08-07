@@ -16,10 +16,10 @@ import java.util.UUID;
  * This service is used for performing CRUD operations
  */
 @Service
-public class OrderOperationsService {
+public class PurchaseOrderService {
     private final PurchaseOrderRepository purchaseOrderRepository;
 
-    public OrderOperationsService(PurchaseOrderRepository purchaseOrderRepository) {
+    public PurchaseOrderService(PurchaseOrderRepository purchaseOrderRepository) {
         this.purchaseOrderRepository = purchaseOrderRepository;
     }
 
