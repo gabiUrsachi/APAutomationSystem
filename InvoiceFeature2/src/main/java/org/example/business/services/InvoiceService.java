@@ -1,10 +1,6 @@
 package org.example.business.services;
 
 import org.example.business.exceptions.InvoiceNotFoundException;
-import org.example.business.models.InvoiceDDO;
-import org.example.business.models.InvoiceDPO;
-import org.example.business.models.OrderResponseDTO;
-import org.example.business.models.InvoiceDTO;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
