@@ -1,9 +1,8 @@
 package org.example.presentation.controllers;
 
-import lombok.AllArgsConstructor;
 import org.example.business.models.InvoiceDDO;
 import org.example.business.models.InvoiceDPO;
-import org.example.business.models.OrderResponseDTO;
+import org.example.presentation.view.OrderResponseDTO;
 import org.example.business.models.InvoiceDTO;
 import org.example.business.services.InvoiceMapperService;
 import org.example.business.services.InvoiceService;

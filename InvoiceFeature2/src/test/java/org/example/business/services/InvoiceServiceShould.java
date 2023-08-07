@@ -2,7 +2,7 @@ package org.example.business.services;
 
 import org.example.business.exceptions.InvoiceNotFoundException;
 import org.example.business.models.InvoiceDTO;
-import org.example.business.models.OrderResponseDTO;
+import org.example.presentation.view.OrderResponseDTO;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
 import org.junit.Before;
