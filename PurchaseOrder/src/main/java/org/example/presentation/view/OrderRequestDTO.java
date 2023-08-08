@@ -22,4 +22,7 @@ public class OrderRequestDTO {
 
     @NonNull
     private Set<Item> items;
+
+    @NonNull
+    private Integer version;
 }

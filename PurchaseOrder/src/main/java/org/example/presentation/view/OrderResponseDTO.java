@@ -25,4 +25,6 @@ public class OrderResponseDTO {
     private Set<Item> items;
 
     private OrderStatus orderStatus;
+
+    private Integer version;
 }

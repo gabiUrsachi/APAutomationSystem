@@ -6,9 +6,11 @@ import org.example.business.errorhandling.customexceptions.OrderNotFoundExceptio
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.OrderStatus;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,6 +47,7 @@ public class PurchaseOrderService {
     public PurchaseOrder updatePurchaseOrder(UUID identifier, PurchaseOrder newPurchaseOrder) {
         PurchaseOrder oldPurchaseOrder = getPurchaseOrder(identifier);
 
+        checkOrderVersion(oldPurchaseOrder, newPurchaseOrder);
         validateOrderUpdate(oldPurchaseOrder);
         copyOrderProperties(newPurchaseOrder, oldPurchaseOrder);
 
@@ -100,6 +103,12 @@ public class PurchaseOrderService {
         }
     }
 
+    private void checkOrderVersion(PurchaseOrder oldPurchaseOrder, PurchaseOrder newPurchaseOrder) {
+        if(!Objects.equals(oldPurchaseOrder.getVersion(), newPurchaseOrder.getVersion())){
+            throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
+        }
+    }
+
     private void validateOrderUpdate(PurchaseOrder purchaseOrder) {
         if (!purchaseOrder.getOrderStatus().equals(OrderStatus.CREATED)) {
             throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, purchaseOrder.getIdentifier());
@@ -116,5 +125,6 @@ public class PurchaseOrderService {
     private void copyOrderProperties(PurchaseOrder newPurchaseOrder, PurchaseOrder oldPurchaseOrder) {
         newPurchaseOrder.setIdentifier(oldPurchaseOrder.getIdentifier());
         newPurchaseOrder.setOrderStatus(oldPurchaseOrder.getOrderStatus());
+        //newPurchaseOrder.setVersion(oldPurchaseOrder.getVersion());
     }
 }

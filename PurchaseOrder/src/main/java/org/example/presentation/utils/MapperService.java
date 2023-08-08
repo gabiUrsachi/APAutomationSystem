@@ -33,6 +33,7 @@ public class MapperService {
                 .buyer(orderRequestDTO.getBuyer())
                 .seller(orderRequestDTO.getSeller())
                 .items(orderRequestDTO.getItems())
+                .version(orderRequestDTO.getVersion())
                 .build();
     }
 
@@ -49,6 +50,7 @@ public class MapperService {
                 .seller(companyMapperService.mapToDTO(companyOpsService.getCompanyById(purchaseOrder.getSeller())))
                 .items(purchaseOrder.getItems())
                 .orderStatus(purchaseOrder.getOrderStatus())
+                .version(purchaseOrder.getVersion())
                 .build();
     }
 
