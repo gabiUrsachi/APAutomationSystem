@@ -37,21 +37,41 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.save(purchaseOrder);
     }
 
+//    /**
+//     * It verifies if the received order is in CREATED state, and then it replaces its content
+//     *
+//     * @param identifier       order UUID
+//     * @param newPurchaseOrder updated order content
+//     * @return updated order
+//     */
+//    public PurchaseOrder updatePurchaseOrder(UUID identifier, PurchaseOrder newPurchaseOrder) {
+//        PurchaseOrder oldPurchaseOrder = getPurchaseOrder(identifier);
+//
+//        checkOrderVersion(oldPurchaseOrder, newPurchaseOrder);
+//        validateOrderUpdate(oldPurchaseOrder);
+//        copyOrderProperties(newPurchaseOrder, oldPurchaseOrder);
+//
+//        return purchaseOrderRepository.save(newPurchaseOrder);
+//    }
+
     /**
-     * It verifies if the received order is in CREATED state, and then it replaces its content
+     * It replaces the content of an existing order if it has CREATED status and its version is updated
      *
      * @param identifier       order UUID
      * @param newPurchaseOrder updated order content
      * @return updated order
      */
     public PurchaseOrder updatePurchaseOrder(UUID identifier, PurchaseOrder newPurchaseOrder) {
-        PurchaseOrder oldPurchaseOrder = getPurchaseOrder(identifier);
+        setOrderProperties(identifier, newPurchaseOrder);
 
-        checkOrderVersion(oldPurchaseOrder, newPurchaseOrder);
-        validateOrderUpdate(oldPurchaseOrder);
-        copyOrderProperties(newPurchaseOrder, oldPurchaseOrder);
+        int oldVersion = updateOrderVersion(newPurchaseOrder);
+        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersionAndOrderStatus(identifier, oldVersion, OrderStatus.CREATED, newPurchaseOrder);
 
-        return purchaseOrderRepository.save(newPurchaseOrder);
+        if(updateCount == 0){
+            throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
+        }
+
+        return newPurchaseOrder;
     }
 
     /**
@@ -103,28 +123,43 @@ public class PurchaseOrderService {
         }
     }
 
-    private void checkOrderVersion(PurchaseOrder oldPurchaseOrder, PurchaseOrder newPurchaseOrder) {
-        if(!Objects.equals(oldPurchaseOrder.getVersion(), newPurchaseOrder.getVersion())){
-            throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
-        }
-    }
-
-    private void validateOrderUpdate(PurchaseOrder purchaseOrder) {
-        if (!purchaseOrder.getOrderStatus().equals(OrderStatus.CREATED)) {
-            throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, purchaseOrder.getIdentifier());
-        }
-    }
+//    private void checkOrderVersion(PurchaseOrder oldPurchaseOrder, PurchaseOrder newPurchaseOrder) {
+//        if(!Objects.equals(oldPurchaseOrder.getVersion(), newPurchaseOrder.getVersion())){
+//            throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
+//        }
+//    }
+//
+//    private void validateOrderUpdate(PurchaseOrder purchaseOrder) {
+//        if (!purchaseOrder.getOrderStatus().equals(OrderStatus.CREATED)) {
+//            throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, purchaseOrder.getIdentifier());
+//        }
+//    }
 
     private void initOrderProperties(PurchaseOrder purchaseOrder) {
         UUID purchaseOrderIdentifier = UUID.randomUUID();
 
         purchaseOrder.setIdentifier(purchaseOrderIdentifier);
         purchaseOrder.setOrderStatus(OrderStatus.CREATED);
+        purchaseOrder.setVersion(0);
     }
 
-    private void copyOrderProperties(PurchaseOrder newPurchaseOrder, PurchaseOrder oldPurchaseOrder) {
-        newPurchaseOrder.setIdentifier(oldPurchaseOrder.getIdentifier());
-        newPurchaseOrder.setOrderStatus(oldPurchaseOrder.getOrderStatus());
-        //newPurchaseOrder.setVersion(oldPurchaseOrder.getVersion());
+//    private void copyOrderProperties(PurchaseOrder newPurchaseOrder, PurchaseOrder oldPurchaseOrder) {
+//        newPurchaseOrder.setIdentifier(oldPurchaseOrder.getIdentifier());
+//        newPurchaseOrder.setOrderStatus(oldPurchaseOrder.getOrderStatus());
+//        newPurchaseOrder.setVersion(oldPurchaseOrder.getVersion() + 1);
+//    }
+
+    private void setOrderProperties(UUID identifier, PurchaseOrder purchaseOrder){
+        purchaseOrder.setIdentifier(identifier);
+        purchaseOrder.setOrderStatus(OrderStatus.CREATED);
+    }
+
+    private int updateOrderVersion(PurchaseOrder purchaseOrder){
+        int oldVersion = purchaseOrder.getVersion();
+        int newVersion = oldVersion + 1;
+
+        purchaseOrder.setVersion(newVersion);
+
+        return oldVersion;
     }
 }

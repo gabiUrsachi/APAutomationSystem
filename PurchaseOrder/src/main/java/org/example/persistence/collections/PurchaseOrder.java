@@ -2,10 +2,7 @@ package org.example.persistence.collections;
 
 
 import com.mongodb.lang.NonNull;
-import lombok.Builder;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.example.persistence.utils.OrderStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -37,6 +34,6 @@ public class PurchaseOrder {
 
     private OrderStatus orderStatus;
 
-    @Version
+    //@Version
     private Integer version;
 }
