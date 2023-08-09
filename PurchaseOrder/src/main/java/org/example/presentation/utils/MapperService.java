@@ -30,9 +30,11 @@ public class MapperService {
      */
     public PurchaseOrder mapToEntity(OrderRequestDTO orderRequestDTO) {
         return PurchaseOrder.builder()
+                .identifier(orderRequestDTO.getIdentifier())
                 .buyer(orderRequestDTO.getBuyer())
                 .seller(orderRequestDTO.getSeller())
                 .items(orderRequestDTO.getItems())
+                .orderStatus(orderRequestDTO.getOrderStatus())
                 .version(orderRequestDTO.getVersion())
                 .build();
     }

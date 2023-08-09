@@ -26,6 +26,20 @@ public class PurchaseOrderController {
         this.mapperService = mapperService;
     }
 
+    @Operation(summary = "creates new purchase order")
+    @ApiResponses(value =
+            {
+                    @ApiResponse(responseCode = "200", description = "Successfully added  new order resource")
+            })
+    @PostMapping
+    public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO){
+        PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
+
+        PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
+
+        return mapperService.mapToDTO(createdPurchaseOrder);
+    }
+
     @Operation(summary = "get purchase order by identifier")
     @ApiResponses(value =
             {
@@ -51,20 +65,6 @@ public class PurchaseOrderController {
         return mapperService.mapToDTO(purchaseOrders);
     }
 
-    @Operation(summary = "creates new purchase order")
-    @ApiResponses(value =
-            {
-                    @ApiResponse(responseCode = "200", description = "Successfully added  new order resource")
-            })
-    @PostMapping
-    public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO){
-        PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
-
-        PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
-
-        return mapperService.mapToDTO(createdPurchaseOrder);
-    }
-
     @Operation(summary = "updates an existing purchase order")
     @ApiResponses(value =
             {
@@ -79,19 +79,6 @@ public class PurchaseOrderController {
         PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(identifier, purchaseOrderRequest);
 
         return mapperService.mapToDTO(updatedPurchaseOrder);
-    }
-
-    @Operation(summary = "changes state of an existing purchase order")
-    @ApiResponses(value =
-            {
-                    @ApiResponse(responseCode = "200", description = "Successfully updated order state"),
-                    @ApiResponse(responseCode = "404", description = "Order not found")
-            })
-    @PatchMapping("/{identifier}")
-    public OrderResponseDTO savePurchaseOrder(@PathVariable UUID identifier){
-        PurchaseOrder purchaseOrder = purchaseOrderService.savePurchaseOrder(identifier);
-
-        return mapperService.mapToDTO(purchaseOrder);
     }
 
     @Operation(summary = "remove purchase order by id")
