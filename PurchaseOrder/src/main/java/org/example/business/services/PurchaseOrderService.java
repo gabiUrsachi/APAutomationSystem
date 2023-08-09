@@ -10,7 +10,6 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,23 +36,6 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.save(purchaseOrder);
     }
 
-//    /**
-//     * It verifies if the received order is in CREATED state, and then it replaces its content
-//     *
-//     * @param identifier       order UUID
-//     * @param newPurchaseOrder updated order content
-//     * @return updated order
-//     */
-//    public PurchaseOrder updatePurchaseOrder(UUID identifier, PurchaseOrder newPurchaseOrder) {
-//        PurchaseOrder oldPurchaseOrder = getPurchaseOrder(identifier);
-//
-//        checkOrderVersion(oldPurchaseOrder, newPurchaseOrder);
-//        validateOrderUpdate(oldPurchaseOrder);
-//        copyOrderProperties(newPurchaseOrder, oldPurchaseOrder);
-//
-//        return purchaseOrderRepository.save(newPurchaseOrder);
-//    }
-
     /**
      * It replaces the content of an existing order if it has CREATED status and its version is updated
      *
@@ -68,7 +50,7 @@ public class PurchaseOrderService {
         int updateCount = purchaseOrderRepository.updateByIdentifierAndVersionAndOrderStatus(identifier, oldVersion, OrderStatus.CREATED, newPurchaseOrder);
 
         if(updateCount == 0){
-            throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
+            verifyInvalidUpdateReasons(identifier);
         }
 
         return newPurchaseOrder;
@@ -84,6 +66,7 @@ public class PurchaseOrderService {
         PurchaseOrder purchaseOrder = getPurchaseOrder(identifier);
 
         purchaseOrder.setOrderStatus(OrderStatus.SAVED);
+        updateOrderVersion(purchaseOrder);
 
         return purchaseOrderRepository.save(purchaseOrder);
     }
@@ -123,17 +106,15 @@ public class PurchaseOrderService {
         }
     }
 
-//    private void checkOrderVersion(PurchaseOrder oldPurchaseOrder, PurchaseOrder newPurchaseOrder) {
-//        if(!Objects.equals(oldPurchaseOrder.getVersion(), newPurchaseOrder.getVersion())){
-//            throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
-//        }
-//    }
-//
-//    private void validateOrderUpdate(PurchaseOrder purchaseOrder) {
-//        if (!purchaseOrder.getOrderStatus().equals(OrderStatus.CREATED)) {
-//            throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, purchaseOrder.getIdentifier());
-//        }
-//    }
+    private void verifyInvalidUpdateReasons(UUID identifier) {
+        PurchaseOrder purchaseOrder = getPurchaseOrder(identifier);
+
+        if (!purchaseOrder.getOrderStatus().equals(OrderStatus.CREATED)) {
+            throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, purchaseOrder.getIdentifier());
+        }
+
+        throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
+    }
 
     private void initOrderProperties(PurchaseOrder purchaseOrder) {
         UUID purchaseOrderIdentifier = UUID.randomUUID();
@@ -142,12 +123,6 @@ public class PurchaseOrderService {
         purchaseOrder.setOrderStatus(OrderStatus.CREATED);
         purchaseOrder.setVersion(0);
     }
-
-//    private void copyOrderProperties(PurchaseOrder newPurchaseOrder, PurchaseOrder oldPurchaseOrder) {
-//        newPurchaseOrder.setIdentifier(oldPurchaseOrder.getIdentifier());
-//        newPurchaseOrder.setOrderStatus(oldPurchaseOrder.getOrderStatus());
-//        newPurchaseOrder.setVersion(oldPurchaseOrder.getVersion() + 1);
-//    }
 
     private void setOrderProperties(UUID identifier, PurchaseOrder purchaseOrder){
         purchaseOrder.setIdentifier(identifier);
