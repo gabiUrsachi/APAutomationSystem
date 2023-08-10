@@ -32,16 +32,11 @@ public class PurchaseOrderService {
      * @return saved order
      */
     public PurchaseOrder createPurchaseOrder(PurchaseOrder purchaseOrder) {
-        PurchaseOrder newPurchaseOrder = PurchaseOrder.builder()
-                .identifier(UUID.randomUUID())
-                .buyer(purchaseOrder.getBuyer())
-                .seller(purchaseOrder.getSeller())
-                .items(purchaseOrder.getItems())
-                .orderStatus(OrderStatus.CREATED)
-                .version(0)
-                .build();
+        purchaseOrder.setIdentifier(UUID.randomUUID());
+        purchaseOrder.setVersion(0);
+        purchaseOrder.setOrderStatus(OrderStatus.CREATED);
 
-        return purchaseOrderRepository.save(newPurchaseOrder);
+        return purchaseOrderRepository.save(purchaseOrder);
     }
 
     /**

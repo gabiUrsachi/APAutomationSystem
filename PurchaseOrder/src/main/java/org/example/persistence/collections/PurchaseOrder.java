@@ -5,7 +5,6 @@ import com.mongodb.lang.NonNull;
 import lombok.*;
 import org.example.persistence.utils.OrderStatus;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Set;
@@ -18,10 +17,12 @@ import java.util.UUID;
 @Setter
 @Document
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PurchaseOrder {
 
     @Id
     @Generated
+    @EqualsAndHashCode.Include()
     private UUID identifier;
 
     @NonNull
@@ -34,6 +35,5 @@ public class PurchaseOrder {
 
     private OrderStatus orderStatus;
 
-    //@Version
     private Integer version;
 }

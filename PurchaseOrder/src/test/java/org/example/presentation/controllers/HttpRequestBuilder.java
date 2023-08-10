@@ -37,9 +37,4 @@ public class HttpRequestBuilder {
         return MockMvcRequestBuilders
                 .get(ORDER_API_URL + "/{identifier}", orderIdentifier);
     }
-
-    public static RequestBuilder createPatchRequest(UUID orderIdentifier) {
-        return MockMvcRequestBuilders
-                .patch(ORDER_API_URL + "/{identifier}", orderIdentifier);
-    }
 }
