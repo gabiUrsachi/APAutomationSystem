@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.persistence.collections.Item;
+import org.example.persistence.utils.InvoiceStatus;
+import org.example.persistence.utils.OrderStatus;
 
 import java.util.Set;
 import java.util.UUID;
@@ -24,4 +26,5 @@ public class InvoiceDTO {
 
     private Set<Item> items;
 
+    private InvoiceStatus invoiceStatus;
 }

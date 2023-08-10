@@ -1,12 +1,13 @@
 package org.example.business.services;
 
+import org.example.business.errorhandling.ErrorMessages;
+import org.example.business.errorhandling.customexceptions.OrderNotFoundException;
 import org.example.business.exceptions.InvoiceNotFoundException;
-import org.example.business.models.InvoiceDDO;
-import org.example.business.models.InvoiceDPO;
-import org.example.business.models.OrderResponseDTO;
-import org.example.business.models.InvoiceDTO;
+import org.example.business.models.*;
 import org.example.persistence.collections.Invoice;
+import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.InvoiceRepository;
+import org.example.persistence.utils.InvoiceStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +40,7 @@ public class InvoiceService {
         Optional<Invoice> invoice;
         invoice = invoiceRepository.findByIdentifier(identifier);
         if (invoice.isEmpty()) {
-            throw new InvoiceNotFoundException("Couldn't find invoice with identifier ");
+            throw new InvoiceNotFoundException("Couldn't find invoice with identifier " + identifier);
         }
         return invoice.get();
     }
@@ -52,8 +53,24 @@ public class InvoiceService {
 
         UUID identifier = UUID.randomUUID();
         invoice.setIdentifier(identifier);
+        invoice.setInvoiceStatus(InvoiceStatus.CREATED);
 
         return invoice;
+
+    }
+    public void updateInvoice(UUID identifier, Invoice invoice) {
+
+        invoice.setIdentifier(identifier);
+        invoiceRepository.save(invoice);
+
+    }
+
+    public Invoice changeStatusToSaved(UUID identifier) {
+
+        Invoice invoice = getInvoice(identifier);
+        invoice.setIdentifier(identifier);
+        return invoiceRepository.save(invoice);
+
 
     }
 }
