@@ -70,7 +70,8 @@ public class PurchaseOrderController {
             {
                     @ApiResponse(responseCode = "200", description = "Successfully updated order resource"),
                     @ApiResponse(responseCode = "404", description = "Order not found"),
-                    @ApiResponse(responseCode = "422", description = "Unsatisfied conditions for update"),
+                    @ApiResponse(responseCode = "412", description = "Invalid resource version for update"),
+                    @ApiResponse(responseCode = "422", description = "Invalid resource status for update"),
             })
     @PutMapping("/{identifier}")
     public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO) {
