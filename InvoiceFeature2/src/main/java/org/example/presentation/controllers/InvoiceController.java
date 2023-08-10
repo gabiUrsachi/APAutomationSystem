@@ -1,14 +1,16 @@
 package org.example.presentation.controllers;
 
-import org.example.business.models.InvoiceDDO;
-import org.example.business.models.InvoiceDPO;
-import org.example.presentation.view.OrderResponseDTO;
-import org.example.business.models.InvoiceDTO;
+import lombok.AllArgsConstructor;
+import org.example.business.models.*;
+
 import org.example.business.services.InvoiceMapperService;
 import org.example.business.services.InvoiceService;
 import org.example.persistence.collections.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.example.presentation.view.OrderResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -56,11 +58,25 @@ public class InvoiceController {
 
     }
 
+    @PutMapping("/{identifier}")
+    public void updateInvoice(@PathVariable UUID identifier, @RequestBody InvoiceDTO invoiceDTO) {
+        Invoice invoice = invoiceMapperService.mapToEntity(invoiceDTO);
+        invoiceService.updateInvoice(identifier,invoice);
+
+    }
     @DeleteMapping("/{identifier}")
     public void deleteById(@PathVariable UUID identifier) {
 
         invoiceService.deleteInvoice(identifier);
 
+    }
+
+    @PatchMapping("/{identifier}")
+    public InvoiceDTO changeStatusToSaved(@PathVariable UUID identifier){
+
+        Invoice invoice = invoiceService.changeStatusToSaved(identifier);
+
+        return invoiceMapperService.mapToDTO(invoice);
     }
 
 }

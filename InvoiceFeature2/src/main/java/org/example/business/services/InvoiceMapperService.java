@@ -36,6 +36,7 @@ public class InvoiceMapperService {
                 .buyerId(invoiceDTO.getBuyer().getCompanyIdentifier())
                 .sellerId(invoiceDTO.getSeller().getCompanyIdentifier())
                 .items(invoiceDTO.getItems())
+                .invoiceStatus(invoiceDTO.getInvoiceStatus())
                 .build();
 
     }
@@ -49,6 +50,7 @@ public class InvoiceMapperService {
                 .buyer(companyMapperService.mapToDTO(buyer))
                 .seller(companyMapperService.mapToDTO(seller))
                 .items(invoice.getItems())
+                .invoiceStatus(invoice.getInvoiceStatus())
                 .build();
     }
 
