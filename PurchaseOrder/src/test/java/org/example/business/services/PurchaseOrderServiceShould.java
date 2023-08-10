@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -27,6 +29,9 @@ public class PurchaseOrderServiceShould {
     PurchaseOrder purchaseOrder;
 
     PurchaseOrderService purchaseOrderService;
+
+    @Captor
+    ArgumentCaptor<PurchaseOrder> purchaseOrderCaptor;
 
     @Before
     public void initialize() {
@@ -70,14 +75,20 @@ public class PurchaseOrderServiceShould {
 
     @Test
     public void successfullyCreateNewPurchaseOrder() {
-        purchaseOrder = createRandomPurchaseOrder();
-        given(purchaseOrderRepository.save(purchaseOrder)).willReturn(purchaseOrder);
+        PurchaseOrder newPurchaseOrder = createRandomPurchaseOrder();
+        newPurchaseOrder.setIdentifier(null);
 
-        PurchaseOrder savedPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrder);
+        PurchaseOrder savedPurchaseOrder = purchaseOrderService.createPurchaseOrder(newPurchaseOrder);
 
-        verify(purchaseOrderRepository).save(purchaseOrder);
-        Assertions.assertEquals(OrderStatus.CREATED, savedPurchaseOrder.getOrderStatus());
+        verify(purchaseOrderRepository).save(purchaseOrderCaptor.capture());
+
+        PurchaseOrder capturedPurchaseOrder = purchaseOrderCaptor.getValue();
+
+        Assertions.assertEquals(OrderStatus.CREATED, capturedPurchaseOrder.getOrderStatus());
+        Assertions.assertNotNull(capturedPurchaseOrder.getIdentifier());
+        //Assertions.assertEquals(OrderStatus.CREATED, savedPurchaseOrder.getOrderStatus());
     }
+
 
     @Test
     public void returnExistentOrderById() {
