@@ -49,9 +49,10 @@ public class PurchaseOrderControllerShould {
         UUID searchedUUID = createUUID();
         OrderRequestDTO orderRequestDTO = Mockito.mock(OrderRequestDTO.class);
         PurchaseOrder purchaseOrder = createPurchaseOrderWithStatus(OrderStatus.SAVED);
+        purchaseOrder.setIdentifier(searchedUUID);
 
         given(mapperService.mapToEntity(orderRequestDTO)).willReturn(purchaseOrder);
-        given(purchaseOrderService.updatePurchaseOrder(searchedUUID, purchaseOrder)).willThrow(InvalidUpdateException.class);
+        given(purchaseOrderService.updatePurchaseOrder(purchaseOrder)).willThrow(InvalidUpdateException.class);
 
         assertThrows(InvalidUpdateException.class, () -> purchaseOrderController.updatePurchaseOrder(searchedUUID, orderRequestDTO));
     }

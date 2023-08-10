@@ -6,9 +6,11 @@ import org.example.business.errorhandling.customexceptions.OrderNotFoundExceptio
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.OrderStatus;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,37 +32,9 @@ public class PurchaseOrderService {
      * @return saved order
      */
     public PurchaseOrder createPurchaseOrder(PurchaseOrder purchaseOrder) {
-        initOrderProperties(purchaseOrder);
-
-        return purchaseOrderRepository.save(purchaseOrder);
-    }
-
-    /**
-     * It verifies if the received order is in CREATED state, and then it replaces its content
-     *
-     * @param identifier       order UUID
-     * @param newPurchaseOrder updated order content
-     * @return updated order
-     */
-    public PurchaseOrder updatePurchaseOrder(UUID identifier, PurchaseOrder newPurchaseOrder) {
-        PurchaseOrder oldPurchaseOrder = getPurchaseOrder(identifier);
-
-        validateOrderUpdate(oldPurchaseOrder);
-        copyOrderProperties(newPurchaseOrder, oldPurchaseOrder);
-
-        return purchaseOrderRepository.save(newPurchaseOrder);
-    }
-
-    /**
-     * It changes state of an existing order
-     *
-     * @param identifier order UUID
-     * @return updated order
-     */
-    public PurchaseOrder savePurchaseOrder(UUID identifier) {
-        PurchaseOrder purchaseOrder = getPurchaseOrder(identifier);
-
-        purchaseOrder.setOrderStatus(OrderStatus.SAVED);
+        purchaseOrder.setIdentifier(UUID.randomUUID());
+        purchaseOrder.setVersion(0);
+        purchaseOrder.setOrderStatus(OrderStatus.CREATED);
 
         return purchaseOrderRepository.save(purchaseOrder);
     }
@@ -88,6 +62,45 @@ public class PurchaseOrderService {
     }
 
     /**
+     * It replaces the content of an existing order only if the received version corresponds to the stored one
+     *
+     * @param purchaseOrder updated order content
+     * @return updated order
+     */
+    public PurchaseOrder updatePurchaseOrder(PurchaseOrder purchaseOrder) {
+        int oldVersion = purchaseOrder.getVersion();
+
+        PurchaseOrder updatedPurchaseOrder = PurchaseOrder.builder()
+                .identifier(purchaseOrder.getIdentifier())
+                .buyer(purchaseOrder.getBuyer())
+                .seller(purchaseOrder.getSeller())
+                .items(purchaseOrder.getItems())
+                .orderStatus(purchaseOrder.getOrderStatus())
+                .version(oldVersion + 1)
+                .build();
+
+        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersion(purchaseOrder.getIdentifier(), oldVersion, updatedPurchaseOrder);
+
+        if (updateCount == 0) {
+            Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
+
+            if(existingPurchaseOrder.isEmpty()){
+                throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, purchaseOrder.getIdentifier());
+            }
+
+            if(!Objects.equals(existingPurchaseOrder.get().getVersion(), purchaseOrder.getVersion())){
+                throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
+            }
+
+            if (!existingPurchaseOrder.get().getOrderStatus().equals(OrderStatus.CREATED)) {
+                throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
+            }
+        }
+
+        return updatedPurchaseOrder;
+    }
+
+    /**
      * It removes the order identified by the given UUID from existing order list
      *
      * @param identifier order UUID
@@ -95,26 +108,9 @@ public class PurchaseOrderService {
     public void deletePurchaseOrder(UUID identifier) {
         int deletedRowsCount = this.purchaseOrderRepository.customDeleteById(identifier);
 
-        if(deletedRowsCount == 0){
+        if (deletedRowsCount == 0) {
             throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier);
         }
     }
 
-    private void validateOrderUpdate(PurchaseOrder purchaseOrder) {
-        if (!purchaseOrder.getOrderStatus().equals(OrderStatus.CREATED)) {
-            throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, purchaseOrder.getIdentifier());
-        }
-    }
-
-    private void initOrderProperties(PurchaseOrder purchaseOrder) {
-        UUID purchaseOrderIdentifier = UUID.randomUUID();
-
-        purchaseOrder.setIdentifier(purchaseOrderIdentifier);
-        purchaseOrder.setOrderStatus(OrderStatus.CREATED);
-    }
-
-    private void copyOrderProperties(PurchaseOrder newPurchaseOrder, PurchaseOrder oldPurchaseOrder) {
-        newPurchaseOrder.setIdentifier(oldPurchaseOrder.getIdentifier());
-        newPurchaseOrder.setOrderStatus(oldPurchaseOrder.getOrderStatus());
-    }
 }

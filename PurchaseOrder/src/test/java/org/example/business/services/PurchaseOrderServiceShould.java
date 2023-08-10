@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -17,6 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -28,6 +31,9 @@ public class PurchaseOrderServiceShould {
 
     PurchaseOrderService purchaseOrderService;
 
+    @Captor
+    ArgumentCaptor<PurchaseOrder> purchaseOrderCaptor;
+
     @Before
     public void initialize() {
         purchaseOrderService = new PurchaseOrderService(purchaseOrderRepository);
@@ -36,19 +42,24 @@ public class PurchaseOrderServiceShould {
     @Test
     public void throwExceptionWhenTryingToUpdateNonexistentOrder() {
         UUID uuid = UUID.randomUUID();
-        given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.empty());
+        purchaseOrder = createRandomPurchaseOrder();
+        purchaseOrder.setIdentifier(uuid);
 
-        assertThrows(OrderNotFoundException.class, () -> purchaseOrderService.updatePurchaseOrder(uuid, purchaseOrder));
-        verify(purchaseOrderRepository).findById(uuid);
+        given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, purchaseOrder.getVersion(), purchaseOrder)).willReturn(0);
+
+        assertThrows(OrderNotFoundException.class, () -> purchaseOrderService.updatePurchaseOrder(purchaseOrder));
+        verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, purchaseOrder.getVersion(), purchaseOrder);
     }
 
     @Test
     public void throwExceptionWhenTryingToUpdateASavedOrder() {
         UUID uuid = UUID.randomUUID();
         purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.SAVED, uuid);
+        given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, purchaseOrder.getVersion(), purchaseOrder)).willReturn(0);
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.of(purchaseOrder));
 
-        assertThrows(InvalidUpdateException.class, () -> purchaseOrderService.updatePurchaseOrder(uuid, purchaseOrder));
+        assertThrows(InvalidUpdateException.class, () -> purchaseOrderService.updatePurchaseOrder(purchaseOrder));
+        verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, purchaseOrder.getVersion(), purchaseOrder);
         verify(purchaseOrderRepository).findById(uuid);
     }
 
@@ -56,25 +67,30 @@ public class PurchaseOrderServiceShould {
     public void successfullyUpdateAValidPurchaseOrder() {
         UUID uuid = UUID.randomUUID();
         purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.CREATED, uuid);
-        given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.of(purchaseOrder));
-        given(purchaseOrderRepository.save(purchaseOrder)).willReturn(purchaseOrder);
+        given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, 0, purchaseOrder)).willReturn(1);
 
-        PurchaseOrder savedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(uuid, purchaseOrder);
+        PurchaseOrder savedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrder);
 
-        verify(purchaseOrderRepository).findById(uuid);
-        verify(purchaseOrderRepository).save(purchaseOrder);
+        verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, 0, purchaseOrder);
         Assertions.assertEquals(uuid, savedPurchaseOrder.getIdentifier());
         Assertions.assertEquals(purchaseOrder.getOrderStatus(), savedPurchaseOrder.getOrderStatus());
     }
 
     @Test
     public void successfullyCreateNewPurchaseOrder() {
-        purchaseOrder = createRandomPurchaseOrder();
-        given(purchaseOrderRepository.save(purchaseOrder)).willReturn(purchaseOrder);
+        PurchaseOrder newPurchaseOrder = createRandomPurchaseOrder();
+        newPurchaseOrder.setIdentifier(null);
 
-        PurchaseOrder savedPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrder);
+        given(purchaseOrderRepository.save(any())).willAnswer((answer) -> answer.getArgument(0));
 
-        verify(purchaseOrderRepository).save(purchaseOrder);
+        PurchaseOrder savedPurchaseOrder = purchaseOrderService.createPurchaseOrder(newPurchaseOrder);
+
+        verify(purchaseOrderRepository).save(purchaseOrderCaptor.capture());
+
+        PurchaseOrder capturedPurchaseOrder = purchaseOrderCaptor.getValue();
+
+        Assertions.assertEquals(OrderStatus.CREATED, capturedPurchaseOrder.getOrderStatus());
+        Assertions.assertNotNull(capturedPurchaseOrder.getIdentifier());
         Assertions.assertEquals(OrderStatus.CREATED, savedPurchaseOrder.getOrderStatus());
     }
 
@@ -101,12 +117,11 @@ public class PurchaseOrderServiceShould {
     @Test
     public void throwExceptionWhenTryingToDeleteNonexistentOrder() {
         UUID uuid = UUID.randomUUID();
-        given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.empty());
+        given(purchaseOrderRepository.customDeleteById(uuid)).willReturn(0);
 
         assertThrows(OrderNotFoundException.class, () -> purchaseOrderService.deletePurchaseOrder(uuid));
-        verify(purchaseOrderRepository).findById(uuid);
+        verify(purchaseOrderRepository).customDeleteById(uuid);
     }
-
 
     private PurchaseOrder createPurchaseOrderWithStatusAndUUID(OrderStatus orderStatus, UUID uuid) {
         return PurchaseOrder.builder()
@@ -115,6 +130,7 @@ public class PurchaseOrderServiceShould {
                 .seller(UUID.randomUUID())
                 .orderStatus(orderStatus)
                 .items(Set.of())
+                .version(0)
                 .build();
     }
 
@@ -125,6 +141,7 @@ public class PurchaseOrderServiceShould {
                 .seller(UUID.randomUUID())
                 .orderStatus(OrderStatus.APPROVED)
                 .items(Set.of())
+                .version(0)
                 .build();
     }
 }

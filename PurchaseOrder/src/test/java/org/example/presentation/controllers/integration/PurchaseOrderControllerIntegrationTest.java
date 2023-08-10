@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PurchaseOrderControllerIntegrationTest {
-    private final String ORDER_API_URL = "/api/orders";
 
     @Autowired
     private MockMvc mockMvc;
@@ -73,7 +72,7 @@ public class PurchaseOrderControllerIntegrationTest {
 
     @Test
     public void createPurchaseOrder() throws Exception {
-        OrderRequestDTO orderDTO = createOrderDTO();
+        OrderRequestDTO orderDTO = createOrderDTO(UUID.randomUUID(), 0);
         RequestBuilder addOrderRequest = HttpRequestBuilder.createPostRequest(orderDTO);
 
         MvcResult mvcResult = this.mockMvc.perform(addOrderRequest)
@@ -93,7 +92,7 @@ public class PurchaseOrderControllerIntegrationTest {
         purchaseOrderRepository.save(purchaseOrder);
 
         // first update
-        OrderRequestDTO orderDTO = createOrderDTO();
+        OrderRequestDTO orderDTO = createOrderDTO(purchaseOrder.getIdentifier(), purchaseOrder.getVersion());
         RequestBuilder updateOrderRequest = HttpRequestBuilder.createPutRequest(uuid, orderDTO);
         JSONArray initialUpdatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
 
@@ -104,6 +103,7 @@ public class PurchaseOrderControllerIntegrationTest {
 
         // second update
         updateOrderItems(orderDTO);
+        orderDTO.setVersion(orderDTO.getVersion() + 1);
         updateOrderRequest = HttpRequestBuilder.createPutRequest(uuid, orderDTO);
         JSONArray finalUpdatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
 
@@ -115,22 +115,6 @@ public class PurchaseOrderControllerIntegrationTest {
         purchaseOrderRepository.deleteById(uuid);
     }
 
-    @Test
-    public void savePurchaseOrder() throws Exception {
-        UUID uuid = UUID.randomUUID();
-        PurchaseOrder purchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.CREATED, uuid);
-
-        purchaseOrderRepository.save(purchaseOrder);
-
-        RequestBuilder saveOrderRequest = HttpRequestBuilder.createPatchRequest(uuid);
-
-        this.mockMvc.perform(saveOrderRequest)
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.identifier").value(uuid.toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.orderStatus").value(OrderStatus.SAVED.toString()));
-
-        purchaseOrderRepository.deleteById(uuid);
-    }
 
     @Test
     public void deletePurchaseOrder() throws Exception {
@@ -157,6 +141,7 @@ public class PurchaseOrderControllerIntegrationTest {
                 .seller(generateCompanyIdentifier())
                 .orderStatus(orderStatus)
                 .items(Set.of())
+                .version(0)
                 .build();
     }
 
@@ -177,11 +162,14 @@ public class PurchaseOrderControllerIntegrationTest {
         return UUID.fromString(JsonPath.parse(response).read("$.identifier"));
     }
 
-    private OrderRequestDTO createOrderDTO() {
+    private OrderRequestDTO createOrderDTO(UUID identifier, Integer version) {
         return OrderRequestDTO.builder()
+                .identifier(identifier)
                 .buyer(generateCompanyIdentifier())
                 .seller(generateCompanyIdentifier())
                 .items(createItems())
+                .orderStatus(OrderStatus.CREATED)
+                .version(version)
                 .build();
     }
 
