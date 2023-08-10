@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PurchaseOrderControllerIntegrationTest {
-    private final String ORDER_API_URL = "/api/orders";
 
     @Autowired
     private MockMvc mockMvc;

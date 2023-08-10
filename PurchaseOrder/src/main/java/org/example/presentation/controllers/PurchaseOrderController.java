@@ -32,7 +32,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "200", description = "Successfully added  new order resource")
             })
     @PostMapping
-    public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO){
+    public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
         PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
 
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
@@ -47,7 +47,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "404", description = "Order not found")
             })
     @GetMapping("/{identifier}")
-    public OrderResponseDTO getPurchaseOrder(@PathVariable UUID identifier){
+    public OrderResponseDTO getPurchaseOrder(@PathVariable UUID identifier) {
         PurchaseOrder purchaseOrder = purchaseOrderService.getPurchaseOrder(identifier);
 
         return mapperService.mapToDTO(purchaseOrder);
@@ -59,7 +59,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "200", description = "Found purchase orders")
             })
     @GetMapping
-    public List<OrderResponseDTO> getPurchaseOrders(){
+    public List<OrderResponseDTO> getPurchaseOrders() {
         List<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders();
 
         return mapperService.mapToDTO(purchaseOrders);
@@ -73,10 +73,10 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "422", description = "Unsatisfied conditions for update"),
             })
     @PutMapping("/{identifier}")
-    public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO){
+    public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO) {
         PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
 
-        PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(identifier, purchaseOrderRequest);
+        PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrderRequest);
 
         return mapperService.mapToDTO(updatedPurchaseOrder);
     }
@@ -88,7 +88,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "404", description = "Order not found")
             })
     @DeleteMapping("/{identifier}")
-    public void removePurchaseOrder(@PathVariable UUID identifier){
+    public void removePurchaseOrder(@PathVariable UUID identifier) {
         purchaseOrderService.deletePurchaseOrder(identifier);
 
     }

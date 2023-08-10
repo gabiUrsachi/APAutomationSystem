@@ -62,13 +62,12 @@ public class PurchaseOrderService {
     }
 
     /**
-     * It replaces the content of an existing order if its version is updated
+     * It replaces the content of an existing order only if the received version corresponds to the stored one
      *
-     * @param identifier    order UUID
      * @param purchaseOrder updated order content
      * @return updated order
      */
-    public PurchaseOrder updatePurchaseOrder(UUID identifier, PurchaseOrder purchaseOrder) {
+    public PurchaseOrder updatePurchaseOrder(PurchaseOrder purchaseOrder) {
         int oldVersion = purchaseOrder.getVersion();
 
         PurchaseOrder updatedPurchaseOrder = PurchaseOrder.builder()
@@ -80,17 +79,21 @@ public class PurchaseOrderService {
                 .version(oldVersion + 1)
                 .build();
 
-        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersion(identifier, oldVersion, updatedPurchaseOrder);
+        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersion(purchaseOrder.getIdentifier(), oldVersion, updatedPurchaseOrder);
 
         if (updateCount == 0) {
-            PurchaseOrder existingPurchaseOrder = getPurchaseOrder(identifier);
+            Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
 
-            if(!Objects.equals(existingPurchaseOrder.getVersion(), purchaseOrder.getVersion())){
+            if(existingPurchaseOrder.isEmpty()){
+                throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, purchaseOrder.getIdentifier());
+            }
+
+            if(!Objects.equals(existingPurchaseOrder.get().getVersion(), purchaseOrder.getVersion())){
                 throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
             }
 
-            if (!existingPurchaseOrder.getOrderStatus().equals(OrderStatus.CREATED)) {
-                throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.getIdentifier());
+            if (!existingPurchaseOrder.get().getOrderStatus().equals(OrderStatus.CREATED)) {
+                throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
             }
         }
 
