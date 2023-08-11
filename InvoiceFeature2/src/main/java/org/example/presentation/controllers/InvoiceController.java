@@ -31,12 +31,12 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public InvoiceDPO createInvoice(@RequestBody InvoiceDPO invoiceDPO) {
+    public InvoiceDTO createInvoice(@RequestBody InvoiceDPO invoiceDPO) {
 
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
 
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
-        return invoiceMapperService.mapToDPO(responseInvoice);
+        return invoiceMapperService.mapToDTO(responseInvoice);
 
     }
 
@@ -59,9 +59,11 @@ public class InvoiceController {
     }
 
     @PutMapping("/{identifier}")
-    public void updateInvoice(@PathVariable UUID identifier, @RequestBody InvoiceDTO invoiceDTO) {
+    public  InvoiceDTO updateInvoice(@PathVariable UUID identifier, @RequestBody InvoiceDTO invoiceDTO) {
         Invoice invoice = invoiceMapperService.mapToEntity(invoiceDTO);
+        invoice = invoiceService.changeStatusToSaved(invoice);
         invoiceService.updateInvoice(identifier,invoice);
+        return invoiceMapperService.mapToDTO(invoice);
 
     }
     @DeleteMapping("/{identifier}")
@@ -71,12 +73,5 @@ public class InvoiceController {
 
     }
 
-    @PatchMapping("/{identifier}")
-    public InvoiceDTO changeStatusToSaved(@PathVariable UUID identifier){
-
-        Invoice invoice = invoiceService.changeStatusToSaved(identifier);
-
-        return invoiceMapperService.mapToDTO(invoice);
-    }
 
 }

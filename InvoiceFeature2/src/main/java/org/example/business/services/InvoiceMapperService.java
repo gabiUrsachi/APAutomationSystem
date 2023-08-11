@@ -3,6 +3,8 @@ package org.example.business.services;
 import org.example.business.models.*;
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
+import org.example.persistence.utils.InvoiceStatus;
+import org.example.persistence.utils.OrderStatus;
 import org.example.presentation.view.OrderResponseDTO;
 import org.springframework.stereotype.Service;
 
@@ -82,11 +84,13 @@ public class InvoiceMapperService {
 
     public InvoiceDTO mapToDTO(OrderResponseDTO orderResponseDTO) {
 
+        int orderStatusValue = orderResponseDTO.getOrderStatus().ordinal();
         return InvoiceDTO.builder()
                 .identifier(orderResponseDTO.getIdentifier())
                 .buyer(orderResponseDTO.getBuyer())
                 .seller(orderResponseDTO.getSeller())
                 .items(orderResponseDTO.getItems())
+                .invoiceStatus(InvoiceStatus.values()[orderStatusValue])
                 .build();
     }
 }
