@@ -3,6 +3,7 @@ package org.example.business.models;
 
 import lombok.*;
 import org.example.persistence.collections.Item;
+import org.example.persistence.utils.InvoiceStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +15,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Builder
 public class InvoiceDPO {
     private UUID identifier;

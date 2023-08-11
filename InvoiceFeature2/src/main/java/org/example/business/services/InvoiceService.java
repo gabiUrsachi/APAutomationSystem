@@ -65,10 +65,9 @@ public class InvoiceService {
 
     }
 
-    public Invoice changeStatusToSaved(UUID identifier) {
+    public Invoice changeStatusToSaved(Invoice invoice) {
 
-        Invoice invoice = getInvoice(identifier);
-        invoice.setIdentifier(identifier);
+        invoice.setInvoiceStatus(InvoiceStatus.SAVED);
         return invoiceRepository.save(invoice);
 
 
