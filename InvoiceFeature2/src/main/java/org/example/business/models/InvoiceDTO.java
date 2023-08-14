@@ -9,6 +9,7 @@ import org.example.persistence.collections.Item;
 import org.example.persistence.utils.InvoiceStatus;
 import org.example.persistence.utils.OrderStatus;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,11 +21,17 @@ public class InvoiceDTO {
 
     private UUID identifier;
 
+    @NotNull
     private CompanyDTO buyer;
 
+    @NotNull
     private CompanyDTO seller;
 
+    @NotNull
     private Set<Item> items;
 
     private InvoiceStatus invoiceStatus;
+
+    @NotNull
+    private Integer version;
 }
