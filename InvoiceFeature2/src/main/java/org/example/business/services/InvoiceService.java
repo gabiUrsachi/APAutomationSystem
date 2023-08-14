@@ -92,17 +92,16 @@ public class InvoiceService {
             }
         }
 
-        invoice = changeStatusToSaved(invoice);
+        invoice = changeInvoiceStatus(invoice,InvoiceStatus.PAID);
 
         invoiceRepository.save(invoice);
 
     }
 
-    public Invoice changeStatusToSaved(Invoice invoice) {
+    public Invoice changeInvoiceStatus(Invoice invoice, InvoiceStatus invoiceStatus) {
 
-
-        invoice.setInvoiceStatus(InvoiceStatus.SAVED);
-        return invoiceRepository.save(invoice);
+        invoice.setInvoiceStatus(invoiceStatus);
+        return invoice;
 
 
     }
