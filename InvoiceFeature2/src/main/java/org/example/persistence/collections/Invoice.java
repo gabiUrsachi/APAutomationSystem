@@ -31,4 +31,6 @@ public class Invoice {
     private Float totalAmount;
 
     private InvoiceStatus invoiceStatus;
+
+    private Integer version;
 }

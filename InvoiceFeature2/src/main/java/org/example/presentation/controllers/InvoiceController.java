@@ -34,7 +34,6 @@ public class InvoiceController {
     public InvoiceDTO createInvoice(@RequestBody InvoiceDPO invoiceDPO) {
 
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
-
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
         return invoiceMapperService.mapToDTO(responseInvoice);
 
@@ -48,7 +47,9 @@ public class InvoiceController {
 
     @PostMapping("/fromOR")
     public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO) {
-        return invoiceMapperService.mapToDTO(orderResponseDTO);
+        InvoiceDPO invoiceDPO = invoiceMapperService.mapToDPO(orderResponseDTO);
+        return createInvoice(invoiceDPO);
+
     }
 
     @GetMapping("/{identifier}")
@@ -61,7 +62,6 @@ public class InvoiceController {
     @PutMapping("/{identifier}")
     public  InvoiceDTO updateInvoice(@PathVariable UUID identifier, @RequestBody InvoiceDTO invoiceDTO) {
         Invoice invoice = invoiceMapperService.mapToEntity(invoiceDTO);
-        invoice = invoiceService.changeStatusToSaved(invoice);
         invoiceService.updateInvoice(identifier,invoice);
         return invoiceMapperService.mapToDTO(invoice);
 

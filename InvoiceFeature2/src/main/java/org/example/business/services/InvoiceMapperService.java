@@ -39,6 +39,7 @@ public class InvoiceMapperService {
                 .sellerId(invoiceDTO.getSeller().getCompanyIdentifier())
                 .items(invoiceDTO.getItems())
                 .invoiceStatus(invoiceDTO.getInvoiceStatus())
+                .version(invoiceDTO.getVersion())
                 .build();
 
     }
@@ -53,6 +54,7 @@ public class InvoiceMapperService {
                 .seller(companyMapperService.mapToDTO(seller))
                 .items(invoice.getItems())
                 .invoiceStatus(invoice.getInvoiceStatus())
+                .version(invoice.getVersion())
                 .build();
     }
 
@@ -82,15 +84,13 @@ public class InvoiceMapperService {
                 .collect(Collectors.toList());
     }
 
-    public InvoiceDTO mapToDTO(OrderResponseDTO orderResponseDTO) {
+    public InvoiceDPO mapToDPO(OrderResponseDTO orderResponseDTO) {
 
         int orderStatusValue = orderResponseDTO.getOrderStatus().ordinal();
-        return InvoiceDTO.builder()
-                .identifier(orderResponseDTO.getIdentifier())
-                .buyer(orderResponseDTO.getBuyer())
-                .seller(orderResponseDTO.getSeller())
+        return InvoiceDPO.builder()
+                .buyerId(orderResponseDTO.getBuyer().getCompanyIdentifier())
+                .sellerId(orderResponseDTO.getSeller().getCompanyIdentifier())
                 .items(orderResponseDTO.getItems())
-                .invoiceStatus(InvoiceStatus.values()[orderStatusValue])
                 .build();
     }
 }
