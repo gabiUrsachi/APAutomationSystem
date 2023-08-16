@@ -18,7 +18,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <dependency> <groupId>org.example</groupId>
+        <dependency>
+            <groupId>org.example</groupId>
             <artifactId>PurchaseOrder</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
@@ -30,7 +31,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.system.automation</groupId>
+            <groupId>org.example</groupId>
             <artifactId>UserAuth</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>

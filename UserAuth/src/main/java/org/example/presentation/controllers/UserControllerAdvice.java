@@ -1,21 +1,29 @@
 package org.example.presentation.controllers;
 
+import org.example.business.errorhandling.customexceptions.AlreadyExistingUserException;
 
-import org.example.business.errorhandling.customexceptions.InvalidUpdateException;
-import org.example.business.errorhandling.customexceptions.OrderNotFoundException;
-
-
+import org.example.business.errorhandling.customexceptions.InvalidCredentialsException;
+import org.example.business.errorhandling.customexceptions.UserNotFoundException;
 import org.example.errorhandling.ExceptionResponseDTO;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
-public class ControllerAdvice {
+public class UserControllerAdvice {
 
-    @ExceptionHandler(OrderNotFoundException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleObjectNotFoundException(OrderNotFoundException ex) {
+    @ExceptionHandler(AlreadyExistingUserException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(AlreadyExistingUserException ex) {
+        String details = ex.getMessage();
+        HttpStatus status = HttpStatus.CONFLICT;
+
+        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
+
+        return new ResponseEntity<>(exceptionResponse, status);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(UserNotFoundException ex) {
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.NOT_FOUND;
 
@@ -24,20 +32,10 @@ public class ControllerAdvice {
         return new ResponseEntity<>(exceptionResponse, status);
     }
 
-    @ExceptionHandler(InvalidUpdateException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(InvalidUpdateException ex) {
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(InvalidCredentialsException ex) {
         String details = ex.getMessage();
-        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
-
-        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
-
-        return new ResponseEntity<>(exceptionResponse, status);
-    }
-
-    @ExceptionHandler(OptimisticLockingFailureException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleOptimisticLockingFailureException(OptimisticLockingFailureException ex) {
-        String details = ex.getMessage();
-        HttpStatus status = HttpStatus.PRECONDITION_FAILED;
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
 
