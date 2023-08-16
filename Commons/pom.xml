@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>UserAuth</artifactId>
+    <artifactId>Commons</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -17,15 +17,4 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>6.1.2</version>
-        </dependency>
-
-
-
-    </dependencies>
 </project>

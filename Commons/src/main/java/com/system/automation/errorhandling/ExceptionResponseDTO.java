@@ -1,4 +1,4 @@
-package org.example.presentation.view;
+package com.system.automation.errorhandling;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

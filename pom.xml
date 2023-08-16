@@ -20,6 +20,7 @@
         <module>InvoiceFeature2</module>
         <module>core</module>
         <module>UserAuth</module>
+        <module>Commons</module>
     </modules>
     <properties>
         <java.version>11</java.version>
