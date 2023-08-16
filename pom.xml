@@ -19,6 +19,7 @@
         <module>PurchaseOrder</module>
         <module>InvoiceFeature2</module>
         <module>core</module>
+        <module>UserAuth</module>
     </modules>
     <properties>
         <java.version>11</java.version>

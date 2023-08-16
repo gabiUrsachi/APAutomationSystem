@@ -1,10 +1,12 @@
-package org.example.persistence.collections;
+package com.system.automation.persistence.collections;
 
+import com.system.automation.persistence.utils.Roles;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -17,4 +19,6 @@ public class User {
     private String name;
 
     private UUID companyIdentifier;
+
+    private Set<Roles> roles;
 }
