@@ -1,6 +1,6 @@
-package org.example.services;
+package org.example.business.services;
 
-import org.example.errorhandling.ErrorMessages;
+import org.example.errorhandling.utils.ErrorMessages;
 import org.example.errorhandling.customexceptions.InvalidUpdateException;
 import org.example.errorhandling.customexceptions.OrderNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;

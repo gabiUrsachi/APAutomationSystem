@@ -1,10 +1,8 @@
-package org.example.business.services;
+package org.example.services;
 
 import org.example.business.models.*;
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
-import org.example.persistence.utils.InvoiceStatus;
-import org.example.persistence.utils.OrderStatus;
 import org.example.presentation.view.OrderResponseDTO;
 import org.springframework.stereotype.Service;
 

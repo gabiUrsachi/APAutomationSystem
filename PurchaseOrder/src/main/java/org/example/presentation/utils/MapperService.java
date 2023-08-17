@@ -1,7 +1,7 @@
 package org.example.presentation.utils;
 
-import org.example.business.services.CompanyMapperService;
-import org.example.business.services.CompanyOpsService;
+import org.example.services.CompanyMapperService;
+import org.example.services.CompanyOpsService;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.presentation.view.OrderResponseDTO;
 import org.example.persistence.collections.PurchaseOrder;

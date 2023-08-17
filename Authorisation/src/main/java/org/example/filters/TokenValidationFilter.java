@@ -3,7 +3,7 @@ package org.example.filters;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.example.AuthorisationControllerAdvice;
-import org.example.errorhandling.customexceptions.ExceptionResponseDTO;
+import org.example.errorhandling.utils.ExceptionResponseDTO;
 import org.example.errorhandling.customexceptions.InvalidTokenException;
 import org.example.utils.TokenHandler;
 import org.springframework.context.ApplicationContext;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class TestFilter implements Filter {
+public class TokenValidationFilter implements Filter {
     private AuthorisationControllerAdvice controllerAdvice;
 
     @Override
@@ -42,14 +42,13 @@ public class TestFilter implements Filter {
                         h -> Collections.list(req.getHeaders(h))
                 ));
 
-
-        List<String> authHeader = headersMap.get("authorization");
-        if (authHeader == null ){
-            throw new JWTVerificationException("No authentication header present");
-        }
-        String token = authHeader.get(0);
-
         try {
+            List<String> authHeader = headersMap.get("authorization");
+            if (authHeader == null ){
+                throw new JWTVerificationException("No authentication header present");
+            }
+            String token = authHeader.get(0);
+
             DecodedJWT decodedJWT = TokenHandler.validateToken(token);
             servletRequest.setAttribute("user", TokenHandler.getSubjectFromToken(decodedJWT));
             servletRequest.setAttribute("company", TokenHandler.getCompanyFromToken(decodedJWT));

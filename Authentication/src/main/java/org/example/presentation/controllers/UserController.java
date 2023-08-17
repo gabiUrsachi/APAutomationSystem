@@ -2,7 +2,7 @@ package org.example.presentation.controllers;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.example.Roles;
-import org.example.business.services.UserService;
+import org.example.services.UserService;
 import org.example.persistence.collections.User;
 import org.example.presentation.utils.UserMapperService;
 import org.example.presentation.view.LoginRequestDTO;
@@ -43,7 +43,7 @@ public class UserController {
 
         User user = userService.login(username, password);
 
-        return TokenHandler.createToken(user.getUsername(), user.getRoles());
+        return TokenHandler.createToken(user.getUsername(), user.getCompanyIdentifier(), user.getRoles());
     }
 
     @PostMapping(value = "logout")
@@ -51,13 +51,6 @@ public class UserController {
         DecodedJWT jwt = TokenHandler.validateToken(authorizationHeader);
 
         TokenHandler.invalidateToken(jwt);
-    }
-
-    @PostMapping(value = "validate")
-    public Set<Roles> validate(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader) {
-        DecodedJWT jwt = TokenHandler.validateToken(authorizationHeader);
-
-        return  TokenHandler.getRolesFromToken(jwt);
     }
 
 }

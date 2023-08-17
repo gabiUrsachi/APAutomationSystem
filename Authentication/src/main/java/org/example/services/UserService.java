@@ -1,10 +1,11 @@
-package org.example.business.services;
+package org.example.services;
 
 import org.example.business.utils.Password;
-import org.example.errorhandling.ErrorMessages;
+
 import org.example.errorhandling.customexceptions.AlreadyExistingUserException;
 import org.example.errorhandling.customexceptions.InvalidCredentialsException;
 import org.example.errorhandling.customexceptions.UserNotFoundException;
+import org.example.errorhandling.utils.ErrorMessages;
 import org.example.persistence.collections.User;
 import org.example.persistence.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class UserService {
     }
 
     public User getUser(String username){
-        return userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(ErrorMessages.USER_NOT_FOUND, username));
+        return userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(org.example.errorhandling.utils.ErrorMessages.USER_NOT_FOUND, username));
     }
 
     public void registerUser(User user){

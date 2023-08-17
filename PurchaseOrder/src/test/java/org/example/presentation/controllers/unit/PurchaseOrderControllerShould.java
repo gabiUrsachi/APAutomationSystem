@@ -1,8 +1,9 @@
 package org.example.presentation.controllers.unit;
 
-import org.example.business.errorhandling.customexceptions.InvalidUpdateException;
-import org.example.business.errorhandling.customexceptions.OrderNotFoundException;
+
 import org.example.business.services.PurchaseOrderService;
+import org.example.errorhandling.customexceptions.InvalidUpdateException;
+import org.example.errorhandling.customexceptions.OrderNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.OrderStatus;
 import org.example.presentation.controllers.PurchaseOrderController;
@@ -41,7 +42,7 @@ public class PurchaseOrderControllerShould {
 
         given(purchaseOrderService.getPurchaseOrder(searchedUUID)).willThrow(OrderNotFoundException.class);
 
-        assertThrows(OrderNotFoundException.class, () -> purchaseOrderController.getPurchaseOrder(searchedUUID));
+        assertThrows(OrderNotFoundException.class, () -> purchaseOrderController.getPurchaseOrder(searchedUUID, null));
     }
 
     @Test
@@ -54,7 +55,7 @@ public class PurchaseOrderControllerShould {
         given(mapperService.mapToEntity(orderRequestDTO)).willReturn(purchaseOrder);
         given(purchaseOrderService.updatePurchaseOrder(purchaseOrder)).willThrow(InvalidUpdateException.class);
 
-        assertThrows(InvalidUpdateException.class, () -> purchaseOrderController.updatePurchaseOrder(searchedUUID, orderRequestDTO));
+        assertThrows(InvalidUpdateException.class, () -> purchaseOrderController.updatePurchaseOrder(searchedUUID, orderRequestDTO, null));
     }
 
     private UUID createUUID() {

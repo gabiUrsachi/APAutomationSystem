@@ -1,4 +1,4 @@
-package errorhandling.customexceptions;
+package org.example.errorhandling.customexceptions;
 
 import java.util.UUID;
 

@@ -1,8 +1,8 @@
 package org.example.controllers;
 
 import org.example.business.models.CompanyDTO;
-import org.example.business.services.CompanyMapperService;
-import org.example.business.services.CompanyOpsService;
+import org.example.services.CompanyMapperService;
+import org.example.services.CompanyOpsService;
 import org.example.persistence.collections.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

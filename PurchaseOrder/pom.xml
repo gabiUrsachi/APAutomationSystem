@@ -40,7 +40,7 @@
 
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>Commons</artifactId>
+            <artifactId>Authorisation</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

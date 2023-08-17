@@ -5,15 +5,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class FilterConfig {
+public class FilterRegister {
 
     @Bean
-    public FilterRegistrationBean<TestFilter> ordersFilter(){
-        FilterRegistrationBean<TestFilter> registrationBean
+    public FilterRegistrationBean<TokenValidationFilter> ordersFilter(){
+        FilterRegistrationBean<TokenValidationFilter> registrationBean
                 = new FilterRegistrationBean<>();
 
-        registrationBean.setFilter(new TestFilter());
-        registrationBean.addUrlPatterns("/api/orders/*");
+        registrationBean.setFilter(new TokenValidationFilter());
+        registrationBean.addUrlPatterns("/api/orders/*","/api/invoices/*","/api/users/logout");
+
         registrationBean.setOrder(1);
 
         return registrationBean;

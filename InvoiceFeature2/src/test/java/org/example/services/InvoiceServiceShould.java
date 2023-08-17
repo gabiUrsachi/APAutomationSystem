@@ -1,4 +1,4 @@
-package org.example.business.services;
+package org.example.services;
 
 import org.example.business.exceptions.InvoiceNotFoundException;
 import org.example.business.models.InvoiceDTO;

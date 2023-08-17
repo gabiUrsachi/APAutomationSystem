@@ -1,4 +1,4 @@
-package org.example.business.services;
+package org.example.services;
 
 import org.example.business.models.CompanyDTO;
 import org.example.persistence.collections.Company;

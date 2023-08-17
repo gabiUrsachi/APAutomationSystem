@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.example.Roles;
-import org.example.errorhandling.InvalidTokenException;
+import org.example.errorhandling.customexceptions.InvalidTokenException;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -19,12 +19,13 @@ public class TokenHandler {
 
     private static Set<String> blacklist = new HashSet<>();
 
-    public static String createToken(String username, Set<Roles> roles) {
+    public static String createToken(String username, UUID companyUUID, Set<Roles> roles) {
 
         return JWT.create()
                 .withJWTId(UUID.randomUUID().toString())
                 .withIssuer("APSystem")
                 .withSubject(username)
+                .withClaim("company", companyUUID.toString())
                 .withClaim("roles", roles.stream().map(Enum::toString).collect(Collectors.toList()))
                 .withExpiresAt(computeExpDate())
                 .sign(ALGORITHM);
@@ -55,6 +56,14 @@ public class TokenHandler {
 
     public static Set<Roles> getRolesFromToken(DecodedJWT decodedJWT ) {
         return new HashSet<>(decodedJWT.getClaim("roles").asList(Roles.class));
+    }
+
+    public static String getSubjectFromToken(DecodedJWT decodedJWT ) {
+        return decodedJWT.getClaim("sub").asString();
+    }
+
+    public static UUID getCompanyFromToken(DecodedJWT decodedJWT ) {
+        return UUID.fromString(decodedJWT.getClaim("company").asString());
     }
 
     private static Date computeExpDate() {

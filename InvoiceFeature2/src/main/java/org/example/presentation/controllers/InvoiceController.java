@@ -1,17 +1,15 @@
 package org.example.presentation.controllers;
 
-import lombok.AllArgsConstructor;
 import org.example.business.models.*;
 
-import org.example.business.services.InvoiceMapperService;
-import org.example.business.services.InvoiceService;
+import org.example.services.InvoiceMapperService;
+import org.example.services.InvoiceService;
 import org.example.persistence.collections.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.example.presentation.view.OrderResponseDTO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,34 +38,34 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public List<InvoiceDDO> getInvoices() {
+    public List<InvoiceDDO> getInvoices(HttpServletRequest request) {
         return invoiceMapperService.mapToDDO(invoiceService.getInvoices());
 
     }
 
     @PostMapping("/fromOR")
-    public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO) {
+    public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO,HttpServletRequest request) {
         InvoiceDPO invoiceDPO = invoiceMapperService.mapToDPO(orderResponseDTO);
         return createInvoice(invoiceDPO);
 
     }
 
     @GetMapping("/{identifier}")
-    public InvoiceDTO getById(@PathVariable UUID identifier) {
+    public InvoiceDTO getById(@PathVariable UUID identifier,HttpServletRequest request) {
 
         return invoiceMapperService.mapToDTO(invoiceService.getInvoice(identifier));
 
     }
 
     @PutMapping("/{identifier}")
-    public  InvoiceDTO updateInvoice(@PathVariable UUID identifier, @RequestBody InvoiceDTO invoiceDTO) {
+    public  InvoiceDTO updateInvoice(@PathVariable UUID identifier, @RequestBody InvoiceDTO invoiceDTO,HttpServletRequest request) {
         Invoice invoice = invoiceMapperService.mapToEntity(invoiceDTO);
         invoiceService.updateInvoice(identifier,invoice);
         return invoiceMapperService.mapToDTO(invoice);
 
     }
     @DeleteMapping("/{identifier}")
-    public void deleteById(@PathVariable UUID identifier) {
+    public void deleteById(@PathVariable UUID identifier,HttpServletRequest request) {
 
         invoiceService.deleteInvoice(identifier);
 

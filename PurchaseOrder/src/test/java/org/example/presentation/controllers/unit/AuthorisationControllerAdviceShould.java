@@ -1,9 +1,10 @@
 package org.example.presentation.controllers.unit;
 
-import org.example.errorhandling.ExceptionResponseDTO;
-import org.example.business.errorhandling.customexceptions.InvalidUpdateException;
-import org.example.business.errorhandling.customexceptions.OrderNotFoundException;
 
+
+import org.example.errorhandling.utils.ExceptionResponseDTO;
+import org.example.errorhandling.customexceptions.InvalidUpdateException;
+import org.example.errorhandling.customexceptions.OrderNotFoundException;
 import org.example.presentation.controllers.ControllerAdvice;
 
 import org.junit.Before;
@@ -17,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CommonsControllerAdviceShould {
+public class AuthorisationControllerAdviceShould {
 
     ControllerAdvice controllerAdvice;
     @Mock

@@ -1,10 +1,10 @@
 package org.example.presentation.controllers;
 
-import org.example.business.errorhandling.customexceptions.AlreadyExistingUserException;
 
-import org.example.business.errorhandling.customexceptions.InvalidCredentialsException;
-import org.example.business.errorhandling.customexceptions.UserNotFoundException;
-import org.example.errorhandling.ExceptionResponseDTO;
+import org.example.errorhandling.customexceptions.AlreadyExistingUserException;
+import org.example.errorhandling.utils.ExceptionResponseDTO;
+import org.example.errorhandling.customexceptions.InvalidCredentialsException;
+import org.example.errorhandling.customexceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
