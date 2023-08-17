@@ -1,14 +1,18 @@
 package org.example.presentation.controllers;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+import org.example.Roles;
 import org.example.business.services.UserService;
 import org.example.persistence.collections.User;
 import org.example.presentation.utils.UserMapperService;
 import org.example.presentation.view.LoginRequestDTO;
 import org.example.presentation.view.RegisterRequestDTO;
-import org.example.services.TokenService;
+import org.example.utils.TokenHandler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,12 +21,10 @@ public class UserController {
     private final UserService userService;
     private final UserMapperService userMapperService;
 
-    private final TokenService tokenService;
 
-    public UserController(UserService userService, UserMapperService userMapperService, TokenService tokenService) {
+    public UserController(UserService userService, UserMapperService userMapperService) {
         this.userService = userService;
         this.userMapperService = userMapperService;
-        this.tokenService = tokenService;
     }
 
     @PostMapping(value = "register")
@@ -41,12 +43,21 @@ public class UserController {
 
         User user = userService.login(username, password);
 
-        return tokenService.createToken(user.getUsername(), user.getRoles());
+        return TokenHandler.createToken(user.getUsername(), user.getRoles());
+    }
+
+    @PostMapping(value = "logout")
+    public void logout(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader){
+        DecodedJWT jwt = TokenHandler.validateToken(authorizationHeader);
+
+        TokenHandler.invalidateToken(jwt);
     }
 
     @PostMapping(value = "validate")
-    public String validate(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader) {
-        return  tokenService.validateToken(authorizationHeader);
+    public Set<Roles> validate(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader) {
+        DecodedJWT jwt = TokenHandler.validateToken(authorizationHeader);
+
+        return  TokenHandler.getRolesFromToken(jwt);
     }
 
 }
