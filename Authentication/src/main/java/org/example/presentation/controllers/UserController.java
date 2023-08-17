@@ -1,8 +1,7 @@
 package org.example.presentation.controllers;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.example.Roles;
-import org.example.services.UserService;
+import org.example.business.services.UserService;
 import org.example.persistence.collections.User;
 import org.example.presentation.utils.UserMapperService;
 import org.example.presentation.view.LoginRequestDTO;
@@ -11,8 +10,6 @@ import org.example.utils.TokenHandler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")

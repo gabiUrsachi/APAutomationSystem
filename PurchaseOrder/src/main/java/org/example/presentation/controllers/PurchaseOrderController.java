@@ -41,7 +41,7 @@ public class PurchaseOrderController {
     @PostMapping
     @SuppressWarnings("unchecked cast")
     public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
-        Set<Roles> userRoles = (Set<Roles>)request.getAttribute("roles");
+        Set<Roles> userRoles = (Set<Roles>) request.getAttribute("roles");
         authorisationService.authorize(userRoles, Roles.BUYER_I);
 
         PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
@@ -85,7 +85,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "422", description = "Invalid resource status for update"),
             })
     @PutMapping("/{identifier}")
-    public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO,HttpServletRequest request) {
+    public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
         PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
 
         PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrderRequest);
@@ -100,7 +100,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "404", description = "Order not found")
             })
     @DeleteMapping("/{identifier}")
-    public void removePurchaseOrder(@PathVariable UUID identifier,HttpServletRequest request) {
+    public void removePurchaseOrder(@PathVariable UUID identifier, HttpServletRequest request) {
         purchaseOrderService.deletePurchaseOrder(identifier);
 
     }

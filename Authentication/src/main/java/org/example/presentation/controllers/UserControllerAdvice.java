@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class UserControllerAdvice {
 
     @ExceptionHandler(AlreadyExistingUserException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(AlreadyExistingUserException ex) {
+    public ResponseEntity<ExceptionResponseDTO> handleAlreadyExistingUserException(AlreadyExistingUserException ex) {
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.CONFLICT;
 
@@ -23,7 +23,7 @@ public class UserControllerAdvice {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(UserNotFoundException ex) {
+    public ResponseEntity<ExceptionResponseDTO> handleUserNotFoundException(UserNotFoundException ex) {
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.NOT_FOUND;
 
@@ -33,7 +33,7 @@ public class UserControllerAdvice {
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(InvalidCredentialsException ex) {
+    public ResponseEntity<ExceptionResponseDTO> handleInvalidCredentialsException(InvalidCredentialsException ex) {
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.UNAUTHORIZED;
 
