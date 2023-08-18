@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.Update;
 
 import java.util.UUID;
 
-public interface PurchaseOrderRepository extends MongoRepository<PurchaseOrder, UUID> {
+public interface PurchaseOrderRepository extends MongoRepository<PurchaseOrder, UUID>, PurchaseOrderCustomRepository {
     @DeleteQuery("{ 'identifier' : ?0 }")
     int customDeleteById(UUID uuid);
 

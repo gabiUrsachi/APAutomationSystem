@@ -1,18 +1,20 @@
 package org.example.business.services;
 
-import org.example.errorhandling.utils.ErrorMessages;
 import org.example.errorhandling.customexceptions.InvalidUpdateException;
 import org.example.errorhandling.customexceptions.OrderNotFoundException;
+import org.example.errorhandling.utils.ErrorMessages;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.OrderStatus;
+import org.example.business.utils.PurchaseOrderFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * This service is used for performing CRUD operations
@@ -84,11 +86,11 @@ public class PurchaseOrderService {
         if (updateCount == 0) {
             Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
 
-            if(existingPurchaseOrder.isEmpty()){
+            if (existingPurchaseOrder.isEmpty()) {
                 throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, purchaseOrder.getIdentifier());
             }
 
-            if(!Objects.equals(existingPurchaseOrder.get().getVersion(), purchaseOrder.getVersion())){
+            if (!Objects.equals(existingPurchaseOrder.get().getVersion(), purchaseOrder.getVersion())) {
                 throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
             }
 
@@ -113,4 +115,27 @@ public class PurchaseOrderService {
         }
     }
 
+
+    /**
+     * It searches all existing purchase orders according to given filters
+     *
+     * @return the list of existing orders
+     */
+    public List<PurchaseOrder> getPurchaseOrders(List<PurchaseOrderFilter> filters) {
+        List<Criteria> criterion = new ArrayList<Criteria>(filters.size());
+
+        for (PurchaseOrderFilter filter : filters) {
+            if (filter.getOrderStatus() != null) {
+                criterion.add(Criteria.where("orderStatus").is(filter.getOrderStatus())
+                        .and(filter.getCompanyType()).is(filter.getCompanyUUID()));
+            } else {
+                criterion.add(Criteria.where(filter.getCompanyType()).is(filter.getCompanyUUID()));
+            }
+        }
+
+        Criteria criteria = new Criteria().orOperator(criterion.toArray(new Criteria[criterion.size()]));
+        Query searchQuery = new Query(criteria);
+
+        return purchaseOrderRepository.findByQuery(searchQuery, PurchaseOrder.class);
+    }
 }

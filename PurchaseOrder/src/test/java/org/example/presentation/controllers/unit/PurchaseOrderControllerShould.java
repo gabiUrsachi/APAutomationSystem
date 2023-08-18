@@ -1,6 +1,7 @@
 package org.example.presentation.controllers.unit;
 
 
+import org.example.business.services.FilterCreatorService;
 import org.example.business.services.PurchaseOrderService;
 import org.example.errorhandling.customexceptions.InvalidUpdateException;
 import org.example.errorhandling.customexceptions.OrderNotFoundException;
@@ -9,6 +10,7 @@ import org.example.persistence.utils.OrderStatus;
 import org.example.presentation.controllers.PurchaseOrderController;
 import org.example.presentation.utils.MapperService;
 import org.example.presentation.view.OrderRequestDTO;
+import org.example.services.AuthorisationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,10 +32,15 @@ public class PurchaseOrderControllerShould {
     @Mock
     MapperService mapperService;
 
+    @Mock
+    AuthorisationService authorisationService;
+
+    @Mock
+    FilterCreatorService filterCreatorService;
 
     @Before
     public void setUp() {
-        purchaseOrderController = new PurchaseOrderController(purchaseOrderService, mapperService);
+        purchaseOrderController = new PurchaseOrderController(purchaseOrderService, mapperService, authorisationService, filterCreatorService);
     }
 
     @Test

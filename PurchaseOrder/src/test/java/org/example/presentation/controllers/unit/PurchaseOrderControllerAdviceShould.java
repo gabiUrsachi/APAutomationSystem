@@ -5,7 +5,7 @@ package org.example.presentation.controllers.unit;
 import org.example.errorhandling.utils.ExceptionResponseDTO;
 import org.example.errorhandling.customexceptions.InvalidUpdateException;
 import org.example.errorhandling.customexceptions.OrderNotFoundException;
-import org.example.presentation.controllers.ControllerAdvice;
+import org.example.presentation.controllers.PurchaseOrderControllerAdvice;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,9 +18,9 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AuthorisationControllerAdviceShould {
+public class PurchaseOrderControllerAdviceShould {
 
-    ControllerAdvice controllerAdvice;
+    PurchaseOrderControllerAdvice purchaseOrderControllerAdvice;
     @Mock
     OrderNotFoundException orderNotFoundException;
     @Mock
@@ -28,19 +28,19 @@ public class AuthorisationControllerAdviceShould {
 
     @Before
     public void setUp() {
-        controllerAdvice = new ControllerAdvice();
+        purchaseOrderControllerAdvice = new PurchaseOrderControllerAdvice();
     }
 
     @Test
     public void returnNotFoundStatusWhenOrderDoesNotExist() {
-        ResponseEntity<ExceptionResponseDTO> exceptionResponse = controllerAdvice.handleObjectNotFoundException(orderNotFoundException);
+        ResponseEntity<ExceptionResponseDTO> exceptionResponse = purchaseOrderControllerAdvice.handleObjectNotFoundException(orderNotFoundException);
 
         assertEquals(HttpStatus.NOT_FOUND, exceptionResponse.getStatusCode());
     }
 
     @Test
     public void returnUnprocessableEntityStatusForInvalidUpdate() {
-        ResponseEntity<ExceptionResponseDTO> exceptionResponse = controllerAdvice.handleInvalidUpdateException(invalidUpdateException);
+        ResponseEntity<ExceptionResponseDTO> exceptionResponse = purchaseOrderControllerAdvice.handleInvalidUpdateException(invalidUpdateException);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, exceptionResponse.getStatusCode());
     }
