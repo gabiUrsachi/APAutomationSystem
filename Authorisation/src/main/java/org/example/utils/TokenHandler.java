@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.example.Roles;
-import org.example.errorhandling.customexceptions.InvalidTokenException;
+import org.example.customexceptions.InvalidTokenException;
 
 import java.util.Date;
 import java.util.HashSet;

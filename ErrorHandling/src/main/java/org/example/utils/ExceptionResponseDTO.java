@@ -1,4 +1,4 @@
-package org.example.errorhandling.utils;
+package org.example.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

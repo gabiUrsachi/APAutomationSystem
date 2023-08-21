@@ -1,8 +1,8 @@
 package org.example.services;
 
-import org.example.errorhandling.utils.ErrorMessages;
-import org.example.errorhandling.customexceptions.InvalidUpdateException;
-import org.example.errorhandling.customexceptions.InvoiceNotFoundException;
+import org.example.utils.ErrorMessages;
+import org.example.customexceptions.InvalidUpdateException;
+import org.example.customexceptions.InvoiceNotFoundException;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
 import org.example.persistence.utils.InvoiceStatus;

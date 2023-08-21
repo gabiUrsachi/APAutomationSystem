@@ -1,10 +1,11 @@
 package org.example.presentation.controllers.unit;
 
 
-import org.example.business.services.FilterCreatorService;
+import org.example.business.services.FilteringService;
 import org.example.business.services.PurchaseOrderService;
-import org.example.errorhandling.customexceptions.InvalidUpdateException;
-import org.example.errorhandling.customexceptions.OrderNotFoundException;
+import org.example.business.services.ValidatorService;
+import org.example.customexceptions.InvalidUpdateException;
+import org.example.customexceptions.OrderNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.OrderStatus;
 import org.example.presentation.controllers.PurchaseOrderController;
@@ -36,11 +37,14 @@ public class PurchaseOrderControllerShould {
     AuthorisationService authorisationService;
 
     @Mock
-    FilterCreatorService filterCreatorService;
+    FilteringService filteringService;
+
+    @Mock
+    ValidatorService validatorService;
 
     @Before
     public void setUp() {
-        purchaseOrderController = new PurchaseOrderController(purchaseOrderService, mapperService, authorisationService, filterCreatorService);
+        purchaseOrderController = new PurchaseOrderController(purchaseOrderService, mapperService, authorisationService, filteringService, validatorService);
     }
 
     @Test

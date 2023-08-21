@@ -1,4 +1,4 @@
-package org.example.errorhandling.utils;
+package org.example.utils;
 
 public class ErrorMessages {
     public static final String ALREADY_EXISTING_USER = "Already existing user identified by ";

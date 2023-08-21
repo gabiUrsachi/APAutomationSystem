@@ -1,4 +1,4 @@
-package org.example.errorhandling.customexceptions;
+package org.example.customexceptions;
 
 /**
  * This exception is thrown whenever a non-existent user is queried

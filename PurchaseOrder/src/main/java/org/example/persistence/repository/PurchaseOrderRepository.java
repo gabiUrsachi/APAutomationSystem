@@ -16,4 +16,8 @@ public interface PurchaseOrderRepository extends MongoRepository<PurchaseOrder, 
     @Query("{ 'identifier' : ?0, 'version' : ?1 , 'orderStatus' : 'CREATED'}")
     @Update("{ '$set' : { 'buyer' : ?#{#purchaseOrder.buyer}, 'seller' : ?#{#purchaseOrder.seller}, 'version' : ?#{#purchaseOrder.version}, 'items' : ?#{#purchaseOrder.items}, 'orderStatus' : ?#{#purchaseOrder.orderStatus} }}")
     int updateByIdentifierAndVersion(UUID identifier, Integer version, PurchaseOrder purchaseOrder);
+
+    @Query("{ 'identifier' : ?0, 'version' : ?1 , 'orderStatus' : ?2}")
+    @Update("{ '$set' : { 'buyer' : ?#{#purchaseOrder.buyer}, 'seller' : ?#{#purchaseOrder.seller}, 'version' : ?#{#purchaseOrder.version}, 'items' : ?#{#purchaseOrder.items}, 'orderStatus' : ?#{#purchaseOrder.orderStatus} }}")
+    int updateByIdentifierAndVersionAndStatus(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder);
 }

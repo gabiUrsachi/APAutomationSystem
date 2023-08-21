@@ -1,4 +1,4 @@
-package org.example.errorhandling.customexceptions;
+package org.example.customexceptions;
 
 import java.util.UUID;
 public class InvoiceNotFoundException extends RuntimeException{

@@ -2,9 +2,9 @@ package org.example.presentation.controllers.unit;
 
 
 
-import org.example.errorhandling.utils.ExceptionResponseDTO;
-import org.example.errorhandling.customexceptions.InvalidUpdateException;
-import org.example.errorhandling.customexceptions.OrderNotFoundException;
+import org.example.utils.ExceptionResponseDTO;
+import org.example.customexceptions.InvalidUpdateException;
+import org.example.customexceptions.OrderNotFoundException;
 import org.example.presentation.controllers.PurchaseOrderControllerAdvice;
 
 import org.junit.Before;

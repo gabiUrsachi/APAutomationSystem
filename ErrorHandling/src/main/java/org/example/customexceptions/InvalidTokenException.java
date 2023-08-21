@@ -1,4 +1,4 @@
-package org.example.errorhandling.customexceptions;
+package org.example.customexceptions;
 
 public class InvalidTokenException extends RuntimeException{
 }

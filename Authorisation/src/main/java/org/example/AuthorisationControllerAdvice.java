@@ -2,10 +2,11 @@ package org.example;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
-import org.example.errorhandling.customexceptions.IdentifiersMismatchException;
-import org.example.errorhandling.utils.ExceptionResponseDTO;
-import org.example.errorhandling.customexceptions.InvalidRoleException;
-import org.example.errorhandling.customexceptions.InvalidTokenException;
+import org.example.customexceptions.ForbiddenUpdateException;
+import org.example.customexceptions.IdentifiersMismatchException;
+import org.example.utils.ExceptionResponseDTO;
+import org.example.customexceptions.InvalidRoleException;
+import org.example.customexceptions.InvalidTokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,7 +24,7 @@ public class AuthorisationControllerAdvice {
         return new ResponseEntity<>(exceptionResponse, status);
     }
 
-    @ExceptionHandler({InvalidRoleException.class, IdentifiersMismatchException.class})
+    @ExceptionHandler({InvalidRoleException.class, IdentifiersMismatchException.class, ForbiddenUpdateException.class})
     public ResponseEntity<ExceptionResponseDTO> handleInvalidRoleException(Exception ex) {
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.FORBIDDEN;

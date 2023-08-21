@@ -1,7 +1,7 @@
 package org.example.services;
 
 import org.example.Roles;
-import org.example.errorhandling.customexceptions.InvalidRoleException;
+import org.example.customexceptions.InvalidRoleException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -19,18 +19,5 @@ public class AuthorisationService {
         }
 
         return receivedRolesCopy;
-
-//        boolean itExistsAtLeastOneValidRole = false;
-//
-//        for(Roles role:validRoles){
-//            if(receivedRoles.contains(role)){
-//                itExistsAtLeastOneValidRole = true;
-//                break;
-//            }
-//        }
-//
-//        if(!itExistsAtLeastOneValidRole){
-//            throw new InvalidRoleException();
-//        }
     }
 }

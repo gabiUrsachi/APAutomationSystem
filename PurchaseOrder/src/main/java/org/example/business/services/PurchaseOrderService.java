@@ -1,16 +1,20 @@
 package org.example.business.services;
 
-import org.example.persistence.utils.PurchaseOrderFilter;
-import org.example.errorhandling.customexceptions.InvalidUpdateException;
-import org.example.errorhandling.customexceptions.OrderNotFoundException;
-import org.example.errorhandling.utils.ErrorMessages;
+import org.example.business.utils.OrderStatusPrecedence;
+import org.example.customexceptions.InvalidUpdateException;
+import org.example.customexceptions.OrderNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.OrderStatus;
+import org.example.persistence.utils.PurchaseOrderFilter;
+import org.example.utils.ErrorMessages;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * This service is used for performing CRUD operations
@@ -38,16 +42,35 @@ public class PurchaseOrderService {
     }
 
     /**
-     * It searches for an order with requested identifier
+     * Retrieves a purchase order based on its identifier
      *
      * @param identifier order UUID
-     * @return searched order if exists, otherwise it throws OrderNotFoundException
+     * @return the retrieved PurchaseOrder object
+     * @throws OrderNotFoundException if the purchase order with the given identifier is not found
      */
     public PurchaseOrder getPurchaseOrder(UUID identifier) {
         Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(identifier);
 
         return existingPurchaseOrder
                 .orElseThrow(() -> new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier));
+    }
+
+    /**
+     * Retrieves a purchase order based on its identifier and filters
+     *
+     * @param identifier order UUID
+     * @param filters    list of filters to apply while retrieving the purchase order
+     * @return the retrieved PurchaseOrder object
+     * @throws OrderNotFoundException if the purchase order with the given identifier and filters is not found
+     */
+    public PurchaseOrder getPurchaseOrder(UUID identifier, List<PurchaseOrderFilter> filters) {
+        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByUUIDAndFilters(identifier, filters);
+
+        if (purchaseOrder == null) {
+            throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier);
+        }
+
+        return purchaseOrder;
     }
 
     /**
@@ -60,6 +83,15 @@ public class PurchaseOrderService {
     }
 
     /**
+     * It searches all existing purchase orders according to given filters
+     *
+     * @return the list of existing orders
+     */
+    public List<PurchaseOrder> getPurchaseOrders(List<PurchaseOrderFilter> filters) {
+        return purchaseOrderRepository.findByFilters(filters);
+    }
+
+    /**
      * It replaces the content of an existing order only if the received version corresponds to the stored one
      *
      * @param purchaseOrder updated order content
@@ -67,6 +99,7 @@ public class PurchaseOrderService {
      */
     public PurchaseOrder updatePurchaseOrder(PurchaseOrder purchaseOrder) {
         int oldVersion = purchaseOrder.getVersion();
+        OrderStatus requiredOldStatus = OrderStatusPrecedence.predecessors.get(purchaseOrder.getOrderStatus());
 
         PurchaseOrder updatedPurchaseOrder = PurchaseOrder.builder()
                 .identifier(purchaseOrder.getIdentifier())
@@ -77,7 +110,7 @@ public class PurchaseOrderService {
                 .version(oldVersion + 1)
                 .build();
 
-        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersion(purchaseOrder.getIdentifier(), oldVersion, updatedPurchaseOrder);
+        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(purchaseOrder.getIdentifier(), oldVersion, requiredOldStatus, updatedPurchaseOrder);
 
         if (updateCount == 0) {
             Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
@@ -90,7 +123,7 @@ public class PurchaseOrderService {
                 throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
             }
 
-            if (!existingPurchaseOrder.get().getOrderStatus().equals(OrderStatus.CREATED)) {
+            if (!existingPurchaseOrder.get().getOrderStatus().equals(requiredOldStatus)) {
                 throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
             }
         }
@@ -112,27 +145,4 @@ public class PurchaseOrderService {
     }
 
 
-    /**
-     * It searches an existing purchase orders according to given filter
-     *
-     * @return the existing order if any
-     */
-    public PurchaseOrder getPurchaseOrder(UUID uuid, List<PurchaseOrderFilter> filters) {
-        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByUUIDAndFilters(uuid, filters);
-
-        if (purchaseOrder == null){
-            throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, uuid);
-        }
-
-        return purchaseOrder;
-    }
-
-    /**
-     * It searches all existing purchase orders according to given filters
-     *
-     * @return the list of existing orders
-     */
-    public List<PurchaseOrder> getPurchaseOrders(List<PurchaseOrderFilter> filters) {
-        return purchaseOrderRepository.findByFilters(filters);
-    }
 }
