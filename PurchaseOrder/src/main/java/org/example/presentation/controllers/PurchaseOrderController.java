@@ -3,7 +3,7 @@ package org.example.presentation.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.example.Roles;
+import org.example.utils.Roles;
 import org.example.business.services.FilteringService;
 import org.example.business.services.PurchaseOrderService;
 import org.example.business.services.ValidatorService;

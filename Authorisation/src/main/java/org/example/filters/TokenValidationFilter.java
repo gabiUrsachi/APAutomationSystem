@@ -3,6 +3,7 @@ package org.example.filters;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.example.AuthorisationControllerAdvice;
+import org.example.utils.Roles;
 import org.example.customexceptions.InvalidTokenException;
 import org.example.utils.ExceptionResponseDTO;
 import org.example.utils.TokenHandler;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -45,9 +47,10 @@ public class TokenValidationFilter implements Filter {
             String token = authHeader.get(0);
 
             DecodedJWT decodedJWT = TokenHandler.validateToken(token);
-            servletRequest.setAttribute("user", TokenHandler.getSubjectFromToken(decodedJWT));
-            servletRequest.setAttribute("company", TokenHandler.getCompanyFromToken(decodedJWT));
-            servletRequest.setAttribute("roles", TokenHandler.getRolesFromToken(decodedJWT));
+            servletRequest.setAttribute("user", decodedJWT.getClaim("sub").asString());
+            servletRequest.setAttribute("company",
+                    decodedJWT.getClaim("company").asString().equals("null") ? null : UUID.fromString(decodedJWT.getClaim("company").asString()));
+            servletRequest.setAttribute("roles", decodedJWT.getClaim("roles").asList(Roles.class));
 
         } catch (InvalidTokenException | JWTVerificationException e) {
             ResponseEntity<ExceptionResponseDTO> exceptionResponse = this.controllerAdvice.handleInvalidTokenException(e);

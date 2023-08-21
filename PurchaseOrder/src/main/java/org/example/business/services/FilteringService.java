@@ -1,6 +1,6 @@
 package org.example.business.services;
 
-import org.example.Roles;
+import org.example.utils.Roles;
 import org.example.persistence.utils.OrderStatus;
 import org.example.persistence.utils.PurchaseOrderFilter;
 import org.springframework.stereotype.Service;

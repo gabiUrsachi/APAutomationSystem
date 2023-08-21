@@ -13,7 +13,7 @@ public class FilterRegister {
                 = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new TokenValidationFilter());
-        registrationBean.addUrlPatterns("/api/orders/*","/api/invoices/*","/api/users/logout");
+        registrationBean.addUrlPatterns("/api/orders/*","/api/invoices/*","/api/users/logout", "/api/users/register" );
 
         registrationBean.setOrder(1);
 
