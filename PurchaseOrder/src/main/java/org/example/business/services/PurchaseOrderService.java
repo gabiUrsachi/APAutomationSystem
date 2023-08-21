@@ -122,18 +122,18 @@ public class PurchaseOrderService {
      * @return the list of existing orders
      */
     public List<PurchaseOrder> getPurchaseOrders(List<PurchaseOrderFilter> filters) {
-        List<Criteria> criterion = new ArrayList<Criteria>(filters.size());
+        List<Criteria> criteriaList = new ArrayList<Criteria>(filters.size());
 
         for (PurchaseOrderFilter filter : filters) {
             if (filter.getOrderStatus() != null) {
-                criterion.add(Criteria.where("orderStatus").is(filter.getOrderStatus())
+                criteriaList.add(Criteria.where("orderStatus").is(filter.getOrderStatus())
                         .and(filter.getCompanyType()).is(filter.getCompanyUUID()));
             } else {
-                criterion.add(Criteria.where(filter.getCompanyType()).is(filter.getCompanyUUID()));
+                criteriaList.add(Criteria.where(filter.getCompanyType()).is(filter.getCompanyUUID()));
             }
         }
 
-        Criteria criteria = new Criteria().orOperator(criterion.toArray(new Criteria[criterion.size()]));
+        Criteria criteria = new Criteria().orOperator(criteriaList.toArray(new Criteria[criteriaList.size()]));
         Query searchQuery = new Query(criteria);
 
         return purchaseOrderRepository.findByQuery(searchQuery, PurchaseOrder.class);
