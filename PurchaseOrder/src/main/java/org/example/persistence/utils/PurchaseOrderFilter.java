@@ -1,4 +1,4 @@
-package org.example.business.utils;
+package org.example.persistence.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

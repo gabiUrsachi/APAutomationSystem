@@ -3,7 +3,7 @@ package org.example.business.services;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.OrderStatus;
-import org.example.business.utils.PurchaseOrderFilter;
+import org.example.persistence.utils.PurchaseOrderFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

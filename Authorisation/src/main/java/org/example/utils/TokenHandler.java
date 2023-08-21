@@ -67,6 +67,6 @@ public class TokenHandler {
     }
 
     private static Date computeExpDate() {
-        return new Date(System.currentTimeMillis() + 50000L);
+        return new Date(System.currentTimeMillis() + 600000L);
     }
 }

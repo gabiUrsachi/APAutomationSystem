@@ -2,6 +2,7 @@ package org.example;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
+import org.example.errorhandling.customexceptions.IdentifiersMismatchException;
 import org.example.errorhandling.utils.ExceptionResponseDTO;
 import org.example.errorhandling.customexceptions.InvalidRoleException;
 import org.example.errorhandling.customexceptions.InvalidTokenException;
@@ -22,8 +23,8 @@ public class AuthorisationControllerAdvice {
         return new ResponseEntity<>(exceptionResponse, status);
     }
 
-    @ExceptionHandler({InvalidRoleException.class})
-    public ResponseEntity<ExceptionResponseDTO> handleInvalidRoleException(InvalidRoleException ex) {
+    @ExceptionHandler({InvalidRoleException.class, IdentifiersMismatchException.class})
+    public ResponseEntity<ExceptionResponseDTO> handleInvalidRoleException(Exception ex) {
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.FORBIDDEN;
 

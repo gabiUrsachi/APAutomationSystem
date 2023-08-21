@@ -1,10 +1,13 @@
 package org.example.persistence.repository;
 
 import org.example.persistence.collections.PurchaseOrder;
-import org.springframework.data.mongodb.core.query.Query;
+import org.example.persistence.utils.PurchaseOrderFilter;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface PurchaseOrderCustomRepository{
-    List<PurchaseOrder> findByQuery(Query query, Class<PurchaseOrder> purchaseOrderClass);
+
+    List<PurchaseOrder> findByFilters(List<PurchaseOrderFilter> filters);
+    PurchaseOrder findByUUIDAndFilters(UUID identifier,List<PurchaseOrderFilter> filters);
 }

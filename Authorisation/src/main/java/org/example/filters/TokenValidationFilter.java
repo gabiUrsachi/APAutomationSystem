@@ -3,8 +3,8 @@ package org.example.filters;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.example.AuthorisationControllerAdvice;
-import org.example.errorhandling.utils.ExceptionResponseDTO;
 import org.example.errorhandling.customexceptions.InvalidTokenException;
+import org.example.errorhandling.utils.ExceptionResponseDTO;
 import org.example.utils.TokenHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
@@ -33,20 +33,15 @@ public class TokenValidationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) servletRequest;
-
-        Map<String, List<String>> headersMap = Collections.list(req.getHeaderNames())
-                .stream()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        h -> Collections.list(req.getHeaders(h))
-                ));
+        Map<String, List<String>> headersMap = getHeadersFromServletRequest(servletRequest);
 
         try {
             List<String> authHeader = headersMap.get("authorization");
-            if (authHeader == null ){
+
+            if (authHeader == null) {
                 throw new JWTVerificationException("No authentication header present");
             }
+
             String token = authHeader.get(0);
 
             DecodedJWT decodedJWT = TokenHandler.validateToken(token);
@@ -55,12 +50,23 @@ public class TokenValidationFilter implements Filter {
             servletRequest.setAttribute("roles", TokenHandler.getRolesFromToken(decodedJWT));
 
         } catch (InvalidTokenException | JWTVerificationException e) {
-
             ResponseEntity<ExceptionResponseDTO> exceptionResponse = this.controllerAdvice.handleInvalidTokenException(e);
+
             ((HttpServletResponse) servletResponse).sendError(exceptionResponse.getStatusCodeValue());
+            return;
 
         }
-
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    private Map<String, List<String>> getHeadersFromServletRequest(ServletRequest servletRequest) {
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
+
+        return Collections.list(req.getHeaderNames())
+                .stream()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        h -> Collections.list(req.getHeaders(h))
+                ));
     }
 }

@@ -1,17 +1,13 @@
 package org.example.business.services;
 
+import org.example.persistence.utils.PurchaseOrderFilter;
 import org.example.errorhandling.customexceptions.InvalidUpdateException;
 import org.example.errorhandling.customexceptions.OrderNotFoundException;
 import org.example.errorhandling.utils.ErrorMessages;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.OrderStatus;
-import org.example.business.utils.PurchaseOrderFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -117,25 +113,26 @@ public class PurchaseOrderService {
 
 
     /**
+     * It searches an existing purchase orders according to given filter
+     *
+     * @return the existing order if any
+     */
+    public PurchaseOrder getPurchaseOrder(UUID uuid, List<PurchaseOrderFilter> filters) {
+        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByUUIDAndFilters(uuid, filters);
+
+        if (purchaseOrder == null){
+            throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, uuid);
+        }
+
+        return purchaseOrder;
+    }
+
+    /**
      * It searches all existing purchase orders according to given filters
      *
      * @return the list of existing orders
      */
     public List<PurchaseOrder> getPurchaseOrders(List<PurchaseOrderFilter> filters) {
-        List<Criteria> criteriaList = new ArrayList<Criteria>(filters.size());
-
-        for (PurchaseOrderFilter filter : filters) {
-            if (filter.getOrderStatus() != null) {
-                criteriaList.add(Criteria.where("orderStatus").is(filter.getOrderStatus())
-                        .and(filter.getCompanyType()).is(filter.getCompanyUUID()));
-            } else {
-                criteriaList.add(Criteria.where(filter.getCompanyType()).is(filter.getCompanyUUID()));
-            }
-        }
-
-        Criteria criteria = new Criteria().orOperator(criteriaList.toArray(new Criteria[criteriaList.size()]));
-        Query searchQuery = new Query(criteria);
-
-        return purchaseOrderRepository.findByQuery(searchQuery, PurchaseOrder.class);
+        return purchaseOrderRepository.findByFilters(filters);
     }
 }

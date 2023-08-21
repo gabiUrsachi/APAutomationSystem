@@ -1,7 +1,7 @@
 package org.example.business.services;
 
 import org.example.Roles;
-import org.example.business.utils.PurchaseOrderFilter;
+import org.example.persistence.utils.PurchaseOrderFilter;
 import org.example.persistence.utils.OrderStatus;
 import org.springframework.stereotype.Service;
 
