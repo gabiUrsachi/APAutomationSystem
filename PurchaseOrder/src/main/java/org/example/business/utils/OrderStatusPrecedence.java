@@ -1,6 +1,6 @@
 package org.example.business.utils;
 
-import org.example.persistence.utils.OrderStatus;
+import org.example.persistence.utils.data.OrderStatus;
 
 import java.util.*;
 

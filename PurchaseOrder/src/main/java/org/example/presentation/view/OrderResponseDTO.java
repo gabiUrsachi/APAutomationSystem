@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.persistence.collections.Item;
-import org.example.persistence.utils.OrderStatus;
+import org.example.persistence.utils.data.OrderStatus;
 
 import java.util.Set;
 import java.util.UUID;

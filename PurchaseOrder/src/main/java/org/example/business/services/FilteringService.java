@@ -1,8 +1,9 @@
 package org.example.business.services;
 
+import org.example.persistence.utils.CompanyRole;
 import org.example.utils.Roles;
-import org.example.persistence.utils.OrderStatus;
-import org.example.persistence.utils.PurchaseOrderFilter;
+import org.example.persistence.utils.data.OrderStatus;
+import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class FilteringService {
                 case BUYER_I:
                     newFilter = PurchaseOrderFilter.builder()
                             .companyUUID(companyUUID)
-                            .companyType("buyer")
+                            .companyType(CompanyRole.BUYER)
                             .build();
 
                     filters.add(newFilter);
@@ -43,7 +44,7 @@ public class FilteringService {
                 case SUPPLIER_I:
                     newFilter = PurchaseOrderFilter.builder()
                             .companyUUID(companyUUID)
-                            .companyType("seller")
+                            .companyType(CompanyRole.SELLER)
                             .requiredStatus(OrderStatus.APPROVED)
                             .build();
                     filters.add(newFilter);
@@ -51,7 +52,7 @@ public class FilteringService {
                 case SUPPLIER_II:
                     newFilter = PurchaseOrderFilter.builder()
                             .companyUUID(companyUUID)
-                            .companyType("seller")
+                            .companyType(CompanyRole.SELLER)
                             .requiredStatus(OrderStatus.SAVED)
                             .build();
                     filters.add(newFilter);

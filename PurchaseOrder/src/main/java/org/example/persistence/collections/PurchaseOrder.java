@@ -3,7 +3,7 @@ package org.example.persistence.collections;
 
 import com.mongodb.lang.NonNull;
 import lombok.*;
-import org.example.persistence.utils.OrderStatus;
+import org.example.persistence.utils.data.OrderStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

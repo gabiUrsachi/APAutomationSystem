@@ -2,7 +2,7 @@ package org.example.business.services;
 
 import org.example.customexceptions.ForbiddenUpdateException;
 import org.example.customexceptions.IdentifiersMismatchException;
-import org.example.persistence.utils.OrderStatus;
+import org.example.persistence.utils.data.OrderStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

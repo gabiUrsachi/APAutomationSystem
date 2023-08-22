@@ -1,7 +1,7 @@
 package org.example.persistence.repository;
 
 import org.example.persistence.collections.PurchaseOrder;
-import org.example.persistence.utils.OrderStatus;
+import org.example.persistence.utils.data.OrderStatus;
 import org.springframework.data.mongodb.repository.DeleteQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

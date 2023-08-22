@@ -8,7 +8,7 @@ import org.example.business.services.FilteringService;
 import org.example.business.services.PurchaseOrderService;
 import org.example.business.services.ValidatorService;
 import org.example.persistence.collections.PurchaseOrder;
-import org.example.persistence.utils.PurchaseOrderFilter;
+import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.presentation.utils.PurchaseOrderMapperService;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.presentation.view.OrderResponseDTO;
@@ -16,6 +16,7 @@ import org.example.services.AuthorisationService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -49,7 +50,7 @@ public class PurchaseOrderController {
     @PostMapping
     @SuppressWarnings("unchecked cast")
     public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
-        Set<Roles> userRoles = (Set<Roles>) request.getAttribute("roles");
+        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
 
         authorisationService.authorize(userRoles, Roles.BUYER_I);
@@ -73,7 +74,7 @@ public class PurchaseOrderController {
     @GetMapping("/{identifier}")
     @SuppressWarnings("unchecked cast")
     public OrderResponseDTO getPurchaseOrder(@PathVariable UUID identifier, HttpServletRequest request) {
-        Set<Roles> userRoles = (Set<Roles>) request.getAttribute("roles");
+        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
 
         Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_I, Roles.SUPPLIER_I, Roles.SUPPLIER_II);
@@ -94,7 +95,7 @@ public class PurchaseOrderController {
     @GetMapping
     @SuppressWarnings("unchecked cast")
     public List<OrderResponseDTO> getPurchaseOrders(HttpServletRequest request) {
-        Set<Roles> userRoles = (Set<Roles>) request.getAttribute("roles");
+        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
 
         Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_I, Roles.SUPPLIER_I, Roles.SUPPLIER_II);
@@ -118,7 +119,7 @@ public class PurchaseOrderController {
     @PutMapping("/{identifier}")
     @SuppressWarnings("unchecked cast")
     public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
-        Set<Roles> userRoles = (Set<Roles>) request.getAttribute("roles");
+        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
 
         authorisationService.authorize(userRoles, Roles.BUYER_I, Roles.SUPPLIER_II);
@@ -142,7 +143,7 @@ public class PurchaseOrderController {
     @DeleteMapping("/{identifier}")
     @SuppressWarnings("unchecked cast")
     public void removePurchaseOrder(@PathVariable UUID identifier, HttpServletRequest request) {
-        Set<Roles> userRoles = (Set<Roles>) request.getAttribute("roles");
+        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
 
         authorisationService.authorize(userRoles, Roles.BUYER_I);
 
