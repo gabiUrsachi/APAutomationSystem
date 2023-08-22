@@ -6,13 +6,18 @@ import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
+import org.example.filters.TokenValidationFilter;
 import org.example.persistence.collections.Item;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
-import org.example.persistence.utils.OrderStatus;
+import org.example.persistence.utils.data.OrderStatus;
 import org.example.presentation.controllers.HttpRequestBuilder;
+import org.example.presentation.utils.ActionsPermissions;
+import org.example.presentation.utils.ResourceActionType;
 import org.example.presentation.view.OrderRequestDTO;
+import org.example.utils.TokenHandler;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
@@ -35,6 +42,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PurchaseOrderControllerIntegrationTest {
 
     @Autowired
+    private WebApplicationContext wac;
+
+    @Autowired
+    private TokenValidationFilter tokenValidationFilter;
+
     private MockMvc mockMvc;
 
     private ObjectMapper mapper;
@@ -48,6 +60,8 @@ public class PurchaseOrderControllerIntegrationTest {
     public void setUp() {
         this.mapper = new ObjectMapper();
         this.jsonParser = new JSONParser(JSONParser.DEFAULT_PERMISSIVE_MODE);
+
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).addFilters(tokenValidationFilter).build();
     }
 
     @Test
@@ -57,7 +71,9 @@ public class PurchaseOrderControllerIntegrationTest {
 
         purchaseOrderRepository.save(purchaseOrder);
 
-        RequestBuilder getOrderRequest = HttpRequestBuilder.createGetRequest(uuid);
+        String jwt = TokenHandler.createToken("random username", generateBuyerIdentifier(), ActionsPermissions.VALID_ROLES.get(ResourceActionType.GET));
+        RequestBuilder getOrderRequest = HttpRequestBuilder.createGetRequest(uuid, jwt);
+
         JSONArray orderItems = parseItemSetToJSONArray(purchaseOrder.getItems());
 
         this.mockMvc.perform(getOrderRequest)
@@ -73,7 +89,9 @@ public class PurchaseOrderControllerIntegrationTest {
     @Test
     public void createPurchaseOrder() throws Exception {
         OrderRequestDTO orderDTO = createOrderDTO(UUID.randomUUID(), 0);
-        RequestBuilder addOrderRequest = HttpRequestBuilder.createPostRequest(orderDTO);
+
+        String jwt = TokenHandler.createToken("random username", generateBuyerIdentifier(), ActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE));
+        RequestBuilder addOrderRequest = HttpRequestBuilder.createPostRequest(orderDTO, jwt);
 
         MvcResult mvcResult = this.mockMvc.perform(addOrderRequest)
                 .andExpect(status().isOk())
@@ -91,9 +109,11 @@ public class PurchaseOrderControllerIntegrationTest {
 
         purchaseOrderRepository.save(purchaseOrder);
 
+        String jwt = TokenHandler.createToken("random username", generateBuyerIdentifier(), ActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE));
+
         // first update
         OrderRequestDTO orderDTO = createOrderDTO(purchaseOrder.getIdentifier(), purchaseOrder.getVersion());
-        RequestBuilder updateOrderRequest = HttpRequestBuilder.createPutRequest(uuid, orderDTO);
+        RequestBuilder updateOrderRequest = HttpRequestBuilder.createPutRequest(uuid, orderDTO, jwt);
         JSONArray initialUpdatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
 
         this.mockMvc.perform(updateOrderRequest)
@@ -104,13 +124,22 @@ public class PurchaseOrderControllerIntegrationTest {
         // second update
         updateOrderItems(orderDTO);
         orderDTO.setVersion(orderDTO.getVersion() + 1);
-        updateOrderRequest = HttpRequestBuilder.createPutRequest(uuid, orderDTO);
-        JSONArray finalUpdatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
+        updateOrderRequest = HttpRequestBuilder.createPutRequest(uuid, orderDTO, jwt);
+        JSONArray intermediateUpdatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
 
         this.mockMvc.perform(updateOrderRequest)
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.orderStatus").value(OrderStatus.CREATED.toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.items").value(Matchers.containsInAnyOrder(finalUpdatedOrderItems.toArray())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.items").value(Matchers.containsInAnyOrder(intermediateUpdatedOrderItems.toArray())));
+
+        // third update (without JWT)
+        updateOrderItems(orderDTO);
+        orderDTO.setVersion(orderDTO.getVersion() + 1);
+        updateOrderRequest = HttpRequestBuilder.createPutRequest(uuid, orderDTO);
+        JSONArray finalUpdatedOrderItems = parseItemSetToJSONArray(orderDTO.getItems());
+
+        this.mockMvc.perform(updateOrderRequest)
+                .andExpect(status().isUnauthorized());
 
         purchaseOrderRepository.deleteById(uuid);
     }
@@ -123,13 +152,20 @@ public class PurchaseOrderControllerIntegrationTest {
 
         purchaseOrderRepository.save(purchaseOrder);
 
-        RequestBuilder deleteOrderRequest = HttpRequestBuilder.createDeleteRequest(uuid);
+        String jwt = TokenHandler.createToken("random username", generateBuyerIdentifier(), ActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE));
 
-        // delete purchase order
+        // delete purchase order with jwt
+        RequestBuilder deleteOrderRequest = HttpRequestBuilder.createDeleteRequest(uuid, jwt);
         this.mockMvc.perform(deleteOrderRequest)
                 .andExpect(status().isOk());
 
-        // try to delete again
+        // try to delete again (without jwt)
+        deleteOrderRequest = HttpRequestBuilder.createDeleteRequest(uuid);
+        this.mockMvc.perform(deleteOrderRequest)
+                .andExpect(status().isUnauthorized());
+
+        // try to delete again (with jwt)
+        deleteOrderRequest = HttpRequestBuilder.createDeleteRequest(uuid, jwt);
         this.mockMvc.perform(deleteOrderRequest)
                 .andExpect(status().isNotFound());
     }
@@ -165,8 +201,8 @@ public class PurchaseOrderControllerIntegrationTest {
     private OrderRequestDTO createOrderDTO(UUID identifier, Integer version) {
         return OrderRequestDTO.builder()
                 .identifier(identifier)
-                .buyer(generateCompanyIdentifier())
-                .seller(generateCompanyIdentifier())
+                .buyer(generateBuyerIdentifier())
+                .seller(generateSellerIdentifier())
                 .items(createItems())
                 .orderStatus(OrderStatus.CREATED)
                 .version(version)
@@ -179,6 +215,14 @@ public class PurchaseOrderControllerIntegrationTest {
                 new Item("Item2", 30, 230F),
                 new Item("Item3", 15, 15.89F)
         );
+    }
+
+    private UUID generateBuyerIdentifier() {
+        return UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0");
+    }
+
+    private UUID generateSellerIdentifier() {
+        return UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0");
     }
 
     private UUID generateCompanyIdentifier() {

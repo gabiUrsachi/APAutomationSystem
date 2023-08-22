@@ -43,14 +43,4 @@ public class PurchaseOrderControllerAdvice {
 
         return new ResponseEntity<>(exceptionResponse, status);
     }
-
-    @ExceptionHandler({InvalidTokenException.class, JWTVerificationException.class})
-    public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(Exception ex) {
-        String details = ex.getMessage();
-        HttpStatus status = HttpStatus.UNAUTHORIZED;
-
-        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
-
-        return new ResponseEntity<>(exceptionResponse, status);
-    }
 }

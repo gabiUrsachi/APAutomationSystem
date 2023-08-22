@@ -1,7 +1,5 @@
 package org.example.presentation.controllers.unit;
 
-
-
 import org.example.utils.ExceptionResponseDTO;
 import org.example.customexceptions.InvalidUpdateException;
 import org.example.customexceptions.OrderNotFoundException;
@@ -12,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -25,6 +24,8 @@ public class PurchaseOrderControllerAdviceShould {
     OrderNotFoundException orderNotFoundException;
     @Mock
     InvalidUpdateException invalidUpdateException;
+    @Mock
+    OptimisticLockingFailureException optimisticLockingFailureException;
 
     @Before
     public void setUp() {
@@ -43,6 +44,13 @@ public class PurchaseOrderControllerAdviceShould {
         ResponseEntity<ExceptionResponseDTO> exceptionResponse = purchaseOrderControllerAdvice.handleInvalidUpdateException(invalidUpdateException);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, exceptionResponse.getStatusCode());
+    }
+
+    @Test
+    public void returnPreconditionFailedStatusForOptimisticLockingFailureException() {
+        ResponseEntity<ExceptionResponseDTO> exceptionResponse = purchaseOrderControllerAdvice.handleOptimisticLockingFailureException(optimisticLockingFailureException);
+
+        assertEquals(HttpStatus.PRECONDITION_FAILED, exceptionResponse.getStatusCode());
     }
 
 }

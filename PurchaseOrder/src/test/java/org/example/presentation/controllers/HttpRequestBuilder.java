@@ -14,26 +14,55 @@ public class HttpRequestBuilder {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static RequestBuilder createPostRequest(OrderRequestDTO orderRequestDTO) throws JsonProcessingException {
+    public static RequestBuilder createPostRequest(OrderRequestDTO orderRequestDTO, String... authHeader) throws JsonProcessingException {
+        if (authHeader.length != 0) {
+            return MockMvcRequestBuilders
+                    .post(ORDER_API_URL)
+                    .content(mapper.writeValueAsString(orderRequestDTO))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("authorization", "Bearer " + authHeader[0]);
+        }
+
         return MockMvcRequestBuilders
                 .post(ORDER_API_URL)
                 .content(mapper.writeValueAsString(orderRequestDTO))
                 .contentType(MediaType.APPLICATION_JSON);
     }
 
-    public static RequestBuilder createPutRequest(UUID orderIdentifier, OrderRequestDTO orderRequestDTO) throws JsonProcessingException {
+    public static RequestBuilder createPutRequest(UUID orderIdentifier, OrderRequestDTO orderRequestDTO, String... authHeader) throws JsonProcessingException {
+        if (authHeader.length != 0) {
+            return MockMvcRequestBuilders
+                    .put(ORDER_API_URL + "/{identifier}", orderIdentifier)
+                    .content(mapper.writeValueAsString(orderRequestDTO))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("authorization", "Bearer " + authHeader[0]);
+        }
+
         return MockMvcRequestBuilders
                 .put(ORDER_API_URL + "/{identifier}", orderIdentifier)
                 .content(mapper.writeValueAsString(orderRequestDTO))
                 .contentType(MediaType.APPLICATION_JSON);
     }
 
-    public static RequestBuilder createDeleteRequest(UUID orderIdentifier) {
+    public static RequestBuilder createDeleteRequest(UUID orderIdentifier, String... authHeader) {
+        if (authHeader.length != 0) {
+            return MockMvcRequestBuilders
+                    .delete(ORDER_API_URL + "/{identifier}", orderIdentifier)
+                    .header("authorization", "Bearer " + authHeader[0]);
+        }
+
         return MockMvcRequestBuilders
                 .delete(ORDER_API_URL + "/{identifier}", orderIdentifier);
     }
 
-    public static RequestBuilder createGetRequest(UUID orderIdentifier) {
+    public static RequestBuilder createGetRequest(UUID orderIdentifier, String... authHeader) {
+        if (authHeader.length != 0) {
+
+            return MockMvcRequestBuilders
+                    .get(ORDER_API_URL + "/{identifier}", orderIdentifier)
+                    .header("authorization", "Bearer " + authHeader[0]);
+        }
+
         return MockMvcRequestBuilders
                 .get(ORDER_API_URL + "/{identifier}", orderIdentifier);
     }

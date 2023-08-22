@@ -3,6 +3,8 @@ package org.example.presentation.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.example.presentation.utils.ActionsPermissions;
+import org.example.presentation.utils.ResourceActionType;
 import org.example.utils.Roles;
 import org.example.business.services.FilteringService;
 import org.example.business.services.PurchaseOrderService;
@@ -50,10 +52,11 @@ public class PurchaseOrderController {
     @PostMapping
     @SuppressWarnings("unchecked cast")
     public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
-        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
+        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
 
-        authorisationService.authorize(userRoles, Roles.BUYER_I);
+        authorisationService.authorize(userRoles, validRoles.toArray(new Roles[0]));
         validatorService.verifyIdentifiersMatch(companyUUID, orderRequestDTO.getBuyer());
 
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
@@ -74,12 +77,13 @@ public class PurchaseOrderController {
     @GetMapping("/{identifier}")
     @SuppressWarnings("unchecked cast")
     public OrderResponseDTO getPurchaseOrder(@PathVariable UUID identifier, HttpServletRequest request) {
-        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
+        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
 
-        Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_I, Roles.SUPPLIER_I, Roles.SUPPLIER_II);
+        Set<Roles> matchingRoles = authorisationService.authorize(userRoles, validRoles.toArray(new Roles[0]));
 
-        List<PurchaseOrderFilter> queryFilters = filteringService.createQueryFilters(validRoles, companyUUID);
+        List<PurchaseOrderFilter> queryFilters = filteringService.createQueryFilters(matchingRoles, companyUUID);
         PurchaseOrder purchaseOrder = purchaseOrderService.getPurchaseOrder(identifier, queryFilters);
 
         return purchaseOrderMapperService.mapToDTO(purchaseOrder);
@@ -95,12 +99,13 @@ public class PurchaseOrderController {
     @GetMapping
     @SuppressWarnings("unchecked cast")
     public List<OrderResponseDTO> getPurchaseOrders(HttpServletRequest request) {
-        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
+        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
 
-        Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_I, Roles.SUPPLIER_I, Roles.SUPPLIER_II);
+        Set<Roles> matchingRoles = authorisationService.authorize(userRoles, validRoles.toArray(new Roles[0]));
 
-        List<PurchaseOrderFilter> queryFilters = filteringService.createQueryFilters(validRoles, companyUUID);
+        List<PurchaseOrderFilter> queryFilters = filteringService.createQueryFilters(matchingRoles, companyUUID);
         List<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders(queryFilters);
 
         return purchaseOrderMapperService.mapToDTO(purchaseOrders);
@@ -111,7 +116,7 @@ public class PurchaseOrderController {
             {
                     @ApiResponse(responseCode = "200", description = "Successfully updated order resource"),
                     @ApiResponse(responseCode = "401", description = "Invalid token"),
-                    @ApiResponse(responseCode = "403", description = "Invalid role"),
+                    @ApiResponse(responseCode = "403", description = "Invalid role or lack of permission for a valid role"),
                     @ApiResponse(responseCode = "404", description = "Order not found"),
                     @ApiResponse(responseCode = "412", description = "Invalid resource version for update"),
                     @ApiResponse(responseCode = "422", description = "Invalid resource status for update")
@@ -119,10 +124,11 @@ public class PurchaseOrderController {
     @PutMapping("/{identifier}")
     @SuppressWarnings("unchecked cast")
     public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
-        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
+        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
 
-        authorisationService.authorize(userRoles, Roles.BUYER_I, Roles.SUPPLIER_II);
+        authorisationService.authorize(userRoles, validRoles.toArray(new Roles[0]));
         validatorService.verifyUpdatePermission(orderRequestDTO.getOrderStatus(), companyUUID, orderRequestDTO.getBuyer(), orderRequestDTO.getSeller());
 
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
@@ -144,8 +150,9 @@ public class PurchaseOrderController {
     @SuppressWarnings("unchecked cast")
     public void removePurchaseOrder(@PathVariable UUID identifier, HttpServletRequest request) {
         Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.DELETE);
 
-        authorisationService.authorize(userRoles, Roles.BUYER_I);
+        authorisationService.authorize(userRoles, validRoles.toArray(new Roles[0]));
 
         purchaseOrderService.deletePurchaseOrder(identifier);
     }

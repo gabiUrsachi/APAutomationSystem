@@ -99,7 +99,7 @@ public class PurchaseOrderService {
      */
     public PurchaseOrder updatePurchaseOrder(PurchaseOrder purchaseOrder) {
         int oldVersion = purchaseOrder.getVersion();
-        OrderStatus requiredOldStatus = OrderStatusPrecedence.predecessors.get(purchaseOrder.getOrderStatus());
+        OrderStatus requiredOldStatus = OrderStatusPrecedence.PREDECESSORS.get(purchaseOrder.getOrderStatus());
 
         PurchaseOrder updatedPurchaseOrder = PurchaseOrder.builder()
                 .identifier(purchaseOrder.getIdentifier())

@@ -6,8 +6,8 @@ import org.example.customexceptions.InvalidUpdateException;
 import org.example.customexceptions.OrderNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
-import org.example.persistence.utils.OrderStatus;
-import org.example.persistence.utils.PurchaseOrderFilter;
+import org.example.persistence.utils.data.OrderStatus;
+import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -46,7 +46,7 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
 
         OrderStatus randomOrderStatus = createRandomStatus();
-        OrderStatus requiredOrderStatus = OrderStatusPrecedence.predecessors.get(randomOrderStatus);
+        OrderStatus requiredOrderStatus = OrderStatusPrecedence.PREDECESSORS.get(randomOrderStatus);
         purchaseOrder = createPurchaseOrderWithStatusAndUUID(randomOrderStatus, uuid);
 
         given(purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(uuid, purchaseOrder.getVersion(), requiredOrderStatus, purchaseOrder)).willReturn(0);
@@ -60,7 +60,7 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
 
         OrderStatus updatedOrderStatus = OrderStatus.CREATED;
-        OrderStatus requiredOrderStatus = OrderStatusPrecedence.predecessors.get(updatedOrderStatus);
+        OrderStatus requiredOrderStatus = OrderStatusPrecedence.PREDECESSORS.get(updatedOrderStatus);
         OrderStatus existingOrderStatus = OrderStatus.SAVED;
 
         PurchaseOrder existingPurchaseOrder = createPurchaseOrderWithStatusAndUUID(existingOrderStatus, uuid);
@@ -78,7 +78,7 @@ public class PurchaseOrderServiceShould {
     public void throwOptimisticLockingFailureExceptionWhenTryingToUpdateAModifiedOrder() {
         UUID uuid = UUID.randomUUID();
         OrderStatus randomStatus = createRandomStatus();
-        OrderStatus requiredOldStatus = OrderStatusPrecedence.predecessors.get(randomStatus);
+        OrderStatus requiredOldStatus = OrderStatusPrecedence.PREDECESSORS.get(randomStatus);
 
         PurchaseOrder existingPurchaseOrder = createPurchaseOrderWithStatusAndUUID(randomStatus, uuid);
         PurchaseOrder updatedPurchaseOrder = createPurchaseOrderWithStatusAndUUID(randomStatus, uuid);
@@ -99,7 +99,7 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
 
         OrderStatus updatedOrderStatus = OrderStatus.SAVED;
-        OrderStatus requiredOrderStatus = OrderStatusPrecedence.predecessors.get(updatedOrderStatus);
+        OrderStatus requiredOrderStatus = OrderStatusPrecedence.PREDECESSORS.get(updatedOrderStatus);
 
         PurchaseOrder updatedPurchaseOrder = createPurchaseOrderWithStatusAndUUID(updatedOrderStatus, uuid);
 
