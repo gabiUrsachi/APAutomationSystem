@@ -1,13 +1,12 @@
 package org.example.business.models;
 
-import com.mongodb.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.persistence.collections.Item;
 import org.example.persistence.utils.InvoiceStatus;
-import org.example.persistence.utils.OrderStatus;
+import org.example.presentation.view.CompanyDTO;
 
 import javax.validation.constraints.NotNull;
 import java.util.Set;

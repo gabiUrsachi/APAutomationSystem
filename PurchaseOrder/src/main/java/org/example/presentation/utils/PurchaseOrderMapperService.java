@@ -1,7 +1,6 @@
 package org.example.presentation.utils;
 
-import org.example.services.CompanyMapperService;
-import org.example.services.CompanyOpsService;
+import org.example.business.services.CompanyService;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.presentation.view.OrderResponseDTO;
 import org.example.persistence.collections.PurchaseOrder;
@@ -15,12 +14,12 @@ import java.util.stream.Collectors;
  * This service is used for entity <-> dto conversions
  */
 @Service
-public class MapperService {
+public class PurchaseOrderMapperService {
     @Autowired
     private CompanyMapperService companyMapperService;
 
     @Autowired
-    private CompanyOpsService companyOpsService;
+    private CompanyService companyService;
 
     /**
      * It creates an entity with the same properties as the received dto
@@ -48,8 +47,8 @@ public class MapperService {
     public OrderResponseDTO mapToDTO(PurchaseOrder purchaseOrder) {
         return OrderResponseDTO.builder()
                 .identifier(purchaseOrder.getIdentifier())
-                .buyer(companyMapperService.mapToDTO(companyOpsService.getCompanyById(purchaseOrder.getBuyer())))
-                .seller(companyMapperService.mapToDTO(companyOpsService.getCompanyById(purchaseOrder.getSeller())))
+                .buyer(companyMapperService.mapToDTO(companyService.getCompanyById(purchaseOrder.getBuyer())))
+                .seller(companyMapperService.mapToDTO(companyService.getCompanyById(purchaseOrder.getSeller())))
                 .items(purchaseOrder.getItems())
                 .orderStatus(purchaseOrder.getOrderStatus())
                 .version(purchaseOrder.getVersion())

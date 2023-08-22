@@ -9,7 +9,7 @@ import org.example.customexceptions.OrderNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.OrderStatus;
 import org.example.presentation.controllers.PurchaseOrderController;
-import org.example.presentation.utils.MapperService;
+import org.example.presentation.utils.PurchaseOrderMapperService;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.services.AuthorisationService;
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class PurchaseOrderControllerShould {
     @Mock
     PurchaseOrderService purchaseOrderService;
     @Mock
-    MapperService mapperService;
+    PurchaseOrderMapperService purchaseOrderMapperService;
 
     @Mock
     AuthorisationService authorisationService;
@@ -44,7 +44,7 @@ public class PurchaseOrderControllerShould {
 
     @Before
     public void setUp() {
-        purchaseOrderController = new PurchaseOrderController(purchaseOrderService, mapperService, authorisationService, filteringService, validatorService);
+        purchaseOrderController = new PurchaseOrderController(purchaseOrderService, purchaseOrderMapperService, authorisationService, filteringService, validatorService);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class PurchaseOrderControllerShould {
         PurchaseOrder purchaseOrder = createPurchaseOrderWithStatus(OrderStatus.SAVED);
         purchaseOrder.setIdentifier(searchedUUID);
 
-        given(mapperService.mapToEntity(orderRequestDTO)).willReturn(purchaseOrder);
+        given(purchaseOrderMapperService.mapToEntity(orderRequestDTO)).willReturn(purchaseOrder);
         given(purchaseOrderService.updatePurchaseOrder(purchaseOrder)).willThrow(InvalidUpdateException.class);
 
         assertThrows(InvalidUpdateException.class, () -> purchaseOrderController.updatePurchaseOrder(searchedUUID, orderRequestDTO, null));

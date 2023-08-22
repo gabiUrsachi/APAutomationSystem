@@ -1,8 +1,8 @@
-package org.example.controllers;
+package org.example.presentation.controllers;
 
-import org.example.business.models.CompanyDTO;
-import org.example.services.CompanyMapperService;
-import org.example.services.CompanyOpsService;
+import org.example.presentation.view.CompanyDTO;
+import org.example.presentation.utils.CompanyMapperService;
+import org.example.business.services.CompanyService;
 import org.example.persistence.collections.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:4200/")
 public class CompanyController {
     @Autowired
-    private CompanyOpsService companyOpsService;
+    private CompanyService companyService;
 
     @Autowired
     private CompanyMapperService companyMapperService;
@@ -25,7 +25,7 @@ public class CompanyController {
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
         CompanyDTO initializedCompany = initializeCompany(companyDTO);
         Company company = companyMapperService.mapToEntity(initializedCompany);
-        return companyMapperService.mapToDTO(companyOpsService.createCompany(company));
+        return companyMapperService.mapToDTO(companyService.createCompany(company));
 
     }
 
@@ -39,20 +39,20 @@ public class CompanyController {
     @GetMapping
     public List<CompanyDTO> getCompanies() {
 
-        return companyMapperService.mapToDTO(companyOpsService.getCompanies());
+        return companyMapperService.mapToDTO(companyService.getCompanies());
     }
 
 
     @GetMapping("/{identifier}")
     public CompanyDTO getById(@PathVariable UUID identifier) {
-        return companyMapperService.mapToDTO(companyOpsService.getCompanyById(identifier));
+        return companyMapperService.mapToDTO(companyService.getCompanyById(identifier));
 
     }
 
     @DeleteMapping("/{identifier}")
     public void deleteById(@PathVariable UUID identifier) {
 
-        companyOpsService.deleteCompany(identifier);
+        companyService.deleteCompany(identifier);
 
     }
 }

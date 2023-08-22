@@ -1,8 +1,10 @@
 package org.example.services;
 
 import org.example.business.models.*;
+import org.example.business.services.CompanyService;
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
+import org.example.presentation.utils.CompanyMapperService;
 import org.example.presentation.view.OrderResponseDTO;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +13,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class InvoiceMapperService {
-    private final CompanyOpsService companyOpsService;
+    private final CompanyService companyService;
     private final CompanyMapperService companyMapperService;
 
-    public InvoiceMapperService(CompanyOpsService companyOpsService, CompanyMapperService companyMapperService) {
-        this.companyOpsService = companyOpsService;
+    public InvoiceMapperService(CompanyService companyService, CompanyMapperService companyMapperService) {
+        this.companyService = companyService;
         this.companyMapperService = companyMapperService;
     }
 
@@ -44,8 +46,8 @@ public class InvoiceMapperService {
 
     public InvoiceDTO mapToDTO(Invoice invoice) {
 
-        Company buyer = companyOpsService.getCompanyById(invoice.getBuyerId());
-        Company seller = companyOpsService.getCompanyById(invoice.getSellerId());
+        Company buyer = companyService.getCompanyById(invoice.getBuyerId());
+        Company seller = companyService.getCompanyById(invoice.getSellerId());
         return InvoiceDTO.builder()
                 .identifier(invoice.getIdentifier())
                 .buyer(companyMapperService.mapToDTO(buyer))
@@ -58,8 +60,8 @@ public class InvoiceMapperService {
 
     public InvoiceDDO mapToDDO(Invoice invoice) {
 
-        Company buyer = companyOpsService.getCompanyById(invoice.getBuyerId());
-        Company seller = companyOpsService.getCompanyById(invoice.getSellerId());
+        Company buyer = companyService.getCompanyById(invoice.getBuyerId());
+        Company seller = companyService.getCompanyById(invoice.getSellerId());
         return InvoiceDDO.builder()
                 .identifier(invoice.getIdentifier())
                 .buyerName(buyer.getName())

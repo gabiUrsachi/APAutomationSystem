@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.business.models.CompanyDTO;
 import org.example.persistence.collections.Item;
 import org.example.persistence.utils.OrderStatus;
 

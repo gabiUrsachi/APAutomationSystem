@@ -9,7 +9,7 @@ import org.example.business.services.PurchaseOrderService;
 import org.example.business.services.ValidatorService;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.PurchaseOrderFilter;
-import org.example.presentation.utils.MapperService;
+import org.example.presentation.utils.PurchaseOrderMapperService;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.presentation.view.OrderResponseDTO;
 import org.example.services.AuthorisationService;
@@ -26,14 +26,14 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:4200/")
 public class PurchaseOrderController {
     private final PurchaseOrderService purchaseOrderService;
-    private final MapperService mapperService;
+    private final PurchaseOrderMapperService purchaseOrderMapperService;
     private final AuthorisationService authorisationService;
     private final FilteringService filteringService;
     private final ValidatorService validatorService;
 
-    public PurchaseOrderController(PurchaseOrderService purchaseOrderService, MapperService mapperService, AuthorisationService authorisationService, FilteringService filteringService, ValidatorService validatorService) {
+    public PurchaseOrderController(PurchaseOrderService purchaseOrderService, PurchaseOrderMapperService purchaseOrderMapperService, AuthorisationService authorisationService, FilteringService filteringService, ValidatorService validatorService) {
         this.purchaseOrderService = purchaseOrderService;
-        this.mapperService = mapperService;
+        this.purchaseOrderMapperService = purchaseOrderMapperService;
         this.authorisationService = authorisationService;
         this.filteringService = filteringService;
         this.validatorService = validatorService;
@@ -55,11 +55,11 @@ public class PurchaseOrderController {
         authorisationService.authorize(userRoles, Roles.BUYER_I);
         validatorService.verifyIdentifiersMatch(companyUUID, orderRequestDTO.getBuyer());
 
-        PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
+        PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
 
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
-        return mapperService.mapToDTO(createdPurchaseOrder);
+        return purchaseOrderMapperService.mapToDTO(createdPurchaseOrder);
     }
 
     @Operation(summary = "get purchase order by identifier")
@@ -81,7 +81,7 @@ public class PurchaseOrderController {
         List<PurchaseOrderFilter> queryFilters = filteringService.createQueryFilters(validRoles, companyUUID);
         PurchaseOrder purchaseOrder = purchaseOrderService.getPurchaseOrder(identifier, queryFilters);
 
-        return mapperService.mapToDTO(purchaseOrder);
+        return purchaseOrderMapperService.mapToDTO(purchaseOrder);
     }
 
     @Operation(summary = "get all purchase orders")
@@ -102,7 +102,7 @@ public class PurchaseOrderController {
         List<PurchaseOrderFilter> queryFilters = filteringService.createQueryFilters(validRoles, companyUUID);
         List<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders(queryFilters);
 
-        return mapperService.mapToDTO(purchaseOrders);
+        return purchaseOrderMapperService.mapToDTO(purchaseOrders);
     }
 
     @Operation(summary = "updates an existing purchase order")
@@ -124,11 +124,11 @@ public class PurchaseOrderController {
         authorisationService.authorize(userRoles, Roles.BUYER_I, Roles.SUPPLIER_II);
         validatorService.verifyUpdatePermission(orderRequestDTO.getOrderStatus(), companyUUID, orderRequestDTO.getBuyer(), orderRequestDTO.getSeller());
 
-        PurchaseOrder purchaseOrderRequest = mapperService.mapToEntity(orderRequestDTO);
+        PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
 
         PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrderRequest);
 
-        return mapperService.mapToDTO(updatedPurchaseOrder);
+        return purchaseOrderMapperService.mapToDTO(updatedPurchaseOrder);
     }
 
     @Operation(summary = "remove purchase order by id")

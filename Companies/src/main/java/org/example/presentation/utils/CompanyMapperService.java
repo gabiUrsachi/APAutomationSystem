@@ -1,6 +1,6 @@
-package org.example.services;
+package org.example.presentation.utils;
 
-import org.example.business.models.CompanyDTO;
+import org.example.presentation.view.CompanyDTO;
 import org.example.persistence.collections.Company;
 import org.springframework.stereotype.Service;
 

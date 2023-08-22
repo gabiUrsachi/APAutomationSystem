@@ -1,6 +1,5 @@
 package org.example.persistence.repository;
 
-import org.example.business.models.CompanyDTO;
 import org.example.persistence.collections.Company;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

@@ -1,20 +1,21 @@
-package org.example.services;
+package org.example.business.services;
 
-import org.example.business.models.CompanyDTO;
 import org.example.persistence.collections.Company;
 import org.example.persistence.repository.CompanyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
-public class CompanyOpsService {
-    @Autowired
-    private CompanyRepository companyRepository;
+public class CompanyService {
+
+    private final CompanyRepository companyRepository;
+
+    public CompanyService(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
 
     public Company getCompanyByName(String name) {
 

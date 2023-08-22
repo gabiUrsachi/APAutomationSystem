@@ -1,4 +1,4 @@
-package org.example.business.models;
+package org.example.presentation.view;
 
 import lombok.*;
 

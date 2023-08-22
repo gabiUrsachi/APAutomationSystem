@@ -29,7 +29,12 @@ public class PurchaseOrderServiceTest {
 
     @Test
     public void testQuery(){
-        List<PurchaseOrderFilter> filters = List.of(new PurchaseOrderFilter(OrderStatus.CREATED, UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0"), "buyer"));
+        List<PurchaseOrderFilter> filters = List.of(
+                PurchaseOrderFilter.builder()
+                        .requiredStatus(OrderStatus.CREATED)
+                        .companyUUID(UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0"))
+                        .companyType("buyer")
+                        .build());
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders(filters);
 
