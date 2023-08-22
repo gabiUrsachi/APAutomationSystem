@@ -7,9 +7,8 @@ import org.example.utils.Roles;
 import org.example.customexceptions.InvalidTokenException;
 import org.example.utils.ExceptionResponseDTO;
 import org.example.utils.TokenHandler;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -22,15 +21,13 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Component
 public class TokenValidationFilter implements Filter {
-    private AuthorisationControllerAdvice controllerAdvice;
 
-    @Override
-    public void init(FilterConfig arg0) throws ServletException {
-        ApplicationContext ctx = WebApplicationContextUtils
-                .getRequiredWebApplicationContext(arg0.getServletContext());
+    private final AuthorisationControllerAdvice controllerAdvice;
 
-        this.controllerAdvice = ctx.getBean(AuthorisationControllerAdvice.class);
+    public TokenValidationFilter(AuthorisationControllerAdvice controllerAdvice) {
+        this.controllerAdvice = controllerAdvice;
     }
 
     @Override
