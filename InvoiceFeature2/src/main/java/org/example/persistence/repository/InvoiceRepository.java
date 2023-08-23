@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.Update;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface InvoiceRepository extends MongoRepository<Invoice, String> {
+public interface InvoiceRepository extends MongoRepository<Invoice, String>, InvoiceCustomRepository {
 
     Optional<Invoice> findByIdentifier(UUID identifier);
 

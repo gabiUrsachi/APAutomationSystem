@@ -1,5 +1,6 @@
 package org.example.services;
 
+import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.utils.ErrorMessages;
 import org.example.customexceptions.InvalidUpdateException;
 import org.example.customexceptions.InvoiceNotFoundException;
@@ -29,19 +30,18 @@ public class InvoiceService {
         return invoiceRepository.insert(initializedInvoice);
     }
 
-    public List<Invoice> getInvoices() {
+    public List<Invoice> getInvoices(List<InvoiceFilter> filters) {
 
-        return invoiceRepository.findAll();
+        return invoiceRepository.findByFilters(filters);
     }
 
-    public Invoice getInvoice(UUID identifier) {
+    public Invoice getInvoice(UUID identifier,List<InvoiceFilter> filters) {
 
-        Optional<Invoice> invoice;
-        invoice = invoiceRepository.findByIdentifier(identifier);
-        if (invoice.isEmpty()) {
+        Invoice invoice = invoiceRepository.findByUUIDAndFilters(identifier,filters);
+        if (invoice == null) {
             throw new InvoiceNotFoundException("Couldn't find invoice with identifier " + identifier);
         }
-        return invoice.get();
+        return invoice;
     }
 
     public void deleteInvoice(UUID identifier) {
@@ -61,7 +61,7 @@ public class InvoiceService {
     public void updateInvoice(UUID identifier, Invoice invoice) {
 
         int currentVersion=invoice.getVersion();
-        System.out.println(invoice);
+
 
         Invoice updatedInvoice = Invoice.builder()
                 .identifier(invoice.getIdentifier())

@@ -44,7 +44,7 @@ public class UserController {
     @PostMapping(value = "register")
     @SuppressWarnings("unchecked cast")
     public HttpStatus registerUser(@RequestBody RegisterRequestDTO registerRequestDTO, HttpServletRequest request) {
-        Set<Roles> userRoles = new HashSet<>((List <Roles>) request.getAttribute("roles"));
+        Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
 
         authorisationService.authorize(userRoles, Roles.ADMIN);
 
@@ -79,7 +79,7 @@ public class UserController {
                     @ApiResponse(responseCode = "401", description = "Invalid token for already logged in user")
             })
     @PostMapping(value = "logout")
-    public void logout(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader){
+    public void logout(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader) {
         TokenHandler.validateToken(authorizationHeader);
 
         //TokenHandler.invalidateToken(jwt);
