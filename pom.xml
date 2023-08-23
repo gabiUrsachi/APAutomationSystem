@@ -15,13 +15,13 @@
     <name>ap</name>
     <description>AP automation workflow system</description>
     <modules>
-        <module>Companies</module>
-        <module>PurchaseOrder</module>
-        <module>InvoiceFeature2</module>
+        <module>companies</module>
+        <module>purchaseOrder</module>
+        <module>invoiceFeature</module>
         <module>core</module>
-        <module>Authentication</module>
-        <module>Authorisation</module>
-        <module>ErrorHandling</module>
+        <module>authentication</module>
+        <module>authorisation</module>
+        <module>errorHandling</module>
     </modules>
     <properties>
         <java.version>11</java.version>

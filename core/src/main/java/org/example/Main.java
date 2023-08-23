@@ -23,6 +23,7 @@ public class Main {
                 registry
                         .addMapping("/**")
                         .allowedOrigins("*")
+                        .allowedHeaders("*")
                         .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
             }
         };
