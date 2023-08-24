@@ -60,8 +60,7 @@ public class UserController {
     @ApiResponses(value =
             {
                     @ApiResponse(responseCode = "200", description = "Successfully authenticated"),
-                    @ApiResponse(responseCode = "401", description = "Invalid user credentials"),
-                    @ApiResponse(responseCode = "404", description = "Non-existent user")
+                    @ApiResponse(responseCode = "401", description = "Invalid user credentials")
             })
     @PostMapping(value = "login")
     public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO) {

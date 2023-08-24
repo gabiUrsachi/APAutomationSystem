@@ -1,13 +1,11 @@
 package org.example.business.services;
 
 import org.example.business.utils.Password;
-
 import org.example.customexceptions.AlreadyExistingUserException;
 import org.example.customexceptions.InvalidCredentialsException;
-import org.example.customexceptions.UserNotFoundException;
-import org.example.utils.ErrorMessages;
 import org.example.persistence.collections.User;
 import org.example.persistence.repository.UserRepository;
+import org.example.utils.ErrorMessages;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,10 +17,6 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    public User getUser(String username){
-        return userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(ErrorMessages.USER_NOT_FOUND, username));
     }
 
     public void registerUser(User user){
@@ -40,7 +34,7 @@ public class UserService {
         Optional<User> existingUser = userRepository.findByUsername(username);
 
         if(existingUser.isEmpty()){
-            throw new UserNotFoundException(ErrorMessages.USER_NOT_FOUND, username);
+            throw new InvalidCredentialsException(ErrorMessages.INVALID_CREDENTIALS);
         }
         else{
             User user = existingUser.get();
