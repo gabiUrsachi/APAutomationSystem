@@ -3,12 +3,11 @@ package org.example.filters;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.example.AuthorisationControllerAdvice;
-import org.example.utils.data.Roles;
 import org.example.customexceptions.InvalidTokenException;
 import org.example.utils.ExceptionResponseDTO;
 import org.example.utils.TokenHandler;
+import org.example.utils.data.Roles;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +20,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Component
 public class TokenValidationFilter implements Filter {
 
     private final AuthorisationControllerAdvice controllerAdvice;
@@ -33,6 +31,13 @@ public class TokenValidationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         Map<String, List<String>> headersMap = getHeadersFromServletRequest(servletRequest);
+
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+
+        if (httpServletRequest.getMethod().equals("OPTIONS")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
 
         try {
             List<String> authHeader = headersMap.get("authorization");

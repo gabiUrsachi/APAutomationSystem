@@ -20,17 +20,4 @@ public class FilterRegister {
 
         return registrationBean;
     }
-
-    @Bean
-    public FilterRegistrationBean<AuthCorsFilter> corsFilter(){
-        FilterRegistrationBean<AuthCorsFilter> registrationBean
-                = new FilterRegistrationBean<>();
-
-        registrationBean.setFilter(new AuthCorsFilter());
-        registrationBean.addUrlPatterns("/api/orders/*","/api/invoices/*","/api/users/logout", "/api/users/register" );
-
-        registrationBean.setOrder(1);
-
-        return registrationBean;
-    }
 }
