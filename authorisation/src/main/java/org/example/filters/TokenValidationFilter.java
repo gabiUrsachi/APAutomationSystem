@@ -23,9 +23,11 @@ import java.util.stream.Collectors;
 public class TokenValidationFilter implements Filter {
 
     private final AuthorisationControllerAdvice controllerAdvice;
+    private final List<String> excludedUrls;
 
     public TokenValidationFilter(AuthorisationControllerAdvice controllerAdvice) {
         this.controllerAdvice = controllerAdvice;
+        this.excludedUrls = List.of("/api/companies.*", "/api/users/login");
     }
 
     @Override
@@ -35,6 +37,11 @@ public class TokenValidationFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
         if (httpServletRequest.getMethod().equals("OPTIONS")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
+        if(shouldBeExcluded(httpServletRequest.getRequestURI())){
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -73,5 +80,14 @@ public class TokenValidationFilter implements Filter {
                         Function.identity(),
                         h -> Collections.list(req.getHeaders(h))
                 ));
+    }
+
+    private boolean shouldBeExcluded(String url){
+        for (String pattern : this.excludedUrls) {
+            if (url.matches(pattern)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

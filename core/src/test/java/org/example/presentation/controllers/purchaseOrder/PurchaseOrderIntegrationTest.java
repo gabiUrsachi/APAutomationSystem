@@ -1,4 +1,4 @@
-package org.example.presentation.controllers;
+package org.example.presentation.controllers.purchaseOrder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
