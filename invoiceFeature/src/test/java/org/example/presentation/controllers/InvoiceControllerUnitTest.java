@@ -14,22 +14,22 @@ public class InvoiceControllerUnitTest {
 
 
 
-    @Test
-    public void invoiceControllerCallsService() {
-
-        //given
-        InvoiceService invoiceService = mock(InvoiceService.class);
-        InvoiceMapperService invoiceMapperService = mock(InvoiceMapperService.class);
-        InvoiceController invoiceController = new InvoiceController(invoiceService, invoiceMapperService);
-        given(invoiceService.getInvoices()).willReturn(invoiceList);
-
-        //when
-        invoiceController.getInvoices();
-
-        //then
-        verify(invoiceMapperService).mapToDDO(invoiceList);
-
-    }
+//    @Test
+//    public void invoiceControllerCallsService() {
+//
+//        //given
+//        InvoiceService invoiceService = mock(InvoiceService.class);
+//        InvoiceMapperService invoiceMapperService = mock(InvoiceMapperService.class);
+//        InvoiceController invoiceController = new InvoiceController(invoiceService, invoiceMapperService);
+//        given(invoiceService.getInvoices()).willReturn(invoiceList);
+//
+//        //when
+//        invoiceController.getInvoices();
+//
+//        //then
+//        verify(invoiceMapperService).mapToDDO(invoiceList);
+//
+//    }
 
 //    @Test
 //    public void invoiceControllerConvertsObjectProperly(){

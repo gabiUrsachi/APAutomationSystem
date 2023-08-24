@@ -1,6 +1,6 @@
 package org.example.persistence.collections;
 
-import org.example.utils.Roles;
+import org.example.utils.data.Roles;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

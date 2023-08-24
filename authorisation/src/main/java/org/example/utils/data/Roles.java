@@ -1,4 +1,4 @@
-package org.example.utils;
+package org.example.utils.data;
 
 public enum Roles {
     ADMIN, // create users with different roles

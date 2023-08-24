@@ -14,7 +14,7 @@ import org.example.presentation.utils.PurchaseOrderMapperService;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.services.AuthorisationService;
 import org.example.utils.ErrorMessages;
-import org.example.utils.Roles;
+import org.example.utils.data.Roles;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

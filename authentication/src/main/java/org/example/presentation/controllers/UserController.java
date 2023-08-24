@@ -10,9 +10,8 @@ import org.example.presentation.view.LoginRequestDTO;
 import org.example.presentation.view.LoginResponseDTO;
 import org.example.presentation.view.RegisterRequestDTO;
 import org.example.services.AuthorisationService;
-import org.example.utils.Roles;
+import org.example.utils.data.Roles;
 import org.example.utils.TokenHandler;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,18 +72,4 @@ public class UserController {
 
         return new LoginResponseDTO(token);
     }
-
-    @Operation(summary = "logout logged in user")
-    @ApiResponses(value =
-            {
-                    @ApiResponse(responseCode = "200", description = "Successfully logged out"),
-                    @ApiResponse(responseCode = "401", description = "Invalid token for already logged in user")
-            })
-    @PostMapping(value = "logout")
-    public void logout(@RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authorizationHeader) {
-        TokenHandler.validateToken(authorizationHeader);
-
-        //TokenHandler.invalidateToken(jwt);
-    }
-
 }

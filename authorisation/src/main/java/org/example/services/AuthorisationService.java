@@ -1,6 +1,6 @@
 package org.example.services;
 
-import org.example.utils.Roles;
+import org.example.utils.data.Roles;
 import org.example.customexceptions.InvalidRoleException;
 import org.springframework.stereotype.Service;
 

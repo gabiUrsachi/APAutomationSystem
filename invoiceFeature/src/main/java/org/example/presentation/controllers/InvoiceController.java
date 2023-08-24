@@ -3,7 +3,7 @@ package org.example.presentation.controllers;
 import org.example.business.services.InvoiceFilteringService;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.services.InvoiceValidationService;
-import org.example.utils.Roles;
+import org.example.utils.data.Roles;
 import org.example.business.models.*;
 
 import org.example.services.AuthorisationService;

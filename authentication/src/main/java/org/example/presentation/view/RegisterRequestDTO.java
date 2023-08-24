@@ -1,7 +1,7 @@
 package org.example.presentation.view;
 
 
-import org.example.utils.Roles;
+import org.example.utils.data.Roles;
 import lombok.*;
 
 import java.util.Set;

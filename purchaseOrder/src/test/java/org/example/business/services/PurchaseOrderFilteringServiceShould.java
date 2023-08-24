@@ -3,7 +3,7 @@ package org.example.business.services;
 import org.example.persistence.utils.CompanyRole;
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
-import org.example.utils.Roles;
+import org.example.utils.data.Roles;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

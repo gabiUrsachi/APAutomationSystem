@@ -1,6 +1,6 @@
 package org.example.presentation.utils;
 
-import org.example.utils.Roles;
+import org.example.utils.data.Roles;
 
 import java.util.Map;
 import java.util.Set;

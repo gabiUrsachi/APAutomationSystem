@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.UUID;
 
-public class HttpRequestBuilder {
+public class PurchaseOrderRequestBuilder {
     private static final String ORDER_API_URL = "/api/orders";
 
     private static final ObjectMapper mapper = new ObjectMapper();

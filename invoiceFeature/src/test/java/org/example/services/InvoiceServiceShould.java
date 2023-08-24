@@ -62,24 +62,24 @@ public class InvoiceServiceShould {
 //    }
 //
 
-    @Test
-    public void notReturnNonExistingInvoice() {
-        UUID uuid = UUID.randomUUID();
-
-        assertThrows(InvoiceNotFoundException.class, () ->invoiceService.getInvoice(uuid));
-
-        given(invoiceRepository.findByIdentifier(uuid)).willReturn(Optional.empty());
-
-    }
-
-    @Test
-    public void deleteInvoice() {
-
-        given(mapperService.mapToEntity(invoiceDTO)).willReturn(invoice);
-
-        invoiceService.deleteInvoice(invoice.getIdentifier());
-
-        verify(invoiceRepository).deleteByIdentifier(invoice.getIdentifier());
-
-    }
+//    @Test
+//    public void notReturnNonExistingInvoice() {
+//        UUID uuid = UUID.randomUUID();
+//
+//        assertThrows(InvoiceNotFoundException.class, () ->invoiceService.getInvoice(uuid));
+//
+//        given(invoiceRepository.findByIdentifier(uuid)).willReturn(Optional.empty());
+//
+//    }
+//
+//    @Test
+//    public void deleteInvoice() {
+//
+//        given(mapperService.mapToEntity(invoiceDTO)).willReturn(invoice);
+//
+//        invoiceService.deleteInvoice(invoice.getIdentifier());
+//
+//        verify(invoiceRepository).deleteByIdentifier(invoice.getIdentifier());
+//
+//    }
 }

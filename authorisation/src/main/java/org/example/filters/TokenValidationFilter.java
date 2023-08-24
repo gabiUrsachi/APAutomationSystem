@@ -3,7 +3,7 @@ package org.example.filters;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.example.AuthorisationControllerAdvice;
-import org.example.utils.Roles;
+import org.example.utils.data.Roles;
 import org.example.customexceptions.InvalidTokenException;
 import org.example.utils.ExceptionResponseDTO;
 import org.example.utils.TokenHandler;
