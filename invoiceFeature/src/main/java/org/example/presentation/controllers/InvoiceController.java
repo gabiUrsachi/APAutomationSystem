@@ -88,7 +88,11 @@ public class InvoiceController {
         invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderResponseDTO.getBuyer().getCompanyIdentifier());
 
         InvoiceDPO invoiceDPO = invoiceMapperService.mapToDPO(orderResponseDTO);
-        return createInvoice(invoiceDPO, request);
+
+        Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
+        Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
+
+        return invoiceMapperService.mapToDTO(responseInvoice);
 
     }
 
