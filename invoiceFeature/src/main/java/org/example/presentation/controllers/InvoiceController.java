@@ -49,7 +49,7 @@ public class InvoiceController {
         Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
 
-        authorisationService.authorize(userRoles, Roles.SUPPLIER_I);
+        authorisationService.authorize(userRoles, Roles.SUPPLIER_ACCOUNTING);
         invoiceValidatorService.verifyIdentifiersMatch(companyUUID, invoiceDPO.getBuyerId());
 
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
@@ -66,7 +66,7 @@ public class InvoiceController {
         Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
 
-        Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_II, Roles.SUPPLIER_I, Roles.SUPPLIER_II);
+        Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_FINANCE, Roles.SUPPLIER_ACCOUNTING, Roles.SUPPLIER_MANAGEMENT);
 
         List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(validRoles, companyUUID);
 
@@ -81,7 +81,7 @@ public class InvoiceController {
 
         UUID companyUUID = (UUID) request.getAttribute("company");
 
-        authorisationService.authorize(userRoles, Roles.SUPPLIER_II);
+        authorisationService.authorize(userRoles, Roles.SUPPLIER_MANAGEMENT);
         invoiceValidatorService.verifyIdentifiersMatch(companyUUID, orderResponseDTO.getBuyer().getCompanyIdentifier());
 
         InvoiceDPO invoiceDPO = invoiceMapperService.mapToDPO(orderResponseDTO);
@@ -97,7 +97,7 @@ public class InvoiceController {
 
         UUID companyUUID = (UUID) request.getAttribute("company");
 
-        Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_II, Roles.SUPPLIER_I,Roles.SUPPLIER_II);
+        Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_FINANCE, Roles.SUPPLIER_ACCOUNTING,Roles.SUPPLIER_MANAGEMENT);
 
         List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(validRoles, companyUUID);
         Invoice individualInvoice = invoiceService.getInvoice(identifier,queryFilters);
@@ -114,7 +114,7 @@ public class InvoiceController {
         Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
 
-        authorisationService.authorize(userRoles, Roles.SUPPLIER_I, Roles.BUYER_II);
+        authorisationService.authorize(userRoles, Roles.SUPPLIER_ACCOUNTING, Roles.BUYER_FINANCE);
         invoiceValidatorService.verifyUpdatePermission(invoiceDTO.getInvoiceStatus(), companyUUID,invoiceDTO.getBuyer().getCompanyIdentifier(), invoiceDTO.getSeller().getCompanyIdentifier());
 
         Invoice invoice = invoiceMapperService.mapToEntity(invoiceDTO);
@@ -130,7 +130,7 @@ public class InvoiceController {
         Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
         UUID companyUUID = (UUID) request.getAttribute("company");
 
-        authorisationService.authorize(userRoles, Roles.SUPPLIER_I);
+        authorisationService.authorize(userRoles, Roles.SUPPLIER_ACCOUNTING);
         invoiceService.deleteInvoice(identifier);
 
     }

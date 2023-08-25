@@ -21,9 +21,9 @@ public class InvoiceFilteringService {
             InvoiceFilter newFilter;
 
             switch (role) {
-                case BUYER_I:
+                case BUYER_CUSTOMER:
                     break;
-                case BUYER_II:
+                case BUYER_FINANCE:
                     newFilter = InvoiceFilter.builder()
                             .companyUUID(companyUUID)
                             .companyType(CompanyRole.BUYER)
@@ -39,14 +39,14 @@ public class InvoiceFilteringService {
 
                     filters.add(newFilter);
                     break;
-                case SUPPLIER_I:
+                case SUPPLIER_ACCOUNTING:
                     newFilter = InvoiceFilter.builder()
                             .companyUUID(companyUUID)
                             .companyType(CompanyRole.SELLER)
                             .build();
                     filters.add(newFilter);
                     break;
-                case SUPPLIER_II:
+                case SUPPLIER_MANAGEMENT:
                     break;
             }
         }

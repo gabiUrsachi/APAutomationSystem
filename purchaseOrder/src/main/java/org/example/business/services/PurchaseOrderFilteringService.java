@@ -31,7 +31,7 @@ public class PurchaseOrderFilteringService {
             PurchaseOrderFilter newFilter;
 
             switch (role) {
-                case BUYER_I:
+                case BUYER_CUSTOMER:
                     newFilter = PurchaseOrderFilter.builder()
                             .companyUUID(companyUUID)
                             .companyType(CompanyRole.BUYER)
@@ -39,9 +39,9 @@ public class PurchaseOrderFilteringService {
 
                     filters.add(newFilter);
                     break;
-                case BUYER_II:
+                case BUYER_FINANCE:
                     break;
-                case SUPPLIER_I:
+                case SUPPLIER_ACCOUNTING:
                     newFilter = PurchaseOrderFilter.builder()
                             .companyUUID(companyUUID)
                             .companyType(CompanyRole.SELLER)
@@ -49,7 +49,7 @@ public class PurchaseOrderFilteringService {
                             .build();
                     filters.add(newFilter);
                     break;
-                case SUPPLIER_II:
+                case SUPPLIER_MANAGEMENT:
                     newFilter = PurchaseOrderFilter.builder()
                             .companyUUID(companyUUID)
                             .companyType(CompanyRole.SELLER)

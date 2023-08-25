@@ -2,8 +2,8 @@ package org.example.utils.data;
 
 public enum Roles {
     ADMIN, // create users with different roles
-    BUYER_I, // view/create/send/edit PO
-    BUYER_II,  // view/pay INVOICE
-    SUPPLIER_I, // view/create/edit/send INVOICE, view approved PO
-    SUPPLIER_II // approve/reject PO
+    BUYER_CUSTOMER, // view/create/send/edit PO
+    BUYER_FINANCE,  // view/pay INVOICE
+    SUPPLIER_ACCOUNTING, // view/create/edit/send INVOICE, view approved PO
+    SUPPLIER_MANAGEMENT // approve/reject PO
 }
