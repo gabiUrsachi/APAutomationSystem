@@ -14,9 +14,8 @@ public class FilterRegister {
                 = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new TokenValidationFilter(new AuthorisationControllerAdvice()));
-        registrationBean.addUrlPatterns("/api/orders/*","/api/invoices/*","/api/users/logout", "/api/users/register" );
-
-        registrationBean.setOrder(2);
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(1);
 
         return registrationBean;
     }
