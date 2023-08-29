@@ -10,4 +10,5 @@ public interface InvoiceCustomRepository{
 
     List<Invoice> findByFilters(List<InvoiceFilter> filters);
     Invoice findByUUIDAndFilters(UUID identifier, List<InvoiceFilter> filters);
+    int updateByIdentifierAndVersion(UUID identifier, Integer version, Invoice invoice);
 }

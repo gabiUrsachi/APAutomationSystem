@@ -1,5 +1,6 @@
 package org.example.services;
 
+import org.example.customexceptions.OrderNotFoundException;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.utils.ErrorMessages;
 import org.example.customexceptions.InvalidUpdateException;
@@ -45,7 +46,11 @@ public class InvoiceService {
     }
 
     public void deleteInvoice(UUID identifier) {
-        invoiceRepository.deleteByIdentifier(identifier);
+        int deletedRowsCount = invoiceRepository.deleteByIdentifier(identifier);
+
+        if (deletedRowsCount == 0) {
+            throw new InvoiceNotFoundException("Couldn't find invoice with identifier" + identifier);
+        }
     }
 
     public Invoice initializeInvoice(Invoice invoice) {

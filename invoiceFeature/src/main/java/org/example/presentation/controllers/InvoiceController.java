@@ -2,7 +2,11 @@ package org.example.presentation.controllers;
 
 import org.example.business.services.InvoiceFilteringService;
 import org.example.persistence.utils.data.InvoiceFilter;
+import org.example.presentation.controllers.utils.InvoiceActionsPermissions;
+import org.example.presentation.controllers.utils.ResourceActionType;
 import org.example.services.InvoiceValidationService;
+import org.example.utils.AuthorizationMapper;
+import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
 import org.example.business.models.*;
 
@@ -43,14 +47,14 @@ public class InvoiceController {
     }
 
     @PostMapping
-    @SuppressWarnings("unchecked cast")
     public InvoiceDTO createInvoice(@RequestBody InvoiceDPO invoiceDPO, HttpServletRequest request) {
 
-        Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
-        UUID companyUUID = (UUID) request.getAttribute("company");
+        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
 
-        authorisationService.authorize(userRoles, Roles.SUPPLIER_ACCOUNTING);
-        invoiceValidatorService.verifyIdentifiersMatch(companyUUID, invoiceDPO.getBuyerId());
+        authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
+
+        invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), invoiceDPO.getBuyerId());
 
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
@@ -63,12 +67,12 @@ public class InvoiceController {
     @SuppressWarnings("unchecked cast")
     public List<InvoiceDDO> getInvoices(HttpServletRequest request) {
 
-        Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
-        UUID companyUUID = (UUID) request.getAttribute("company");
+        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_FINANCE, Roles.SUPPLIER_ACCOUNTING, Roles.SUPPLIER_MANAGEMENT);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
+        Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
-        List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(validRoles, companyUUID);
+        List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
 
         return invoiceMapperService.mapToDDO(invoiceService.getInvoices(queryFilters));
 
@@ -79,28 +83,32 @@ public class InvoiceController {
     public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO, HttpServletRequest request) {
         Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
 
-        UUID companyUUID = (UUID) request.getAttribute("company");
+        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR);
 
-        authorisationService.authorize(userRoles, Roles.SUPPLIER_MANAGEMENT);
-        invoiceValidatorService.verifyIdentifiersMatch(companyUUID, orderResponseDTO.getBuyer().getCompanyIdentifier());
+        authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
+
+        invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderResponseDTO.getBuyer().getCompanyIdentifier());
 
         InvoiceDPO invoiceDPO = invoiceMapperService.mapToDPO(orderResponseDTO);
-        return createInvoice(invoiceDPO, request);
+
+        Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
+        Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
+
+        return invoiceMapperService.mapToDTO(responseInvoice);
 
     }
 
     @GetMapping("/{identifier}")
-    @SuppressWarnings("unchecked cast")
     public InvoiceDTO getById(@PathVariable UUID identifier, HttpServletRequest request) {
 
-        Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
+        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        UUID companyUUID = (UUID) request.getAttribute("company");
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
+        Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
-        Set<Roles> validRoles = authorisationService.authorize(userRoles, Roles.BUYER_FINANCE, Roles.SUPPLIER_ACCOUNTING,Roles.SUPPLIER_MANAGEMENT);
-
-        List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(validRoles, companyUUID);
-        Invoice individualInvoice = invoiceService.getInvoice(identifier,queryFilters);
+        List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
+        Invoice individualInvoice = invoiceService.getInvoice(identifier, queryFilters);
 
         return invoiceMapperService.mapToDTO(individualInvoice);
 
@@ -108,14 +116,14 @@ public class InvoiceController {
     }
 
     @PutMapping("/{identifier}")
-    @SuppressWarnings("unchecked cast")
     public InvoiceDTO updateInvoice(@PathVariable UUID identifier, @RequestBody InvoiceDTO invoiceDTO, HttpServletRequest request) {
 
-        Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
-        UUID companyUUID = (UUID) request.getAttribute("company");
+        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        authorisationService.authorize(userRoles, Roles.SUPPLIER_ACCOUNTING, Roles.BUYER_FINANCE);
-        invoiceValidatorService.verifyUpdatePermission(invoiceDTO.getInvoiceStatus(), companyUUID,invoiceDTO.getBuyer().getCompanyIdentifier(), invoiceDTO.getSeller().getCompanyIdentifier());
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
+        Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
+
+        invoiceValidatorService.verifyUpdatePermission(invoiceDTO.getInvoiceStatus(), jwtClaims.getCompanyUUID(), invoiceDTO.getBuyer().getCompanyIdentifier(), invoiceDTO.getSeller().getCompanyIdentifier());
 
         Invoice invoice = invoiceMapperService.mapToEntity(invoiceDTO);
         invoiceService.updateInvoice(identifier, invoice);
@@ -124,13 +132,13 @@ public class InvoiceController {
     }
 
     @DeleteMapping("/{identifier}")
-    @SuppressWarnings("unchecked cast")
     public void deleteById(@PathVariable UUID identifier, HttpServletRequest request) {
 
-        Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
-        UUID companyUUID = (UUID) request.getAttribute("company");
+        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        authorisationService.authorize(userRoles, Roles.SUPPLIER_ACCOUNTING);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.DELETE);
+
+        authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
         invoiceService.deleteInvoice(identifier);
 
     }

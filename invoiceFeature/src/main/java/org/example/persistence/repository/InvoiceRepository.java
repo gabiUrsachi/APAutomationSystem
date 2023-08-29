@@ -2,6 +2,7 @@ package org.example.persistence.repository;
 
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
+import org.springframework.data.mongodb.repository.DeleteQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
@@ -13,9 +14,8 @@ public interface InvoiceRepository extends MongoRepository<Invoice, String>, Inv
 
     Optional<Invoice> findByIdentifier(UUID identifier);
 
-    void deleteByIdentifier(UUID identifier);
 
-    @Query("{ 'identifier' : ?0, 'version' : ?1 , 'invoiceStatus' : 'CREATED'}")
-    @Update("{ '$set' : { 'buyerId' : ?#{#invoice.buyerId}, 'sellerId' : ?#{#invoice.sellerId}, 'version' : ?#{#invoice.version}, 'items' : ?#{#invoice.items}, 'invoiceStatus' : ?#{#invoice.invoiceStatus} }}")
-    int updateByIdentifierAndVersion(UUID identifier, Integer version, Invoice invoice);
+    @DeleteQuery("{ 'identifier' : ?0 }")
+    int deleteByIdentifier(UUID identifier);
+
 }
