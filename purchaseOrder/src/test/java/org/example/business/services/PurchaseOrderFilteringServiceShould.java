@@ -28,7 +28,7 @@ public class PurchaseOrderFilteringServiceShould {
     public void createAppropriateQueryFiltersByValidRoles() {
         // given
         UUID companyUUID = UUID.randomUUID();
-        Set<Roles> userRoles = Set.of(Roles.BUYER_I, Roles.SUPPLIER_I);
+        Set<Roles> userRoles = Set.of(Roles.BUYER_CUSTOMER, Roles.SUPPLIER_ACCOUNTING);
 
         // when
         List<PurchaseOrderFilter> filters = purchaseOrderFilteringService.createQueryFilters(userRoles, companyUUID);
@@ -57,7 +57,7 @@ public class PurchaseOrderFilteringServiceShould {
     public void returnEmptyQueryFilterListForBuyerIIRole() {
         // given
         UUID companyUUID = UUID.randomUUID();
-        Set<Roles> userRoles = Set.of(Roles.BUYER_II);
+        Set<Roles> userRoles = Set.of(Roles.BUYER_FINANCE);
 
         // when
         List<PurchaseOrderFilter> filters = purchaseOrderFilteringService.createQueryFilters(userRoles, companyUUID);

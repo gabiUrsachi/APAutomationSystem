@@ -55,7 +55,7 @@ public class PurchaseOrderControllerShould {
     public void returnNotFoundResponseWhenOrderDoesNotExist(){
         UUID searchedUUID = UUID.randomUUID();
 
-        given(request.getAttribute("roles")).willReturn(List.of(Roles.BUYER_I));
+        given(request.getAttribute("roles")).willReturn(List.of(Roles.BUYER_CUSTOMER));
         given(request.getAttribute("company")).willReturn(UUID.randomUUID());
         given(purchaseOrderService.getPurchaseOrder(eq(searchedUUID), any())).willAnswer((answer) -> { throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, searchedUUID); });
 
@@ -69,7 +69,7 @@ public class PurchaseOrderControllerShould {
     @Test
     public void returnForbiddenResponseForMismatchedRolesWhenOrdersQuerying(){
         UUID searchedUUID = UUID.randomUUID();
-        Set<Roles> userRoles = Set.of(Roles.BUYER_II);
+        Set<Roles> userRoles = Set.of(Roles.BUYER_FINANCE);
 
         given(request.getAttribute("roles")).willReturn(List.copyOf(userRoles));
         given(request.getAttribute("company")).willReturn(UUID.randomUUID());
@@ -84,7 +84,7 @@ public class PurchaseOrderControllerShould {
 
     @Test
     public void returnForbiddenResponseForValidRolesWithoutSomePermissionsWhenUpdate(){
-        Set<Roles> userRoles = Set.of(Roles.BUYER_I, Roles.SUPPLIER_II);
+        Set<Roles> userRoles = Set.of(Roles.BUYER_CUSTOMER, Roles.SUPPLIER_MANAGEMENT);
         UUID userCompanyUUID = UUID.randomUUID();
         OrderRequestDTO orderRequestDTO = createOrderRequestDTO(UUID.randomUUID(), UUID.randomUUID(), OrderStatus.SAVED);
 

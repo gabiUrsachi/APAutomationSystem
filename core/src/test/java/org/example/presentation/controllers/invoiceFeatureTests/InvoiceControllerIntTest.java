@@ -104,7 +104,7 @@ class InvoiceControllerIntTest {
                 .version(0)
                 .build();
 
-        String jwt = TokenHandler.createToken("username", generateBuyerIdentifier(), Set.of(Roles.SUPPLIER_II)); //InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR));
+        String jwt = TokenHandler.createToken("username", generateBuyerIdentifier(), Set.of(Roles.SUPPLIER_MANAGEMENT)); //InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR));
         RequestBuilder createInvoiceFromPORequest = InvoiceRequestBuilder.createInvoiceFromORRequest(orderResponseDTO, jwt);
 
 
