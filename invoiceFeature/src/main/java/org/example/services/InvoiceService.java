@@ -36,9 +36,9 @@ public class InvoiceService {
         return invoiceRepository.findByFilters(filters);
     }
 
-    public Invoice getInvoice(UUID identifier,List<InvoiceFilter> filters) {
+    public Invoice getInvoice(UUID identifier, List<InvoiceFilter> filters) {
 
-        Invoice invoice = invoiceRepository.findByUUIDAndFilters(identifier,filters);
+        Invoice invoice = invoiceRepository.findByUUIDAndFilters(identifier, filters);
         if (invoice == null) {
             throw new InvoiceNotFoundException("Couldn't find invoice with identifier " + identifier);
         }
@@ -63,10 +63,10 @@ public class InvoiceService {
         return invoice;
 
     }
+
     public void updateInvoice(UUID identifier, Invoice invoice) {
 
-        int currentVersion=invoice.getVersion();
-
+        int currentVersion = invoice.getVersion();
 
         Invoice updatedInvoice = Invoice.builder()
                 .identifier(invoice.getIdentifier())
@@ -74,28 +74,38 @@ public class InvoiceService {
                 .sellerId(invoice.getSellerId())
                 .items(invoice.getItems())
                 .invoiceStatus(invoice.getInvoiceStatus())
-                .version(currentVersion+1)
+                .version(currentVersion + 1)
                 .build();
 
-        int updateCount = invoiceRepository.updateByIdentifierAndVersion(identifier, currentVersion,updatedInvoice);
+
+        Optional<Invoice> oldInvoice = invoiceRepository.findByIdentifier(identifier);
+
+        if (oldInvoice.isPresent()) {
+            if (invoice.getInvoiceStatus() != oldInvoice.get().getInvoiceStatus()) {
+                throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, oldInvoice.get().getIdentifier());
+
+            }
+        }
+
+        int updateCount = invoiceRepository.updateByIdentifierAndVersion(identifier, currentVersion, updatedInvoice);
 
         if (updateCount == 0) {
             Optional<Invoice> existingInvoice = invoiceRepository.findByIdentifier(identifier);
 
-            if(existingInvoice.isEmpty()){
-                throw new InvoiceNotFoundException("Couldn't find invoice with identifier "+ invoice.getIdentifier());
+            if (existingInvoice.isEmpty()) {
+                throw new InvoiceNotFoundException("Couldn't find invoice with identifier " + invoice.getIdentifier());
             }
 
-            if(!Objects.equals(existingInvoice.get().getVersion(),invoice.getVersion())){
+            if (!Objects.equals(existingInvoice.get().getVersion(), invoice.getVersion())) {
                 throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
             }
 
             if (!existingInvoice.get().getInvoiceStatus().equals(InvoiceStatus.CREATED)) {
-                throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE,existingInvoice.get().getIdentifier());
+                throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, existingInvoice.get().getIdentifier());
             }
         }
 
-        invoice = changeInvoiceStatus(invoice,InvoiceStatus.PAID);
+        invoice = changeInvoiceStatus(invoice, InvoiceStatus.PAID);
 
         invoiceRepository.save(invoice);
 

@@ -54,7 +54,7 @@ public class InvoiceController {
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
-        invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), invoiceDPO.getBuyerId());
+        invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), invoiceDPO.getSellerId());
 
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
@@ -81,14 +81,13 @@ public class InvoiceController {
     @PostMapping("/fromOR")
     @SuppressWarnings("unchecked cast")
     public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO, HttpServletRequest request) {
-        Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
         Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR);
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
-        invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderResponseDTO.getBuyer().getCompanyIdentifier());
+        invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderResponseDTO.getSeller().getCompanyIdentifier());
 
         InvoiceDPO invoiceDPO = invoiceMapperService.mapToDPO(orderResponseDTO);
 
@@ -123,7 +122,7 @@ public class InvoiceController {
         Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
         Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
-        invoiceValidatorService.verifyUpdatePermission(invoiceDTO.getInvoiceStatus(), jwtClaims.getCompanyUUID(), invoiceDTO.getBuyer().getCompanyIdentifier(), invoiceDTO.getSeller().getCompanyIdentifier());
+        invoiceValidatorService.verifyUpdatePermission(invoiceDTO.getInvoiceStatus(), jwtClaims.getCompanyUUID(), invoiceDTO.getSeller().getCompanyIdentifier());
 
         Invoice invoice = invoiceMapperService.mapToEntity(invoiceDTO);
         invoiceService.updateInvoice(identifier, invoice);
