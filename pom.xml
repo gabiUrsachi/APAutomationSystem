@@ -15,11 +15,13 @@
     <name>ap</name>
     <description>AP automation workflow system</description>
     <modules>
-        <module>Companies</module>
-        <module>PurchaseOrder</module>
-        <module>InvoiceFeature2</module>
+        <module>companies</module>
+        <module>purchaseOrder</module>
+        <module>invoiceFeature</module>
         <module>core</module>
-        <module>UserAuth</module>
+        <module>authentication</module>
+        <module>authorisation</module>
+        <module>errorHandling</module>
     </modules>
     <properties>
         <java.version>11</java.version>
@@ -43,12 +45,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>Companies</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
