@@ -10,8 +10,10 @@ import org.example.AuthorisationControllerAdvice;
 import org.example.business.models.InvoiceDPO;
 import org.example.business.models.InvoiceDTO;
 import org.example.filters.TokenValidationFilter;
+import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.collections.Item;
+import org.example.persistence.repository.CompanyRepository;
 import org.example.persistence.repository.InvoiceRepository;
 import org.example.persistence.utils.InvoiceStatus;
 import org.example.persistence.utils.data.OrderStatus;
@@ -21,6 +23,7 @@ import org.example.presentation.view.CompanyDTO;
 import org.example.presentation.view.OrderResponseDTO;
 import org.example.utils.TokenHandler;
 import org.example.utils.data.Roles;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +60,8 @@ class InvoiceControllerIntTest {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @BeforeEach
     public void setUp() {
@@ -66,18 +71,23 @@ class InvoiceControllerIntTest {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).addFilters(tokenValidationFilter).build();
 
+        this.companyRepository.save(getStoredCompany());
+    }
 
+    @AfterEach
+    public void clean(){
+        this.companyRepository.delete(getStoredCompany());
     }
 
     @Test
     void createInvoice() throws Exception {
 
         InvoiceDPO invoiceDPO = InvoiceDPO.builder()
-                .buyerId(generateBuyerIdentifier())
-                .sellerId(generateSellerIdentifier())
+                .buyerId(getStoredCompany().getCompanyIdentifier())
+                .sellerId(getStoredCompany().getCompanyIdentifier())
                 .build();
 
-        String jwt = TokenHandler.createToken("username", generateBuyerIdentifier(), InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE));
+        String jwt = TokenHandler.createToken("username", getStoredCompany().getCompanyIdentifier(), InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE));
         RequestBuilder insertInvoiceRequest = InvoiceRequestBuilder.createPostRequest(invoiceDPO, jwt);
 
 
@@ -98,13 +108,13 @@ class InvoiceControllerIntTest {
         UUID uuid = UUID.randomUUID();
         OrderResponseDTO orderResponseDTO = OrderResponseDTO.builder()
                 .identifier(uuid)
-                .buyer(new CompanyDTO(generateBuyerIdentifier(), "name"))
-                .seller(new CompanyDTO(generateSellerIdentifier(), "name"))
+                .buyer(new CompanyDTO(getStoredCompany().getCompanyIdentifier(), "name"))
+                .seller(new CompanyDTO(getStoredCompany().getCompanyIdentifier(), "name"))
                 .orderStatus(OrderStatus.CREATED)
                 .version(0)
                 .build();
 
-        String jwt = TokenHandler.createToken("username", generateBuyerIdentifier(), Set.of(Roles.SUPPLIER_MANAGEMENT)); //InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR));
+        String jwt = TokenHandler.createToken("username", getStoredCompany().getCompanyIdentifier(), Set.of(Roles.SUPPLIER_MANAGEMENT)); //InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR));
         RequestBuilder createInvoiceFromPORequest = InvoiceRequestBuilder.createInvoiceFromORRequest(orderResponseDTO, jwt);
 
 
@@ -142,15 +152,15 @@ class InvoiceControllerIntTest {
 
         Invoice invoice = Invoice.builder()
                 .identifier(uuid)
-                .buyerId(generateBuyerIdentifier())
-                .sellerId(generateSellerIdentifier())
+                .buyerId(getStoredCompany().getCompanyIdentifier())
+                .sellerId(getStoredCompany().getCompanyIdentifier())
                 .invoiceStatus(InvoiceStatus.CREATED)
                 .version(0)
                 .build();
 
         invoiceRepository.save(invoice);
 
-        String jwt = TokenHandler.createToken("username", generateBuyerIdentifier(), InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.GET));
+        String jwt = TokenHandler.createToken("username", getStoredCompany().getCompanyIdentifier(), InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.GET));
 
         RequestBuilder getInvoiceRequest = InvoiceRequestBuilder.createIndividualGetRequest(uuid, jwt);
 
@@ -171,15 +181,15 @@ class InvoiceControllerIntTest {
 
         Invoice invoice = Invoice.builder()
                 .identifier(uuid)
-                .buyerId(generateBuyerIdentifier())
-                .sellerId(generateSellerIdentifier())
+                .buyerId(getStoredCompany().getCompanyIdentifier())
+                .sellerId(getStoredCompany().getCompanyIdentifier())
                 .invoiceStatus(InvoiceStatus.CREATED)
                 .version(0)
                 .build();
 
         invoiceRepository.save(invoice);
 
-        String jwt = TokenHandler.createToken("username", generateBuyerIdentifier(), InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE));
+        String jwt = TokenHandler.createToken("username", getStoredCompany().getCompanyIdentifier(), InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE));
 
         RequestBuilder deleteOrderRequest = InvoiceRequestBuilder.createDeleteRequest(uuid, jwt);
         this.mockMvc.perform(deleteOrderRequest)
@@ -200,15 +210,15 @@ class InvoiceControllerIntTest {
 
         Invoice invoice = Invoice.builder()
                 .identifier(uuid)
-                .buyerId(generateBuyerIdentifier())
-                .sellerId(generateSellerIdentifier())
+                .buyerId(getStoredCompany().getCompanyIdentifier())
+                .sellerId(getStoredCompany().getCompanyIdentifier())
                 .invoiceStatus(InvoiceStatus.CREATED)
                 .version(0)
                 .build();
 
         invoiceRepository.save(invoice);
 
-        String jwt = TokenHandler.createToken("username", generateBuyerIdentifier(), InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE));
+        String jwt = TokenHandler.createToken("username", getStoredCompany().getCompanyIdentifier(), InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE));
 
         InvoiceDTO invoiceDTO = InvoiceDTO.builder()
                 .identifier(invoice.getIdentifier())
@@ -234,18 +244,6 @@ class InvoiceControllerIntTest {
         invoiceRepository.deleteByIdentifier(uuid);
     }
 
-    private UUID generateBuyerIdentifier() {
-        return UUID.fromString("9be9a53b-997b-4559-8fb7-d120209e63e2");
-    }
-
-    private UUID generateSellerIdentifier() {
-        return UUID.fromString("9be9a53b-997b-4559-8fb7-d120209e63e2");
-    }
-
-    private UUID generateCompanyIdentifier() {
-        return UUID.fromString("9be9a53b-997b-4559-8fb7-d120209e63e2");
-    }
-
     private String getInvoiceIdFromMvcResult(MvcResult mvcResult) throws UnsupportedEncodingException {
         String response = mvcResult.getResponse().getContentAsString();
         return JsonPath.parse(response).read("$.identifier");
@@ -253,6 +251,10 @@ class InvoiceControllerIntTest {
 
     private JSONArray parseItemSetToJSONArray(Set<Item> items) throws JsonProcessingException, ParseException {
         return (JSONArray) jsonParser.parse(this.mapper.writeValueAsString(items));
+    }
+
+    private Company getStoredCompany(){
+        return Company.builder().companyIdentifier(UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0")).name("Company name").build();
     }
 
 }
