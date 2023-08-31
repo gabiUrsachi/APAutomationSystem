@@ -217,14 +217,14 @@ public class PurchaseOrderIntegrationTest {
     }
 
     private UUID generateBuyerIdentifier() {
-        return UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0");
+        return UUID.fromString("9be9a53b-997b-4559-8fb7-d120209e63e2");
     }
 
     private UUID generateSellerIdentifier() {
-        return UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0");
+        return UUID.fromString("9be9a53b-997b-4559-8fb7-d120209e63e2");
     }
 
     private UUID generateCompanyIdentifier() {
-        return UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0");
+        return UUID.fromString("9be9a53b-997b-4559-8fb7-d120209e63e2");
     }
 }

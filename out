@@ -1,0 +1,168 @@
+.
+├── pom.xml
+├── authentication
+│	├── pom.xml
+│   └── src
+│       └── main
+│           ├── java
+│           │   └── org
+│           │       └── example
+│           │           ├── business
+│           │           │   ├── services
+│           │           │   └── utils
+│           │           ├── persistence
+│           │           │   ├── collections
+│           │           │   └── repository
+│           │           └── presentation
+│           │               ├── controllers
+│           │               ├── utils
+│           │               └── view
+│           └── resources
+├── authorisation
+│	├── pom.xml
+│   └── src
+│       └── main
+│           └── java
+│               └── org
+│                   └── example
+│                       ├── filters
+│                       ├── services
+│                       └── utils
+│                           └── data
+├── companies
+│	├── pom.xml
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── org
+│   │   │   │       └── example
+│   │   │   │           ├── business
+│   │   │   │           │   └── services
+│   │   │   │           ├── persistence
+│   │   │   │           │   ├── collections
+│   │   │   │           │   ├── repository
+│   │   │   │           │   └── utils
+│   │   │   │           └── presentation
+│   │   │   │               ├── controllers
+│   │   │   │               ├── utils
+│   │   │   │               └── view
+│   │   │   └── resources
+│   │   └── test
+│   │       └── java
+│   │           └── org
+│   │               └── example
+│   │                   └── controllers
+│   └── target
+│       ├── classes
+│       │   └── org
+│       │       └── example
+│       │           ├── business
+│       │           │   └── services
+│       │           ├── persistence
+│       │           │   ├── collections
+│       │           │   ├── repository
+│       │           │   └── utils
+│       │           └── presentation
+│       │               ├── controllers
+│       │               ├── utils
+│       │               └── view
+│       ├── generated-sources
+│       │   └── annotations
+│       ├── generated-test-sources
+│       │   └── test-annotations
+│       ├── maven-archiver
+│       ├── maven-status
+│       │   └── maven-compiler-plugin
+│       │       ├── compile
+│       │       │   └── default-compile
+│       │       └── testCompile
+│       │           └── default-testCompile
+│       └── test-classes
+│           └── org
+│               └── example
+│                   └── controllers
+├── core
+│	├── pom.xml
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── org
+│       │   │       └── example
+│       │   └── resources
+│       └── test
+│           └── java
+│               └── org
+│                   └── example
+│                       └── presentation
+│                           └── controllers
+│                               ├── invoiceFeatureTests
+│                               └── purchaseOrder
+├── errorHandling
+│	├── pom.xml
+│   └── src
+│       └── main
+│           └── java
+│               └── org
+│                   └── example
+│                       ├── customexceptions
+│                       └── utils
+├── invoiceFeature
+│	├── pom.xml
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── org
+│       │   │       └── example
+│       │   │           ├── business
+│       │   │           │   ├── models
+│       │   │           │   └── services
+│       │   │           ├── persistence
+│       │   │           │   ├── collections
+│       │   │           │   ├── repository
+│       │   │           │   └── utils
+│       │   │           │       └── data
+│       │   │           ├── presentation
+│       │   │           │   └── controllers
+│       │   │           │       └── utils
+│       │   │           └── services
+│       │   └── resources
+│       └── test
+│           └── java
+│               └── org
+│                   └── example
+│                       ├── presentation
+│                       │   └── controllers
+│                       └── services
+└── purchaseOrder
+│	├── pom.xml
+    └── src
+        ├── main
+        │   ├── java
+        │   │   └── org
+        │   │       └── example
+        │   │           ├── business
+        │   │           │   ├── services
+        │   │           │   └── utils
+        │   │           ├── persistence
+        │   │           │   ├── collections
+        │   │           │   ├── repository
+        │   │           │   └── utils
+        │   │           │       └── data
+        │   │           └── presentation
+        │   │               ├── controllers
+        │   │               ├── utils
+        │   │               └── view
+        │   └── resources
+        └── test
+            └── java
+                └── org
+                    └── example
+                        ├── business
+                        │   └── services
+                        ├── persistence
+                        │   └── utils
+                        └── presentation
+                            └── controllers
+                                └── unit
+
+157 directories
