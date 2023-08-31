@@ -1,4 +1,4 @@
-package org.example.controllers;
+package org.example.presentation.controllers.companies;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.presentation.view.CompanyDTO;
@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,6 +33,7 @@ class CompanyControllerIntTest {
 
         CompanyDTO companyDTO = CompanyDTO.builder()
                 .name("Company S.A.")
+                .companyIdentifier(UUID.randomUUID())
                 .build();
 
 
@@ -57,6 +60,7 @@ class CompanyControllerIntTest {
 
         CompanyDTO companyDTO = CompanyDTO.builder()
                 .name("Company S.A.")
+                .companyIdentifier(UUID.randomUUID())
                 .build();
 
         MvcResult result = this.mockMvc.perform(post(CONTROLLER_REQUIRED_ROUTE)
@@ -80,6 +84,7 @@ class CompanyControllerIntTest {
     void deleteById() throws Exception {
         CompanyDTO companyDTO = CompanyDTO.builder()
                 .name("Company S.A.")
+                .companyIdentifier(UUID.randomUUID())
                 .build();
 
         MvcResult result = this.mockMvc.perform(post(CONTROLLER_REQUIRED_ROUTE)
