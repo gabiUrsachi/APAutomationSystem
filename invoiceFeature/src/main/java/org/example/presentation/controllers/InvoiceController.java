@@ -87,7 +87,7 @@ public class InvoiceController {
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
-        invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderResponseDTO.getSeller().getCompanyIdentifier());
+        invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderResponseDTO.getBuyer().getCompanyIdentifier());
 
         InvoiceDPO invoiceDPO = invoiceMapperService.mapToDPO(orderResponseDTO);
 
