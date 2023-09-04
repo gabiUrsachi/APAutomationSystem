@@ -27,7 +27,7 @@ public class InvoiceFilteringService {
                     newFilter = InvoiceFilter.builder()
                             .companyUUID(companyUUID)
                             .companyType(CompanyRole.BUYER)
-                            .requiredStatus(InvoiceStatus.APPROVED)
+                            .requiredStatus(InvoiceStatus.SENT)
                             .build();
                     filters.add(newFilter);
 
@@ -36,15 +36,16 @@ public class InvoiceFilteringService {
                             .companyType(CompanyRole.BUYER)
                             .requiredStatus(InvoiceStatus.PAID)
                             .build();
-
                     filters.add(newFilter);
                     break;
                 case SUPPLIER_ACCOUNTING:
+
                     newFilter = InvoiceFilter.builder()
                             .companyUUID(companyUUID)
                             .companyType(CompanyRole.SELLER)
                             .build();
                     filters.add(newFilter);
+
                     break;
                 case SUPPLIER_MANAGEMENT:
                     break;

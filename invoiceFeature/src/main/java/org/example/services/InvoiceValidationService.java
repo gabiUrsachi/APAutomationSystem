@@ -27,11 +27,17 @@ public class InvoiceValidationService {
         }
     }
 
-    public void verifyUpdatePermission(InvoiceStatus invoiceStatus, UUID userCompanyUUID, UUID sellerCompanyUUID) {
+    public void verifyUpdatePermission(InvoiceStatus invoiceStatus, UUID userCompanyUUID, UUID buyerCompanyUUID, UUID sellerCompanyUUID) {
 
-        boolean sellerCondition = userCompanyUUID.equals(sellerCompanyUUID);
+        boolean buyerCondition = (invoiceStatus == InvoiceStatus.CREATED || invoiceStatus == InvoiceStatus.PAID)
+                &&
+                userCompanyUUID.equals(buyerCompanyUUID);
 
-        if (!sellerCondition) {
+        boolean sellerCondition = (invoiceStatus == InvoiceStatus.SENT )
+                &&
+                userCompanyUUID.equals(sellerCompanyUUID);
+
+        if (!(buyerCondition || sellerCondition)) {
             throw new ForbiddenUpdateException();
         }
     }

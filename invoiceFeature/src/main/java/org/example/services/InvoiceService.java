@@ -1,5 +1,6 @@
 package org.example.services;
 
+import org.example.business.utils.InvoiceStatusPrecedence;
 import org.example.customexceptions.OrderNotFoundException;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.utils.ErrorMessages;
@@ -64,9 +65,10 @@ public class InvoiceService {
 
     }
 
-    public void updateInvoice(UUID identifier, Invoice invoice) {
+    public Invoice updateInvoice(UUID identifier, Invoice invoice) {
 
         int currentVersion = invoice.getVersion();
+        InvoiceStatus requiredInvoiceStatus = InvoiceStatusPrecedence.PREDECESSORS.get(invoice.getInvoiceStatus());
 
         Invoice updatedInvoice = Invoice.builder()
                 .identifier(invoice.getIdentifier())
@@ -81,10 +83,13 @@ public class InvoiceService {
         Optional<Invoice> oldInvoice = invoiceRepository.findByIdentifier(identifier);
 
         if (oldInvoice.isPresent()) {
-            if (invoice.getInvoiceStatus() != oldInvoice.get().getInvoiceStatus()) {
+            if ( oldInvoice.get().getInvoiceStatus() != requiredInvoiceStatus) {
                 throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, oldInvoice.get().getIdentifier());
 
             }
+        }
+        if (!isInEnum(String.valueOf(invoice.getInvoiceStatus()))) {
+            throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, invoice.getIdentifier());
         }
 
         int updateCount = invoiceRepository.updateByIdentifierAndVersion(identifier, currentVersion, updatedInvoice);
@@ -103,12 +108,10 @@ public class InvoiceService {
             if (!existingInvoice.get().getInvoiceStatus().equals(InvoiceStatus.CREATED)) {
                 throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, existingInvoice.get().getIdentifier());
             }
+
         }
 
-        invoice = changeInvoiceStatus(invoice, InvoiceStatus.PAID);
-
-        invoiceRepository.save(invoice);
-
+        return updatedInvoice;
     }
 
     public Invoice changeInvoiceStatus(Invoice invoice, InvoiceStatus invoiceStatus) {
@@ -117,5 +120,9 @@ public class InvoiceService {
         return invoice;
 
 
+    }
+
+    public static boolean isInEnum(String value) {
+        return Arrays.stream(InvoiceStatus.values()).anyMatch(e -> e.name().equals(value));
     }
 }

@@ -64,7 +64,6 @@ public class InvoiceController {
     }
 
     @GetMapping
-    @SuppressWarnings("unchecked cast")
     public List<InvoiceDDO> getInvoices(HttpServletRequest request) {
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
@@ -79,7 +78,6 @@ public class InvoiceController {
     }
 
     @PostMapping("/fromOR")
-    @SuppressWarnings("unchecked cast")
     public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO, HttpServletRequest request) {
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
@@ -122,11 +120,11 @@ public class InvoiceController {
         Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
         Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
-        invoiceValidatorService.verifyUpdatePermission(invoiceDTO.getInvoiceStatus(), jwtClaims.getCompanyUUID(), invoiceDTO.getSeller().getCompanyIdentifier());
+        invoiceValidatorService.verifyUpdatePermission(invoiceDTO.getInvoiceStatus(), jwtClaims.getCompanyUUID(), invoiceDTO.getBuyer().getCompanyIdentifier(), invoiceDTO.getSeller().getCompanyIdentifier());
 
         Invoice invoice = invoiceMapperService.mapToEntity(invoiceDTO);
-        invoiceService.updateInvoice(identifier, invoice);
-        return invoiceMapperService.mapToDTO(invoice);
+        Invoice updatedInvoice = invoiceService.updateInvoice(identifier, invoice);
+        return invoiceMapperService.mapToDTO(updatedInvoice);
 
     }
 
