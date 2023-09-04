@@ -114,7 +114,7 @@ class InvoiceControllerIntTest {
                 .version(0)
                 .build();
 
-        String jwt = TokenHandler.createToken("username", getStoredCompany().getCompanyIdentifier(), Set.of(Roles.SUPPLIER_MANAGEMENT)); //InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR));
+        String jwt = TokenHandler.createToken("username", getStoredCompany().getCompanyIdentifier(), Set.of(Roles.SUPPLIER_ACCOUNTING)); //InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR));
         RequestBuilder createInvoiceFromPORequest = InvoiceRequestBuilder.createInvoiceFromORRequest(orderResponseDTO, jwt);
 
 
@@ -125,24 +125,6 @@ class InvoiceControllerIntTest {
 
         UUID invoiceUUID = UUID.fromString(getInvoiceIdFromMvcResult(mvcResult));
         invoiceRepository.deleteById(String.valueOf(invoiceUUID));
-//
-//        String requestBody = new JSONObject()
-//                .put("identifier", "4a9d8ff0-bc00-4282-bb18-f9c192d4ee47")
-//                .put("buyer", new JSONObject()
-//                        .put("companyIdentifier", "0c37ff0d-6c32-4850-ae01-1ca022b89442")
-//                        .put("name", "CompanyA"))
-//                .put("seller", new JSONObject()
-//                        .put("companyIdentifier", "0c37ff0d-6c32-4850-ae01-1ca022b89443")
-//                        .put("name", "CompanyB"))
-//                .toString();
-//
-//        this.mockMvc.perform(post(CONTROLLER_REQUIRED_ROUTE + routeSuffix)
-//                        .content(requestBody)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                )
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(content().json("{'identifier':'4a9d8ff0-bc00-4282-bb18-f9c192d4ee47'}"));
     }
 
     @Test
@@ -224,7 +206,7 @@ class InvoiceControllerIntTest {
                 .identifier(invoice.getIdentifier())
                 .buyer(new CompanyDTO(invoice.getBuyerId(), "name"))
                 .seller(new CompanyDTO(invoice.getBuyerId(), "name"))
-                .invoiceStatus(invoice.getInvoiceStatus())
+                .invoiceStatus(InvoiceStatus.SENT)
                 .version(invoice.getVersion())
                 .build();
 
@@ -232,7 +214,7 @@ class InvoiceControllerIntTest {
 
         this.mockMvc.perform(updateInvoiceRequest)
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.invoiceStatus").value(InvoiceStatus.PAID.toString()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.invoiceStatus").value(InvoiceStatus.SENT.toString()));
 
 
         invoiceDTO.setVersion(invoiceDTO.getVersion() + 1);
