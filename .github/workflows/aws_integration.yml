@@ -4,7 +4,7 @@ run-name: ${{ github.actor }} is learning GitHub Actions
 on: [ push, pull_request ]
 
 env:
-  applicationfolder: spring-boot-hello-world-example
+  applicationfolder: core
   AWS_REGION: eu-central-1
   S3BUCKET: testdeploystack-webappdeploymentbucket-ec99i55fm0i7
 
@@ -42,35 +42,35 @@ jobs:
         working-directory: ${{ env.applicationfolder }}/target
         run: aws s3 cp *.war s3://${{ env.S3BUCKET }}/
 
-  build2:
-    #    needs: test_mongo_action
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create mongo Docker container
-        uses: DigiPie/mongo-action@v2.0.1
-        with:
-          image_version: latest
-          port: 27017
-      - name: Install mongosh command
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget gnupg
-          wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
-          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
-          sudo apt-get update
-          sudo apt-get install -y mongodb-mongosh
-      - name: Test mongo connection
-        run: "sudo mongosh localhost:27017"
-
-
-      - uses: actions/checkout@v3
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'corretto'
-          cache: maven
-      - name: Clean & install with Maven
-        run: mvn clean install -DDB_HOST=localhost
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml -DDB_HOST=localhost
+#  build2:
+#    #    needs: test_mongo_action
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Create mongo Docker container
+#        uses: DigiPie/mongo-action@v2.0.1
+#        with:
+#          image_version: latest
+#          port: 27017
+#      - name: Install mongosh command
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y wget gnupg
+#          wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+#          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+#          sudo apt-get update
+#          sudo apt-get install -y mongodb-mongosh
+#      - name: Test mongo connection
+#        run: "sudo mongosh localhost:27017"
+#
+#
+#      - uses: actions/checkout@v3
+#      - name: Set up JDK 11
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '11'
+#          distribution: 'corretto'
+#          cache: maven
+#      - name: Clean & install with Maven
+#        run: mvn clean install -DDB_HOST=localhost
+#      - name: Build with Maven
+#        run: mvn -B package --file pom.xml -DDB_HOST=localhost
