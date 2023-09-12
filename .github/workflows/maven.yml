@@ -1,13 +1,32 @@
-
 name: Java CI with Maven
 run-name: ${{ github.actor }} is learning GitHub Actions
-on: [ push, pull_request ]
+on:
+  push:
+    branches: [ aws_deployment ]
+  pull_request:
+    branches: [ aws_deployment ]
+env:
+  applicationfolder: C:\Users\andreivav\Documents\Munca\try-10
+  AWS_REGION: us-east-1
+  S3BUCKET:	qualsiasi-connessione-con-webappdeploymentbucket-1vbpsyyxivkk5
 
 jobs:
   build:
     #    needs: test_mongo_action
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
+      - uses: actions/checkout@v2
+        name: Checkout Repository
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+          role-session-name: GitHub-Action-Role
+          aws-region: ${{ env.AWS_REGION }}
+
       - name: Create mongo Docker container
         uses: DigiPie/mongo-action@v2.0.1
         with:
@@ -24,7 +43,6 @@ jobs:
       - name: Test mongo connection
         run: "sudo mongosh localhost:27017"
 
-
       - uses: actions/checkout@v3
       - name: Set up JDK 11
         uses: actions/setup-java@v3
@@ -36,3 +54,25 @@ jobs:
         run: mvn clean install -DDB_HOST=localhost
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DDB_HOST=localhost
+      - name: Upload Artifact to s3
+        working-directory: ${{ env.applicationfolder }}/core/target/
+        run: aws s3 cp *.jar s3://${{ env.S3BUCKET }}/
+
+  deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        environment: Dev
+        permissions:
+          id-token: write
+          contents: read
+        steps:
+          - uses: actions/checkout@v2
+          - uses: aws-actions/configure-aws-credentials@v1
+            with:
+              role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+              role-session-name: GitHub-Action-Role
+              aws-region: ${{ env.AWS_REGION }}
+          - run: |
+              echo "Deploying branch ${{ env.GITHUB_REF }} to ${{ github.event.inputs.environment }}"
+              commit_hash=`git rev-parse HEAD`
+              aws deploy create-deployment --application-name CodeDeployAppNameWithASG --deployment-group-name CodeDeployGroupName --github-location repository=$GITHUB_REPOSITORY,commitId=$commit_hash --ignore-application-stop-failures

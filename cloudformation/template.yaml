@@ -1,0 +1,197 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Backend automated deployed instance
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    - Label:
+        default: "Github configurations"
+      Parameters:
+        - GithubRepoName
+        - ThumbprintList
+
+Resources:
+  WebAppInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0d5eff06f840b45e9
+      InstanceType: t2.micro
+      KeyName: cloudformation-ec2
+      SecurityGroupIds:
+        - !Ref WebAppSecurityGroup
+
+  WebAppSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Join [ "-", [ webapp-security-group, dev ] ]
+      GroupDescription: "Allow traffic over the port 8080 and SSH inbound and outbound traffic"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  WebappRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: "/"
+      RoleName: WebappRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+                - "codedeploy.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
+      Policies:
+        - PolicyName: "allow-webapp-deployment-bucket-policy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "s3:getObject"
+                Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
+
+  IDCProvider:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: "https://token.actions.githubusercontent.com"
+      ClientIdList:
+        - "sts.amazonaws.com"
+      ThumbprintList:
+        - !Ref ThumbprintList
+
+  GitHubIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: "/"
+      RoleName: CodeDeployRoleforGitHub
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: !Ref IDCProvider
+            Condition:
+              StringLike:
+                token.actions.githubusercontent.com:sub: !Sub repo:${GithubRepoName}:*
+      MaxSessionDuration: 3600
+      Description: "Github Actions role"
+      Policies:
+
+        - PolicyName: 'CodeDeployRoleforGitHub-policy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'codedeploy:Get*'
+                  - 'codedeploy:Batch*'
+                  - 'codedeploy:CreateDeployment'
+                  - 'codedeploy:RegisterApplicationRevision'
+                  - 'codedeploy:List*'
+                Resource:
+                  - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
+              - Effect: Allow
+                Action:
+                  - 's3:putObject'
+                Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
+
+  WebappDeploymentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  CodeDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "codedeploy.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
+      Policies:
+        - PolicyName: allow-autoscaling
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ec2:RunInstances
+                  - ec2:CreateTags
+                  - iam:PassRole
+                Resource:
+                  - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
+
+
+  WebappApplication:
+    Type: AWS::CodeDeploy::Application
+    Properties:
+      ApplicationName: CodeDeployAppNameWithASG
+  WebappDeploymentGroup:
+    Type: AWS::CodeDeploy::DeploymentGroup
+    Properties:
+      ApplicationName: !Ref WebappApplication
+      ServiceRoleArn: !GetAtt CodeDeployRole.Arn
+      DeploymentConfigName: CodeDeployDefault.OneAtATime
+      DeploymentGroupName: CodeDeployGroupName
+      AutoRollbackConfiguration:
+        Enabled: true
+        Events:
+          - DEPLOYMENT_FAILURE
+          - DEPLOYMENT_STOP_ON_REQUEST
+
+Parameters:
+  ThumbprintList:
+    Type: String
+    Default: 6938fd4d98bab03faadb97b34396831e3780aea1
+    Description: A thumbprint of an Open ID Connector is a SHA1 hash of the public certificate of the host
+  GithubRepoName:
+    Type: String
+    Description: GitHub repository name Ex-TestUser/TestCodeDeploy
+Outputs:
+
+  WebappUrl:
+    Description: Webapp URL
+    Value:
+      Fn::Join:
+        - ''
+        - - http://
+          - !GetAtt WebAppInstance.PublicIp
+          - ':8080/'
+  DeploymentGroup:
+    Description: Webapp Deployment Group
+    Value: !Ref WebappDeploymentGroup
+  DeploymentBucket:
+    Description: Deployment bucket
+    Value: !Ref WebappDeploymentBucket
+  ApplicationName:
+    Description: CodeDeploy Application name
+    Value: !Ref WebappApplication
+  GithubIAMRoleArn:
+    Description: IAM role for GitHub
+    Value: !GetAtt GitHubIAMRole.Arn
