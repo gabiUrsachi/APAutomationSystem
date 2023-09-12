@@ -29,6 +29,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 11
+          distribution: 'corretto'
 
       - name: chmod
         run: chmod -R +x ./.github
