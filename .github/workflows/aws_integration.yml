@@ -4,7 +4,7 @@ run-name: ${{ github.actor }} is learning GitHub Actions
 on: [ push, pull_request ]
 
 env:
-  applicationfolder: /
+  applicationfolder: .
   AWS_REGION: eu-central-1
   S3BUCKET: testdeploystack-webappdeploymentbucket-ec99i55fm0i7
 
