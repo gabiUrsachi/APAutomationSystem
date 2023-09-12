@@ -9,12 +9,9 @@ Metadata:
           - GithubRepoName
           - ThumbprintList
 
-Description: 'AWS CloudFormation Sample Template EC2InstanceWithSecurityGroupSample:
+Description: 'AWS CloudFormation:
   Create an Amazon EC2 instance running the Amazon Linux AMI. The AMI is chosen based
-  on the region in which the stack is run. This example creates an EC2 security group
-  for the instance to give you SSH access. **WARNING** This template creates an Amazon
-  EC2 instance. You will be billed for the AWS resources used if you create a stack
-  from this template.'
+  on the region in which the stack is run.'
 
 
 Parameters:
@@ -58,9 +55,6 @@ Parameters:
   GithubRepoName:
     Type: String
     Description: GitHub repository name Ex-TestUser/TestCodeDeploy
-#  LatestAmiId:
-#    Type:  'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
-#    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
 
 Mappings:
   RegionMap:
@@ -113,36 +107,6 @@ Resources:
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
 
-
-#  WebappRole:
-#    Type: AWS::IAM::Role
-#    Properties:
-#      Path: "/"
-#      RoleName: WebappRole
-#      AssumeRolePolicyDocument:
-#        Version: "2012-10-17"
-#        Statement:
-#          -
-#            Effect: "Allow"
-#            Principal:
-#              Service:
-#                - "ec2.amazonaws.com"
-#                - "codedeploy.amazonaws.com"
-#            Action:
-#              - "sts:AssumeRole"
-#      ManagedPolicyArns:
-#        - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
-#      Policies:
-#        -
-#          PolicyName: "allow-webapp-deployment-bucket-policy"
-#          PolicyDocument:
-#            Version: "2012-10-17"
-#            Statement:
-#              -
-#                Effect: "Allow"
-#                Action:
-#                  - "s3:getObject"
-#                Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
 
   IDCProvider:
     Type: AWS::IAM::OIDCProvider
