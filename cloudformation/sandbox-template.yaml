@@ -58,22 +58,17 @@ Parameters:
 
 Mappings:
   RegionMap:
-    eu-central-1:
-      ami: "ami-09cb21a1e29bcebf0"
+    us-east-1:
+      ami: "ami-01c647eace872fc02"
 
 Resources:
-#  KeyPair:
-#    Type: AWS::EC2::KeyPair
-#    Properties:
-#      KeyName: test
-#      PublicKeyMaterial : ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCSY6HUcCy8ft5cRcGNnm9jt0INt6fNip5SgE24o8P6Lo28Ufc20mbIBfIud52MxdIt9Ck7o7z4Z1EqKEhdaDLJvgUBMKx2Q1aTmaMgUExN0714xJ+QwdH9x5JWw8L7I6QHXUAc1hT47Rw/1SW6g4V8s+NZEDFUrYPNBbhccAUZXMZ1zzlCKIS1Yy+bt5vIfcotUeukrOlYguQB57QVK/KLBo+sWY+W8XHarCtGlMuGCJOnd4F7gk6qAP1SlCXvQDDlvpSb7WGBH1EsZTQbOnye/MrXvKpcyAu7pfC23+XP+5HzfzFooV5GsZie2kQk/wt3ny2+Ey9JPmI2/iIYA8qp
 
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: !Ref 'InstanceType'
       SecurityGroups: [!Ref 'InstanceSecurityGroup']
-      KeyName: test
+      KeyName: new-key
       ImageId: !FindInMap
         - RegionMap
         - !Ref 'AWS::Region'
