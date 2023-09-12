@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ aws_deployment ]
 env:
-  applicationfolder: C:\Users\andreivav\Documents\Munca\try-10
-  AWS_REGION: us-east-1
   S3BUCKET:	qualsiasi-connessione-con-webappdeploymentbucket-1vbpsyyxivkk5
 
 jobs:
@@ -23,7 +21,7 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+          role-to-assume: ${{ secrets.IL_MIO_ROLE_GITHUB }}
           role-session-name: GitHub-Action-Role
           aws-region: ${{ env.AWS_REGION }}
 
@@ -55,7 +53,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml -DDB_HOST=localhost
       - name: Upload Artifact to s3
-        working-directory: ${{ env.applicationfolder }}/core/target/
+        working-directory: core/target/
         run: aws s3 cp *.jar s3://${{ env.S3BUCKET }}/
 
   deploy:
@@ -69,7 +67,7 @@ jobs:
           - uses: actions/checkout@v2
           - uses: aws-actions/configure-aws-credentials@v1
             with:
-              role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+              role-to-assume: ${{ secrets.IL_MIO_ROLE_GITHUB }}
               role-session-name: GitHub-Action-Role
               aws-region: ${{ env.AWS_REGION }}
           - run: |
