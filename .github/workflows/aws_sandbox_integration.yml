@@ -5,7 +5,7 @@ on: [ push, pull_request ]
 
 env:
   AWS_REGION: us-east-1
-  S3BUCKET: deploystack-webappdeploymentbucket-d2g8a9ie2a61
+  S3BUCKET: springappdeploystack-webappdeploymentbucket-1w57wjt38tuom
 
 jobs:
   build:
