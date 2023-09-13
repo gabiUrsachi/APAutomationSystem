@@ -236,6 +236,18 @@ Resources:
           sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
           sudo systemctl enable amazon-ssm-agent
           sudo systemctl start amazon-ssm-agent
+          
+          echo "
+          Description=backend
+  
+          [Service]
+          Type=simple
+          User=ec2-user
+          WorkingDirectory=/home/ec2-user
+          ExecStart=/usr/bin/java -DDB_HOST=172.31.47.100 -jar /home/ec2-user/core-0.0.1-SNAPSHOT.jar
+  
+          [Install]
+          WantedBy=multi-user.target" > /etc/systemd/system/backend.service
   
 
   AutoScalingGroup:
