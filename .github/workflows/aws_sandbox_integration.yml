@@ -58,5 +58,5 @@ jobs:
       - run: |
           echo "Deploying branch ${{ env.GITHUB_REF }} to ${{ github.event.inputs.environment }}"
           commit_hash=`git rev-parse HEAD`
-          aws deploy list-applications --region us-east-1
-          aws deploy create-deployment --region us-east-1 --application-name CodeDeployAppNameWithASG --deployment-group-name CodeDeployGroupName --github-location repository=$GITHUB_REPOSITORY,commitId=$commit_hash --ignore-application-stop-failures
+          aws deploy list-applications --region ${{ env.AWS_REGION }}
+          aws deploy create-deployment --region ${{ env.AWS_REGION }} --application-name CodeDeployAppNameWithASG --deployment-group-name CodeDeployGroupName --github-location repository=$GITHUB_REPOSITORY,commitId=$commit_hash --ignore-application-stop-failures
