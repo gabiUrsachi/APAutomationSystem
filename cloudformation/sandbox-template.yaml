@@ -73,6 +73,10 @@ Resources:
         - RegionMap
         - !Ref 'AWS::Region'
         - ami
+      Tags:
+        - Key: Name
+          Value: webapp-example
+
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
