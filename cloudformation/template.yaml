@@ -229,13 +229,6 @@ Resources:
           sudo yum  update -y
           sudo yum  install -y wget java-11-amazon-corretto 
           java -version
-          wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
-          chmod +x ./install
-          ./install auto
-          cd /tmp
-          sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-          sudo systemctl enable amazon-ssm-agent
-          sudo systemctl start amazon-ssm-agent
           
           echo "
           Description=backend
@@ -248,6 +241,20 @@ Resources:
   
           [Install]
           WantedBy=multi-user.target" > /etc/systemd/system/backend.service
+          
+          systemctl daemon-reload
+          systemctl start backend.service
+          systemctl enable backend.service
+          systemctl status backend.service 
+          yum install ruby -y 
+          wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+          chmod +x ./install
+          ./install auto
+          cd /tmp
+          sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+          sudo systemctl enable amazon-ssm-agent
+          sudo systemctl start amazon-ssm-agent
+  
   
 
   AutoScalingGroup:
