@@ -5,7 +5,7 @@ on: [ push, pull_request ]
 
 env:
   AWS_REGION: eu-central-1
-  S3BUCKET: springappdeploy-webappdeploymentbucket-19q9vv6ejeohx
+  S3BUCKET: deploystack-webappdeploymentbucket-d2g8a9ie2a61
 
 jobs:
   build:
@@ -58,4 +58,4 @@ jobs:
       - run: |
           echo "Deploying branch ${{ env.GITHUB_REF }} to ${{ github.event.inputs.environment }}"
           commit_hash=`git rev-parse HEAD`
-          aws deploy create-deployment --application-name CustomCodeDeployApp --deployment-group-name CustomCodeDeployGroup --github-location repository=$GITHUB_REPOSITORY,commitId=$commit_hash --ignore-application-stop-failures
+          aws deploy create-deployment --application-name CodeDeployAppNameWithASG --deployment-group-name CodeDeployGroupName --github-location repository=$GITHUB_REPOSITORY,commitId=$commit_hash --ignore-application-stop-failures
