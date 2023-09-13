@@ -3,7 +3,7 @@ set -xe
 
 
 # Copy war file from S3 bucket to tomcat webapp folder
-aws s3 cp s3://springappdeploystack-webappdeploymentbucket-17nier0chj408/core-0.0.1-SNAPSHOT.jar /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
+aws s3 cp s3://springappdeploy-webappdeploymentbucket-6e39ignkct61/core-0.0.1-SNAPSHOT.jar /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
 
 
 # Ensure the ownership permissions are correct.
