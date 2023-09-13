@@ -6,24 +6,58 @@ Metadata:
     - Label:
         default: "Github configurations"
       Parameters:
+        - InstanceType
+        - ImageId
+        - AutoScalingGroupMinSize
+        - AutoScalingGroupMaxSize
+        - AutoScalingGroupDesiredCapacity
         - GithubRepoName
         - ThumbprintList
 
 Resources:
-  WebAppInstance:
-    Type: AWS::EC2::Instance
+  VPC:
+    Type: AWS::EC2::VPC
     Properties:
-      ImageId: ami-0d5eff06f840b45e9
-      InstanceType: t2.micro
-      KeyName: cloudformation-ec2
-      SecurityGroupIds:
-        - !Ref WebAppSecurityGroup
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: True
+      EnableDnsSupport: True
+      InstanceTenancy: default
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  DefaultPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1
+
 
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: !Join [ "-", [ webapp-security-group, dev ] ]
       GroupDescription: "Allow traffic over the port 8080 and SSH inbound and outbound traffic"
+      VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 8080
@@ -147,7 +181,6 @@ Resources:
                 Resource:
                   - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
 
-
   WebappApplication:
     Type: AWS::CodeDeploy::Application
     Properties:
@@ -165,24 +198,115 @@ Resources:
           - DEPLOYMENT_FAILURE
           - DEPLOYMENT_STOP_ON_REQUEST
 
+
+  WebappInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: WebappRole
+
+  WebappLaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      AssociatePublicIpAddress: true
+      ImageId:
+        Ref: ImageId
+      InstanceType:
+        Ref: InstanceType
+      KeyName:
+        Ref: KeyName
+      SecurityGroups:
+        - Ref: WebAppSecurityGroup
+
+      UserData:
+        "Fn::Base64":
+          !Sub |
+          #!/bin/bash
+          
+          sudo yum  update -y
+          sudo yum  install -y wget java-11-amazon-corretto 
+          java -version
+          wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+          chmod +x ./install
+          ./install auto
+          cd /tmp
+          sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+          sudo systemctl enable amazon-ssm-agent
+          sudo systemctl start amazon-ssm-agent
+  
+
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      HealthCheckType: ELB
+      HealthCheckGracePeriod: 300
+      DesiredCapacity: !Ref AutoScalingGroupDesiredCapacity
+      MinSize: !Ref AutoScalingGroupMinSize
+      MaxSize: !Ref AutoScalingGroupMaxSize
+      LaunchConfigurationName:
+        Ref: WebappLaunchConfig
+      VPCZoneIdentifier:
+        - !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: webapp-example
+          PropagateAtLaunch: true
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: 10.0.0.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: Public Subnet 1
+      VpcId: !Ref VPC
+
 Parameters:
+  InstanceType:
+    Type: String
+    Default: t2.micro
+    Description: Tipo di instanza EC2
+  KeyName:
+    Type: String
+    Default: paura
+    Description: Nome della chiave di connessione dell'istanza EC2
+  ImageId:
+    Type: String
+    Default: ami-0d5eff06f840b45e9
+    Description: Self explanatory
+  AutoScalingGroupMinSize:
+    Type: Number
+    Default: 1
+    Description: Enter the Min Size for the ASG
+  AutoScalingGroupMaxSize:
+    Type: Number
+    Default: 2
+    Description: Enter the Max Size for the ASG
+  AutoScalingGroupDesiredCapacity:
+    Type: Number
+    Default: 1
+    Description: Immettere il numero di istanze desiderato
   ThumbprintList:
     Type: String
     Default: 6938fd4d98bab03faadb97b34396831e3780aea1
     Description: A thumbprint of an Open ID Connector is a SHA1 hash of the public certificate of the host
   GithubRepoName:
     Type: String
+    Default: gabiUrsachi/APAutomationSystem
     Description: GitHub repository name Ex-TestUser/TestCodeDeploy
-Outputs:
 
-  WebappUrl:
-    Description: Webapp URL
-    Value:
-      Fn::Join:
-        - ''
-        - - http://
-          - !GetAtt WebAppInstance.PublicIp
-          - ':8080/'
+
+Outputs:
+#  WebappUrl:
+#    Description: Webapp URL
+#    Value:
+#      Fn::Join:
+#        - ''
+#        - - http://
+#          - !GetAtt WebAppInstance.PublicIp
+#          - ':8080/'
   DeploymentGroup:
     Description: Webapp Deployment Group
     Value: !Ref WebappDeploymentGroup
