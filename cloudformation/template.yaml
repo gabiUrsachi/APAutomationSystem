@@ -185,6 +185,7 @@ Resources:
     Type: AWS::CodeDeploy::Application
     Properties:
       ApplicationName: CodeDeployAppNameWithASG
+
   WebappDeploymentGroup:
     Type: AWS::CodeDeploy::DeploymentGroup
     Properties:
@@ -197,7 +198,8 @@ Resources:
         Events:
           - DEPLOYMENT_FAILURE
           - DEPLOYMENT_STOP_ON_REQUEST
-
+      AutoScalingGroups:
+        - Ref: AutoScalingGroup
 
   WebappInstanceProfile:
     Type: AWS::IAM::InstanceProfile
