@@ -12,7 +12,7 @@ Description=spring-app
 Type=simple
 User=ec2-user
 WorkingDirectory=/home/ec2-user
-ExecStart=/usr/bin/java -DDB_HOST=54.166.143.184 -jar /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
+ExecStart=/usr/bin/java -DDB_HOST=172.31.40.155 -jar /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
 
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/spring-app.service
