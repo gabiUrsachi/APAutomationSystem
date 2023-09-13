@@ -61,15 +61,14 @@ public class UserController {
                     @ApiResponse(responseCode = "401", description = "Invalid user credentials")
             })
     @PostMapping(value = "login")
-    public String login(@RequestBody LoginRequestDTO loginRequestDTO) {
-        return "Hell-o!";
-//        String username = loginRequestDTO.getUsername();
-//        String password = loginRequestDTO.getPassword();
-//
-//        User user = userService.login(username, password);
-//
-//        String token = TokenHandler.createToken(user.getUsername(), user.getCompanyIdentifier(), user.getRoles());
+    public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        String username = loginRequestDTO.getUsername();
+        String password = loginRequestDTO.getPassword();
 
-//        return new LoginResponseDTO(token);
+        User user = userService.login(username, password);
+
+        String token = TokenHandler.createToken(user.getUsername(), user.getCompanyIdentifier(), user.getRoles());
+
+        return new LoginResponseDTO(token);
     }
 }
