@@ -29,6 +29,20 @@ Parameters:
                     i3.xlarge, i3.2xlarge, i3.4xlarge, i3.8xlarge,
                     d2.xlarge, d2.2xlarge, d2.4xlarge, d2.8xlarge]
     ConstraintDescription: must be a valid EC2 instance type.
+  MongoInstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues: [t2.nano, t2.micro, t2.small, t2.medium, t2.large, t2.xlarge, t2.2xlarge,
+                    t3.nano, t3.micro, t3.small, t3.medium, t3.large, t3.xlarge, t3.2xlarge,
+                    m4.large, m4.xlarge, m4.2xlarge, m4.4xlarge, m4.10xlarge,
+                    m5.large, m5.xlarge, m5.2xlarge, m5.4xlarge,
+                    c5.large, c5.xlarge, c5.2xlarge, c5.4xlarge, c5.9xlarge,
+                    g3.8xlarge,
+                    r5.large, r5.xlarge, r5.2xlarge, r5.4xlarge, r3.12xlarge,
+                    i3.xlarge, i3.2xlarge, i3.4xlarge, i3.8xlarge,
+                    d2.xlarge, d2.2xlarge, d2.4xlarge, d2.8xlarge]
+    ConstraintDescription: must be a valid EC2 instance type.
   SSHLocation:
     Description: The IP address range that can be used to SSH to the EC2 instances
     Type: String
@@ -44,6 +58,15 @@ Parameters:
     MinLength: 9
     MaxLength: 18
     Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+
+  MongoLocation:
+    Description: The IP address range that can be used to HTTP to the EC2 instances
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 154.14.5.82/32
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
 
@@ -130,6 +153,35 @@ Resources:
           systemctl enable amazon-ssm-agent
           systemctl start amazon-ssm-agent
 
+  MongoEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref 'MongoInstanceType'
+      SecurityGroups: [!Ref 'MongoInstanceSecurityGroup']
+      KeyName: new-key
+      ImageId: !FindInMap
+        - RegionMap
+        - !Ref 'AWS::Region'
+        - ami
+      Tags:
+        - Key: Name
+          Value: mongo-example
+      UserData:
+        "Fn::Base64":
+          !Sub |
+          #!/bin/bash
+
+          sudo echo "
+          [mongodb-org-7.0]
+          name=MongoDB Repository
+          baseurl=https://repo.mongodb.org/yum/amazon/2023/mongodb-org/7.0/x86_64/
+          gpgcheck=1
+          enabled=1
+          gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc" > /etc/yum.repos.d/mongodb-org.repo
+          
+          sudo yum install -y mongodb-org
+
+
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -143,7 +195,19 @@ Resources:
           FromPort: 8080
           ToPort: 8080
           CidrIp: !Ref 'HTTPLocation'
-
+  MongoInstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref 'SSHLocation'
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          CidrIp: !Ref 'MongoLocation'
 
   WebappDeploymentBucket:
     Type: AWS::S3::Bucket
