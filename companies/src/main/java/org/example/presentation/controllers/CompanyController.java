@@ -38,7 +38,8 @@ public class CompanyController {
     @GetMapping
     public List<CompanyDTO> getCompanies() {
 
-        return companyMapperService.mapToDTO(companyService.getCompanies());
+        return null;
+        //return companyMapperService.mapToDTO(companyService.getCompanies());
     }
 
 
