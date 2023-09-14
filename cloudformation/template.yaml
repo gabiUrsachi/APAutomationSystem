@@ -108,6 +108,7 @@ Resources:
           !Sub |
           #!/bin/bash              
           sudo yum update -y
+          sudo yum install wget
           echo "
           [mongodb-org-7.0]
           name=MongoDB Repository
@@ -122,9 +123,9 @@ Resources:
           echo  "
           # mongod.conf
           systemLog:
-          destination: file
-          logAppend: true
-          path: /var/log/mongodb/mongod.log
+            destination: file
+            logAppend: true
+            path: /var/log/mongodb/mongod.log
 
           storage:
             dbPath: /var/lib/mongo
