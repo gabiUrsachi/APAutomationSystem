@@ -3,7 +3,7 @@ set -xe
 
 
 # Copy war file from S3 bucket to tomcat webapp folder
-aws s3 cp s3://springappdeploy-webappdeploymentbucket-6e39ignkct61/core-0.0.1-SNAPSHOT.jar /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
+aws s3 cp s3://backendstack-webappdeploymentbucket-1vlbn0cv8jvz0/core-0.0.1-SNAPSHOT.jar /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
 
 stack_name="BackendStack"
 #private_ip_output_key="MongoEC2InstancePrivateIP"
