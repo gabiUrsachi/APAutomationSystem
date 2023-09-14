@@ -107,6 +107,7 @@ Resources:
         "Fn::Base64":
           !Sub |
           #!/bin/bash              
+          sudo yum update -y
           echo "
           [mongodb-org-7.0]
           name=MongoDB Repository
@@ -114,11 +115,46 @@ Resources:
           gpgcheck=1
           enabled=1
           gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc" > /etc/yum.repos.d/mongodb-org-7.0.repo
+          sudo yum install -y mongodb-mongosh-shared-openssl3
+          sudo yum install -y mongodb-mongosh
           sudo yum install -y mongodb-org
-          sudo yum update -y
+          
+          echo  "
+          # mongod.conf
+          systemLog:
+          destination: file
+          logAppend: true
+          path: /var/log/mongodb/mongod.log
+
+          storage:
+            dbPath: /var/lib/mongo
+
+          processManagement:
+            timeZoneInfo: /usr/share/zoneinfo
+
+          net:
+            port: 27017
+            bindIp: 0.0.0.0" > /etc/mongod.conf 
+          
           sudo systemctl daemon-reload
           sudo systemctl enable mongod
           sudo systemctl start mongod
+          
+          echo '
+          db = db.getSiblingDB("APsystem");
+          db.createCollection("user");
+          db.createCollection("invoice");
+          db.createCollection("purchaseOrder");
+          db.createCollection("company");
+          ' > /home/ec2-user/db_init_script.js
+          mongosh --host localhost --port 27017 --file /home/ec2-user/db_init_script.js
+          
+          wget https://mongo-init-data.s3.amazonaws.com/APsystem.company.json
+          wget https://mongo-init-data.s3.amazonaws.com/APsystem.user.json
+          
+          mongoimport APsystem.company.json --db="APsystem" --collection="company" --jsonArray
+          mongoimport APsystem.user.json --db="APsystem" --collection="user" --jsonArray
+
       Tags:
         - Key: Name
           Value: Mongodb instance
