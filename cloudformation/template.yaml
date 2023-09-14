@@ -51,7 +51,6 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet1
 
-
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -64,9 +63,65 @@ Resources:
           ToPort: 8080
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
+
+  MongoSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Database security group
+      GroupName: !Join [ "-", [ database-security-group, dev ] ]
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          SourceSecurityGroupId:  !GetAtt WebAppSecurityGroup.GroupId
+
+  MongoInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId:
+        Ref: ImageId
+      InstanceType:
+        Ref: InstanceType
+      KeyName:
+        Ref: KeyName
+      SecurityGroupIds:
+        - !GetAtt MongoSecurityGroup.GroupId
+      SubnetId: !Ref PublicSubnet1
+      UserData:
+        "Fn::Base64":
+          !Sub |
+          #!/bin/bash              
+          echo "
+          [mongodb-org-7.0]
+          name=MongoDB Repository
+          baseurl=https://repo.mongodb.org/yum/amazon/2023/mongodb-org/7.0/x86_64/
+          gpgcheck=1
+          enabled=1
+          gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc" > /etc/yum.repos.d/mongodb-org-7.0.repo
+          sudo yum install -y mongodb-org
+          sudo yum update -y
+          sudo systemctl daemon-reload
+          sudo systemctl enable mongod
+          sudo systemctl start mongod
+      Tags:
+        - Key: Name
+          Value: Mongodb instance
 
   WebappRole:
     Type: AWS::IAM::Role
@@ -237,7 +292,7 @@ Resources:
           Type=simple
           User=ec2-user
           WorkingDirectory=/home/ec2-user
-          ExecStart=/usr/bin/java -DDB_HOST=3.219.57.18 -jar /home/ec2-user/core-0.0.1-SNAPSHOT.jar
+          ExecStart=/usr/bin/java -DDB_HOST=${MongoInstance.PrivateIp} -jar /home/ec2-user/core-0.0.1-SNAPSHOT.jar
   
           [Install]
           WantedBy=multi-user.target" > /etc/systemd/system/backend.service
@@ -296,7 +351,7 @@ Parameters:
     Description: Nome della chiave di connessione dell'istanza EC2
   ImageId:
     Type: String
-    Default: ami-0d5eff06f840b45e9
+    Default: ami-051f7e7f6c2f40dc1
     Description: Self explanatory
   AutoScalingGroupMinSize:
     Type: Number
