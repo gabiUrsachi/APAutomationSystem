@@ -221,13 +221,15 @@ Resources:
           enabled=1
           gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc" > /etc/yum.repos.d/mongodb-org.repo
           
+          sudo yum install mongodb-mongosh-shared-openssl3
           sudo yum install -y mongodb-org
-          sudo yum update -y
+
           sudo sed -i "s/^  bindIp: .*/  bindIp: 0.0.0.0/" /etc/mongod.conf
           sudo systemctl start mongod
 
           # Connect to MongoDB and create/populate collections
-          mongosh <<EOF
+          mongosh 
+          
           use APsystem
           db.createCollection("user")
           db.user.insert({
@@ -238,8 +240,28 @@ Resources:
                 "ADMIN"
               ]
           })
+          
+          db.createCollection("company")
+          db.company.insertMany([
+            {
+                "_id" : "8D4577A7-143F-08EB-56F0-3E1921738DB9",
+                "name" : "CompanyB"
+            },
+            {
+                "_id" : "8A4218AE-AADE-691C-7C4D-9EA18493A5A5",
+                "name" : "CompanyC"
+            },
+            {
+                "_id" : "59457B99-3BA5-E99B-E263-9E2020D1B78F",
+                "name" : "CompanyA"
+            },
+            {
+                "_id" : "C04DC4DC-7A24-F201-C28D-9E4E628834AD",
+                "name" : "CompanyD"
+            }
+          ])
           exit
-          EOF
+
   WebappDeploymentBucket:
     Type: AWS::S3::Bucket
     Properties:
