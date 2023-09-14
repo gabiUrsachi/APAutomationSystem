@@ -119,6 +119,11 @@ Resources:
                 Action:
                   - "s3:getObject"
                 Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
+              -
+                Effect: "Allow"
+                Action:
+                  - "cloudformation:DescribeStacks"
+                Resource: "*"
 
   WebappInstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -217,10 +222,24 @@ Resources:
           gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc" > /etc/yum.repos.d/mongodb-org.repo
           
           sudo yum install -y mongodb-org
+          sudo yum update -y
           sudo sed -i "s/^  bindIp: .*/  bindIp: 0.0.0.0/" /etc/mongod.conf
           sudo systemctl start mongod
 
-
+          # Connect to MongoDB and create/populate collections
+          mongosh <<EOF
+          use APsystem
+          db.createCollection("user")
+          db.user.insert({
+              _id: "FB4E91A2-84A3-7983-8B12-8EBD940EE998",
+              username : "admin",
+              password : "$2a$15$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW",
+              roles : [
+                "ADMIN"
+              ]
+          })
+          exit
+          EOF
   WebappDeploymentBucket:
     Type: AWS::S3::Bucket
     Properties:
