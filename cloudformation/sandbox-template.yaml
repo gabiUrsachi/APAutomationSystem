@@ -261,7 +261,7 @@ Resources:
           ])' > /home/ec2-user/init_data.js
 
           # Add a delay to ensure the file is fully written
-          sleep 5
+          sleep 10
           
           # Run mongosh in the background
           nohup mongosh --file /home/ec2-user/init_data.js > /dev/null 2>&1 &
