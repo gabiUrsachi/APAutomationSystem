@@ -232,7 +232,6 @@ Resources:
           sudo systemctl start mongod
           
           echo '
-          
           db = db.getSiblingDB("APsystem");
           db.createCollection("user");
           db.user.insert({
@@ -244,32 +243,16 @@ Resources:
             ]
           });
           
-          // Define your 32-character hexadecimal string
-          const customUuidHex = "C04DC4DC7A24F201C28D9E4E628834AD";
-          
-          // Function to convert hexadecimal string to a byte array
-          function hexToBytes(hex) {
-          const bytes = [];
-          for (let i = 0; i < hex.length; i += 2) {
-          bytes.push(parseInt(hex.substr(i, 2), 16));
-          }
-          return bytes;
-          }
-          
-          // Convert the hexadecimal string to a Binary object with subtype 4 (UUID)
-          const customUuidBytes = hexToBytes(customUuidHex);
-          const customUuidBin = new BinData(0x04, customUuidBytes);
-
           db.createCollection("company");
           db.company.insertMany([
-            {
-              "_id" : customUuidBin,
-              "name" : "CompanyA"
-            }
+          {
+            "_id" : Binary(Buffer.from("7d4577a7143f08eb56f03e1921738db9", "hex"), 3),
+            "name" : "CompanyHEEELP"
+          }
           ])' > /home/ec2-user/init_data.js
 
           # Add a delay to ensure the file is fully written
-          sleep 10
+          sleep 5
           
           # Run mongosh in the background
           nohup mongosh --file /home/ec2-user/init_data.js > /dev/null 2>&1 &
