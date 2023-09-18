@@ -243,19 +243,28 @@ Resources:
               "ADMIN"
             ]
           });
+          
+          // Define your 32-character hexadecimal string
+          const customUuidHex = "C04DC4DC7A24F201C28D9E4E628834AD";
+          
+          // Function to convert hexadecimal string to a byte array
+          function hexToBytes(hex) {
+          const bytes = [];
+          for (let i = 0; i < hex.length; i += 2) {
+          bytes.push(parseInt(hex.substr(i, 2), 16));
+          }
+          return bytes;
+          }
+          
+          // Convert the hexadecimal string to a Binary object with subtype 4 (UUID)
+          const customUuidBytes = hexToBytes(customUuidHex);
+          const customUuidBin = new BinData(0x04, customUuidBytes);
+
           db.createCollection("company");
           db.company.insertMany([
             {
-                name : "CompanyB"
-            },
-            {
-                name : "CompanyC"
-            },
-            {
-                name : "CompanyA"
-            },
-            {
-                name : "CompanyD"
+              "_id" : customUuidBin,
+              "name" : "CompanyA"
             }
           ])' > /home/ec2-user/init_data.js
 
