@@ -7,7 +7,7 @@ on:
     branches: [ aws_deployment ]
 env:
   AWS_REGION: us-east-1
-  S3BUCKET: ciaoooo-webappdeploymentbucket-1g1hqvg6dqh7z
+  S3BUCKET: quai-de-metro-webappdeploymentbucket-19emufs0lu3d7
 jobs:
   build:
     runs-on: ubuntu-latest
