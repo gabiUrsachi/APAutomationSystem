@@ -222,17 +222,16 @@ Resources:
           enabled=1
           gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc" > /etc/yum.repos.d/mongodb-org.repo
           
+          sudo yum update -y
           sudo yum install -y mongodb-mongosh-shared-openssl3
           sudo yum install -y mongodb-org --exclude=mongodb-mongosh
-          sudo yum install -y nodejs
-          npm install uuid
-
 
           sudo sed -i "s/^  bindIp: .*/  bindIp: 0.0.0.0/" /etc/mongod.conf
+          sudo systemctl daemon-reload
+          sudo systemctl enable mongod
           sudo systemctl start mongod
           
           echo '
-          const { v4: uuidv4 } = require('uuid');
           
           db = db.getSiblingDB("APsystem");
           db.createCollection("user");
@@ -247,19 +246,15 @@ Resources:
           db.createCollection("company");
           db.company.insertMany([
             {
-                _id : uuidv4(),
                 name : "CompanyB"
             },
             {
-                _id : uuidv4(),
                 name : "CompanyC"
             },
             {
-                _id : uuidv4(),
                 name : "CompanyA"
             },
             {
-                _id : uuidv4(),
                 name : "CompanyD"
             }
           ])' > /home/ec2-user/init_data.js
