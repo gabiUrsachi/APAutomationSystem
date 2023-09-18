@@ -224,12 +224,16 @@ Resources:
           
           sudo yum install -y mongodb-mongosh-shared-openssl3
           sudo yum install -y mongodb-org --exclude=mongodb-mongosh
-        
+          sudo yum install -y nodejs
+          npm install uuid
+
 
           sudo sed -i "s/^  bindIp: .*/  bindIp: 0.0.0.0/" /etc/mongod.conf
           sudo systemctl start mongod
           
           echo '
+          const { v4: uuidv4 } = require('uuid');
+          
           db = db.getSiblingDB("APsystem");
           db.createCollection("user");
           db.user.insert({
@@ -243,19 +247,19 @@ Resources:
           db.createCollection("company");
           db.company.insertMany([
             {
-                _id : LUUID("8D4577A7-143F-08EB-56F0-3E1921738DB9"),
+                _id : uuidv4(),
                 name : "CompanyB"
             },
             {
-                _id : LUUID("8A4218AE-AADE-691C-7C4D-9EA18493A5A5"),
+                _id : uuidv4(),
                 name : "CompanyC"
             },
             {
-                _id : LUUID("59457B99-3BA5-E99B-E263-9E2020D1B78F"),
+                _id : uuidv4(),
                 name : "CompanyA"
             },
             {
-                _id : LUUID("C04DC4DC-7A24-F201-C28D-9E4E628834AD"),
+                _id : uuidv4(),
                 name : "CompanyD"
             }
           ])' > /home/ec2-user/init_data.js
