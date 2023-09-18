@@ -254,11 +254,11 @@ Resources:
             "name" : "CompanyA"
           },
           {
-            "_id" : Binary(Buffer.from("6h4577a7143f08eb56f03e1921738db9", "hex"), 3),
+            "_id" : Binary(Buffer.from("7f4577a7143f33fb56f03e1921738db9", "hex"), 3),
             "name" : "CompanyB"
           },
           {
-            "_id" : Binary(Buffer.from("1n4577a7143f08eb56f03e1921738db9", "hex"), 3),
+            "_id" : Binary(Buffer.from("1a4577a7143f33ca78f03e1921738db9", "hex"), 3),
             "name" : "CompanyC"
           }
           ])' > /home/ec2-user/init_data.js
