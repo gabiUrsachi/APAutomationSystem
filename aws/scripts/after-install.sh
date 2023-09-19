@@ -3,7 +3,7 @@ set -xe
 
 
 # Copy war file from S3 bucket to tomcat webapp folder
-aws s3 cp s3://ciaoooooooo-webappdeploymentbucket-ty06x4xl5cu6/core-0.0.1-SNAPSHOT.jar /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
+aws s3 cp s3://backendstack-webappdeploymentbucket-znqamhpkd3wp/core-0.0.1-SNAPSHOT.jar/home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
 
 stack_name="BackendStack"
 db_private_ip=$(aws cloudformation describe-stacks --stack-name "$stack_name" --query "Stacks[0].Outputs[?OutputKey=='MongoEC2InstancePrivateIP'].OutputValue" --output text)
