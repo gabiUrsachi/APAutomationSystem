@@ -2,7 +2,7 @@
 set -x
 
 # System control will return either "active" or "inactive".
-service_running=$(systemctl is-active backend.service)
-if [ "$service_running" == "active" ]; then
-  systemctl stop backend.service
+app_running=$(systemctl is-active spring-app.service)
+if [ "$app_running" == "active" ]; then
+    sudo systemctl stop spring-app.service
 fi

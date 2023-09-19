@@ -1,164 +1,155 @@
-AWSTemplateFormatVersion: 2010-09-09
-Description: Backend automated deployed instance
-
+AWSTemplateFormatVersion: '2010-09-09'
 Metadata:
+  License: Apache-2.0
   AWS::CloudFormation::Interface:
-    - Label:
-        default: "Github configurations"
-      Parameters:
-        - InstanceType
-        - ImageId
-        - AutoScalingGroupMinSize
-        - AutoScalingGroupMaxSize
-        - AutoScalingGroupDesiredCapacity
-        - GithubRepoName
-        - ThumbprintList
+    ParameterGroups:
+      - Label:
+          default: "Github configurations"
+        Parameters:
+          - GithubRepoName
+          - ThumbprintList
 
+Description: 'AWS CloudFormation:
+  Create an Amazon EC2 instance running the Amazon Linux AMI. The AMI is chosen based
+  on the region in which the stack is run.'
+
+
+Parameters:
+#  MyIP:
+#    Description: MyIP
+#    Type: String
+#    Default: 82.77.237.156/32
+#    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+  SpringInstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues: [t2.nano, t2.micro, t2.small, t2.medium, t2.large, t2.xlarge, t2.2xlarge,
+                    t3.nano, t3.micro, t3.small, t3.medium, t3.large, t3.xlarge, t3.2xlarge,
+                    m4.large, m4.xlarge, m4.2xlarge, m4.4xlarge, m4.10xlarge,
+                    m5.large, m5.xlarge, m5.2xlarge, m5.4xlarge,
+                    c5.large, c5.xlarge, c5.2xlarge, c5.4xlarge, c5.9xlarge,
+                    g3.8xlarge,
+                    r5.large, r5.xlarge, r5.2xlarge, r5.4xlarge, r3.12xlarge,
+                    i3.xlarge, i3.2xlarge, i3.4xlarge, i3.8xlarge,
+                    d2.xlarge, d2.2xlarge, d2.4xlarge, d2.8xlarge]
+    ConstraintDescription: must be a valid EC2 instance type.
+  MongoInstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues: [t2.nano, t2.micro, t2.small, t2.medium, t2.large, t2.xlarge, t2.2xlarge,
+                    t3.nano, t3.micro, t3.small, t3.medium, t3.large, t3.xlarge, t3.2xlarge,
+                    m4.large, m4.xlarge, m4.2xlarge, m4.4xlarge, m4.10xlarge,
+                    m5.large, m5.xlarge, m5.2xlarge, m5.4xlarge,
+                    c5.large, c5.xlarge, c5.2xlarge, c5.4xlarge, c5.9xlarge,
+                    g3.8xlarge,
+                    r5.large, r5.xlarge, r5.2xlarge, r5.4xlarge, r3.12xlarge,
+                    i3.xlarge, i3.2xlarge, i3.4xlarge, i3.8xlarge,
+                    d2.xlarge, d2.2xlarge, d2.4xlarge, d2.8xlarge]
+    ConstraintDescription: must be a valid EC2 instance type.
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 95.76.16.83/32
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+
+  HTTPLocation:
+    Description: The IP address range that can be used to HTTP to the EC2 instances
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+
+  MongoLocation:
+    Description: The IP address range that can be used to HTTP to the EC2 instances
+    Type: String
+    MinLength: 9
+    MaxLength: 18
+    Default: 95.76.16.83/32
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+
+  ThumbprintList:
+    Type: String
+    Default: 6938fd4d98bab03faadb97b34396831e3780aea1
+    Description: A thumbprint of an Open ID Connector is a SHA1 hash of the public certificate of the host
+
+  GithubRepoName:
+    Type: String
+    Default: gabiUrsachi/APAutomationSystem
+    Description: GitHub repository name Ex-TestUser/TestCodeDeploy
+
+  AutoScalingGroupMinSize:
+    Type: Number
+    Default: 1
+    Description: Enter the Min Size for the ASG
+  AutoScalingGroupMaxSize:
+    Type: Number
+    Default: 2
+    Description: Enter the Max Size for the ASG
+  AutoScalingGroupDesiredCapacity:
+    Type: Number
+    Default: 1
+    Description: Immettere il numero di istanze desiderato
+  KeyName:
+    Type: String
+    Default: paura
+
+Mappings:
+  RegionMap:
+    us-east-1:
+      ami: "ami-01c647eace872fc02"
+
+      
 Resources:
-  VPC:
-    Type: AWS::EC2::VPC
+
+  LoadBalancer:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
     Properties:
-      CidrBlock: 10.0.0.0/16
-      EnableDnsHostnames: True
-      EnableDnsSupport: True
-      InstanceTenancy: default
+      Subnets:
+        ["subnet-07328dc1b6b6f0955","subnet-0135e59e929e746bd","subnet-01086605e667c34c4"]
 
-  InternetGateway:
-    Type: AWS::EC2::InternetGateway
+      LoadBalancerAttributes: 
+        - Key: 'deletion_protection.enabled'
+          Value: 'false'
 
-  InternetGatewayAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
+  EC2TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref VPC
 
-  PublicRouteTable:
-    Type: AWS::EC2::RouteTable
+      VpcId: "vpc-0ff83882a4b4b0be3"
+      HealthCheckIntervalSeconds: 30
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 15
+      HealthyThresholdCount: 5
+      Matcher:
+        HttpCode: '200'
+      Name: EC2TargetGroup
+      Port: 80
+      Protocol: HTTP
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: '20'
+      UnhealthyThresholdCount: 3
+  
+  AutoScalingListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
-      VpcId: !Ref VPC
-
-  DefaultPublicRoute:
-    Type: AWS::EC2::Route
-    DependsOn: InternetGatewayAttachment
-    Properties:
-      RouteTableId: !Ref PublicRouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
-
-  PublicSubnet1RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref PublicRouteTable
-      SubnetId: !Ref PublicSubnet1
-
-  WebAppSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: !Join [ "-", [ webapp-security-group, dev ] ]
-      GroupDescription: "Allow traffic over the port 8080 and SSH inbound and outbound traffic"
-      VpcId: !Ref VPC
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 8080
-          ToPort: 8080
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-
-  MongoSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Database security group
-      GroupName: !Join [ "-", [ database-security-group, dev ] ]
-      VpcId: !Ref VPC
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 27017
-          ToPort: 27017
-          SourceSecurityGroupId:  !GetAtt WebAppSecurityGroup.GroupId
-
-  MongoInstance:
-    Type: AWS::EC2::Instance
-    Properties:
-      ImageId:
-        Ref: ImageId
-      InstanceType:
-        Ref: InstanceType
-      KeyName:
-        Ref: KeyName
-      SecurityGroupIds:
-        - !GetAtt MongoSecurityGroup.GroupId
-      SubnetId: !Ref PublicSubnet1
-      UserData:
-        "Fn::Base64":
-          !Sub |
-          #!/bin/bash              
-          sudo yum update -y
-          sudo yum install wget
-          echo "
-          [mongodb-org-7.0]
-          name=MongoDB Repository
-          baseurl=https://repo.mongodb.org/yum/amazon/2023/mongodb-org/7.0/x86_64/
-          gpgcheck=1
-          enabled=1
-          gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc" > /etc/yum.repos.d/mongodb-org-7.0.repo
-          sudo yum install -y mongodb-mongosh-shared-openssl3
-          sudo yum install -y mongodb-mongosh
-          sudo yum install -y mongodb-org
-          
-          echo  "
-          # mongod.conf
-          systemLog:
-            destination: file
-            logAppend: true
-            path: /var/log/mongodb/mongod.log
-
-          storage:
-            dbPath: /var/lib/mongo
-
-          processManagement:
-            timeZoneInfo: /usr/share/zoneinfo
-
-          net:
-            port: 27017
-            bindIp: 0.0.0.0" > /etc/mongod.conf 
-          
-          sudo systemctl daemon-reload
-          sudo systemctl enable mongod
-          sudo systemctl start mongod
-          
-          echo '
-          db = db.getSiblingDB("APsystem");
-          db.createCollection("user");
-          db.createCollection("invoice");
-          db.createCollection("purchaseOrder");
-          db.createCollection("company");
-          ' > /home/ec2-user/db_init_script.js
-          mongosh --host localhost --port 27017 --file /home/ec2-user/db_init_script.js
-          
-          wget https://mongo-init-data.s3.amazonaws.com/APsystem.company.json
-          wget https://mongo-init-data.s3.amazonaws.com/APsystem.user.json
-          
-          mongoimport APsystem.company.json --db="APsystem" --collection="company" --jsonArray
-          mongoimport APsystem.user.json --db="APsystem" --collection="user" --jsonArray
-
-      Tags:
-        - Key: Name
-          Value: Mongodb instance
+      Certificates: 
+        - CertificateArn: "arn:aws:acm:us-east-1:317231299669:certificate/ea5abfef-55d9-4e11-a209-bed1fd865af0"
+      DefaultActions: 
+        - TargetGroupArn: !Ref EC2TargetGroup
+          Type: 'forward'
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 443
+      Protocol: HTTPS
+  
 
   WebappRole:
     Type: AWS::IAM::Role
@@ -168,7 +159,8 @@ Resources:
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
-          - Effect: "Allow"
+          -
+            Effect: "Allow"
             Principal:
               Service:
                 - "ec2.amazonaws.com"
@@ -178,14 +170,275 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore'
       Policies:
-        - PolicyName: "allow-webapp-deployment-bucket-policy"
+        -
+          PolicyName: "allow-webapp-deployment-bucket-policy"
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              - Effect: "Allow"
+              -
+                Effect: "Allow"
                 Action:
                   - "s3:getObject"
                 Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
+              -
+                Effect: "Allow"
+                Action:
+                  - "cloudformation:DescribeStacks"
+                  - "cloudformation:ListExports"
+                  - "cloudformation:ExportStacks"
+                Resource: "*"
+
+  WebappInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: WebappRole
+
+#  WebappLaunchConfig:
+#    Type: AWS::AutoScaling::LaunchConfiguration
+#    Properties:
+#      AssociatePublicIpAddress: true
+#      ImageId: !FindInMap
+#        - RegionMap
+#        - !Ref 'AWS::Region'
+#        - ami
+#      InstanceType:
+#        Ref: SpringInstanceType
+#      KeyName:
+#        Ref: KeyName
+#      SecurityGroups: [!Ref 'SpringInstanceSecurityGroup']
+#      IamInstanceProfile:
+#        Ref: WebappInstanceProfile
+#      UserData:
+#        "Fn::Base64":
+#          !Sub |
+#          #!/bin/bash
+#
+#          sudo yum  install -y java-11 wget
+#          java -version
+#
+#          yum install ruby -y
+#          wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+#          chmod +x ./install
+#          ./install auto
+#          cd /tmp
+#          yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+#          systemctl enable amazon-ssm-agent
+#          systemctl start amazon-ssm-agent
+
+  WebappLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: MyLaunchTemplate
+      VersionDescription: InitialVersion
+      LaunchTemplateData:
+        ImageId: !FindInMap
+          - RegionMap
+          - !Ref 'AWS::Region'
+          - ami
+        InstanceType:
+          Ref: SpringInstanceType
+        KeyName:
+          Ref: KeyName
+        SecurityGroups: [!Ref 'SpringInstanceSecurityGroup']
+        IamInstanceProfile:
+          Arn: !GetAtt WebappInstanceProfile.Arn
+        UserData:
+          "Fn::Base64":
+            !Sub |
+            #!/bin/bash
+            
+            sudo yum  install -y java-11 wget
+            java -version
+            
+            yum install ruby -y
+            wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+            chmod +x ./install
+            ./install auto
+            cd /tmp
+            yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            systemctl enable amazon-ssm-agent
+            systemctl start amazon-ssm-agent
+
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      HealthCheckType: ELB
+      HealthCheckGracePeriod: 300
+      DesiredCapacity: !Ref AutoScalingGroupDesiredCapacity
+      MinSize: !Ref AutoScalingGroupMinSize
+      MaxSize: !Ref AutoScalingGroupMaxSize
+#      LaunchConfigurationName:
+#        Ref: WebappLaunchConfig
+      LaunchTemplate:
+        LaunchTemplateId: !Ref WebappLaunchTemplate
+        Version: !GetAtt WebappLaunchTemplate.LatestVersionNumber
+      Tags:
+        - Key: Name
+          Value: spring-app
+          PropagateAtLaunch: true
+      TargetGroupARNs:
+        - !Ref EC2TargetGroup
+
+      AvailabilityZones:
+        ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"]
+
+  SpringInstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22 and HTTP requests via port 8080
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref 'SSHLocation'
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: !Ref 'HTTPLocation'
+
+#  SpringEC2Instance:
+#    Type: AWS::EC2::Instance
+#    Properties:
+#      InstanceType: !Ref 'SpringInstanceType'
+#      SecurityGroups: [!Ref 'SpringInstanceSecurityGroup']
+#      KeyName: new-key
+#      ImageId: !FindInMap
+#        - RegionMap
+#        - !Ref 'AWS::Region'
+#        - ami
+#      Tags:
+#        - Key: Name
+#          Value: spring-app
+#      IamInstanceProfile:
+#        Ref: WebappInstanceProfile
+#      UserData:
+#        "Fn::Base64":
+#          !Sub |
+#          #!/bin/bash
+#
+#          sudo yum  install -y java-11 wget
+#          java -version
+#
+#          yum install ruby -y
+#          wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+#          chmod +x ./install
+#          ./install auto
+#          cd /tmp
+#          yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+#          systemctl enable amazon-ssm-agent
+#          systemctl start amazon-ssm-agent
+
+  MongoInstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref 'SSHLocation'
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          CidrIp: !Ref 'MongoLocation'
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          SourceSecurityGroupId:  !GetAtt SpringInstanceSecurityGroup.GroupId
+
+  MongoEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref 'MongoInstanceType'
+      SecurityGroups: [!Ref 'MongoInstanceSecurityGroup']
+      KeyName: paura
+      ImageId: !FindInMap
+        - RegionMap
+        - !Ref 'AWS::Region'
+        - ami
+      Tags:
+        - Key: Name
+          Value: mongo-db
+      UserData:
+        "Fn::Base64":
+          !Sub |
+          #!/bin/bash
+          set -xe
+
+          sudo echo "
+          [mongodb-org-7.0]
+          name=MongoDB Repository
+          baseurl=https://repo.mongodb.org/yum/amazon/2023/mongodb-org/7.0/x86_64/
+          gpgcheck=1
+          enabled=1
+          gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc" > /etc/yum.repos.d/mongodb-org.repo
+          
+          sudo yum update -y
+          sudo yum install -y mongodb-mongosh-shared-openssl3
+          sudo yum install -y mongodb-org --exclude=mongodb-mongosh
+
+          sudo sed -i "s/^  bindIp: .*/  bindIp: 0.0.0.0/" /etc/mongod.conf
+          sudo systemctl daemon-reload
+          sudo systemctl enable mongod
+          sudo systemctl start mongod
+          
+          echo '
+          db = db.getSiblingDB("APsystem");
+          db.createCollection("user");
+          db.user.insert({
+            _id: "FB4E91A2-84A3-7983-8B12-8EBD940EE998",
+            username : "admin",
+            password : "$2a$15$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW",
+            roles : [
+              "ADMIN"
+            ]
+          });
+          
+          db.createCollection("company");
+          db.company.insertMany([
+          {
+            "_id" : Binary(Buffer.from("7d4577a7143f08eb56f03e1921738db9", "hex"), 3),
+            "name" : "CompanyHEEELP"
+          },
+          {
+            "_id" : Binary(Buffer.from("3a4577a7143f08eb56f03e1921738db9", "hex"), 3),
+            "name" : "CompanyA"
+          },
+          {
+            "_id" : Binary(Buffer.from("7f4577a7143f33fb56f03e1921738db9", "hex"), 3),
+            "name" : "CompanyB"
+          },
+          {
+            "_id" : Binary(Buffer.from("1a4577a7143f33ca78f03e1921738db9", "hex"), 3),
+            "name" : "CompanyC"
+          }
+          ])' > /home/ec2-user/init_data.js
+
+          # Add a delay to ensure the file is fully written
+          sleep 5
+          
+          # Run mongosh in the background
+          nohup mongosh --file /home/ec2-user/init_data.js > /dev/null 2>&1 &
+    
+          # Wait for the mongosh process to finish
+          while pgrep -x "mongosh" > /dev/null; do
+            sleep 5
+          done
+
+  WebappDeploymentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
 
   IDCProvider:
     Type: AWS::IAM::OIDCProvider
@@ -232,52 +485,10 @@ Resources:
                   - 's3:putObject'
                 Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
 
-  WebappDeploymentBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-
-  CodeDeployRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - "codedeploy.amazonaws.com"
-            Action:
-              - "sts:AssumeRole"
-      Path: "/"
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
-      Policies:
-        - PolicyName: allow-autoscaling
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - ec2:RunInstances
-                  - ec2:CreateTags
-                  - iam:PassRole
-                Resource:
-                  - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
-
   WebappApplication:
     Type: AWS::CodeDeploy::Application
     Properties:
       ApplicationName: CodeDeployAppNameWithASG
-
   WebappDeploymentGroup:
     Type: AWS::CodeDeploy::DeploymentGroup
     Properties:
@@ -290,146 +501,77 @@ Resources:
         Events:
           - DEPLOYMENT_FAILURE
           - DEPLOYMENT_STOP_ON_REQUEST
+      Ec2TagFilters:
+          - Key: Name
+            Type: KEY_AND_VALUE
+            Value: spring-app
       AutoScalingGroups:
         - Ref: AutoScalingGroup
 
-  WebappInstanceProfile:
-    Type: AWS::IAM::InstanceProfile
+
+  CodeDeployRole:
+    Type: AWS::IAM::Role
     Properties:
-      Roles:
-        - Ref: WebappRole
-
-  WebappLaunchConfig:
-    Type: AWS::AutoScaling::LaunchConfiguration
-    Properties:
-      AssociatePublicIpAddress: true
-      ImageId:
-        Ref: ImageId
-      InstanceType:
-        Ref: InstanceType
-      KeyName:
-        Ref: KeyName
-      SecurityGroups:
-        - Ref: WebAppSecurityGroup
-      IamInstanceProfile:
-        Ref: WebappInstanceProfile
-      UserData:
-        "Fn::Base64":
-          !Sub |
-          #!/bin/bash
-          
-          sudo yum  update -y
-          sudo yum  install -y wget java-11-amazon-corretto 
-          java -version
-          
-          echo "
-          Description=backend
-  
-          [Service]
-          Type=simple
-          User=ec2-user
-          WorkingDirectory=/home/ec2-user
-          ExecStart=/usr/bin/java -DDB_HOST=${MongoInstance.PrivateIp} -jar /home/ec2-user/core-0.0.1-SNAPSHOT.jar
-  
-          [Install]
-          WantedBy=multi-user.target" > /etc/systemd/system/backend.service
-          
-          systemctl daemon-reload
-          systemctl start backend.service
-          systemctl enable backend.service
-          systemctl status backend.service 
-          yum install ruby -y 
-          wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
-          chmod +x ./install
-          ./install auto
-          cd /tmp
-          sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-          sudo systemctl enable amazon-ssm-agent
-          sudo systemctl start amazon-ssm-agent
-  
-  
-
-  AutoScalingGroup:
-    Type: AWS::AutoScaling::AutoScalingGroup
-    Properties:
-      HealthCheckType: ELB
-      HealthCheckGracePeriod: 300
-      DesiredCapacity: !Ref AutoScalingGroupDesiredCapacity
-      MinSize: !Ref AutoScalingGroupMinSize
-      MaxSize: !Ref AutoScalingGroupMaxSize
-      LaunchConfigurationName:
-        Ref: WebappLaunchConfig
-      VPCZoneIdentifier:
-        - !Ref PublicSubnet1
-      Tags:
-        - Key: Name
-          Value: webapp-example
-          PropagateAtLaunch: true
-
-  PublicSubnet1:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: 10.0.0.0/24
-      MapPublicIpOnLaunch: true
-      Tags:
-        - Key: Name
-          Value: Public Subnet 1
-      VpcId: !Ref VPC
-
-Parameters:
-  InstanceType:
-    Type: String
-    Default: t2.micro
-    Description: Tipo di instanza EC2
-  KeyName:
-    Type: String
-    Default: paura
-    Description: Nome della chiave di connessione dell'istanza EC2
-  ImageId:
-    Type: String
-    Default: ami-051f7e7f6c2f40dc1
-    Description: Self explanatory
-  AutoScalingGroupMinSize:
-    Type: Number
-    Default: 1
-    Description: Enter the Min Size for the ASG
-  AutoScalingGroupMaxSize:
-    Type: Number
-    Default: 2
-    Description: Enter the Max Size for the ASG
-  AutoScalingGroupDesiredCapacity:
-    Type: Number
-    Default: 1
-    Description: Immettere il numero di istanze desiderato
-  ThumbprintList:
-    Type: String
-    Default: 6938fd4d98bab03faadb97b34396831e3780aea1
-    Description: A thumbprint of an Open ID Connector is a SHA1 hash of the public certificate of the host
-  GithubRepoName:
-    Type: String
-    Default: gabiUrsachi/APAutomationSystem
-    Description: GitHub repository name Ex-TestUser/TestCodeDeploy
-
-
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "codedeploy.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
+      Policies:
+        -
+          PolicyName: allow-autoscaling
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  - ec2:RunInstances
+                  - ec2:CreateTags
+                  - iam:PassRole
+                Resource:
+                  - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
 Outputs:
-#  WebappUrl:
-#    Description: Webapp URL
-#    Value:
-#      Fn::Join:
-#        - ''
-#        - - http://
-#          - !GetAtt WebAppInstance.PublicIp
-#          - ':8080/'
-  DeploymentGroup:
-    Description: Webapp Deployment Group
-    Value: !Ref WebappDeploymentGroup
+#  InstanceId:
+#    Description: InstanceId of the newly created EC2 instance
+#    Value: !Ref 'SpringEC2Instance'
+#  AZ:
+#    Description: Availability Zone of the newly created EC2 instance
+#    Value: !GetAtt [SpringEC2Instance, AvailabilityZone]
+#  SpringPublicDNS:
+#    Description: Public DNSName of the newly created EC2 instance
+#    Value: !GetAtt [SpringEC2Instance, PublicDnsName]
+#  SpringPublicIP:
+#    Description: Public IP address of the newly created EC2 instance
+#    Value: !GetAtt [SpringEC2Instance, PublicIp]
   DeploymentBucket:
     Description: Deployment bucket
     Value: !Ref WebappDeploymentBucket
-  ApplicationName:
-    Description: CodeDeploy Application name
-    Value: !Ref WebappApplication
   GithubIAMRoleArn:
     Description: IAM role for GitHub
     Value: !GetAtt GitHubIAMRole.Arn
+  DeploymentGroup:
+    Description: Webapp Deployment Group
+    Value: !Ref WebappDeploymentGroup
+  ApplicationName:
+    Description: CodeDeploy Application name
+    Value: !Ref WebappApplication
+  MongoEC2InstancePrivateIP:
+    Description: Private IP address of the newly created Mongo EC2 instance
+    Value: !GetAtt [MongoEC2Instance, PrivateIp]
+  ExportedIDCProvider:
+    Description: Exported IAM OIDC Provider
+    Value: !Ref IDCProvider
+    Export:
+      Name: ExportedIDCProvider
+
+
+

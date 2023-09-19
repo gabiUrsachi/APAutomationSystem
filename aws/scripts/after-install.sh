@@ -3,4 +3,19 @@ set -xe
 
 
 # Copy war file from S3 bucket to tomcat webapp folder
-aws s3 cp s3://quai-de-metro-webappdeploymentbucket-19emufs0lu3d7/core-0.0.1-SNAPSHOT.jar /home/ec2-user/core-0.0.1-SNAPSHOT.jar
+aws s3 cp s3://ciaoooooooo-webappdeploymentbucket-ty06x4xl5cu6/core-0.0.1-SNAPSHOT.jar /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
+
+stack_name="BackendStack"
+db_private_ip=$(aws cloudformation describe-stacks --stack-name "$stack_name" --query "Stacks[0].Outputs[?OutputKey=='MongoEC2InstancePrivateIP'].OutputValue" --output text)
+
+echo "
+Description=spring-app
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user
+ExecStart=/usr/bin/java -DDB_HOST=${db_private_ip} -jar /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/spring-app.service

@@ -1,5 +1,5 @@
 #!/bin/bash
 set -xe
 
-systemctl start backend.service
-
+sudo systemctl daemon-reload
+sudo systemctl start spring-app.service
