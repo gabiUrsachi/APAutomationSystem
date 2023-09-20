@@ -141,14 +141,12 @@ Resources:
   AutoScalingListener:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
-      Certificates: 
-        - CertificateArn: "arn:aws:acm:us-east-1:317231299669:certificate/ea5abfef-55d9-4e11-a209-bed1fd865af0"
       DefaultActions: 
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'
       LoadBalancerArn: !Ref LoadBalancer
-      Port: 443
-      Protocol: HTTPS
+      Port: 80
+      Protocol: HTTP
   
 
   WebappRole:
@@ -295,6 +293,14 @@ Resources:
         - IpProtocol: tcp
           FromPort: 8080
           ToPort: 8080
+          CidrIp: !Ref 'HTTPLocation'
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref 'HTTPLocation'
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
           CidrIp: !Ref 'HTTPLocation'
 
 #  SpringEC2Instance:
