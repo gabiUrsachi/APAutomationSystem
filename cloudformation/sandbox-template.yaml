@@ -15,11 +15,11 @@ Description: 'AWS CloudFormation:
 
 
 Parameters:
-#  MyIP:
-#    Description: MyIP
-#    Type: String
-#    Default: 82.77.237.156/32
-#    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+  #  MyIP:
+  #    Description: MyIP
+  #    Type: String
+  #    Default: 82.77.237.156/32
+  #    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
   SpringInstanceType:
     Description: WebServer EC2 instance type
     Type: String
@@ -85,18 +85,18 @@ Parameters:
     Default: gabiUrsachi/APAutomationSystem
     Description: GitHub repository name Ex-TestUser/TestCodeDeploy
 
-#  AutoScalingGroupMinSize:
-#    Type: Number
-#    Default: 1
-#    Description: Enter the Min Size for the ASG
-#  AutoScalingGroupMaxSize:
-#    Type: Number
-#    Default: 2
-#    Description: Enter the Max Size for the ASG
-#  AutoScalingGroupDesiredCapacity:
-#    Type: Number
-#    Default: 1
-#    Description: Immettere il numero di istanze desiderato
+  AutoScalingGroupMinSize:
+    Type: Number
+    Default: 1
+    Description: Enter the Min Size for the ASG
+  AutoScalingGroupMaxSize:
+    Type: Number
+    Default: 3
+    Description: Enter the Max Size for the ASG
+  AutoScalingGroupDesiredCapacity:
+    Type: Number
+    Default: 2
+    Description: Enter the Desired Size for the ASG
   KeyName:
     Type: String
     Default: new-key
@@ -106,7 +106,49 @@ Mappings:
     us-east-1:
       ami: "ami-01c647eace872fc02"
 
+
 Resources:
+
+  LoadBalancer:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      Subnets:
+        ["subnet-02097d01f11ecb732","subnet-0f77f4bdf96bec29a","subnet-04c25f17763615749","subnet-0581dad77b2d7461a","subnet-07ea6c53a351fb6ab","subnet-06ed29ff59194dd10"]
+
+      SecurityGroups: [ !GetAtt LoadBalancerSecurityGroup.GroupId ]
+      LoadBalancerAttributes:
+        - Key: 'deletion_protection.enabled'
+          Value: 'false'
+
+  EC2TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: "vpc-0a8e7f8f17c2f6e3b"
+      HealthCheckIntervalSeconds: 30
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 15
+      HealthyThresholdCount: 5
+      Matcher:
+        HttpCode: '200'
+      Name: EC2TargetGroup
+      Port: 80
+      Protocol: HTTP
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '20'
+      UnhealthyThresholdCount: 3
+
+  AutoScalingListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref EC2TargetGroup
+          Type: 'forward'
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+
   WebappRole:
     Type: AWS::IAM::Role
     Properties:
@@ -150,78 +192,80 @@ Resources:
       Roles:
         - Ref: WebappRole
 
-#  WebappLaunchTemplate:
-#    Type: AWS::EC2::LaunchTemplate
-#    Properties:
-#      LaunchTemplateName: MyLaunchTemplate
-#      VersionDescription: InitialVersion
-#      LaunchTemplateData:
-#        ImageId: !FindInMap
-#          - RegionMap
-#          - !Ref 'AWS::Region'
-#          - ami
-#        InstanceType:
-#          Ref: SpringInstanceType
-#        KeyName:
-#          Ref: KeyName
-#        SecurityGroups: [!Ref 'SpringInstanceSecurityGroup']
-#        IamInstanceProfile:
-#          Arn: !GetAtt WebappInstanceProfile.Arn
-#        UserData:
-#          "Fn::Base64":
-#            !Sub |
-#            #!/bin/bash
-#
-#            sudo yum  install -y java-11 wget
-#            java -version
-#
-#            yum install ruby -y
-#            wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
-#            chmod +x ./install
-#            ./install auto
-#            cd /tmp
-#            yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-#            systemctl enable amazon-ssm-agent
-#            systemctl start amazon-ssm-agent
 
-#  myELB:
-#    Type: AWS::ElasticLoadBalancing::LoadBalancer
-#    Properties:
-#      AvailabilityZones:
-#        ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"]
-#      Listeners:
-#        - LoadBalancerPort: '80'
-#          InstancePort: '80'
-#          Protocol: HTTP
-#  myDNS:
-#    Type: AWS::Route53::RecordSetGroup
-#    Properties:
-#      HostedZoneName: cmcloudlab1008.info.
-#      Comment: Zone apex alias targeted to myELB LoadBalancer.
-#      RecordSets:
-#        - Name: ns-1350.awsdns-40.org
-#          Type: A
-#          AliasTarget:
-#            HostedZoneId: !GetAtt 'myELB.CanonicalHostedZoneNameID'
-#            DNSName: !GetAtt 'myELB.DNSName'
+  WebappLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: MyLaunchTemplate
+      VersionDescription: InitialVersion
+      LaunchTemplateData:
+        ImageId: !FindInMap
+          - RegionMap
+          - !Ref 'AWS::Region'
+          - ami
+        InstanceType:
+          Ref: SpringInstanceType
+        KeyName:
+          Ref: KeyName
+        SecurityGroups: [!Ref 'SpringInstanceSecurityGroup']
+        IamInstanceProfile:
+          Arn: !GetAtt WebappInstanceProfile.Arn
+        UserData:
+          "Fn::Base64":
+            !Sub |
+            #!/bin/bash
+            
+            sudo yum  install -y java-11 wget
+            java -version
+            
+            yum install nginx -y
+            sed -i 's/^\s*server_name\s _;/server_name _; \n location \/ { \n proxy_pass http:\/\/127.0.0.1:8080\/;\n}\n /g' /etc/nginx/nginx.conf
+            systemctl start nginx
+            yum install ruby -y
+            wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+            chmod +x ./install
+            ./install auto
+            cd /tmp
+            yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            systemctl enable amazon-ssm-agent
+            systemctl start amazon-ssm-agent
 
-#  AutoScalingGroup:
-#    Type: AWS::AutoScaling::AutoScalingGroup
-#    Properties:
-#      HealthCheckType: ELB
-#      HealthCheckGracePeriod: 300
-#      DesiredCapacity: !Ref AutoScalingGroupDesiredCapacity
-#      MinSize: !Ref AutoScalingGroupMinSize
-#      MaxSize: !Ref AutoScalingGroupMaxSize
-#      LaunchTemplate:
-#        LaunchTemplateId: !Ref WebappLaunchTemplate
-#        Version: !GetAtt WebappLaunchTemplate.LatestVersionNumber
-#      Tags:
-#        - Key: Name
-#          Value: spring-app
-#          PropagateAtLaunch: true
-#      AvailabilityZones:
-#        ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"]
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      HealthCheckType: ELB
+      HealthCheckGracePeriod: 300
+      Cooldown: "72000"
+      DesiredCapacity: !Ref AutoScalingGroupDesiredCapacity
+      MinSize: !Ref AutoScalingGroupMinSize
+      MaxSize: !Ref AutoScalingGroupMaxSize
+      #      LaunchConfigurationName:
+      #        Ref: WebappLaunchConfig
+      LaunchTemplate:
+        LaunchTemplateId: !Ref WebappLaunchTemplate
+        Version: !GetAtt WebappLaunchTemplate.LatestVersionNumber
+      Tags:
+        - Key: Name
+          Value: spring-app
+          PropagateAtLaunch: true
+      TargetGroupARNs:
+        - !Ref EC2TargetGroup
+      AvailabilityZones:
+        ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"]
+
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP,/S requests
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref 'HTTPLocation'
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref 'HTTPLocation'
 
   SpringInstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -236,43 +280,14 @@ Resources:
           FromPort: 8080
           ToPort: 8080
           CidrIp: !Ref 'HTTPLocation'
-
-  SpringEC2Instance:
-    Type: AWS::EC2::Instance
-    Properties:
-      InstanceType: !Ref 'SpringInstanceType'
-      SecurityGroups: [!Ref 'SpringInstanceSecurityGroup']
-      KeyName: new-key
-      ImageId: !FindInMap
-        - RegionMap
-        - !Ref 'AWS::Region'
-        - ami
-      Tags:
-        - Key: Name
-          Value: spring-app
-      IamInstanceProfile:
-        Ref: WebappInstanceProfile
-      UserData:
-        "Fn::Base64":
-          !Sub |
-          #!/bin/bash
-
-          sudo yum  install -y java-11 wget
-          java -version
-
-          yum install ruby -y
-          wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
-          chmod +x ./install
-          ./install auto
-          cd /tmp
-          yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-          systemctl enable amazon-ssm-agent
-          systemctl start amazon-ssm-agent
-
-  MyEIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      InstanceId: !Ref SpringEC2Instance
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref 'HTTPLocation'
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref 'HTTPLocation'
 
   MongoInstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -297,7 +312,8 @@ Resources:
     Properties:
       InstanceType: !Ref 'MongoInstanceType'
       SecurityGroups: [!Ref 'MongoInstanceSecurityGroup']
-      KeyName: new-key
+      KeyName:
+        Ref: KeyName
       ImageId: !FindInMap
         - RegionMap
         - !Ref 'AWS::Region'
@@ -365,7 +381,7 @@ Resources:
           
           # Run mongosh in the background
           nohup mongosh --file /home/ec2-user/init_data.js > /dev/null 2>&1 &
-    
+          
           # Wait for the mongosh process to finish
           while pgrep -x "mongosh" > /dev/null; do
             sleep 5
@@ -447,11 +463,11 @@ Resources:
           - DEPLOYMENT_FAILURE
           - DEPLOYMENT_STOP_ON_REQUEST
       Ec2TagFilters:
-          - Key: Name
-            Type: KEY_AND_VALUE
-            Value: spring-app
-#      AutoScalingGroups:
-#        - Ref: AutoScalingGroup
+        - Key: Name
+          Type: KEY_AND_VALUE
+          Value: spring-app
+      AutoScalingGroups:
+        - Ref: AutoScalingGroup
 
 
   CodeDeployRole:
@@ -485,18 +501,18 @@ Resources:
                 Resource:
                   - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
 Outputs:
-  InstanceId:
-    Description: InstanceId of the newly created EC2 instance
-    Value: !Ref 'SpringEC2Instance'
-  AZ:
-    Description: Availability Zone of the newly created EC2 instance
-    Value: !GetAtt [SpringEC2Instance, AvailabilityZone]
-  SpringPublicDNS:
-    Description: Public DNSName of the newly created EC2 instance
-    Value: !GetAtt [SpringEC2Instance, PublicDnsName]
-  SpringPublicIP:
-    Description: Public IP address of the newly created EC2 instance
-    Value: !GetAtt [SpringEC2Instance, PublicIp]
+  #  InstanceId:
+  #    Description: InstanceId of the newly created EC2 instance
+  #    Value: !Ref 'SpringEC2Instance'
+  #  AZ:
+  #    Description: Availability Zone of the newly created EC2 instance
+  #    Value: !GetAtt [SpringEC2Instance, AvailabilityZone]
+  #  SpringPublicDNS:
+  #    Description: Public DNSName of the newly created EC2 instance
+  #    Value: !GetAtt [SpringEC2Instance, PublicDnsName]
+  #  SpringPublicIP:
+  #    Description: Public IP address of the newly created EC2 instance
+  #    Value: !GetAtt [SpringEC2Instance, PublicIp]
   DeploymentBucket:
     Description: Deployment bucket
     Value: !Ref WebappDeploymentBucket
@@ -517,10 +533,5 @@ Outputs:
     Value: !Ref IDCProvider
     Export:
       Name: ExportedIDCProvider
-  ExportedElasticIp:
-    Description: Exported Elastic IP
-    Value: !Ref MyEIP
-    Export:
-      Name: MyExportedElasticIp
 
 
