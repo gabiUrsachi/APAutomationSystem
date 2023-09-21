@@ -2,6 +2,7 @@ package org.example.presentation.controllers;
 
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.example.utils.ExceptionResponseDTO;
 import org.example.customexceptions.InvalidTokenException;
 import org.example.customexceptions.InvalidUpdateException;
@@ -40,6 +41,15 @@ public class PurchaseOrderControllerAdvice {
         HttpStatus status = HttpStatus.PRECONDITION_FAILED;
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
+
+        return new ResponseEntity<>(exceptionResponse, status);
+    }
+
+    @ExceptionHandler({InvalidFormatException.class, IllegalArgumentException.class})
+    public ResponseEntity<ExceptionResponseDTO> handleFormatExceptions(Exception ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), status.toString());
 
         return new ResponseEntity<>(exceptionResponse, status);
     }

@@ -1,5 +1,6 @@
 package org.example.presentation.controllers;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.example.customexceptions.InvalidUpdateException;
 import org.example.customexceptions.InvoiceNotFoundException;
 import org.example.customexceptions.OrderNotFoundException;
@@ -19,6 +20,15 @@ public class InvoiceControllerAdvice {
         HttpStatus status = HttpStatus.NOT_FOUND;
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
+
+        return new ResponseEntity<>(exceptionResponse, status);
+    }
+
+    @ExceptionHandler({InvalidFormatException.class, IllegalArgumentException.class})
+    public ResponseEntity<ExceptionResponseDTO> handleFormatExceptions(Exception ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), status.toString());
 
         return new ResponseEntity<>(exceptionResponse, status);
     }
