@@ -127,6 +127,7 @@ Resources:
       VpcId: "vpc-0ff83882a4b4b0be3"
       HealthCheckIntervalSeconds: 30
       HealthCheckProtocol: HTTP
+      HealthCheckPath: /api/companies
       HealthCheckTimeoutSeconds: 15
       HealthyThresholdCount: 5
       Matcher:
