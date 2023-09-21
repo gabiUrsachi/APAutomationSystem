@@ -100,6 +100,18 @@ Parameters:
   KeyName:
     Type: String
     Default: new-key
+  MyVPC:
+    Type: String
+    Default: "vpc-0a8e7f8f17c2f6e3b"
+    Description: Enter the desired VPC ID
+  MySubnets:
+    Type: String
+    Default: "subnet-02097d01f11ecb732,subnet-0f77f4bdf96bec29a,subnet-04c25f17763615749,subnet-0581dad77b2d7461a,subnet-07ea6c53a351fb6ab,subnet-06ed29ff59194dd10"
+    Description: Enter a comma-separated list of strings representing your desired subnets
+  MyAZs:
+    Type: String
+    Default: "us-east-1a,us-east-1b,us-east-1c,us-east-1d,us-east-1e,us-east-1f"
+    Description: Enter a comma-separated list of strings representing your desired availability zones
 
 Mappings:
   RegionMap:
@@ -113,8 +125,9 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
     Properties:
       Subnets:
-        ["subnet-02097d01f11ecb732","subnet-0f77f4bdf96bec29a","subnet-04c25f17763615749","subnet-0581dad77b2d7461a","subnet-07ea6c53a351fb6ab","subnet-06ed29ff59194dd10"]
-
+        Fn::Split:
+          - ","
+          - !Ref MySubnets
       SecurityGroups: [ !GetAtt LoadBalancerSecurityGroup.GroupId ]
       LoadBalancerAttributes:
         - Key: 'deletion_protection.enabled'
@@ -123,7 +136,8 @@ Resources:
   EC2TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      VpcId: "vpc-0a8e7f8f17c2f6e3b"
+      VpcId:
+        Ref: MyVPC
       HealthCheckIntervalSeconds: 30
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 15
@@ -148,6 +162,17 @@ Resources:
       Port: 80
       Protocol: HTTP
 
+#  HTTPSAutoScalingListener:
+#    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+#    Properties:
+#      Certificates:
+#        - CertificateArn: "arn:aws:acm:us-east-1:317231299669:certificate/6e6a2fad-db6f-46db-b98d-55e6d1bbcea6"
+#      DefaultActions:
+#        - TargetGroupArn: !Ref EC2TargetGroup
+#      Type: 'forward'
+#      LoadBalancerArn: !Ref LoadBalancer
+#      Port: 443
+#      Protocol: HTTPS
 
   WebappRole:
     Type: AWS::IAM::Role
@@ -239,8 +264,6 @@ Resources:
       DesiredCapacity: !Ref AutoScalingGroupDesiredCapacity
       MinSize: !Ref AutoScalingGroupMinSize
       MaxSize: !Ref AutoScalingGroupMaxSize
-      #      LaunchConfigurationName:
-      #        Ref: WebappLaunchConfig
       LaunchTemplate:
         LaunchTemplateId: !Ref WebappLaunchTemplate
         Version: !GetAtt WebappLaunchTemplate.LatestVersionNumber
@@ -251,7 +274,9 @@ Resources:
       TargetGroupARNs:
         - !Ref EC2TargetGroup
       AvailabilityZones:
-        ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e", "us-east-1f"]
+        Fn::Split:
+          - ","
+          - !Ref MyAZs
 
   LoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -501,18 +526,6 @@ Resources:
                 Resource:
                   - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
 Outputs:
-  #  InstanceId:
-  #    Description: InstanceId of the newly created EC2 instance
-  #    Value: !Ref 'SpringEC2Instance'
-  #  AZ:
-  #    Description: Availability Zone of the newly created EC2 instance
-  #    Value: !GetAtt [SpringEC2Instance, AvailabilityZone]
-  #  SpringPublicDNS:
-  #    Description: Public DNSName of the newly created EC2 instance
-  #    Value: !GetAtt [SpringEC2Instance, PublicDnsName]
-  #  SpringPublicIP:
-  #    Description: Public IP address of the newly created EC2 instance
-  #    Value: !GetAtt [SpringEC2Instance, PublicIp]
   DeploymentBucket:
     Description: Deployment bucket
     Value: !Ref WebappDeploymentBucket
