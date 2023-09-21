@@ -91,11 +91,11 @@ Parameters:
     Description: Enter the Min Size for the ASG
   AutoScalingGroupMaxSize:
     Type: Number
-    Default: 2
+    Default: 3
     Description: Enter the Max Size for the ASG
   AutoScalingGroupDesiredCapacity:
     Type: Number
-    Default: 1
+    Default: 2
     Description: Immettere il numero di istanze desiderato
   KeyName:
     Type: String
@@ -250,6 +250,9 @@ Resources:
             sudo yum  install -y java-11 wget
             java -version
             
+            yum install nginx -y
+            sed -i 's/^\s*server_name\s _;/server_name _; \n location \/ { \n proxy_pass http:\/\/127.0.0.1:8080\/;\n}\n /g' /etc/nginx/nginx.conf
+            systemctl start nginx
             yum install ruby -y
             wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
             chmod +x ./install
@@ -264,6 +267,7 @@ Resources:
     Properties:
       HealthCheckType: ELB
       HealthCheckGracePeriod: 300
+      Cooldown: "72000"
       DesiredCapacity: !Ref AutoScalingGroupDesiredCapacity
       MinSize: !Ref AutoScalingGroupMinSize
       MaxSize: !Ref AutoScalingGroupMaxSize
