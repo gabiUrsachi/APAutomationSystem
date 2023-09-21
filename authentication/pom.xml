@@ -31,7 +31,11 @@
             <artifactId>authorisation</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>companies</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
         <dependency>
             <groupId>com.auth0</groupId>
