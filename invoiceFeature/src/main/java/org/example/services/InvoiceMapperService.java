@@ -4,6 +4,7 @@ import org.example.business.models.*;
 import org.example.business.services.CompanyService;
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
+import org.example.persistence.collections.Item;
 import org.example.presentation.utils.CompanyMapperService;
 import org.example.presentation.view.OrderResponseDTO;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class InvoiceMapperService {
                 .buyerId(invoiceDPO.getBuyerId())
                 .sellerId(invoiceDPO.getSellerId())
                 .items(invoiceDPO.getItems())
+                .totalAmount((float) invoiceDPO.getItems().stream()
+                        .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                        .reduce(0, Double::sum))
                 .build();
 
     }
@@ -40,6 +44,7 @@ public class InvoiceMapperService {
                 .items(invoiceDTO.getItems())
                 .invoiceStatus(invoiceDTO.getInvoiceStatus())
                 .version(invoiceDTO.getVersion())
+                .totalAmount(invoiceDTO.getTotalAmount())
                 .build();
 
     }
@@ -55,6 +60,7 @@ public class InvoiceMapperService {
                 .items(invoice.getItems())
                 .invoiceStatus(invoice.getInvoiceStatus())
                 .version(invoice.getVersion())
+                .totalAmount(invoice.getTotalAmount())
                 .build();
     }
 
@@ -66,6 +72,7 @@ public class InvoiceMapperService {
                 .identifier(invoice.getIdentifier())
                 .buyerName(buyer.getName())
                 .sellerName(seller.getName())
+                .invoiceStatus(invoice.getInvoiceStatus())
                 .build();
     }
 

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.persistence.collections.Item;
+import org.example.persistence.utils.InvoiceStatus;
 
 import java.util.Set;
 import java.util.UUID;
@@ -23,5 +24,5 @@ public class InvoiceDDO {
 
     private String sellerName;
 
-
+    private InvoiceStatus invoiceStatus;
 }
