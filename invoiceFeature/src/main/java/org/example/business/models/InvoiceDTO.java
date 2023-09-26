@@ -31,6 +31,8 @@ public class InvoiceDTO {
 
     private InvoiceStatus invoiceStatus;
 
+    private Float totalAmount;
+
     @NotNull
     private Integer version;
 }
