@@ -2,9 +2,9 @@ name: Java CI with Maven
 run-name: ${{ github.actor }} is learning GitHub Actions
 on:
   push:
-    branches: [ aws_deployment ]
+    branches: [ remotes/origin/aws_deployment ]
   pull_request:
-    branches: [ aws_deployment ]
+    branches: [ remotes/origin/aws_deployment ]
 env:
   AWS_REGION: us-east-1
   S3BUCKET: backendstack-webappdeploymentbucket-syra8jgi1ey9
