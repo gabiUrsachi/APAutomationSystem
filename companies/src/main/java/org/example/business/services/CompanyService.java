@@ -1,7 +1,9 @@
 package org.example.business.services;
 
+import org.example.customexceptions.CompanyNotFoundException;
 import org.example.persistence.collections.Company;
 import org.example.persistence.repository.CompanyRepository;
+import org.example.utils.ErrorMessages;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +27,11 @@ public class CompanyService {
     public Company getCompanyById(UUID uuid) {
         Optional<Company> company = companyRepository.findById(uuid);
 
-        // De pus exceptie pe viitor
-        return company.orElse(null);
+        if (company.isEmpty()) {
+            throw new CompanyNotFoundException(ErrorMessages.COMPANY_NOT_FOUND, uuid);
+        }
+
+        return company.get();
     }
 
 

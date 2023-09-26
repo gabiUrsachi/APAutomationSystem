@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 //DPO = Data Publishing Object
-//VV similar to Invoice??
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

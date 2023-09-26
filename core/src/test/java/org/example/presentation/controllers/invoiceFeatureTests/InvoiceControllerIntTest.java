@@ -85,6 +85,7 @@ class InvoiceControllerIntTest {
         InvoiceDPO invoiceDPO = InvoiceDPO.builder()
                 .buyerId(getStoredCompany().getCompanyIdentifier())
                 .sellerId(getStoredCompany().getCompanyIdentifier())
+                .items(createItems())
                 .build();
 
         String jwt = TokenHandler.createToken("username", getStoredCompany().getCompanyIdentifier(), InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE));
@@ -111,6 +112,7 @@ class InvoiceControllerIntTest {
                 .buyer(new CompanyDTO(getStoredCompany().getCompanyIdentifier(), "name"))
                 .seller(new CompanyDTO(getStoredCompany().getCompanyIdentifier(), "name"))
                 .orderStatus(OrderStatus.CREATED)
+                .items(createItems())
                 .version(0)
                 .build();
 
@@ -239,4 +241,11 @@ class InvoiceControllerIntTest {
         return Company.builder().companyIdentifier(UUID.fromString("2c70891c-50b5-436d-9496-7c3722adcab0")).name("Company name").build();
     }
 
+    private Set<Item> createItems() {
+        return Set.of(
+                new Item("Item1", 10, 99.99F),
+                new Item("Item2", 30, 230F),
+                new Item("Item3", 15, 15.89F)
+        );
+    }
 }

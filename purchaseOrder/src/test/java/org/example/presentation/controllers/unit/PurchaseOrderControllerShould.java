@@ -99,17 +99,6 @@ public class PurchaseOrderControllerShould {
         verify(authorisationService).authorize(eq(userRoles), any());
     }
 
-
-    private PurchaseOrder createPurchaseOrderWithStatus(OrderStatus orderStatus) {
-        return PurchaseOrder.builder()
-                .identifier(UUID.randomUUID())
-                .buyer(UUID.randomUUID())
-                .seller(UUID.randomUUID())
-                .orderStatus(orderStatus)
-                .items(Set.of())
-                .build();
-    }
-
     private OrderRequestDTO createOrderRequestDTO(UUID buyer, UUID seller, OrderStatus orderStatus){
         return OrderRequestDTO.builder()
                 .identifier(UUID.randomUUID())
