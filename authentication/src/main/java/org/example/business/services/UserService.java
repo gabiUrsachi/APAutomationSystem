@@ -19,6 +19,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+
     public void registerUser(User user){
         Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
 
