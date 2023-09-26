@@ -76,6 +76,7 @@ public class InvoiceService {
                 .sellerId(invoice.getSellerId())
                 .items(invoice.getItems())
                 .invoiceStatus(invoice.getInvoiceStatus())
+                .totalAmount(invoice.getTotalAmount())
                 .version(currentVersion + 1)
                 .build();
 

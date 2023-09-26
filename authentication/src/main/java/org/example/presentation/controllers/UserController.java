@@ -38,7 +38,8 @@ public class UserController {
             {
                     @ApiResponse(responseCode = "200", description = "Account successfully created"),
                     @ApiResponse(responseCode = "401", description = "Invalid token"),
-                    @ApiResponse(responseCode = "403", description = "Invalid role")
+                    @ApiResponse(responseCode = "403", description = "Invalid role"),
+                    @ApiResponse(responseCode = "409", description = "Already existing user")
             })
     @PostMapping(value = "register")
     @SuppressWarnings("unchecked cast")
