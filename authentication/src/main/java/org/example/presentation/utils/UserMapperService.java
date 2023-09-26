@@ -6,6 +6,9 @@ import org.example.persistence.collections.User;
 import org.example.presentation.view.RegisterRequestDTO;
 import org.springframework.stereotype.Service;
 
+/**
+ * This service is used for entity <-> dto conversions
+ */
 @Service
 public class UserMapperService {
     private final CompanyService companyService;
@@ -14,7 +17,13 @@ public class UserMapperService {
         this.companyService = companyService;
     }
 
-    public User mapToEntity(RegisterRequestDTO registerRequestDTO){
+    /**
+     * It creates an entity with the same properties as the received dto
+     *
+     * @param registerRequestDTO DTO to be converted
+     * @return created entity
+     */
+    public User mapToEntity(RegisterRequestDTO registerRequestDTO) {
         // if company doesn't exist, an exception will be thrown
         companyService.getCompanyById(registerRequestDTO.getCompanyIdentifier());
 

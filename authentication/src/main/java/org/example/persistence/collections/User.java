@@ -8,6 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * The structure of a document representing app users
+ */
 @Builder
 @Getter
 @Setter

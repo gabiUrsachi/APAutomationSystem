@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * This service is used for performing operations related to user access
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -19,11 +22,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-
-    public void registerUser(User user){
+    /**
+     * It creates new user, if another one with the same username doesn't exist
+     *
+     * @param user resource to be created
+     * @throws AlreadyExistingUserException if a user with the same username already exists
+     */
+    public void registerUser(User user) {
         Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
 
-        if(existingUser.isPresent()){
+        if (existingUser.isPresent()) {
             throw new AlreadyExistingUserException(ErrorMessages.ALREADY_EXISTING_USER, user.getUsername());
         }
 
@@ -31,17 +39,23 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User login(String username, String password){
+    /**
+     * It generates a JWT if received credentials are valid for an existing user account
+     *
+     * @param username existing account's username
+     * @param password existing account's password
+     * @return an object representing the existing user account
+     */
+    public User login(String username, String password) {
         Optional<User> existingUser = userRepository.findByUsername(username);
 
-        if(existingUser.isEmpty()){
+        if (existingUser.isEmpty()) {
             throw new InvalidCredentialsException(ErrorMessages.INVALID_CREDENTIALS);
-        }
-        else{
+        } else {
             User user = existingUser.get();
             boolean isPasswordValid = Password.checkPassword(password, user.getPassword());
 
-            if(!isPasswordValid){
+            if (!isPasswordValid) {
                 throw new InvalidCredentialsException(ErrorMessages.INVALID_CREDENTIALS);
             }
 

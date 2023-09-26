@@ -5,6 +5,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * This class handles servlet filter registration
+ */
 @Configuration
 public class FilterRegister {
 

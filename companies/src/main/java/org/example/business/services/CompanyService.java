@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * This service is used for performing CRUD operations on company related resources
+ */
 @Service
 public class CompanyService {
 

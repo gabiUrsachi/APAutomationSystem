@@ -1,12 +1,10 @@
 package org.example.presentation.controllers;
 
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import org.example.utils.ExceptionResponseDTO;
-import org.example.customexceptions.InvalidTokenException;
 import org.example.customexceptions.InvalidUpdateException;
 import org.example.customexceptions.OrderNotFoundException;
+import org.example.utils.ExceptionResponseDTO;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
