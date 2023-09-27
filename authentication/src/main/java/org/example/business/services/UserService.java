@@ -3,11 +3,13 @@ package org.example.business.services;
 import org.example.business.utils.Password;
 import org.example.customexceptions.AlreadyExistingUserException;
 import org.example.customexceptions.InvalidCredentialsException;
+import org.example.customexceptions.OrderNotFoundException;
 import org.example.persistence.collections.User;
 import org.example.persistence.repository.UserRepository;
 import org.example.utils.ErrorMessages;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -60,6 +62,28 @@ public class UserService {
             }
 
             return user;
+        }
+    }
+
+    /**
+     * It searches all existing users
+     *
+     * @return the list of existing users
+     */
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    /**
+     * It removes the user identified by the given UUID from existing user list
+     *
+     * @param identifier user UUID
+     */
+    public void deleteUser(UUID identifier) {
+        int deletedRowsCount = this.userRepository.customDeleteById(identifier);
+
+        if (deletedRowsCount == 0) {
+            throw new OrderNotFoundException(ErrorMessages.USER_NOT_FOUND, identifier);
         }
     }
 }

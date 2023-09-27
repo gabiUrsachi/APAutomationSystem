@@ -9,7 +9,10 @@ import org.example.presentation.utils.UserMapperService;
 import org.example.presentation.view.LoginRequestDTO;
 import org.example.presentation.view.LoginResponseDTO;
 import org.example.presentation.view.RegisterRequestDTO;
+import org.example.presentation.view.UserDTO;
 import org.example.services.AuthorisationService;
+import org.example.utils.AuthorizationMapper;
+import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
 import org.example.utils.TokenHandler;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -71,5 +75,43 @@ public class UserController {
         String token = TokenHandler.createToken(user.getUsername(), user.getCompanyIdentifier(), user.getRoles());
 
         return new LoginResponseDTO(token);
+    }
+
+
+    @Operation(summary = "get all users")
+    @ApiResponses(value =
+            {
+                    @ApiResponse(responseCode = "200", description = "Found users"),
+                    @ApiResponse(responseCode = "401", description = "Invalid token"),
+                    @ApiResponse(responseCode = "403", description = "Invalid role")
+            })
+    @GetMapping
+    @SuppressWarnings("unchecked cast")
+    public List<UserDTO> getUsers(HttpServletRequest request) {
+        Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
+
+        authorisationService.authorize(userRoles, Roles.ADMIN);
+
+        List<User> users = userService.getAllUsers();
+
+        return userMapperService.mapToDTO(users);
+    }
+
+    @Operation(summary = "remove user by id")
+    @ApiResponses(value =
+            {
+                    @ApiResponse(responseCode = "200", description = "Successfully removed user"),
+                    @ApiResponse(responseCode = "401", description = "Invalid token"),
+                    @ApiResponse(responseCode = "403", description = "Invalid role"),
+                    @ApiResponse(responseCode = "404", description = "User not found")
+            })
+    @DeleteMapping("{identifier}")
+    @SuppressWarnings("unchecked cast")
+    public void deleteUser(@PathVariable UUID identifier, HttpServletRequest request) {
+        Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
+
+        authorisationService.authorize(userRoles, Roles.ADMIN);
+
+        userService.deleteUser(identifier);
     }
 }
