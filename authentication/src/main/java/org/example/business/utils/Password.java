@@ -29,7 +29,7 @@ public class Password {
      */
     public static boolean checkPassword(String passwordPlaintext, String storedHash) {
         if (null == storedHash || !storedHash.startsWith("$2a$"))
-            throw new java.lang.IllegalArgumentException("Invalid hash provided for comparison");
+            throw new RuntimeException("Invalid hash provided for comparison");
 
         return BCrypt.checkpw(passwordPlaintext, storedHash);
     }
