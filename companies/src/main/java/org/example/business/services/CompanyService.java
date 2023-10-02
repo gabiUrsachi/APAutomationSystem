@@ -39,6 +39,7 @@ public class CompanyService {
 
 
     public Company createCompany(Company company) {
+        company.setCompanyIdentifier(UUID.randomUUID());
 
         return companyRepository.insert(company);
     }

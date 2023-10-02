@@ -23,12 +23,12 @@ public class CompanyController {
 
     @PostMapping
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
-        CompanyDTO initializedCompany = initializeCompany(companyDTO);
-        Company company = companyMapperService.mapToEntity(initializedCompany);
+        Company company = companyMapperService.mapToEntity(companyDTO);
+        Company savedCompany = companyService.createCompany(company);
 
-        S3BucketOps.run(company.getCompanyIdentifier().toString());
-        return companyMapperService.mapToDTO(companyService.createCompany(company));
+        S3BucketOps.createS3Bucket(savedCompany.getCompanyIdentifier().toString());
 
+        return companyMapperService.mapToDTO(savedCompany);
     }
 
     private CompanyDTO initializeCompany(CompanyDTO companyDTO) {

@@ -11,19 +11,8 @@ import software.amazon.awssdk.services.s3.waiters.S3Waiter;
 
 public class S3BucketOps {
 
-    public static void run(String bucketName) {
-
-        //ProfileCredentialsProvider profileCredentialsProvider = ProfileCredentialsProvider.create();
-        Region region = Region.US_EAST_1;
-        S3Client s3Client = S3Client.builder()
-                .region(region)
-                .build();
-
-        System.out.println(bucketName);
-        createBucket(s3Client, bucketName);
-    }
-
-    public static void createBucket(S3Client s3Client, String bucketName) {
+    public static void createS3Bucket(String bucketName) {
+        S3Client s3Client = createS3Client();
 
         try {
             S3Waiter s3Waiter = s3Client.waiter();
@@ -45,5 +34,13 @@ public class S3BucketOps {
             System.err.println(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
+    }
+
+    private static S3Client createS3Client() {
+        Region region = Region.US_EAST_1;
+
+        return S3Client.builder()
+                .region(region)
+                .build();
     }
 }
