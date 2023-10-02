@@ -50,7 +50,8 @@ public class S3BucketOps {
                     .metadata(metadata)
                     .build();
 
-            s3Client.putObject(putOb, RequestBody.fromFile(new File(objectPath)));
+            RequestBody requestBody =  RequestBody.fromFile(new File(objectPath));
+            s3Client.putObject(putOb, requestBody);
             System.out.println("Successfully placed " + objectKey +" into bucket "+bucketName);
 
         } catch (S3Exception e) {
