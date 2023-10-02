@@ -1,6 +1,9 @@
 package org.example;
 
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.waiters.WaiterResponse;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -13,6 +16,7 @@ import software.amazon.awssdk.services.s3.waiters.S3Waiter;
 public class S3BucketOps {
 
     public static void run(String bucketName) {
+
         ProfileCredentialsProvider profileCredentialsProvider = ProfileCredentialsProvider.create();
         Region region = Region.US_EAST_1;
         S3Client s3Client = S3Client.builder()
@@ -20,8 +24,8 @@ public class S3BucketOps {
                 .credentialsProvider(profileCredentialsProvider)
                 .build();
 
-        //String bucket = "MyNewBucket" + System.currentTimeMillis();
-        //System.out.println(bucket);
+        //String bucketName = "my-new-bucket" + System.currentTimeMillis();
+        System.out.println(bucketName);
 
         createBucket(s3Client, bucketName);
     }

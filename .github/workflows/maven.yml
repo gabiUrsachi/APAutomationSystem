@@ -31,6 +31,6 @@ jobs:
           distribution: 'corretto'
           cache: maven
       - name: Clean & install with Maven
-        run: mvn -Dmaven.test.skip=true clean install -DDB_HOST=localhost
+        run: mvn clean install -DDB_HOST=localhost
       - name: Build with Maven
-        run: mvn -Dmaven.test.skip=true -B package --file pom.xml -DDB_HOST=localhost
+        run: mvn -B package --file pom.xml -DDB_HOST=localhost

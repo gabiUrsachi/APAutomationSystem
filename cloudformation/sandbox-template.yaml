@@ -210,6 +210,11 @@ Resources:
                   - "cloudformation:ListExports"
                   - "cloudformation:ExportStacks"
                 Resource: "*"
+              -
+                Effect: "Allow"
+                Action:
+                  - "s3:CreateBucket"
+                Resource: !Sub arn:${AWS::Partition}:s3:::*
 
   WebappInstanceProfile:
     Type: AWS::IAM::InstanceProfile
