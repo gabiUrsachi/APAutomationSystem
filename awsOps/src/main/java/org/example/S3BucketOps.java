@@ -1,9 +1,5 @@
 package org.example;
 
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.waiters.WaiterResponse;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -23,12 +19,13 @@ public class S3BucketOps {
                 .region(region)
                 .build();
 
-        //String bucketName = "my-new-bucket" + System.currentTimeMillis();
-        System.out.println(bucketName);
+        String bucket = bucketName + System.currentTimeMillis();
+        System.out.println(bucket);
 
-        createBucket(s3Client, bucketName);
+        createBucket(s3Client, bucket);
     }
-    public static void createBucket( S3Client s3Client, String bucketName) {
+
+    public static void createBucket(S3Client s3Client, String bucketName) {
 
         try {
             S3Waiter s3Waiter = s3Client.waiter();
@@ -44,7 +41,7 @@ public class S3BucketOps {
             // Wait until the bucket is created and print out the response.
             WaiterResponse<HeadBucketResponse> waiterResponse = s3Waiter.waitUntilBucketExists(bucketRequestWait);
             waiterResponse.matched().response().ifPresent(System.out::println);
-            System.out.println(bucketName +" is ready");
+            System.out.println(bucketName + " is ready");
 
         } catch (S3Exception e) {
             System.err.println(e.awsErrorDetails().errorMessage());
