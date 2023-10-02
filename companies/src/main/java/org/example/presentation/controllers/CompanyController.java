@@ -1,5 +1,6 @@
 package org.example.presentation.controllers;
 
+import org.example.S3BucketOps;
 import org.example.presentation.view.CompanyDTO;
 import org.example.presentation.utils.CompanyMapperService;
 import org.example.business.services.CompanyService;
@@ -24,6 +25,8 @@ public class CompanyController {
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
         CompanyDTO initializedCompany = initializeCompany(companyDTO);
         Company company = companyMapperService.mapToEntity(initializedCompany);
+
+        S3BucketOps.run(company.getName());
         return companyMapperService.mapToDTO(companyService.createCompany(company));
 
     }
