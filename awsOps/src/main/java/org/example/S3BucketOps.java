@@ -17,11 +17,10 @@ public class S3BucketOps {
 
     public static void run(String bucketName) {
 
-        ProfileCredentialsProvider profileCredentialsProvider = ProfileCredentialsProvider.create();
+        //ProfileCredentialsProvider profileCredentialsProvider = ProfileCredentialsProvider.create();
         Region region = Region.US_EAST_1;
         S3Client s3Client = S3Client.builder()
                 .region(region)
-                .credentialsProvider(profileCredentialsProvider)
                 .build();
 
         //String bucketName = "my-new-bucket" + System.currentTimeMillis();
