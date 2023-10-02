@@ -6,6 +6,8 @@ on:
     workflows: ["Java CI with Maven"]
     types:
       - completed
+    branches:
+      - aws_learning
 
 env:
   AWS_REGION: us-east-1
