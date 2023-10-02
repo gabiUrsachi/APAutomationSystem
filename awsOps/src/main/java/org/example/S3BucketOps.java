@@ -1,13 +1,15 @@
 package org.example;
 
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.waiters.WaiterResponse;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
-import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
-import software.amazon.awssdk.services.s3.model.HeadBucketResponse;
-import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.waiters.S3Waiter;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class S3BucketOps {
 
@@ -32,6 +34,27 @@ public class S3BucketOps {
 
         } catch (S3Exception e) {
             System.err.println(e.awsErrorDetails().errorMessage());
+            System.exit(1);
+        }
+    }
+
+    public static void putS3Object(String bucketName, String objectKey, String objectPath) {
+        S3Client s3Client = createS3Client();
+
+        try {
+            Map<String, String> metadata = new HashMap<>();
+            metadata.put("x-amz-meta-myVal", "test");
+            PutObjectRequest putOb = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(objectKey)
+                    .metadata(metadata)
+                    .build();
+
+            s3Client.putObject(putOb, RequestBody.fromFile(new File(objectPath)));
+            System.out.println("Successfully placed " + objectKey +" into bucket "+bucketName);
+
+        } catch (S3Exception e) {
+            System.err.println(e.getMessage());
             System.exit(1);
         }
     }
