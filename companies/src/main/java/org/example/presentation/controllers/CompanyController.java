@@ -26,7 +26,7 @@ public class CompanyController {
         CompanyDTO initializedCompany = initializeCompany(companyDTO);
         Company company = companyMapperService.mapToEntity(initializedCompany);
 
-        S3BucketOps.run(company.getName());
+        S3BucketOps.run(company.getName().toLowerCase());
         return companyMapperService.mapToDTO(companyService.createCompany(company));
 
     }
