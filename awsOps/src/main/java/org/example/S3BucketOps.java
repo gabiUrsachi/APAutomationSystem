@@ -19,10 +19,8 @@ public class S3BucketOps {
                 .region(region)
                 .build();
 
-        String bucket = bucketName + System.currentTimeMillis();
-        System.out.println(bucket);
-
-        createBucket(s3Client, bucket);
+        System.out.println(bucketName);
+        createBucket(s3Client, bucketName);
     }
 
     public static void createBucket(S3Client s3Client, String bucketName) {
