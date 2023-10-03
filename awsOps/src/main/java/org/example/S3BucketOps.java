@@ -8,6 +8,8 @@ import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.waiters.S3Waiter;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +40,7 @@ public class S3BucketOps {
         }
     }
 
-    public static void putS3Object(String bucketName, String objectKey, String objectPath) {
+    public static void putS3Object(String bucketName, String uri, InputStream inputStream) throws IOException {
         S3Client s3Client = createS3Client();
 
         try {
@@ -46,13 +48,13 @@ public class S3BucketOps {
             metadata.put("x-amz-meta-myVal", "test");
             PutObjectRequest putOb = PutObjectRequest.builder()
                     .bucket(bucketName)
-                    .key(objectKey)
+                    .key(uri)
                     .metadata(metadata)
                     .build();
 
-            RequestBody requestBody =  RequestBody.fromFile(new File(objectPath));
+            RequestBody requestBody =  RequestBody.fromInputStream(inputStream, inputStream.available());
             s3Client.putObject(putOb, requestBody);
-            System.out.println("Successfully placed " + objectKey +" into bucket "+bucketName);
+            System.out.println("Successfully placed " + uri +" into bucket "+bucketName);
 
         } catch (S3Exception e) {
             System.err.println(e.getMessage());

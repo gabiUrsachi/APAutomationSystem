@@ -4,6 +4,7 @@ import com.mongodb.lang.NonNull;
 import lombok.*;
 import org.example.persistence.collections.Item;
 import org.example.persistence.utils.data.OrderStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 import java.util.UUID;
@@ -30,4 +31,7 @@ public class OrderRequestDTO {
 
     @NonNull
     private Integer version;
+
+
+    private MultipartFile file;
 }

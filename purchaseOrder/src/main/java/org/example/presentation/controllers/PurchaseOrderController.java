@@ -21,6 +21,7 @@ import org.example.utils.data.Roles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -51,7 +52,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "403", description = "Invalid role or company identifier mismatch")
             })
     @PostMapping
-    public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
+    public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) throws IOException {
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
@@ -62,7 +63,8 @@ public class PurchaseOrderController {
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
-        S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(),"Control_Architecture_for_Cooperative_Autonomous.pdf", "purchaseOrder/src/main/resources/Control_Architecture_for_Cooperative_Autonomous.pdf" );
+        //S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), orderRequestDTO.getMultipartFile().getInputStream());
+        //S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(),"Control_Architecture_for_Cooperative_Autonomous.pdf", "purchaseOrder/src/main/resources/Control_Architecture_for_Cooperative_Autonomous.pdf" );
         return purchaseOrderMapperService.mapToDTO(createdPurchaseOrder);
     }
 
