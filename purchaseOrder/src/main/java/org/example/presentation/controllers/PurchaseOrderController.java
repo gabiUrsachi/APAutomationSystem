@@ -65,7 +65,7 @@ public class PurchaseOrderController {
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
-        //S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), orderRequestDTO.getFile().getInputStream());
+        S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), orderRequestDTO.getFile().getInputStream());
         return purchaseOrderMapperService.mapToDTO(createdPurchaseOrder);
     }
 
