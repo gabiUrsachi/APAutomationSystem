@@ -34,6 +34,4 @@ public class OrderRequestDTO {
     @NonNull
     private Integer version;
 
-
-    private MultipartFile file;
 }

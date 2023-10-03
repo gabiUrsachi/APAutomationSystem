@@ -35,7 +35,6 @@ public class PurchaseOrderMapperService {
                 .items(orderRequestDTO.getItems())
                 .orderStatus(orderRequestDTO.getOrderStatus())
                 .version(orderRequestDTO.getVersion())
-                .uri(orderRequestDTO.getFile().getOriginalFilename())
                 .build();
     }
 

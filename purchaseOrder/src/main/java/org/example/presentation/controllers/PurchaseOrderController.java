@@ -61,11 +61,11 @@ public class PurchaseOrderController {
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
         purchaseOrderValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer());
 
-        orderRequestDTO.setFile(multipartFile);
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
+        purchaseOrderRequest.setUri(multipartFile.getOriginalFilename());
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
-        S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), orderRequestDTO.getFile().getInputStream());
+        S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
         return purchaseOrderMapperService.mapToDTO(createdPurchaseOrder);
     }
 
