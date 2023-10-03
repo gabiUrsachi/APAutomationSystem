@@ -1,5 +1,7 @@
 package org.example.presentation.view;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mongodb.lang.NonNull;
 import lombok.*;
 import org.example.persistence.collections.Item;

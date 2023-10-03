@@ -28,5 +28,5 @@ public class OrderResponseDTO {
 
     private Integer version;
 
-    private MultipartFile file;
+    private String uri;
 }

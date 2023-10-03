@@ -19,6 +19,7 @@ import org.example.utils.AuthorizationMapper;
 import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -52,7 +53,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "403", description = "Invalid role or company identifier mismatch")
             })
     @PostMapping
-    public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) throws IOException {
+    public OrderResponseDTO createPurchaseOrder(@RequestPart("order") OrderRequestDTO orderRequestDTO, @RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
@@ -60,11 +61,11 @@ public class PurchaseOrderController {
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
         purchaseOrderValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer());
 
+        orderRequestDTO.setFile(multipartFile);
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
-        //S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), orderRequestDTO.getMultipartFile().getInputStream());
-        //S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(),"Control_Architecture_for_Cooperative_Autonomous.pdf", "purchaseOrder/src/main/resources/Control_Architecture_for_Cooperative_Autonomous.pdf" );
+        //S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), orderRequestDTO.getFile().getInputStream());
         return purchaseOrderMapperService.mapToDTO(createdPurchaseOrder);
     }
 
