@@ -18,6 +18,7 @@ import org.example.services.AuthorisationService;
 import org.example.utils.AuthorizationMapper;
 import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,7 +63,7 @@ public class PurchaseOrderController {
         purchaseOrderValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer());
 
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
-        purchaseOrderRequest.setUri(orderRequestDTO.getBuyer().toString());
+        purchaseOrderRequest.setUri(orderRequestDTO.getBuyer() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
         S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
