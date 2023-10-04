@@ -8,6 +8,7 @@ import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 public class SQSOps {
     private final static String QUEUE_NAME = "testQueue.fifo";
+    private final static String MESSAGE_GROUP_ID = "custom_msg_group_id";
     private final static String QUEUE_ARN = "arn:aws:sqs:us-east-1:964089076666";
 
     public static void getQueueUrl() {
@@ -28,6 +29,7 @@ public class SQSOps {
         SendMessageRequest messageRequest = SendMessageRequest.builder()
                 .queueUrl(queueUrl)
                 .messageBody(message)
+                .messageGroupId(MESSAGE_GROUP_ID)
                 .delaySeconds(10)
                 .build();
 

@@ -233,6 +233,7 @@ Resources:
                 Action:
                   - "sqs:ListQueues"
                   - "sqs:GetQueueUrl"
+                  - "sqs:SendMessage"
                 Resource:
                   Ref: SQSQueueARN
 
