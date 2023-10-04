@@ -63,7 +63,7 @@ public class PurchaseOrderController {
         purchaseOrderValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer());
 
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
-        purchaseOrderRequest.setUri(orderRequestDTO.getBuyer() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
+        purchaseOrderRequest.setUri(StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
         S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
