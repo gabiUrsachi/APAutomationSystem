@@ -123,6 +123,8 @@ public class PurchaseOrderController {
             })
     @PutMapping("/{identifier}")
     public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
+        /// TODO
+        /// sqs queue event
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);

@@ -1,6 +1,7 @@
 package org.example.presentation.controllers;
 
 import org.example.S3BucketOps;
+import org.example.SQSOps;
 import org.example.presentation.view.CompanyDTO;
 import org.example.presentation.utils.CompanyMapperService;
 import org.example.business.services.CompanyService;
@@ -27,6 +28,7 @@ public class CompanyController {
         Company savedCompany = companyService.createCompany(company);
 
         S3BucketOps.createS3Bucket(savedCompany.getCompanyIdentifier().toString());
+        SQSOps.getQueueUrl();
 
         return companyMapperService.mapToDTO(savedCompany);
     }
