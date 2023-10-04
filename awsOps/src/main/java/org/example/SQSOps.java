@@ -32,7 +32,6 @@ public class SQSOps {
                 .messageBody(message)
                 .messageGroupId(MESSAGE_GROUP_ID)
                 .messageDeduplicationId(MESSAGE_DEDUPLICATION_ID)
-                .delaySeconds(10)
                 .build();
 
         sqsClient.sendMessage(messageRequest);
