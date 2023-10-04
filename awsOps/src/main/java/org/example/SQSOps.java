@@ -31,7 +31,7 @@ public class SQSOps {
                 .queueUrl(queueUrl)
                 .messageBody(message)
                 .messageGroupId(MESSAGE_GROUP_ID)
-                .messageDeduplicationId(MESSAGE_DEDUPLICATION_ID)
+                .messageDeduplicationId(message)
                 .build();
 
         sqsClient.sendMessage(messageRequest);
