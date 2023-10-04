@@ -36,7 +36,6 @@ public class S3BucketOps {
 
         } catch (S3Exception e) {
             System.err.println(e.awsErrorDetails().errorMessage());
-            System.exit(1);
         }
     }
 
@@ -58,7 +57,6 @@ public class S3BucketOps {
 
         } catch (S3Exception e) {
             System.err.println(e.getMessage());
-            System.exit(1);
         }
     }
 
