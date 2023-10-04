@@ -13,7 +13,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  S3BUCKET: backendstack-webappdeploymentbucket-1fjgd0fl5zhoz
+  S3BUCKET: backendstack-webappdeploymentbucket-814rbstmj9lh
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.BACKEND_IAMROLE_GITHUB }}
+          role-to-assume: ${{ secrets.IL_MIO_ROLE_GITHUB }}
           role-session-name: GitHub-Action-Role
           aws-region: ${{ env.AWS_REGION }}
 
