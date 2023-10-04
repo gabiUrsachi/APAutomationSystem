@@ -6,6 +6,9 @@ import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
+import java.util.Random;
+import java.util.UUID;
+
 public class SQSOps {
     private final static String QUEUE_NAME = "testQueue.fifo";
     private final static String MESSAGE_GROUP_ID = "custom_msg_group_id";
@@ -31,7 +34,7 @@ public class SQSOps {
                 .queueUrl(queueUrl)
                 .messageBody(message)
                 .messageGroupId(MESSAGE_GROUP_ID)
-                .messageDeduplicationId(message)
+                .messageDeduplicationId(UUID.randomUUID().toString())
                 .build();
 
         sqsClient.sendMessage(messageRequest);
