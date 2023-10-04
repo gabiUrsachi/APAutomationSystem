@@ -2,15 +2,35 @@ package org.example;
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
+import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
+import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
+import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 public class SQSOps {
     private final static String QUEUE_NAME = "testQueue";
+    private final static String QUEUE_ARN = "arn:aws:sqs:us-east-1:964089076666";
+
     public static void getQueueUrl() {
 
         SqsClient sqsClient = createSQSClient();
         String queueUrl = sqsClient.listQueues().queueUrls().get(0);
 
-        System.out.println("Queue url: "+queueUrl);
+        System.out.println("Queue url: " + queueUrl);
+    }
+
+    public static void sendMessage(String message) {
+        SqsClient sqsClient = createSQSClient();
+
+        GetQueueUrlResponse getQueueUrlResponse = sqsClient.getQueueUrl(GetQueueUrlRequest.builder().queueName(QUEUE_NAME).build());
+        String queueUrl = getQueueUrlResponse.queueUrl();
+
+        SendMessageRequest messageRequest = SendMessageRequest.builder()
+                .queueUrl(queueUrl)
+                .messageBody(message)
+                .delaySeconds(10)
+                .build();
+
+        sqsClient.sendMessage(messageRequest);
     }
 
     private static SqsClient createSQSClient() {

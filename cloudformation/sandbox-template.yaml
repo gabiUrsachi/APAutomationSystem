@@ -112,6 +112,10 @@ Parameters:
     Type: String
     Default: "us-east-1a,us-east-1b,us-east-1c,us-east-1d,us-east-1e,us-east-1f"
     Description: Enter a comma-separated list of strings representing your desired availability zones
+  SQSQueueARN:
+    Type: String
+    Default: "arn:aws:sqs:us-east-1:964089076666"
+    Description: Enter the desired sqs queue ARN
 
 Mappings:
   RegionMap:
@@ -224,6 +228,13 @@ Resources:
                   - "s3:GetObjectAcl"
                   - "s3:DeleteObject"
                 Resource: !Sub arn:${AWS::Partition}:s3:::*
+              -
+                Effect: "Allow"
+                Action:
+                  - "sqs:ListQueues"
+                  - "sqs:GetQueueUrl"
+                Resource:
+                  Ref: SQSQueueARN
 
   WebappInstanceProfile:
     Type: AWS::IAM::InstanceProfile
