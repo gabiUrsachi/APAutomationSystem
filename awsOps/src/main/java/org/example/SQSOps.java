@@ -10,10 +10,10 @@ import java.util.Random;
 import java.util.UUID;
 
 public class SQSOps {
-    private final static String QUEUE_NAME = "testQueue.fifo";
+    private final static String QUEUE_NAME = "my-q.fifo";
     private final static String MESSAGE_GROUP_ID = "custom_msg_group_id";
     private final static String MESSAGE_DEDUPLICATION_ID = "custom_msg_deduplication_id";
-    private final static String QUEUE_ARN = "arn:aws:sqs:us-east-1:964089076666";
+    private final static String QUEUE_ARN = "arn:aws:sqs:us-east-1:847625635115:my-q.fifo";
 
     public static void getQueueUrl() {
 
