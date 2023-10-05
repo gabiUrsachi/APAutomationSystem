@@ -1,6 +1,10 @@
 name: Java CI with Maven
 run-name: ${{ github.actor }} is learning GitHub Actions
-on: [ push, pull_request ]
+on:
+  push:
+    branches:
+      - aws_testing
+
 
 jobs:
   build:
