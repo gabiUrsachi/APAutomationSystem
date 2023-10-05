@@ -63,7 +63,7 @@ public class InvoiceController {
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
 
 
-        S3BucketOps.putS3Object(invoiceDPO.getBuyerId().toString(), invoiceEntity.getUri(), multipartFile.getInputStream());
+        S3BucketOps.putS3Object(invoiceDPO.getSellerId().toString(), invoiceEntity.getUri(), multipartFile.getInputStream());
         return invoiceMapperService.mapToDTO(responseInvoice);
 
     }
