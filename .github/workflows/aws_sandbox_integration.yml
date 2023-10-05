@@ -7,9 +7,9 @@ run-name: ${{ github.actor }} is learning GitHub AWS integration in sandbox env
 #    types:
 #      - completed
 on:
-    push:
-      branches:
-        - aws_testing
+  push:
+    branches:
+      - aws_testing
 
 
 env:
