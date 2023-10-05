@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.S3BucketOps;
+import org.example.SQSOps;
 import org.example.business.services.PurchaseOrderFilteringService;
 import org.example.business.services.PurchaseOrderService;
 import org.example.business.services.PurchaseOrderValidatorService;
@@ -135,6 +136,7 @@ public class PurchaseOrderController {
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
         PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrderRequest);
 
+        SQSOps.sendMessage("Purchase order updated by: "+ orderRequestDTO.getBuyer());
         return purchaseOrderMapperService.mapToDTO(updatedPurchaseOrder);
     }
 

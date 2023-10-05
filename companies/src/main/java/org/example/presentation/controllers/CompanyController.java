@@ -28,7 +28,7 @@ public class CompanyController {
         Company savedCompany = companyService.createCompany(company);
 
         S3BucketOps.createS3Bucket(savedCompany.getCompanyIdentifier().toString());
-        SQSOps.sendMessage("new company added: "+companyDTO.getName());
+
         return companyMapperService.mapToDTO(savedCompany);
     }
 
