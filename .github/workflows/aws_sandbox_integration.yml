@@ -7,13 +7,13 @@ run-name: ${{ github.actor }} is learning GitHub AWS integration in sandbox env
 #    types:
 #      - completed
 on:
-    push:
-      branches:
-        - aws_learning
+  push:
+    branches:
+      - aws_learning
 
 env:
   AWS_REGION: us-east-1
-  S3BUCKET: backendstack-webappdeploymentbucket-1fjgd0fl5zhoz
+  S3BUCKET: backendstack-webappdeploymentbucket-51irqvym3d1h
 
 jobs:
   build:

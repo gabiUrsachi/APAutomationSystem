@@ -12,8 +12,6 @@ import java.util.UUID;
 public class SQSOps {
     private final static String QUEUE_NAME = "testQueue.fifo";
     private final static String MESSAGE_GROUP_ID = "custom_msg_group_id";
-    private final static String MESSAGE_DEDUPLICATION_ID = "custom_msg_deduplication_id";
-    private final static String QUEUE_ARN = "arn:aws:sqs:us-east-1:964089076666";
 
     public static void getQueueUrl() {
 
@@ -40,6 +38,8 @@ public class SQSOps {
         sqsClient.sendMessage(messageRequest);
     }
 
+    ///TODO
+    /// maybe Singleton pattern for sqs client creation
     private static SqsClient createSQSClient() {
         Region region = Region.US_EAST_1;
 

@@ -102,11 +102,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-0db80974af9f1abb3"
+    Default: "vpc-0ac52a0cc3631874d"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-01667f55e32ddbc4a,subnet-0584a15030230fe8d,subnet-0dc144772426e6639,subnet-05879d7fb62562556,subnet-02df32d5ff6ee9978,subnet-0dc172dfbacc89134"
+    Default: "subnet-0eca145e74e626faa,subnet-03f64bcedd02ec92e,subnet-0a501901bef011e96,subnet-08c2dab6f7272abc9,subnet-0f767624f33ea5901,subnet-0751a317d33c4c632"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -114,7 +114,7 @@ Parameters:
     Description: Enter a comma-separated list of strings representing your desired availability zones
   SQSQueueARN:
     Type: String
-    Default: "arn:aws:sqs:us-east-1:964089076666"
+    Default: "arn:aws:sqs:us-east-1:428924725037"
     Description: Enter the desired sqs queue ARN
 
 Mappings:
@@ -170,7 +170,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
       Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:964089076666:certificate/c4cbaf58-4b76-4a54-a1e5-471487471051"
+        - CertificateArn: "arn:aws:acm:us-east-1:428924725037:certificate/3995ae4b-efcc-4b09-add8-64cf3ed03ba8"
       DefaultActions:
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'

@@ -60,6 +60,8 @@ public class S3BucketOps {
         }
     }
 
+    ///TODO
+    /// maybe Singleton pattern for s3 client creation
     private static S3Client createS3Client() {
         Region region = Region.US_EAST_1;
 
