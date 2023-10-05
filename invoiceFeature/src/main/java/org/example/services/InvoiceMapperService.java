@@ -45,6 +45,7 @@ public class InvoiceMapperService {
                 .invoiceStatus(invoiceDTO.getInvoiceStatus())
                 .version(invoiceDTO.getVersion())
                 .totalAmount(invoiceDTO.getTotalAmount())
+                .uri(invoiceDTO.getUri())
                 .build();
 
     }
@@ -61,6 +62,7 @@ public class InvoiceMapperService {
                 .invoiceStatus(invoice.getInvoiceStatus())
                 .version(invoice.getVersion())
                 .totalAmount(invoice.getTotalAmount())
+                .uri(invoice.getUri())
                 .build();
     }
 

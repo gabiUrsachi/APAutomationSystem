@@ -35,4 +35,6 @@ public class InvoiceDTO {
 
     @NotNull
     private Integer version;
+
+    private String uri;
 }

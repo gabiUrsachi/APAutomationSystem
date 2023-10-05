@@ -30,6 +30,9 @@ public class InvoiceService {
 
         Invoice initializedInvoice = Invoice.builder()
                 .identifier(UUID.randomUUID())
+                .buyerId(invoiceEntity.getBuyerId())
+                .sellerId(invoiceEntity.getSellerId())
+                .items(invoiceEntity.getItems())
                 .version(0)
                 .invoiceStatus(InvoiceStatus.CREATED)
                 .build();
