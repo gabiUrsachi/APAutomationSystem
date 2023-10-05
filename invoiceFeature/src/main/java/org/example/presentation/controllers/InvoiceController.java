@@ -59,7 +59,7 @@ public class InvoiceController {
         invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), invoiceDPO.getSellerId());
 
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
-        invoiceEntity.setUri(invoiceEntity.getIdentifier().toString() + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
+        invoiceEntity.setUri(StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
 
 

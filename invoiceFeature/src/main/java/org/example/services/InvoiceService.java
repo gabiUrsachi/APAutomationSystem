@@ -28,7 +28,13 @@ public class InvoiceService {
 
     public Invoice createInvoice(@RequestBody Invoice invoiceEntity) {
 
-        Invoice initializedInvoice = initializeInvoice(invoiceEntity);
+        Invoice initializedInvoice = Invoice.builder()
+                .identifier(UUID.randomUUID())
+                .version(0)
+                .invoiceStatus(InvoiceStatus.CREATED)
+                .build();
+        initializedInvoice.setUri(initializedInvoice.getIdentifier()+invoiceEntity.getUri());
+
         return invoiceRepository.insert(initializedInvoice);
     }
 
@@ -55,11 +61,6 @@ public class InvoiceService {
     }
 
     public Invoice initializeInvoice(Invoice invoice) {
-
-        UUID identifier = UUID.randomUUID();
-        invoice.setIdentifier(identifier);
-        invoice.setVersion(0);
-        invoice.setInvoiceStatus(InvoiceStatus.CREATED);
 
         return invoice;
 
