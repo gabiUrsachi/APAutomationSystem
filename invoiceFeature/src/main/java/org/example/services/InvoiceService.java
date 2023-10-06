@@ -36,7 +36,7 @@ public class InvoiceService {
                 .version(0)
                 .invoiceStatus(InvoiceStatus.CREATED)
                 .build();
-        initializedInvoice.setUri(initializedInvoice.getIdentifier()+invoiceEntity.getUri());
+        initializedInvoice.setUri(initializedInvoice.getIdentifier()+"."+invoiceEntity.getUri());
 
         return invoiceRepository.insert(initializedInvoice);
     }
