@@ -13,7 +13,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  S3BUCKET: backendstack-webappdeploymentbucket-51irqvym3d1h
+  S3BUCKET: backendstack-webappdeploymentbucket-z6wxmcs8nvs9
 
 jobs:
   build:

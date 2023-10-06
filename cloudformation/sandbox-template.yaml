@@ -102,20 +102,16 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-0ac52a0cc3631874d"
+    Default: "vpc-048db0216435bf1ed"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-0eca145e74e626faa,subnet-03f64bcedd02ec92e,subnet-0a501901bef011e96,subnet-08c2dab6f7272abc9,subnet-0f767624f33ea5901,subnet-0751a317d33c4c632"
+    Default: "subnet-09ac5cb4e7d46035e,subnet-077f93c30c25fed93,subnet-08d46eb111097feba,subnet-0383f329ec7773fb4,subnet-0633f84f178ab56cd,subnet-0ce506a684d840ccb"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
     Default: "us-east-1a,us-east-1b,us-east-1c,us-east-1d,us-east-1e,us-east-1f"
     Description: Enter a comma-separated list of strings representing your desired availability zones
-  SQSQueueARN:
-    Type: String
-    Default: "arn:aws:sqs:us-east-1:428924725037"
-    Description: Enter the desired sqs queue ARN
 
 Mappings:
   RegionMap:
@@ -124,6 +120,56 @@ Mappings:
 
 
 Resources:
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: "/"
+      RoleName: LambdaExecutionRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        -
+          PolicyName: "lambda-policy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - "sqs:ReceiveMessage"
+                  - "sqs:DeleteMessage"
+                  - "sqs:GetQueueAttributes"
+                Resource: !GetAtt SQSQueue.Arn
+              -
+                Effect: "Allow"
+                Action:
+                  - "s3:PutObject"
+                  - "s3:PutObjectAcl"
+                  - "s3:GetObject"
+                  - "s3:GetObjectAcl"
+                  - "s3:DeleteObject"
+                Resource: !Sub arn:${AWS::Partition}:s3:::*
+              -
+                Effect: "Allow"
+                Action:
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:::*
+
+  SQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      FifoQueue: true
+      QueueName: "testQueue.fifo"
 
   LoadBalancer:
     Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
@@ -170,7 +216,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
       Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:428924725037:certificate/3995ae4b-efcc-4b09-add8-64cf3ed03ba8"
+        - CertificateArn: "arn:aws:acm:us-east-1:523397174287:certificate/9d6bdb4e-7a05-4250-a7b5-32b1843a17a0"
       DefaultActions:
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'
@@ -234,8 +280,7 @@ Resources:
                   - "sqs:ListQueues"
                   - "sqs:GetQueueUrl"
                   - "sqs:SendMessage"
-                Resource:
-                  Ref: SQSQueueARN
+                Resource: !GetAtt SQSQueue.Arn
 
   WebappInstanceProfile:
     Type: AWS::IAM::InstanceProfile
