@@ -1,7 +1,7 @@
 package org.example.services;
 
+import org.example.SQSOps;
 import org.example.business.utils.InvoiceStatusPrecedence;
-import org.example.customexceptions.OrderNotFoundException;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.utils.ErrorMessages;
 import org.example.customexceptions.InvalidUpdateException;
@@ -63,12 +63,6 @@ public class InvoiceService {
         }
     }
 
-    public Invoice initializeInvoice(Invoice invoice) {
-
-        return invoice;
-
-    }
-
     public Invoice updateInvoice(UUID identifier, Invoice invoice) {
 
         int currentVersion = invoice.getVersion();
@@ -116,7 +110,12 @@ public class InvoiceService {
 
         }
 
-        return updatedInvoice;
+        if (updatedInvoice.getInvoiceStatus().equals(InvoiceStatus.SENT)) {
+            // sellerCompany/documentId/buyerCompany
+            SQSOps.sendMessage(updatedInvoice.getBuyerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getSellerId());
+        }
+
+            return updatedInvoice;
     }
 
     public Invoice changeInvoiceStatus(Invoice invoice, InvoiceStatus invoiceStatus) {
