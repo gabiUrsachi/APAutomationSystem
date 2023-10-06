@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class SQSOps {
-    private final static String QUEUE_NAME = "my-q.fifo";
+    private final static String QUEUE_NAME = "testQueue.fifo";
     private final static String MESSAGE_GROUP_ID = "custom_msg_group_id";
 
     public static void getQueueUrl() {
