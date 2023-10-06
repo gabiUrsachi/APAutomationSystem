@@ -112,7 +112,7 @@ public class InvoiceService {
 
         if (updatedInvoice.getInvoiceStatus().equals(InvoiceStatus.SENT)) {
             // sellerCompany/documentId/buyerCompany
-            SQSOps.sendMessage(updatedInvoice.getBuyerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getSellerId());
+            SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
         }
 
             return updatedInvoice;
