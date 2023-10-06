@@ -4,10 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.S3BucketOps;
+import org.example.SQSOps;
 import org.example.business.services.PurchaseOrderFilteringService;
 import org.example.business.services.PurchaseOrderService;
 import org.example.business.services.PurchaseOrderValidatorService;
 import org.example.persistence.collections.PurchaseOrder;
+import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.presentation.utils.ActionsPermissions;
 import org.example.presentation.utils.PurchaseOrderMapperService;
@@ -123,8 +125,6 @@ public class PurchaseOrderController {
             })
     @PutMapping("/{identifier}")
     public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
-        /// TODO
-        /// sqs queue event
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
@@ -134,6 +134,13 @@ public class PurchaseOrderController {
 
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
         PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrderRequest);
+
+        /// TODO
+        /// maybe should move this to a service
+        if (orderRequestDTO.getOrderStatus().equals(OrderStatus.SAVED)) {
+            // buyerCompany/documentId/sellerCompany
+            SQSOps.sendMessage(orderRequestDTO.getBuyer() + "/" + orderRequestDTO.getIdentifier() + "/" + orderRequestDTO.getSeller());
+        }
 
         return purchaseOrderMapperService.mapToDTO(updatedPurchaseOrder);
     }

@@ -11,10 +11,9 @@ on:
     branches:
       - aws_testing
 
-
 env:
   AWS_REGION: us-east-1
-  S3BUCKET: backendstack-webappdeploymentbucket-1tj65yekokjnk
+  S3BUCKET: backendstack-webappdeploymentbucket-51irqvym3d1h
 
 jobs:
   build:
