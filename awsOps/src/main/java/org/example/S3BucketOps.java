@@ -6,6 +6,8 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 import software.amazon.awssdk.services.s3.waiters.S3Waiter;
@@ -55,45 +57,34 @@ public class S3BucketOps {
                     .metadata(metadata)
                     .build();
 
-            RequestBody requestBody =  RequestBody.fromInputStream(inputStream, inputStream.available());
+            RequestBody requestBody = RequestBody.fromInputStream(inputStream, inputStream.available());
             s3Client.putObject(putOb, requestBody);
-            System.out.println("Successfully placed " + uri +" into bucket "+bucketName);
+            System.out.println("Successfully placed " + uri + " into bucket " + bucketName);
 
         } catch (S3Exception e) {
             System.err.println(e.getMessage());
         }
     }
 
-
-    public static String putPresignedS3Object(String bucketName, String uri, InputStream inputStream) throws IOException {
+    public static String getPresignedURL(String bucketName, String keyName) {
         S3Presigner s3Presigner = S3Presigner.create();
         S3Client s3Client = createS3Client();
 
-        try {
-            Map<String, String> metadata = new HashMap<>();
-            metadata.put("x-amz-meta-myVal", "test");
-            PutObjectRequest putOb = PutObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(uri)
-                    .metadata(metadata)
-                    .build();
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(keyName)
+                .build();
 
-            PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
-                    .signatureDuration(Duration.ofMinutes(10))
-                    .putObjectRequest(putOb)
-                    .build();
+        // Create a GetObjectPresignRequest to specify the signature duration
+        GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofMinutes(10))
+                .getObjectRequest(getObjectRequest)
+                .build();
 
-            PresignedPutObjectRequest presignedPutObjectRequest = s3Presigner.presignPutObject(putObjectPresignRequest);
+        // Generate the presigned request
+        PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(getObjectPresignRequest);
 
-            RequestBody requestBody =  RequestBody.fromInputStream(inputStream, inputStream.available());
-            s3Client.putObject(putOb, requestBody);
-            System.out.println("Successfully placed " + uri +" into bucket "+bucketName);
-
-            return presignedPutObjectRequest.url().toString();
-        } catch (S3Exception e) {
-            System.err.println(e.getMessage());
-        }
-        return null;
+        return presignedGetObjectRequest.url().toString();
     }
 
     ///TODO

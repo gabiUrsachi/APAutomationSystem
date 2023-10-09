@@ -64,14 +64,11 @@ public class PurchaseOrderController {
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
         purchaseOrderValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer());
 
-        String url = S3BucketOps.putPresignedS3Object(orderRequestDTO.getBuyer().toString(), "new-file." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()), multipartFile.getInputStream());
-
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
-        purchaseOrderRequest.setUri(url);
+        purchaseOrderRequest.setUri(StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
-        //S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
-
+        S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
         return purchaseOrderMapperService.mapToDTO(createdPurchaseOrder);
     }
 
@@ -93,6 +90,7 @@ public class PurchaseOrderController {
         List<PurchaseOrderFilter> queryFilters = purchaseOrderFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
         PurchaseOrder purchaseOrder = purchaseOrderService.getPurchaseOrder(identifier, queryFilters);
 
+        purchaseOrder.setUri(S3BucketOps.getPresignedURL(purchaseOrder.getBuyer().toString(), purchaseOrder.getUri()));
         return purchaseOrderMapperService.mapToDTO(purchaseOrder);
     }
 
