@@ -136,13 +136,6 @@ public class PurchaseOrderController {
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
         PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrderRequest);
 
-        /// TODO
-        /// maybe should move this to a service
-        if (orderRequestDTO.getOrderStatus().equals(OrderStatus.SAVED)) {
-            // buyerCompany/documentId/sellerCompany
-            SQSOps.sendMessage(orderRequestDTO.getBuyer() + "/" + orderRequestDTO.getIdentifier() + "/" + orderRequestDTO.getSeller());
-        }
-
         return purchaseOrderMapperService.mapToDTO(updatedPurchaseOrder);
     }
 
