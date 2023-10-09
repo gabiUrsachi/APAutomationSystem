@@ -6,7 +6,6 @@ import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class SQSOps {
