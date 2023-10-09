@@ -72,6 +72,7 @@ public class PurchaseOrderController {
 
         String url = S3BucketOps.putPresignedS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
         createdPurchaseOrder.setUri(url);
+        System.out.println("presigned url:" +url);
 
         return purchaseOrderMapperService.mapToDTO(createdPurchaseOrder);
     }
