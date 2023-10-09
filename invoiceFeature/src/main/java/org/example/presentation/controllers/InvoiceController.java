@@ -1,5 +1,6 @@
 package org.example.presentation.controllers;
 
+import org.example.S3BucketOps;
 import org.example.business.services.InvoiceFilteringService;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.presentation.controllers.utils.InvoiceActionsPermissions;
@@ -15,10 +16,13 @@ import org.example.services.InvoiceMapperService;
 import org.example.services.InvoiceService;
 import org.example.persistence.collections.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.example.presentation.view.OrderResponseDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,8 +50,7 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public InvoiceDTO createInvoice(@RequestBody InvoiceDPO invoiceDPO, HttpServletRequest request) {
-
+    public InvoiceDTO createInvoice(@RequestPart("invoiceDPO") InvoiceDPO invoiceDPO, @RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
         Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
 
@@ -56,8 +59,11 @@ public class InvoiceController {
         invoiceValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), invoiceDPO.getSellerId());
 
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
+        invoiceEntity.setUri(StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
 
+
+        S3BucketOps.putS3Object(invoiceDPO.getSellerId().toString(),responseInvoice.getUri(), multipartFile.getInputStream());
         return invoiceMapperService.mapToDTO(responseInvoice);
 
     }

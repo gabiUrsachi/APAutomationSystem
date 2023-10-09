@@ -1,7 +1,7 @@
 package org.example.services;
 
+import org.example.SQSOps;
 import org.example.business.utils.InvoiceStatusPrecedence;
-import org.example.customexceptions.OrderNotFoundException;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.utils.ErrorMessages;
 import org.example.customexceptions.InvalidUpdateException;
@@ -28,7 +28,16 @@ public class InvoiceService {
 
     public Invoice createInvoice(@RequestBody Invoice invoiceEntity) {
 
-        Invoice initializedInvoice = initializeInvoice(invoiceEntity);
+        Invoice initializedInvoice = Invoice.builder()
+                .identifier(UUID.randomUUID())
+                .buyerId(invoiceEntity.getBuyerId())
+                .sellerId(invoiceEntity.getSellerId())
+                .items(invoiceEntity.getItems())
+                .version(0)
+                .invoiceStatus(InvoiceStatus.CREATED)
+                .build();
+        initializedInvoice.setUri(initializedInvoice.getIdentifier()+"."+invoiceEntity.getUri());
+
         return invoiceRepository.insert(initializedInvoice);
     }
 
@@ -52,17 +61,6 @@ public class InvoiceService {
         if (deletedRowsCount == 0) {
             throw new InvoiceNotFoundException("Couldn't find invoice with identifier" + identifier);
         }
-    }
-
-    public Invoice initializeInvoice(Invoice invoice) {
-
-        UUID identifier = UUID.randomUUID();
-        invoice.setIdentifier(identifier);
-        invoice.setVersion(0);
-        invoice.setInvoiceStatus(InvoiceStatus.CREATED);
-
-        return invoice;
-
     }
 
     public Invoice updateInvoice(UUID identifier, Invoice invoice) {
@@ -112,7 +110,12 @@ public class InvoiceService {
 
         }
 
-        return updatedInvoice;
+        if (updatedInvoice.getInvoiceStatus().equals(InvoiceStatus.SENT)) {
+            // sellerCompany/documentId/buyerCompany
+            SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
+        }
+
+            return updatedInvoice;
     }
 
     public Invoice changeInvoiceStatus(Invoice invoice, InvoiceStatus invoiceStatus) {

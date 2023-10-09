@@ -33,4 +33,6 @@ public class Invoice {
     private InvoiceStatus invoiceStatus;
 
     private Integer version;
+
+    private String uri;
 }
