@@ -180,9 +180,9 @@ Resources:
                   logger.error("There was an error copying the file to the destination bucket")
                   print('Error Message: {}'.format(error))
                       
-                      except botocore.exceptions.ParamValidationError as error:
-                          logger.error("Missing required parameters while calling the API.")
-                          print('Error Message: {}'.format(error))
+                except botocore.exceptions.ParamValidationError as error:
+                  logger.error("Missing required parameters while calling the API.")
+                  print('Error Message: {}'.format(error))
                   
               
               return {
@@ -222,11 +222,12 @@ Resources:
               -
                 Effect: "Allow"
                 Action:
-                  - "s3:PutObject"
-                  - "s3:PutObjectAcl"
-                  - "s3:GetObject"
-                  - "s3:GetObjectAcl"
-                  - "s3:DeleteObject"
+#                  - "s3:PutObject"
+#                  - "s3:PutObjectAcl"
+#                  - "s3:GetObject"
+#                  - "s3:GetObjectAcl"
+#                  - "s3:DeleteObject"
+                  - "s3:*"
                 Resource: !Sub arn:${AWS::Partition}:s3:::*
               -
                 Effect: "Allow"
@@ -235,6 +236,11 @@ Resources:
                   - "logs:CreateLogStream"
                   - "logs:PutLogEvents"
                 Resource: !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:*
+              -
+                Effect: "Allow"
+                Action:
+                  - "iam:PassRole"
+                Resource: "*"
 
   SQSQueue:
     Type: AWS::SQS::Queue
