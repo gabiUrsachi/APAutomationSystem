@@ -9,7 +9,12 @@ run-name: ${{ github.actor }} is learning GitHub AWS integration in sandbox env
 on:
   push:
     branches:
-      - aws_learning
+      - main
+  workflow_run:
+    workflows: ["Java CI with Maven"]
+    types:
+      - completed
+
 
 env:
   AWS_REGION: us-east-1
