@@ -68,7 +68,11 @@ public class PurchaseOrderController {
         purchaseOrderRequest.setUri(StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
-        S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
+        //S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
+
+        String url = S3BucketOps.putPresignedS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
+        createdPurchaseOrder.setUri(url);
+
         return purchaseOrderMapperService.mapToDTO(createdPurchaseOrder);
     }
 
