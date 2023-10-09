@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - aws_testing
+      - s3_presigned_urls
 
 
 jobs:
