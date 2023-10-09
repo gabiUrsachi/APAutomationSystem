@@ -102,11 +102,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-0fd23c34cb3b3146e"
+    Default: "vpc-0135a1376439555f8"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-0d69ae735d1474bba,subnet-00635d6c5942d5688,subnet-0b1cd68d8777bfcda,subnet-00e3a8a482fbadb15,subnet-05f79399868fb49e3,subnet-0828665d09887de25"
+    Default: "subnet-03bdd013d0cb410c2,subnet-0b3283f860485ab6d,subnet-021059cdaa3a85027,subnet-0769a3c2a71566f5f,subnet-0c31db8574057dbd5,subnet-0e74b15fbf737cd2f"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -120,6 +120,133 @@ Mappings:
 
 
 Resources:
+#  LambdaCodeBucket:
+#    Type: AWS::S3::Bucket
+#
+#
+#  CommandRunner:
+#    Type: AWSUtility::CloudFormation::CommandRunner
+#    DependsOn: LambdaCodeBucket
+#    Properties:
+#      Command: 'aws s3 cp lambdaCode/myFile.zip s3://lambda-bucket/'
+
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+#    DependsOn: CommandRunner
+    Properties:
+      Runtime: python3.9
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Handler: index.lambda_handler
+#      Code:
+#        S3Bucket: !Ref LambdaCodeBucket
+#        S3Key: "myFile.zip"
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+          import logging
+          import botocore
+          
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+          
+          s3 = boto3.resource('s3')
+
+          def lambda_handler(event, context):
+            
+            for record in event['Records']:
+              body=record["body"]
+              
+              split_body = body.split("/")
+              
+              source_bucket_key = split_body[0]
+              document_id = split_body[1]
+              destination_bucket_key = split_body[2]
+              
+              documents_to_be_transfered = []
+              
+              for document in  s3.Bucket(name = source_bucket_key).objects.all():
+                if document.key.startswith(document_id):
+                  documents_to_be_transfered.append(document.key)
+              
+              for document_name in documents_to_be_transfered:
+                source_transaction={'Bucket': source_bucket_key, 'Key': document_name}
+                
+                try:
+                  response = s3.meta.client.copy(source_transaction, destination_bucket_key, document_name)
+                  print("File copied to the destination bucket successfully!")
+                
+                except botocore.exceptions.ClientError as error:
+                  logger.error("There was an error copying the file to the destination bucket")
+                  print('Error Message: {}'.format(error))
+                      
+                except botocore.exceptions.ParamValidationError as error:
+                  logger.error("Missing required parameters while calling the API.")
+                  print('Error Message: {}'.format(error))
+                  
+              
+              return {
+                  'statusCode': 200,
+              'body': json.dumps('Successfully transfered document')
+              }
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: "/"
+      RoleName: LambdaExecutionRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        -
+          PolicyName: "lambda-policy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+#                  - "sqs:ReceiveMessage"
+#                  - "sqs:DeleteMessage"
+#                  - "sqs:GetQueueAttributes"
+                  - "sqs:*"
+                Resource: !GetAtt SQSQueue.Arn
+              -
+                Effect: "Allow"
+                Action:
+#                  - "s3:PutObject"
+#                  - "s3:PutObjectAcl"
+#                  - "s3:GetObject"
+#                  - "s3:GetObjectAcl"
+#                  - "s3:DeleteObject"
+                  - "s3:*"
+                Resource: !Sub arn:${AWS::Partition}:s3:::*
+              -
+                Effect: "Allow"
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:*
+              -
+                Effect: "Allow"
+                Action:
+                  - "iam:PassRole"
+                Resource: "*"
+
+  SQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      FifoQueue: true
+      QueueName: "testQueue.fifo"
 
   LoadBalancer:
     Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
@@ -166,7 +293,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
       Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:264546059187:certificate/3489c074-8648-4c66-bf0c-c63c01896048"
+        - CertificateArn: "arn:aws:acm:us-east-1:466206880806:certificate/89e5d297-262b-4779-863c-dc64caa85be9"
       DefaultActions:
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'
@@ -210,6 +337,27 @@ Resources:
                   - "cloudformation:ListExports"
                   - "cloudformation:ExportStacks"
                 Resource: "*"
+              -
+                Effect: "Allow"
+                Action:
+                  - "s3:CreateBucket"
+                Resource: !Sub arn:${AWS::Partition}:s3:::*
+              -
+                Effect: "Allow"
+                Action:
+                  - "s3:PutObject"
+                  - "s3:PutObjectAcl"
+                  - "s3:GetObject"
+                  - "s3:GetObjectAcl"
+                  - "s3:DeleteObject"
+                Resource: !Sub arn:${AWS::Partition}:s3:::*
+              -
+                Effect: "Allow"
+                Action:
+                  - "sqs:ListQueues"
+                  - "sqs:GetQueueUrl"
+                  - "sqs:SendMessage"
+                Resource: !GetAtt SQSQueue.Arn
 
   WebappInstanceProfile:
     Type: AWS::IAM::InstanceProfile

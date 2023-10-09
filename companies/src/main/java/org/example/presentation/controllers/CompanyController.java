@@ -1,5 +1,7 @@
 package org.example.presentation.controllers;
 
+import org.example.S3BucketOps;
+import org.example.SQSOps;
 import org.example.presentation.view.CompanyDTO;
 import org.example.presentation.utils.CompanyMapperService;
 import org.example.business.services.CompanyService;
@@ -22,10 +24,12 @@ public class CompanyController {
 
     @PostMapping
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
-        CompanyDTO initializedCompany = initializeCompany(companyDTO);
-        Company company = companyMapperService.mapToEntity(initializedCompany);
-        return companyMapperService.mapToDTO(companyService.createCompany(company));
+        Company company = companyMapperService.mapToEntity(companyDTO);
+        Company savedCompany = companyService.createCompany(company);
 
+        S3BucketOps.createS3Bucket(savedCompany.getCompanyIdentifier().toString());
+
+        return companyMapperService.mapToDTO(savedCompany);
     }
 
     private CompanyDTO initializeCompany(CompanyDTO companyDTO) {

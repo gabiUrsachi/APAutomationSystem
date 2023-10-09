@@ -36,4 +36,6 @@ public class PurchaseOrder {
     private OrderStatus orderStatus;
 
     private Integer version;
+
+    private String uri;
 }

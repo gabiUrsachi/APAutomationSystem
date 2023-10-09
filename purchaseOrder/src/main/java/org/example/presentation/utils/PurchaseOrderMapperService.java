@@ -52,6 +52,7 @@ public class PurchaseOrderMapperService {
                 .items(purchaseOrder.getItems())
                 .orderStatus(purchaseOrder.getOrderStatus())
                 .version(purchaseOrder.getVersion())
+                .uri(purchaseOrder.getUri())
                 .build();
     }
 

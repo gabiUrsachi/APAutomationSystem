@@ -1,6 +1,11 @@
 
 name: AWS-sandbox integration
 run-name: ${{ github.actor }} is learning GitHub AWS integration in sandbox env
+#on:
+#  workflow_run:
+#    workflows: ["Java CI with Maven"]
+#    types:
+#      - completed
 on:
   push:
     branches:
@@ -10,9 +15,10 @@ on:
     types:
       - completed
 
+
 env:
   AWS_REGION: us-east-1
-  S3BUCKET: backendstack-webappdeploymentbucket-1rfz5m9ush242
+  S3BUCKET: backendstack-webappdeploymentbucket-1049mw1bftxba
 
 jobs:
   build:

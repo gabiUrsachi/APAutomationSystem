@@ -3,10 +3,13 @@ package org.example.presentation.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.example.S3BucketOps;
+import org.example.SQSOps;
 import org.example.business.services.PurchaseOrderFilteringService;
 import org.example.business.services.PurchaseOrderService;
 import org.example.business.services.PurchaseOrderValidatorService;
 import org.example.persistence.collections.PurchaseOrder;
+import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.presentation.utils.ActionsPermissions;
 import org.example.presentation.utils.PurchaseOrderMapperService;
@@ -17,9 +20,12 @@ import org.example.services.AuthorisationService;
 import org.example.utils.AuthorizationMapper;
 import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -50,7 +56,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "403", description = "Invalid role or company identifier mismatch")
             })
     @PostMapping
-    public OrderResponseDTO createPurchaseOrder(@RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
+    public OrderResponseDTO createPurchaseOrder(@RequestPart("order") OrderRequestDTO orderRequestDTO, @RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
@@ -59,8 +65,10 @@ public class PurchaseOrderController {
         purchaseOrderValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer());
 
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
+        purchaseOrderRequest.setUri(StringUtils.getFilenameExtension(multipartFile.getOriginalFilename()));
         PurchaseOrder createdPurchaseOrder = purchaseOrderService.createPurchaseOrder(purchaseOrderRequest);
 
+        S3BucketOps.putS3Object(orderRequestDTO.getBuyer().toString(), createdPurchaseOrder.getUri(), multipartFile.getInputStream());
         return purchaseOrderMapperService.mapToDTO(createdPurchaseOrder);
     }
 
@@ -126,6 +134,13 @@ public class PurchaseOrderController {
 
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
         PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrderRequest);
+
+        /// TODO
+        /// maybe should move this to a service
+        if (orderRequestDTO.getOrderStatus().equals(OrderStatus.SAVED)) {
+            // buyerCompany/documentId/sellerCompany
+            SQSOps.sendMessage(orderRequestDTO.getBuyer() + "/" + orderRequestDTO.getIdentifier() + "/" + orderRequestDTO.getSeller());
+        }
 
         return purchaseOrderMapperService.mapToDTO(updatedPurchaseOrder);
     }

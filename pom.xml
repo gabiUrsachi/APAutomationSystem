@@ -22,6 +22,7 @@
         <module>authentication</module>
         <module>authorisation</module>
         <module>errorHandling</module>
+        <module>awsOps</module>
     </modules>
     <properties>
         <java.version>11</java.version>
