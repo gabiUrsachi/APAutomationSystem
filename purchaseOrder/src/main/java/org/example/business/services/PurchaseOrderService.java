@@ -37,7 +37,7 @@ public class PurchaseOrderService {
         purchaseOrder.setIdentifier(UUID.randomUUID());
         purchaseOrder.setVersion(0);
         purchaseOrder.setOrderStatus(OrderStatus.CREATED);
-        purchaseOrder.setUri(purchaseOrder.getIdentifier() + "." + purchaseOrder.getUri());
+        purchaseOrder.setUri(purchaseOrder.getUri());
 
         return purchaseOrderRepository.save(purchaseOrder);
     }
