@@ -1,4 +1,4 @@
-package org.example.presentation.controllers.invoiceFeatureTests;
+package org.example.integration.invoiceFeatureTests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,5 +1,6 @@
 package org.example.business.services;
 
+import org.example.SQSOps;
 import org.example.business.utils.PurchaseOrderStatusPrecedence;
 import org.example.customexceptions.InvalidUpdateException;
 import org.example.customexceptions.OrderNotFoundException;
@@ -127,6 +128,11 @@ public class PurchaseOrderService {
             if (!existingPurchaseOrder.get().getOrderStatus().equals(requiredOldStatus)) {
                 throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
             }
+        }
+
+        if (updatedPurchaseOrder.getOrderStatus().equals(OrderStatus.SAVED)) {
+            // buyerCompany/documentId/sellerCompany
+            SQSOps.sendMessage(updatedPurchaseOrder.getBuyer() + "/" + updatedPurchaseOrder.getIdentifier() + "/" + updatedPurchaseOrder.getSeller());
         }
 
         return updatedPurchaseOrder;

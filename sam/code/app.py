@@ -2,12 +2,12 @@ import json
 import boto3
 import logging
 import botocore
+# import requests
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 s3 = boto3.resource('s3')
-
 
 def lambda_handler(event, context):
     
@@ -46,3 +46,4 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('Successfully transfered document')
     }
+

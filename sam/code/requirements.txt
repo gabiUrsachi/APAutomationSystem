@@ -1,0 +1,4 @@
+requests
+botocore
+logging
+boto3
