@@ -33,4 +33,4 @@ build/
 .vscode/
 
 
-sam-new-AP-automation/.aws-sam
+sam/.aws-sam
