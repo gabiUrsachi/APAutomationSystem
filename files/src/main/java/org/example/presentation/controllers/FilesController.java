@@ -26,8 +26,6 @@ public class FilesController {
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
         String fileBucket = jwtClaims.getCompanyUUID().toString();
 
-
         return this.filesService.getFile(fileBucket, fileIdentifier);
-        //return new ClassPathResource("static/LTW_L02.pdf");
     }
 }

@@ -16,7 +16,6 @@ import software.amazon.awssdk.services.s3.waiters.S3Waiter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,9 +30,8 @@ public class S3BucketOps {
                 .build();
 
         ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
-        System.out.println("object bytes: "+objectBytes);
         byte[] objectData = objectBytes.asByteArray();
-        System.out.println("objectData: "+ Arrays.toString(objectData));
+
         return new ByteArrayResource(objectData);
     }
 

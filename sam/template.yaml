@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-011c19a78b1994329"
+    Default: "vpc-0dc04c7d0e58ca5ea"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-042a1493afdeedbd2,subnet-06011885bd1cc753e,subnet-0adbd5adad6287ac5,subnet-028a0925d0e5198ff,subnet-086d4c36241caae6f,subnet-0c8757b413a59876c"
+    Default: "subnet-096d9d3bd50ff1c00,subnet-09b4464fe9d6a223a,subnet-08e09521012d6790a,subnet-0e58e53b5005505c0,subnet-0f7569851210c8e16,subnet-09199a872d535e927"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -131,12 +131,6 @@ Resources:
       Role: !GetAtt LambdaExecutionRole.Arn
       Architectures:
         - x86_64
-#      Events:
-#        HelloWorld:
-#          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-#          Properties:
-#            Path: /hello
-#            Method: get
 
   LambdaExecutionRole:
     Type: AWS::IAM::Role
@@ -162,19 +156,11 @@ Resources:
               -
                 Effect: "Allow"
                 Action:
-                  # - "sqs:ReceiveMessage"
-                  # - "sqs:DeleteMessage"
-                  # - "sqs:GetQueueAttributes"
                   - "sqs:*"
                 Resource: !GetAtt SQSQueue.Arn
               -
                 Effect: "Allow"
                 Action:
-                  # - "s3:PutObject"
-                  # - "s3:PutObjectAcl"
-                  # - "s3:GetObject"
-                  # - "s3:GetObjectAcl"
-                  # - "s3:DeleteObject"
                   - "s3:*"
                 Resource: !Sub arn:${AWS::Partition}:s3:::*
               -
@@ -249,7 +235,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
       Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:688504933740:certificate/406e311a-0bf6-4f51-9f01-86332c86b48c"
+        - CertificateArn: "arn:aws:acm:us-east-1:711134864427:certificate/c4183763-f208-4a7c-bb43-2e5efdd00603"
       DefaultActions:
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'
@@ -627,12 +613,6 @@ Resources:
                   - !Sub 'arn:${AWS::Partition}:codedeploy:*:${AWS::AccountId}:*'
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-#  HelloWorldApi:
-#    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-#    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
   MyLambdaFunction:
     Description: "My Lambda Function ARN"
     Value: !GetAtt MyLambdaFunction.Arn
