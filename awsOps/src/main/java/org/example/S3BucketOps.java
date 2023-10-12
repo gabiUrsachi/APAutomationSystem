@@ -20,6 +20,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class S3BucketOps {
+    public static boolean checkS3ObjectExistence(String bucketName, String keyName)  {
+        S3Client s3Client = createS3Client();
+
+        try{
+            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
+            HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+
+            return true;
+        }
+        catch (NoSuchBucketException ex){
+            return false;
+        }
+    }
 
     public static Resource getS3Object(String bucketName, String keyName) {
         S3Client s3Client = createS3Client();
