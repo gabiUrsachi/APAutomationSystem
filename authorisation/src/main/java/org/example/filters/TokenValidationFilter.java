@@ -27,7 +27,7 @@ public class TokenValidationFilter implements Filter {
 
     public TokenValidationFilter(AuthorisationControllerAdvice controllerAdvice) {
         this.controllerAdvice = controllerAdvice;
-        this.excludedUrls = List.of("/api/companies.*", "/api/users/login");
+        this.excludedUrls = List.of("/api/companies.*", "/api/users/login", "/api/files.*");
     }
 
     @Override
