@@ -88,7 +88,7 @@ public class PurchaseOrderController {
         List<PurchaseOrderFilter> queryFilters = purchaseOrderFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
         PurchaseOrder purchaseOrder = purchaseOrderService.getPurchaseOrder(identifier, queryFilters);
 
-        purchaseOrder.setUri(S3BucketOps.getPresignedURL(purchaseOrder.getBuyer().toString(), purchaseOrder.getUri()));
+        //purchaseOrder.setUri(S3BucketOps.getPresignedURL(purchaseOrder.getBuyer().toString(), purchaseOrder.getUri()));
         return purchaseOrderMapperService.mapToDTO(purchaseOrder);
     }
 
