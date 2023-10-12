@@ -1,5 +1,8 @@
 package org.example;
 
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.waiters.WaiterResponse;
 import software.amazon.awssdk.regions.Region;
@@ -17,6 +20,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class S3BucketOps {
+
+    public static Resource getS3Object(String bucketName, String keyName) {
+        S3Client s3Client = createS3Client();
+
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(keyName)
+                .build();
+
+        ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
+        byte[] objectData = objectBytes.asByteArray();
+
+        return new ByteArrayResource(objectData);
+    }
 
     public static void createS3Bucket(String bucketName) {
         S3Client s3Client = createS3Client();
