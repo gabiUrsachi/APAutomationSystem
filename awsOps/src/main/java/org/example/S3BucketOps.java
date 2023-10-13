@@ -32,6 +32,10 @@ public class S3BucketOps {
         catch (NoSuchBucketException ex){
             return false;
         }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
     }
 
     public static Resource getS3Object(String bucketName, String keyName) {
