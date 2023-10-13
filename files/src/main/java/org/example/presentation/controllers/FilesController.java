@@ -26,6 +26,7 @@ public class FilesController {
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
         String fileBucket = jwtClaims.getCompanyUUID().toString();
 
-        return this.filesService.getFile(fileBucket, fileIdentifier);
+        Resource file = this.filesService.getFile(fileBucket, fileIdentifier);
+        return file;
     }
 }

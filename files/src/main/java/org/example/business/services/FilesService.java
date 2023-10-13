@@ -12,7 +12,7 @@ public class FilesService {
         boolean isObjectExistent = S3BucketOps.checkS3ObjectExistence(bucketName, objectName);
 
         if(!isObjectExistent){
-            System.out.println("Object doesn't exist");
+            System.out.println("Files service: Object doesn't exist");
             throw new ObjectNotFoundException(ErrorMessages.OBJECT_NOT_FOUND, objectName);
         }
 

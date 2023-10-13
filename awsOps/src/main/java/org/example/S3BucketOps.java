@@ -29,11 +29,8 @@ public class S3BucketOps {
 
             return true;
         }
-        catch (NoSuchBucketException ex){
-            return false;
-        }
-        catch (Exception ex){
-            System.out.println(ex.getMessage());
+        catch (S3Exception ex){
+            System.out.println("s3 bucket ops: "+ex.getMessage());
             return false;
         }
     }
