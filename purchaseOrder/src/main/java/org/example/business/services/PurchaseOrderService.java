@@ -110,6 +110,7 @@ public class PurchaseOrderService {
                 .items(purchaseOrder.getItems())
                 .orderStatus(purchaseOrder.getOrderStatus())
                 .version(oldVersion + 1)
+                .uri(purchaseOrder.getUri())
                 .build();
 
         int updateCount = purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(purchaseOrder.getIdentifier(), oldVersion, requiredOldStatus, updatedPurchaseOrder);
