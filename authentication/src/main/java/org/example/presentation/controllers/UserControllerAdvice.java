@@ -31,14 +31,14 @@ public class UserControllerAdvice {
         return new ResponseEntity<>(exceptionResponse, status);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponseDTO> handleGenericException(Exception ex) {
-        String details = "";
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        System.out.println(ex.getMessage());
-
-        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
-
-        return new ResponseEntity<>(exceptionResponse, status);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ExceptionResponseDTO> handleGenericException(Exception ex) {
+//        String details = "";
+//        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        System.out.println(ex.getMessage());
+//
+//        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
+//
+//        return new ResponseEntity<>(exceptionResponse, status);
+//    }
 }
