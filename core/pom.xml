@@ -25,17 +25,17 @@
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
+            <artifactId>file</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
             <artifactId>invoiceFeature</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>authentication</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>files</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
