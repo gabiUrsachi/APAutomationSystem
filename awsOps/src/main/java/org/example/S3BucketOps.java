@@ -20,6 +20,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class S3BucketOps {
+    public static boolean checkS3ObjectExistence(String bucketName, String keyName)  {
+        S3Client s3Client = createS3Client();
+
+        try{
+            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
+            HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+
+            return true;
+        }
+        catch (S3Exception ex){
+            System.out.println("s3 bucket ops: "+ex.getMessage());
+            return false;
+        }
+    }
 
     public static Resource getS3Object(String bucketName, String keyName) {
         S3Client s3Client = createS3Client();
@@ -52,7 +66,6 @@ public class S3BucketOps {
             // Wait until the bucket is created and print out the response.
             WaiterResponse<HeadBucketResponse> waiterResponse = s3Waiter.waitUntilBucketExists(bucketRequestWait);
             waiterResponse.matched().response().ifPresent(System.out::println);
-            System.out.println(bucketName + " is ready");
 
         } catch (S3Exception e) {
             System.err.println(e.awsErrorDetails().errorMessage());
