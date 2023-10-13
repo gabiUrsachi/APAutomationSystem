@@ -180,6 +180,16 @@ Resources:
     Properties:
       FifoQueue: true
       QueueName: "testQueue.fifo"
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt DLQueue.Arn
+        maxReceiveCount: 15
+
+
+  DLQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: "testDLQ.fifo"
+      FifoQueue: true
 
   LambdaFunctionEventSourceMapping:
     Type: AWS::Lambda::EventSourceMapping
