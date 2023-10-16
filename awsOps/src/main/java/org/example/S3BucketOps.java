@@ -93,6 +93,28 @@ public class S3BucketOps {
         }
     }
 
+
+    public static void copyS3Object(String sourceBucketName, String destBucketName, String sourceKeyName, String destKeyName ) throws IOException {
+        S3Client s3Client = createS3Client();
+
+        CopyObjectRequest copyReq = CopyObjectRequest.builder()
+                .sourceBucket(sourceBucketName)
+                .sourceKey(sourceKeyName)
+                .destinationBucket(destBucketName)
+                .destinationKey(destKeyName)
+                .build();
+
+        try {
+            CopyObjectResponse copyRes = s3Client.copyObject(copyReq);
+
+        } catch (S3Exception e) {
+            System.err.println(e.awsErrorDetails().errorMessage());
+            System.exit(1);
+        }
+
+    }
+
+
     public static String getPresignedURL(String bucketName, String keyName) {
         S3Presigner s3Presigner = S3Presigner.create();
 
