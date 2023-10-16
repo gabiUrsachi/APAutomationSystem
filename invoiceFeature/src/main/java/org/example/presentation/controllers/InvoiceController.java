@@ -97,6 +97,8 @@ public class InvoiceController {
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
 
+        responseInvoice.setUri("cantacuzino");
+
         return invoiceMapperService.mapToDTO(responseInvoice);
 
     }
