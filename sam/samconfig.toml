@@ -20,7 +20,7 @@ resolve_s3 = true
 stack_name = "BackendStack"
 s3_prefix = "BackendStack"
 region = "us-east-1"
-parameter_overrides = "SpringInstanceType=\"t2.micro\" MongoInstanceType=\"t2.micro\" SSHLocation=\"0.0.0.0/0\" HTTPLocation=\"0.0.0.0/0\" MongoLocation=\"0.0.0.0/0\" ThumbprintList=\"6938fd4d98bab03faadb97b34396831e3780aea1\" GithubRepoName=\"gabiUrsachi/APAutomationSystem\" AutoScalingGroupMinSize=\"1\" AutoScalingGroupMaxSize=\"3\" AutoScalingGroupDesiredCapacity=\"2\" KeyName=\"new-key\" MyVPC=\"vpc-09470b2f6a7c0f59c\" MySubnets=\"subnet-078c7f2154b1259b3,subnet-097a01752839b9313,subnet-0b1365e2f7a21642d,subnet-0cad69e80ee9b5c79,subnet-07b27529dc49f3b8e,subnet-0d037c1cb253f2bba\" MyAZs=\"us-east-1a,us-east-1f,us-east-1e\""
+parameter_overrides = "SpringInstanceType=\"t2.micro\" MongoInstanceType=\"t2.micro\" SSHLocation=\"0.0.0.0/0\" HTTPLocation=\"0.0.0.0/0\" MongoLocation=\"0.0.0.0/0\" ThumbprintList=\"6938fd4d98bab03faadb97b34396831e3780aea1\" GithubRepoName=\"gabiUrsachi/APAutomationSystem\" AutoScalingGroupMinSize=\"1\" AutoScalingGroupMaxSize=\"3\" AutoScalingGroupDesiredCapacity=\"2\" KeyName=\"new-key\" MyVPC=\"vpc-00bd80eedd85d12d6\" MySubnets=\"subnet-06dc92aa429b3d048,subnet-09b1b29a5d34a7920,subnet-03047e22bbb5f3a88,subnet-0f1b82886b61c3a90,subnet-0e0450112d5972b43,subnet-0ed426e7d7b0c6a79\" MyAZs=\"us-east-1a,us-east-1f,us-east-1e\""
 image_repositories = []
 disable_rollback = true
 

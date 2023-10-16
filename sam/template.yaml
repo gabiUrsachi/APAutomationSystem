@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-09470b2f6a7c0f59c"
+    Default: "vpc-00bd80eedd85d12d6"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-078c7f2154b1259b3,subnet-097a01752839b9313,subnet-0b1365e2f7a21642d,subnet-0cad69e80ee9b5c79,subnet-07b27529dc49f3b8e,subnet-0d037c1cb253f2bba"
+    Default: "subnet-06dc92aa429b3d048,subnet-09b1b29a5d34a7920,subnet-03047e22bbb5f3a88,subnet-0f1b82886b61c3a90,subnet-0e0450112d5972b43,subnet-0ed426e7d7b0c6a79"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -241,17 +241,17 @@ Resources:
       Port: 80
       Protocol: HTTP
 
-  #HTTPSAutoScalingListener:
-    #Type: 'AWS::ElasticLoadBalancingV2::Listener'
-    #Properties:
-      #Certificates:
-        #- CertificateArn: "arn:aws:acm:us-east-1:711134864427:certificate/c4183763-f208-4a7c-bb43-2e5efdd00603"
-      #DefaultActions:
-        #- TargetGroupArn: !Ref EC2TargetGroup
-          #Type: 'forward'
-      #LoadBalancerArn: !Ref LoadBalancer
-      #Port: 443
-      #Protocol: HTTPS
+  HTTPSAutoScalingListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      Certificates:
+        - CertificateArn: "arn:aws:acm:us-east-1:648765633154:certificate/1d1ed2cc-2b4d-4ef5-a133-b8bb4111e37f"
+      DefaultActions:
+        - TargetGroupArn: !Ref EC2TargetGroup
+          Type: 'forward'
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 443
+      Protocol: HTTPS
 
   WebappRole:
     Type: AWS::IAM::Role
