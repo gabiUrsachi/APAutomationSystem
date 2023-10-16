@@ -6,7 +6,8 @@ on: [push, pull_request]
 
 env:
   AWS_REGION: us-east-1
-  S3BUCKET: backendstack-webappdeploymentbucket-1b46ube06b1mn
+  S3BUCKET:  backendstack-webappdeploymentbucket-vjm5mtf048ja
+
 
 
 jobs:
@@ -22,7 +23,7 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.BACKEND_IAMROLE_GITHUB }}
+          role-to-assume: ${{ secrets.IL_MIO_ROLE_GITHUB }}
           role-session-name: GitHub-Action-Role
           aws-region: ${{ env.AWS_REGION }}
 
@@ -54,7 +55,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.BACKEND_IAMROLE_GITHUB }}
+          role-to-assume: ${{ secrets.IL_MIO_ROLE_GITHUB }}
           role-session-name: GitHub-Action-Role
           aws-region: ${{ env.AWS_REGION }}
       - run: |

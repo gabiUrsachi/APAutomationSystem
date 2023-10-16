@@ -63,7 +63,7 @@ public class InvoiceController {
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
 
 
-        S3BucketOps.putS3Object(invoiceDPO.getSellerId().toString(),responseInvoice.getUri(), multipartFile.getInputStream());
+        S3BucketOps.putS3Object(invoiceDPO.getSellerId().toString(), responseInvoice.getUri(), multipartFile.getInputStream());
         return invoiceMapperService.mapToDTO(responseInvoice);
 
     }
@@ -83,7 +83,7 @@ public class InvoiceController {
     }
 
     @PostMapping("/fromOR")
-    public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO, HttpServletRequest request) {
+    public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO, HttpServletRequest request) throws IOException {
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
         Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR);
@@ -95,8 +95,13 @@ public class InvoiceController {
         InvoiceDPO invoiceDPO = invoiceMapperService.mapToDPO(orderResponseDTO);
 
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
+        invoiceEntity.setUri(orderResponseDTO.getUri().split("\\.")[1]);
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
 
+
+        String sourceBucket = String.valueOf(orderResponseDTO.getBuyer().getCompanyIdentifier());
+        String destBucket = String.valueOf(responseInvoice.getSellerId());
+        S3BucketOps.copyS3Object(sourceBucket,destBucket,orderResponseDTO.getUri(),responseInvoice.getUri());
         return invoiceMapperService.mapToDTO(responseInvoice);
 
     }
