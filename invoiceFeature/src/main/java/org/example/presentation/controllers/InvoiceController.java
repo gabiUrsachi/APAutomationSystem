@@ -63,7 +63,7 @@ public class InvoiceController {
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
 
 
-        S3BucketOps.putS3Object(invoiceDPO.getSellerId().toString(),responseInvoice.getUri(), multipartFile.getInputStream());
+        S3BucketOps.putS3Object(invoiceDPO.getSellerId().toString(), responseInvoice.getUri(), multipartFile.getInputStream());
         return invoiceMapperService.mapToDTO(responseInvoice);
 
     }
@@ -95,9 +95,8 @@ public class InvoiceController {
         InvoiceDPO invoiceDPO = invoiceMapperService.mapToDPO(orderResponseDTO);
 
         Invoice invoiceEntity = invoiceMapperService.mapToEntity(invoiceDPO);
+        invoiceEntity.setUri(orderResponseDTO.getUri());
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
-
-        responseInvoice.setUri("cantacuzino");
 
         return invoiceMapperService.mapToDTO(responseInvoice);
 
