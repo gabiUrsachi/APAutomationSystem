@@ -1,9 +1,10 @@
 package org.example.business.services;
 
 
+import org.example.SQSOps;
 import org.example.business.utils.PurchaseOrderStatusPrecedence;
 import org.example.customexceptions.InvalidUpdateException;
-import org.example.customexceptions.OrderNotFoundException;
+import org.example.customexceptions.ResourceNotFound;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.data.OrderStatus;
@@ -12,10 +13,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 import java.util.*;
@@ -51,7 +51,7 @@ public class PurchaseOrderServiceShould {
 
         given(purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(uuid, purchaseOrder.getVersion(), requiredOrderStatus, purchaseOrder)).willReturn(0);
 
-        assertThrows(OrderNotFoundException.class, () -> purchaseOrderService.updatePurchaseOrder(purchaseOrder));
+        assertThrows(ResourceNotFound.class, () -> purchaseOrderService.updatePurchaseOrder(purchaseOrder));
         verify(purchaseOrderRepository).updateByIdentifierAndVersionAndStatus(uuid, purchaseOrder.getVersion(), requiredOrderStatus, purchaseOrder);
     }
 
@@ -103,13 +103,18 @@ public class PurchaseOrderServiceShould {
 
         PurchaseOrder updatedPurchaseOrder = createPurchaseOrderWithStatusAndUUID(updatedOrderStatus, uuid);
 
-        given(purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder)).willReturn(1);
+        try(MockedStatic<SQSOps> sqsOpsMockedStatic = Mockito.mockStatic(SQSOps.class)){
+            given(purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder)).willReturn(1);
+            sqsOpsMockedStatic.when(()->SQSOps.sendMessage(any())).thenAnswer((Answer<Void>) invocation -> null);
 
-        PurchaseOrder savedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(updatedPurchaseOrder);
+            PurchaseOrder savedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(updatedPurchaseOrder);
 
-        verify(purchaseOrderRepository).updateByIdentifierAndVersionAndStatus(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder);
-        Assertions.assertEquals(uuid, savedPurchaseOrder.getIdentifier());
-        Assertions.assertEquals(updatedPurchaseOrder.getOrderStatus(), savedPurchaseOrder.getOrderStatus());
+            verify(purchaseOrderRepository).updateByIdentifierAndVersionAndStatus(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder);
+            sqsOpsMockedStatic.verify(() -> SQSOps.sendMessage(any()));
+
+            Assertions.assertEquals(uuid, savedPurchaseOrder.getIdentifier());
+            Assertions.assertEquals(updatedPurchaseOrder.getOrderStatus(), savedPurchaseOrder.getOrderStatus());
+        }
     }
 
     @Test
@@ -164,7 +169,7 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.empty());
 
-        assertThrows(OrderNotFoundException.class, () -> purchaseOrderService.getPurchaseOrder(uuid));
+        assertThrows(ResourceNotFound.class, () -> purchaseOrderService.getPurchaseOrder(uuid));
         verify(purchaseOrderRepository).findById(uuid);
     }
 
@@ -173,7 +178,7 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
         given(purchaseOrderRepository.customDeleteById(uuid)).willReturn(0);
 
-        assertThrows(OrderNotFoundException.class, () -> purchaseOrderService.deletePurchaseOrder(uuid));
+        assertThrows(ResourceNotFound.class, () -> purchaseOrderService.deletePurchaseOrder(uuid));
         verify(purchaseOrderRepository).customDeleteById(uuid);
     }
 
