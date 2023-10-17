@@ -8,6 +8,8 @@ import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 import java.util.UUID;
 
+/// TODO
+/// unit tests for AWS ops
 public class SQSOps {
     private final static String QUEUE_NAME = "testQueue.fifo";
     private final static String MESSAGE_GROUP_ID = "custom_msg_group_id";

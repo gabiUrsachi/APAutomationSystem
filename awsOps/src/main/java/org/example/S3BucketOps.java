@@ -43,6 +43,8 @@ public class S3BucketOps {
                 .key(keyName)
                 .build();
 
+        /// TODO
+        /// handler eroare legata de inexistenta bucket-ului
         ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
         byte[] objectData = objectBytes.asByteArray();
 
@@ -68,6 +70,7 @@ public class S3BucketOps {
             waiterResponse.matched().response().ifPresent(System.out::println);
 
         } catch (S3Exception e) {
+            /// TODO loggers
             System.err.println(e.awsErrorDetails().errorMessage());
         }
     }
@@ -77,18 +80,22 @@ public class S3BucketOps {
 
         try {
             Map<String, String> metadata = new HashMap<>();
-            metadata.put("x-amz-meta-myVal", "test");
+            //metadata.put("x-amz-meta-myVal", "test");
             PutObjectRequest putOb = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(keyName)
-                    .metadata(metadata)
+                    //.metadata(metadata)
                     .build();
 
             RequestBody requestBody = RequestBody.fromInputStream(inputStream, inputStream.available());
+            /// TODO
+            /// preluare raspuns
             s3Client.putObject(putOb, requestBody);
             System.out.println("Successfully placed " + keyName + " into bucket " + bucketName);
 
         } catch (S3Exception e) {
+            /// TODO
+            /// logger
             System.err.println(e.getMessage());
         }
     }

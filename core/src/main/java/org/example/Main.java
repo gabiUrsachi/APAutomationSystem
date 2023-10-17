@@ -18,6 +18,7 @@ public class Main {
     }
 
 
+    /// TODO controller advice global
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
