@@ -1,7 +1,6 @@
 package org.example.business.services;
 
-import org.example.customexceptions.ForbiddenUpdateException;
-import org.example.customexceptions.IdentifiersMismatchException;
+import org.example.customexceptions.ForbiddenActionException;
 import org.example.persistence.utils.data.OrderStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +17,11 @@ public class PurchaseOrderValidatorService {
      *
      * @param userCompanyUUID    the UUID of the company associated with a user
      * @param requestCompanyUUID the UUID of the company in the request
-     * @throws IdentifiersMismatchException if the user's company UUID does not match the request company UUID
+     * @throws ForbiddenActionException if the user's company UUID does not match the request company UUID
      */
     public void verifyIdentifiersMatch(UUID userCompanyUUID, UUID requestCompanyUUID) {
         if (!userCompanyUUID.equals(requestCompanyUUID)) {
-            throw new IdentifiersMismatchException();
+            throw new ForbiddenActionException();
         }
     }
 
@@ -33,7 +32,7 @@ public class PurchaseOrderValidatorService {
      * @param userCompanyUUID   the UUID of the company associated with the user
      * @param buyerCompanyUUID  the UUID of the buyer company
      * @param sellerCompanyUUID the UUID of the seller company
-     * @throws ForbiddenUpdateException if the user does not have permission to update the order
+     * @throws ForbiddenActionException if the user does not have permission to update the order
      */
     public void verifyUpdatePermission(OrderStatus orderStatus, UUID userCompanyUUID, UUID buyerCompanyUUID, UUID sellerCompanyUUID) {
         boolean buyerCondition = (orderStatus == OrderStatus.CREATED || orderStatus == OrderStatus.SAVED)
@@ -45,7 +44,7 @@ public class PurchaseOrderValidatorService {
                 userCompanyUUID.equals(sellerCompanyUUID);
 
         if (!(buyerCondition || sellerCondition)) {
-            throw new ForbiddenUpdateException();
+            throw new ForbiddenActionException();
         }
     }
 

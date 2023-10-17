@@ -2,13 +2,13 @@ package org.example.services;
 
 import org.example.SQSOps;
 import org.example.business.utils.InvoiceStatusPrecedence;
-import org.example.persistence.utils.data.InvoiceFilter;
-import org.example.utils.ErrorMessages;
-import org.example.customexceptions.InvalidUpdateException;
-import org.example.customexceptions.InvoiceNotFoundException;
+import org.example.customexceptions.InvalidResourceUpdateException;
+import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
 import org.example.persistence.utils.InvoiceStatus;
+import org.example.persistence.utils.data.InvoiceFilter;
+import org.example.utils.ErrorMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -50,7 +50,7 @@ public class InvoiceService {
 
         Invoice invoice = invoiceRepository.findByUUIDAndFilters(identifier, filters);
         if (invoice == null) {
-            throw new InvoiceNotFoundException("Couldn't find invoice with identifier " + identifier);
+            throw new ResourceNotFoundException(ErrorMessages.INVOICE_NOT_FOUND, identifier.toString());
         }
         return invoice;
     }
@@ -59,7 +59,7 @@ public class InvoiceService {
         int deletedRowsCount = invoiceRepository.deleteByIdentifier(identifier);
 
         if (deletedRowsCount == 0) {
-            throw new InvoiceNotFoundException("Couldn't find invoice with identifier" + identifier);
+            throw new ResourceNotFoundException(ErrorMessages.INVOICE_NOT_FOUND, identifier.toString());
         }
     }
 
@@ -83,12 +83,12 @@ public class InvoiceService {
 
         if (oldInvoice.isPresent()) {
             if ( oldInvoice.get().getInvoiceStatus() != requiredInvoiceStatus) {
-                throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, oldInvoice.get().getIdentifier());
+                throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, oldInvoice.get().getIdentifier());
 
             }
         }
         if (!isInEnum(String.valueOf(invoice.getInvoiceStatus()))) {
-            throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, invoice.getIdentifier());
+            throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, invoice.getIdentifier());
         }
 
         int updateCount = invoiceRepository.updateByIdentifierAndVersion(identifier, currentVersion, updatedInvoice);
@@ -97,7 +97,7 @@ public class InvoiceService {
             Optional<Invoice> existingInvoice = invoiceRepository.findByIdentifier(identifier);
 
             if (existingInvoice.isEmpty()) {
-                throw new InvoiceNotFoundException("Couldn't find invoice with identifier " + invoice.getIdentifier());
+                throw new ResourceNotFoundException(ErrorMessages.INVOICE_NOT_FOUND, invoice.getIdentifier().toString());
             }
 
             if (!Objects.equals(existingInvoice.get().getVersion(), invoice.getVersion())) {
@@ -105,7 +105,7 @@ public class InvoiceService {
             }
 
             if (!existingInvoice.get().getInvoiceStatus().equals(InvoiceStatus.CREATED)) {
-                throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, existingInvoice.get().getIdentifier());
+                throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingInvoice.get().getIdentifier());
             }
 
         }

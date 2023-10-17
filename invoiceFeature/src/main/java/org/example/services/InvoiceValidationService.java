@@ -1,9 +1,7 @@
 package org.example.services;
 
-import org.example.customexceptions.ForbiddenUpdateException;
-import org.example.customexceptions.IdentifiersMismatchException;
+import org.example.customexceptions.ForbiddenActionException;
 import org.example.persistence.utils.InvoiceStatus;
-import org.example.persistence.utils.data.OrderStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -19,11 +17,11 @@ public class InvoiceValidationService {
      *
      * @param userCompanyUUID    the UUID of the company associated with a user
      * @param requestCompanyUUID the UUID of the company in the request
-     * @throws IdentifiersMismatchException if the user's company UUID does not match the request company UUID
+     * @throws ForbiddenActionException if the user's company UUID does not match the request company UUID
      */
     public void verifyIdentifiersMatch(UUID userCompanyUUID, UUID requestCompanyUUID) {
         if (!userCompanyUUID.equals(requestCompanyUUID)) {
-            throw new IdentifiersMismatchException();
+            throw new ForbiddenActionException();
         }
     }
 
@@ -38,7 +36,7 @@ public class InvoiceValidationService {
                 userCompanyUUID.equals(sellerCompanyUUID);
 
         if (!(buyerCondition || sellerCondition)) {
-            throw new ForbiddenUpdateException();
+            throw new ForbiddenActionException();
         }
     }
 

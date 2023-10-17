@@ -2,12 +2,9 @@ package org.example.filters;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.example.AuthorisationControllerAdvice;
-import org.example.customexceptions.InvalidTokenException;
-import org.example.utils.ExceptionResponseDTO;
 import org.example.utils.TokenHandler;
 import org.example.utils.data.Roles;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +18,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class TokenValidationFilter implements Filter {
-
-    private final AuthorisationControllerAdvice controllerAdvice;
     private final List<String> excludedUrls;
 
-    public TokenValidationFilter(AuthorisationControllerAdvice controllerAdvice) {
-        this.controllerAdvice = controllerAdvice;
+    public TokenValidationFilter() {
         this.excludedUrls = List.of("/api/companies.*", "/api/users/login");
     }
 
@@ -61,10 +55,8 @@ public class TokenValidationFilter implements Filter {
                     decodedJWT.getClaim("company").asString().equals("null") ? null : UUID.fromString(decodedJWT.getClaim("company").asString()));
             servletRequest.setAttribute("roles", decodedJWT.getClaim("roles").asList(Roles.class));
 
-        } catch (InvalidTokenException | JWTVerificationException e) {
-            ResponseEntity<ExceptionResponseDTO> exceptionResponse = this.controllerAdvice.handleInvalidTokenException(e);
-
-            ((HttpServletResponse) servletResponse).sendError(exceptionResponse.getStatusCodeValue());
+        } catch (JWTVerificationException e) {
+            ((HttpServletResponse) servletResponse).sendError(HttpStatus.UNAUTHORIZED.value());
             return;
 
         }

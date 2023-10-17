@@ -1,5 +1,6 @@
-package org.example.business.services;
+package org.example.unit.purchaseOrder.business.services;
 
+import org.example.business.services.PurchaseOrderFilteringService;
 import org.example.persistence.utils.CompanyRole;
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;

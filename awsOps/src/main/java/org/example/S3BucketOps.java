@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class S3BucketOps {
+    /// TODO pot sa renunt la metoda asta daca oricum am nevoie de intreaga resursa dupa aceea
     public static boolean checkS3ObjectExistence(String bucketName, String keyName)  {
         S3Client s3Client = createS3Client();
 
@@ -43,8 +44,7 @@ public class S3BucketOps {
                 .key(keyName)
                 .build();
 
-        /// TODO
-        /// handler eroare legata de inexistenta bucket-ului
+        /// TODO handler eroare legata de inexistenta bucket-ului: daca nu exista obiectul -> 404, daca nu exista bucket-ul -> server error
         ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
         byte[] objectData = objectBytes.asByteArray();
 
@@ -79,6 +79,7 @@ public class S3BucketOps {
         S3Client s3Client = createS3Client();
 
         try {
+            /// TODO utilizare metadata doar daca e neaparat nevoie
             Map<String, String> metadata = new HashMap<>();
             //metadata.put("x-amz-meta-myVal", "test");
             PutObjectRequest putOb = PutObjectRequest.builder()
@@ -88,14 +89,12 @@ public class S3BucketOps {
                     .build();
 
             RequestBody requestBody = RequestBody.fromInputStream(inputStream, inputStream.available());
-            /// TODO
-            /// preluare raspuns
+            /// TODO preluare raspuns
             s3Client.putObject(putOb, requestBody);
             System.out.println("Successfully placed " + keyName + " into bucket " + bucketName);
 
         } catch (S3Exception e) {
-            /// TODO
-            /// logger
+            /// TODO logger
             System.err.println(e.getMessage());
         }
     }

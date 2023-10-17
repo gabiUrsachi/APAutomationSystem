@@ -2,7 +2,7 @@ package org.example.business.services;
 
 
 import org.example.business.utils.Password;
-import org.example.customexceptions.AlreadyExistingUserException;
+import org.example.customexceptions.AlreadyExistingResourceException;
 import org.example.customexceptions.InvalidCredentialsException;
 import org.example.persistence.collections.User;
 import org.example.persistence.repository.UserRepository;
@@ -42,7 +42,7 @@ public class UserServiceShould {
 
         given(userRepository.findByUsername(existingUsername)).willReturn(Optional.of(User.builder().build()));
 
-        assertThrows(AlreadyExistingUserException.class, () -> userService.registerUser(newUser));
+        assertThrows(AlreadyExistingResourceException.class, () -> userService.registerUser(newUser));
 
         verify(userRepository).findByUsername(existingUsername);
     }

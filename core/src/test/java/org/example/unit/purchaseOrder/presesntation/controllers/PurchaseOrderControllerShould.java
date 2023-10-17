@@ -1,13 +1,11 @@
-package org.example.presentation.controllers.unit;
+package org.example.unit.purchaseOrder.presesntation.controllers;
 
 
 import org.example.business.services.PurchaseOrderFilteringService;
 import org.example.business.services.PurchaseOrderService;
 import org.example.business.services.PurchaseOrderValidatorService;
-import org.example.customexceptions.ForbiddenUpdateException;
-import org.example.customexceptions.InvalidRoleException;
-import org.example.customexceptions.OrderNotFoundException;
-import org.example.persistence.collections.PurchaseOrder;
+import org.example.customexceptions.ForbiddenActionException;
+import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.presentation.controllers.PurchaseOrderController;
 import org.example.presentation.utils.PurchaseOrderMapperService;
@@ -30,7 +28,7 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PurchaseOrderControllerShould {
@@ -57,9 +55,9 @@ public class PurchaseOrderControllerShould {
 
         given(request.getAttribute("roles")).willReturn(List.of(Roles.BUYER_CUSTOMER));
         given(request.getAttribute("company")).willReturn(UUID.randomUUID());
-        given(purchaseOrderService.getPurchaseOrder(eq(searchedUUID), any())).willAnswer((answer) -> { throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, searchedUUID); });
+        given(purchaseOrderService.getPurchaseOrder(eq(searchedUUID), any())).willAnswer((answer) -> { throw new ResourceNotFoundException(ErrorMessages.ORDER_NOT_FOUND, searchedUUID.toString()); });
 
-        assertThrows(OrderNotFoundException.class, () -> purchaseOrderController.getPurchaseOrder(searchedUUID, request));
+        assertThrows(ResourceNotFoundException.class, () -> purchaseOrderController.getPurchaseOrder(searchedUUID, request));
 
         verify(request).getAttribute("roles");
         verify(request).getAttribute("company");
@@ -73,9 +71,9 @@ public class PurchaseOrderControllerShould {
 
         given(request.getAttribute("roles")).willReturn(List.copyOf(userRoles));
         given(request.getAttribute("company")).willReturn(UUID.randomUUID());
-        given(authorisationService.authorize(eq(userRoles), any())).willAnswer((answer) -> { throw new InvalidRoleException(); });
+        given(authorisationService.authorize(eq(userRoles), any())).willAnswer((answer) -> { throw new ForbiddenActionException(); });
 
-        assertThrows(InvalidRoleException.class, () -> purchaseOrderController.getPurchaseOrder(searchedUUID, request));
+        assertThrows(ForbiddenActionException.class, () -> purchaseOrderController.getPurchaseOrder(searchedUUID, request));
 
         verify(request).getAttribute("roles");
         verify(request).getAttribute("company");
@@ -92,7 +90,7 @@ public class PurchaseOrderControllerShould {
         given(request.getAttribute("company")).willReturn(userCompanyUUID);
         given(authorisationService.authorize(eq(userRoles), any())).willAnswer((answer) -> answer.getArgument(0));
 
-        assertThrows(ForbiddenUpdateException.class, () -> purchaseOrderController.updatePurchaseOrder(UUID.randomUUID(), orderRequestDTO, request));
+        assertThrows(ForbiddenActionException.class, () -> purchaseOrderController.updatePurchaseOrder(UUID.randomUUID(), orderRequestDTO, request));
 
         verify(request).getAttribute("roles");
         verify(request).getAttribute("company");

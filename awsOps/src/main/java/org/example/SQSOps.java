@@ -8,8 +8,7 @@ import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 import java.util.UUID;
 
-/// TODO
-/// unit tests for AWS ops
+/// TODO unit tests for AWS ops (in S3Ops si in SQSOps)
 public class SQSOps {
     private final static String QUEUE_NAME = "testQueue.fifo";
     private final static String MESSAGE_GROUP_ID = "custom_msg_group_id";
@@ -39,8 +38,7 @@ public class SQSOps {
         sqsClient.sendMessage(messageRequest);
     }
 
-    ///TODO
-    /// maybe Singleton pattern for sqs client creation
+    ///TODO maybe Singleton pattern for sqs client creation (also for s3 client creation)
     private static SqsClient createSQSClient() {
         Region region = Region.US_EAST_1;
 

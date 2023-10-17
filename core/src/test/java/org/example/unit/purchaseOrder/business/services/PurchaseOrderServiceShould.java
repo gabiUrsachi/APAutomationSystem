@@ -1,10 +1,11 @@
-package org.example.business.services;
+package org.example.unit.purchaseOrder.business.services;
 
 
 import org.example.SQSOps;
+import org.example.business.services.PurchaseOrderService;
 import org.example.business.utils.PurchaseOrderStatusPrecedence;
-import org.example.customexceptions.InvalidUpdateException;
-import org.example.customexceptions.ResourceNotFound;
+import org.example.customexceptions.InvalidResourceUpdateException;
+import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.data.OrderStatus;
@@ -51,7 +52,7 @@ public class PurchaseOrderServiceShould {
 
         given(purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(uuid, purchaseOrder.getVersion(), requiredOrderStatus, purchaseOrder)).willReturn(0);
 
-        assertThrows(ResourceNotFound.class, () -> purchaseOrderService.updatePurchaseOrder(purchaseOrder));
+        assertThrows(ResourceNotFoundException.class, () -> purchaseOrderService.updatePurchaseOrder(purchaseOrder));
         verify(purchaseOrderRepository).updateByIdentifierAndVersionAndStatus(uuid, purchaseOrder.getVersion(), requiredOrderStatus, purchaseOrder);
     }
 
@@ -69,7 +70,7 @@ public class PurchaseOrderServiceShould {
         given(purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder)).willReturn(0);
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.of(existingPurchaseOrder));
 
-        assertThrows(InvalidUpdateException.class, () -> purchaseOrderService.updatePurchaseOrder(updatedPurchaseOrder));
+        assertThrows(InvalidResourceUpdateException.class, () -> purchaseOrderService.updatePurchaseOrder(updatedPurchaseOrder));
         verify(purchaseOrderRepository).updateByIdentifierAndVersionAndStatus(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder);
         verify(purchaseOrderRepository).findById(uuid);
     }
@@ -169,7 +170,7 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.empty());
 
-        assertThrows(ResourceNotFound.class, () -> purchaseOrderService.getPurchaseOrder(uuid));
+        assertThrows(ResourceNotFoundException.class, () -> purchaseOrderService.getPurchaseOrder(uuid));
         verify(purchaseOrderRepository).findById(uuid);
     }
 
@@ -178,7 +179,7 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
         given(purchaseOrderRepository.customDeleteById(uuid)).willReturn(0);
 
-        assertThrows(ResourceNotFound.class, () -> purchaseOrderService.deletePurchaseOrder(uuid));
+        assertThrows(ResourceNotFoundException.class, () -> purchaseOrderService.deletePurchaseOrder(uuid));
         verify(purchaseOrderRepository).customDeleteById(uuid);
     }
 
