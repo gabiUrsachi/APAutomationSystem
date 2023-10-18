@@ -11,11 +11,12 @@ public class FileService {
     public Resource getFile(String bucketName, String objectName){
         boolean isObjectExistent = S3BucketOps.checkS3ObjectExistence(bucketName, objectName);
 
-        if(!isObjectExistent){
+        if(isObjectExistent){
+            return S3BucketOps.getS3Object(bucketName, objectName);
+        }
+        else{
             throw new ResourceNotFoundException(ErrorMessages.S3_OBJECT_NOT_FOUND, objectName);
         }
-
-        return S3BucketOps.getS3Object(bucketName, objectName);
     }
 
 }

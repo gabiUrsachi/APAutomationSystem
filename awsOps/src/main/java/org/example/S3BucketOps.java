@@ -23,11 +23,11 @@ public class S3BucketOps {
 
         try{
             HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
-            HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+            s3Client.headObject(headObjectRequest);
 
             return true;
         }
-        catch (S3Exception ex){
+        catch (NoSuchKeyException ex){
             System.out.println("s3 bucket ops: "+ex.getMessage());
             return false;
         }
