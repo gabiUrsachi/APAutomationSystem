@@ -1,11 +1,11 @@
 package org.example;
 
+import org.example.awsClients.AWSS3Client;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.waiters.WaiterResponse;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
@@ -35,7 +35,7 @@ public class S3BucketOps {
 //    }
 
     public static Resource getS3Object(String bucketName, String keyName) {
-        S3Client s3Client = createS3Client();
+        S3Client s3Client = AWSS3Client.getInstance();
 
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
@@ -50,7 +50,7 @@ public class S3BucketOps {
     }
 
     public static void createS3Bucket(String bucketName) {
-        S3Client s3Client = createS3Client();
+        S3Client s3Client = AWSS3Client.getInstance();
 
         try {
             S3Waiter s3Waiter = s3Client.waiter();
@@ -74,7 +74,7 @@ public class S3BucketOps {
     }
 
     public static void putS3Object(String bucketName, String keyName, InputStream inputStream) throws IOException {
-        S3Client s3Client = createS3Client();
+        S3Client s3Client = AWSS3Client.getInstance();
 
         try {
             PutObjectRequest putOb = PutObjectRequest.builder()
@@ -95,7 +95,7 @@ public class S3BucketOps {
 
 
     public static void copyS3Object(String sourceBucketName, String destBucketName, String sourceKeyName, String destKeyName ) throws IOException {
-        S3Client s3Client = createS3Client();
+        S3Client s3Client = AWSS3Client.getInstance();
 
         CopyObjectRequest copyReq = CopyObjectRequest.builder()
                 .sourceBucket(sourceBucketName)
@@ -135,11 +135,11 @@ public class S3BucketOps {
         return presignedGetObjectRequest.url().toString();
     }
 
-    private static S3Client createS3Client() {
-        Region region = Region.US_EAST_1;
-
-        return S3Client.builder()
-                .region(region)
-                .build();
-    }
+//    private static S3Client createS3Client() {
+//        Region region = Region.US_EAST_1;
+//
+//        return S3Client.builder()
+//                .region(region)
+//                .build();
+//    }
 }

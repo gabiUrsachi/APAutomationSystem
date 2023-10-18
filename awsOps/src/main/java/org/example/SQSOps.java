@@ -1,6 +1,6 @@
 package org.example;
 
-import software.amazon.awssdk.regions.Region;
+import org.example.awsClients.AWSSQSClient;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
@@ -15,14 +15,14 @@ public class SQSOps {
 
     public static void getQueueUrl() {
 
-        SqsClient sqsClient = createSQSClient();
+        SqsClient sqsClient = AWSSQSClient.getInstance();
         String queueUrl = sqsClient.listQueues().queueUrls().get(0);
 
         System.out.println("Queue url: " + queueUrl);
     }
 
     public static void sendMessage(String message) {
-        SqsClient sqsClient = createSQSClient();
+        SqsClient sqsClient = AWSSQSClient.getInstance();
 
         GetQueueUrlResponse getQueueUrlResponse = sqsClient.getQueueUrl(GetQueueUrlRequest.builder().queueName(QUEUE_NAME).build());
         String queueUrl = getQueueUrlResponse.queueUrl();
@@ -39,11 +39,11 @@ public class SQSOps {
     }
 
     ///TODO maybe Singleton pattern for sqs client creation (also for s3 client creation)
-    private static SqsClient createSQSClient() {
-        Region region = Region.US_EAST_1;
-
-        return SqsClient.builder()
-                .region(region)
-                .build();
-    }
+//    private static SqsClient createSQSClient() {
+//        Region region = Region.US_EAST_1;
+//
+//        return SqsClient.builder()
+//                .region(region)
+//                .build();
+//    }
 }
