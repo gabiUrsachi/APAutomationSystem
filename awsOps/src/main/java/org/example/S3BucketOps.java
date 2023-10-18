@@ -18,11 +18,18 @@ import java.io.InputStream;
 import java.time.Duration;
 
 public class S3BucketOps {
-    public static void checkS3ObjectExistence(String bucketName, String keyName) {
-        S3Client s3Client = AWSS3Client.getInstance();
+    public static boolean s3ObjectExists(String bucketName, String keyName) {
+        try{
+            S3Client s3Client = AWSS3Client.getInstance();
 
-        HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
-        s3Client.headObject(headObjectRequest);
+            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
+            s3Client.headObject(headObjectRequest);
+            return true;
+        }
+        catch (S3Exception ex){
+            return false;
+        }
+
     }
 
     public static Resource getS3Object(String bucketName, String keyName) {
@@ -43,8 +50,13 @@ public class S3BucketOps {
             throw exception;
         } catch (RuntimeException ex) {
             System.out.println("Global check: "+ex.getClass()+" -> "+ex.getMessage());
-            checkS3ObjectExistence(bucketName, keyName);
-            throw ex;
+
+            boolean objectExists = s3ObjectExists(bucketName, keyName);
+            if(!objectExists){
+                throw NoSuchKeyException.builder().build();
+            }else{
+                throw ex;
+            }
         }
     }
 
