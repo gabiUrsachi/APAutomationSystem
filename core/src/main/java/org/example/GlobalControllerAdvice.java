@@ -8,11 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleResourceNotFoundException(ResourceNotFoundException ex) {
+    @ExceptionHandler({ResourceNotFoundException.class, NoSuchKeyException.class})
+    public ResponseEntity<ExceptionResponseDTO> handleResourceNotFoundException(RuntimeException ex) {
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.NOT_FOUND;
 
@@ -41,7 +43,7 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<>(exceptionResponse, status);
     }
 
-    @ExceptionHandler({InvalidFormatException.class, IllegalArgumentException.class})
+    @ExceptionHandler({InvalidFormatException.class, IllegalArgumentException.class, MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ExceptionResponseDTO> handleFormatExceptions(Exception ex) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
@@ -84,6 +86,7 @@ public class GlobalControllerAdvice {
     public ResponseEntity<ExceptionResponseDTO> handleGenericException(Exception ex) {
         String details = "";
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        System.out.println("Server error: "+ex.getMessage());
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
 

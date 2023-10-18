@@ -43,18 +43,10 @@ public class S3BucketOps {
                 .build();
 
         /// TODO handler eroare legata de inexistenta bucket-ului: daca nu exista obiectul -> 404, daca nu exista bucket-ul -> server error
-        try{
-            ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
-            byte[] objectData = objectBytes.asByteArray();
+        ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
+        byte[] objectData = objectBytes.asByteArray();
 
-            return new ByteArrayResource(objectData);
-        }
-        catch (S3Exception exception){
-            System.out.println("Exception message: "+exception.getMessage());
-            System.out.println("Exception class: "+exception.getClass().toString());
-            return null;
-        }
-
+        return new ByteArrayResource(objectData);
     }
 
     public static void createS3Bucket(String bucketName) {

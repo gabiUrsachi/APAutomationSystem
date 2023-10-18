@@ -1,8 +1,6 @@
 package org.example.business.services;
 
 import org.example.S3BucketOps;
-import org.example.customexceptions.ResourceNotFoundException;
-import org.example.utils.ErrorMessages;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +13,7 @@ public class FileService {
 //            throw new ResourceNotFoundException(ErrorMessages.S3_OBJECT_NOT_FOUND, objectName);
 //        }
 
-        Resource s3Object = S3BucketOps.getS3Object(bucketName, objectName);
-        if(s3Object == null){
-            throw new ResourceNotFoundException(ErrorMessages.S3_OBJECT_NOT_FOUND, objectName);
-        }
-        return s3Object;
+        return S3BucketOps.getS3Object(bucketName, objectName);
     }
 
 }
