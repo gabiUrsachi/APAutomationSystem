@@ -38,12 +38,4 @@ public class SQSOps {
         sqsClient.sendMessage(messageRequest);
     }
 
-    ///TODO maybe Singleton pattern for sqs client creation (also for s3 client creation)
-//    private static SqsClient createSQSClient() {
-//        Region region = Region.US_EAST_1;
-//
-//        return SqsClient.builder()
-//                .region(region)
-//                .build();
-//    }
 }

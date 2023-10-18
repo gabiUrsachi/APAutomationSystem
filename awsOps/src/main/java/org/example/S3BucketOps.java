@@ -18,21 +18,20 @@ import java.io.InputStream;
 import java.time.Duration;
 
 public class S3BucketOps {
-    /// TODO pot sa renunt la metoda asta daca oricum am nevoie de intreaga resursa dupa aceea
-//    public static boolean checkS3ObjectExistence(String bucketName, String keyName)  {
-//        S3Client s3Client = createS3Client();
-//
-//        try{
-//            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
-//            HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
-//
-//            return true;
-//        }
-//        catch (S3Exception ex){
-//            System.out.println("s3 bucket ops: "+ex.getMessage());
-//            return false;
-//        }
-//    }
+    public static boolean checkS3ObjectExistence(String bucketName, String keyName)  {
+        S3Client s3Client = AWSS3Client.getInstance();
+
+        try{
+            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
+            HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+
+            return true;
+        }
+        catch (S3Exception ex){
+            System.out.println("s3 bucket ops: "+ex.getMessage());
+            return false;
+        }
+    }
 
     public static Resource getS3Object(String bucketName, String keyName) {
         S3Client s3Client = AWSS3Client.getInstance();
@@ -135,11 +134,4 @@ public class S3BucketOps {
         return presignedGetObjectRequest.url().toString();
     }
 
-//    private static S3Client createS3Client() {
-//        Region region = Region.US_EAST_1;
-//
-//        return S3Client.builder()
-//                .region(region)
-//                .build();
-//    }
 }

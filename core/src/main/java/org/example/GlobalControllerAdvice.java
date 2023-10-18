@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import software.amazon.awssdk.services.s3.model.NoSuchBucketException;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 @ControllerAdvice
@@ -82,11 +83,20 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<>(exceptionResponse, status);
     }
 
+    @ExceptionHandler(NoSuchBucketException.class)
+    public ResponseEntity<ExceptionResponseDTO> handleAWSException(NoSuchBucketException ex) {
+        String details = ex.getMessage();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
+
+        return new ResponseEntity<>(exceptionResponse, status);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponseDTO> handleGenericException(Exception ex) {
         String details = "";
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        System.out.println("Server error: "+ex.getMessage());
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
 
