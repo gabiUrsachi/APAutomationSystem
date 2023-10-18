@@ -18,19 +18,12 @@ import java.io.InputStream;
 import java.time.Duration;
 
 public class S3BucketOps {
-    public static boolean checkS3ObjectExistence(String bucketName, String keyName)  {
+    public static void checkS3ObjectExistence(String bucketName, String keyName) throws NoSuchKeyException {
         S3Client s3Client = AWSS3Client.getInstance();
 
-        try{
-            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
-            s3Client.headObject(headObjectRequest);
+        HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
+        s3Client.headObject(headObjectRequest);
 
-            return true;
-        }
-        catch (NoSuchKeyException ex){
-            System.out.println("s3 bucket ops: "+ex.getMessage());
-            return false;
-        }
     }
 
     public static Resource getS3Object(String bucketName, String keyName) {
@@ -42,10 +35,15 @@ public class S3BucketOps {
                 .build();
 
         /// TODO handler eroare legata de inexistenta bucket-ului: daca nu exista obiectul -> 404, daca nu exista bucket-ul -> server error
-        ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
-        byte[] objectData = objectBytes.asByteArray();
+        try {
+            ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
+            byte[] objectData = objectBytes.asByteArray();
 
-        return new ByteArrayResource(objectData);
+            return new ByteArrayResource(objectData);
+        } catch (Exception ex) {
+            checkS3ObjectExistence(bucketName, keyName);
+            return null;
+        }
     }
 
     public static void createS3Bucket(String bucketName) {
@@ -93,7 +91,7 @@ public class S3BucketOps {
     }
 
 
-    public static void copyS3Object(String sourceBucketName, String destBucketName, String sourceKeyName, String destKeyName ) throws IOException {
+    public static void copyS3Object(String sourceBucketName, String destBucketName, String sourceKeyName, String destKeyName) throws IOException {
         S3Client s3Client = AWSS3Client.getInstance();
 
         CopyObjectRequest copyReq = CopyObjectRequest.builder()
