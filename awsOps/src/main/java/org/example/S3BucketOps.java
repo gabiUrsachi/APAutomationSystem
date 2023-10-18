@@ -16,25 +16,23 @@ import software.amazon.awssdk.services.s3.waiters.S3Waiter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 public class S3BucketOps {
     /// TODO pot sa renunt la metoda asta daca oricum am nevoie de intreaga resursa dupa aceea
-    public static boolean checkS3ObjectExistence(String bucketName, String keyName)  {
-        S3Client s3Client = createS3Client();
-
-        try{
-            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
-            HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
-
-            return true;
-        }
-        catch (S3Exception ex){
-            System.out.println("s3 bucket ops: "+ex.getMessage());
-            return false;
-        }
-    }
+//    public static boolean checkS3ObjectExistence(String bucketName, String keyName)  {
+//        S3Client s3Client = createS3Client();
+//
+//        try{
+//            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
+//            HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+//
+//            return true;
+//        }
+//        catch (S3Exception ex){
+//            System.out.println("s3 bucket ops: "+ex.getMessage());
+//            return false;
+//        }
+//    }
 
     public static Resource getS3Object(String bucketName, String keyName) {
         S3Client s3Client = createS3Client();
@@ -45,10 +43,18 @@ public class S3BucketOps {
                 .build();
 
         /// TODO handler eroare legata de inexistenta bucket-ului: daca nu exista obiectul -> 404, daca nu exista bucket-ul -> server error
-        ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
-        byte[] objectData = objectBytes.asByteArray();
+        try{
+            ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
+            byte[] objectData = objectBytes.asByteArray();
 
-        return new ByteArrayResource(objectData);
+            return new ByteArrayResource(objectData);
+        }
+        catch (S3Exception exception){
+            System.out.println("Exception message: "+exception.getMessage());
+            System.out.println("Exception class: "+exception.getClass().toString());
+            return null;
+        }
+
     }
 
     public static void createS3Bucket(String bucketName) {
@@ -79,13 +85,9 @@ public class S3BucketOps {
         S3Client s3Client = createS3Client();
 
         try {
-            /// TODO utilizare metadata doar daca e neaparat nevoie
-            Map<String, String> metadata = new HashMap<>();
-            //metadata.put("x-amz-meta-myVal", "test");
             PutObjectRequest putOb = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(keyName)
-                    //.metadata(metadata)
                     .build();
 
             RequestBody requestBody = RequestBody.fromInputStream(inputStream, inputStream.available());
