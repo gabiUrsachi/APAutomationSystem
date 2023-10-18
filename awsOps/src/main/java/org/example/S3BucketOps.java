@@ -16,17 +16,17 @@ import software.amazon.awssdk.services.s3.waiters.S3Waiter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
+import java.util.List;
 
 public class S3BucketOps {
     public static boolean s3ObjectExists(String bucketName, String keyName) {
-        try{
+        try {
             S3Client s3Client = AWSS3Client.getInstance();
 
             HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
             s3Client.headObject(headObjectRequest);
             return true;
-        }
-        catch (S3Exception ex){
+        } catch (S3Exception ex) {
             return false;
         }
     }
@@ -47,12 +47,12 @@ public class S3BucketOps {
         } catch (NoSuchBucketException exception) {
             throw exception;
         } catch (RuntimeException ex) {
-            System.out.println("Global check: "+ex.getClass()+" -> "+ex.getMessage());
+            System.out.println("Global check: " + ex.getClass() + " -> " + ex.getMessage());
 
             boolean objectExists = s3ObjectExists(bucketName, keyName);
-            if(!objectExists){
+            if (!objectExists) {
                 throw NoSuchKeyException.builder().build();
-            }else{
+            } else {
                 throw ex;
             }
         }
@@ -144,4 +144,16 @@ public class S3BucketOps {
         return presignedGetObjectRequest.url().toString();
     }
 
+    public static List<Bucket> getBucketList() {
+
+        S3Client s3Client = AWSS3Client.getInstance();
+        List<Bucket> buckets = null;
+        try {
+            buckets = s3Client.listBuckets().buckets();
+        } catch (S3Exception e) {
+            System.err.println(e.awsErrorDetails().errorMessage());
+        }
+
+        return buckets;
+    }
 }
