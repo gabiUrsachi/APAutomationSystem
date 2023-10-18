@@ -151,6 +151,7 @@ public class S3BucketOps {
         try {
             buckets = s3Client.listBuckets().buckets();
         } catch (S3Exception e) {
+            System.err.println("Erreur");
             System.err.println(e.awsErrorDetails().errorMessage());
         }
 
