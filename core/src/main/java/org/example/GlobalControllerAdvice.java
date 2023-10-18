@@ -16,6 +16,7 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 public class GlobalControllerAdvice {
     @ExceptionHandler({ResourceNotFoundException.class, NoSuchKeyException.class})
     public ResponseEntity<ExceptionResponseDTO> handleResourceNotFoundException(RuntimeException ex) {
+        System.out.println("Resource not found handler: "+ex.getClass()+" -> "+ex.getMessage());
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.NOT_FOUND;
 
@@ -85,6 +86,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(NoSuchBucketException.class)
     public ResponseEntity<ExceptionResponseDTO> handleAWSException(NoSuchBucketException ex) {
+        System.out.println("NoSuchBucketException handler: "+ex.getMessage());
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.PRECONDITION_FAILED;
 
@@ -95,6 +97,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponseDTO> handleGenericException(Exception ex) {
+        System.out.println("Generic handler: "+ex.getClass()+" -> "+ex.getMessage());
         String details = ex.getClass() + ": " + ex.getMessage();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 

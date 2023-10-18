@@ -18,7 +18,7 @@ import java.io.InputStream;
 import java.time.Duration;
 
 public class S3BucketOps {
-    public static void checkS3ObjectExistence(String bucketName, String keyName){
+    public static void checkS3ObjectExistence(String bucketName, String keyName) {
         S3Client s3Client = AWSS3Client.getInstance();
 
         HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
@@ -39,9 +39,10 @@ public class S3BucketOps {
             byte[] objectData = objectBytes.asByteArray();
 
             return new ByteArrayResource(objectData);
-        } catch (NoSuchBucketException noSuchBucketException) {
-            throw noSuchBucketException;
-        } catch (Exception ex) {
+        } catch (NoSuchBucketException | NoSuchKeyException exception) {
+            throw exception;
+        } catch (RuntimeException ex) {
+            System.out.println("Global check");
             checkS3ObjectExistence(bucketName, keyName);
         }
         return null;
