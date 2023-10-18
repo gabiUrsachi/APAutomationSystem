@@ -3,7 +3,7 @@ set -xe
 
 
 # Copy file from S3 bucket to EC2 instance
-aws s3 cp s3://backendstack-webappdeploymentbucket-otbekpitlnml/core-0.0.1-SNAPSHOT.jar	 /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
+aws s3 cp s3://backendstack-webappdeploymentbucket-1njzrqggojv7t/core-0.0.1-SNAPSHOT.jar	 /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
 
 
 stack_name="BackendStack"
