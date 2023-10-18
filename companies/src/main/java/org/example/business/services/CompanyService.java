@@ -59,6 +59,7 @@ public class CompanyService {
         List<Company> companies = getCompanies();
         List<Bucket> buckets = S3BucketOps.getBucketList();
 
+        System.out.println(buckets);
         for(Company company:companies){
             boolean companyExists = buckets.stream().anyMatch(bucket -> bucket.name().equals(String.valueOf(company.getCompanyIdentifier())));
             if(!companyExists){
