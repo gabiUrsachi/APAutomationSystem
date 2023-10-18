@@ -39,13 +39,13 @@ public class S3BucketOps {
             byte[] objectData = objectBytes.asByteArray();
 
             return new ByteArrayResource(objectData);
-        } catch (NoSuchBucketException | NoSuchKeyException exception) {
+        } catch (NoSuchBucketException exception) {
             throw exception;
         } catch (RuntimeException ex) {
-            System.out.println("Global check");
+            System.out.println("Global check: "+ex.getClass()+" -> "+ex.getMessage());
             checkS3ObjectExistence(bucketName, keyName);
+            throw ex;
         }
-        return null;
     }
 
     public static void createS3Bucket(String bucketName) {
