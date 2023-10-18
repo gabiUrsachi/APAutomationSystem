@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import software.amazon.awssdk.services.s3.model.NoSuchBucketException;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
-    @ExceptionHandler({ResourceNotFoundException.class})
-    public ResponseEntity<ExceptionResponseDTO> handleResourceNotFoundException(ResourceNotFoundException ex) {
+    @ExceptionHandler({ResourceNotFoundException.class, NoSuchKeyException.class})
+    public ResponseEntity<ExceptionResponseDTO> handleResourceNotFoundException(RuntimeException ex) {
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.NOT_FOUND;
 
@@ -85,7 +86,7 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(NoSuchBucketException.class)
     public ResponseEntity<ExceptionResponseDTO> handleAWSException(NoSuchBucketException ex) {
         String details = ex.getMessage();
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        HttpStatus status = HttpStatus.PRECONDITION_FAILED;
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
 

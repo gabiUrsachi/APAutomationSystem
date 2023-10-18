@@ -23,7 +23,6 @@ public class S3BucketOps {
 
         HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
         s3Client.headObject(headObjectRequest);
-
     }
 
     public static Resource getS3Object(String bucketName, String keyName) {
