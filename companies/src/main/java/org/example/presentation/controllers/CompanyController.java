@@ -26,6 +26,7 @@ public class CompanyController {
         Company company = companyMapperService.mapToEntity(companyDTO);
         Company savedCompany = companyService.createCompany(company);
 
+        /// TODO task scheduler - cron job
         S3BucketOps.createS3Bucket(savedCompany.getCompanyIdentifier().toString());
 
         return companyMapperService.mapToDTO(savedCompany);

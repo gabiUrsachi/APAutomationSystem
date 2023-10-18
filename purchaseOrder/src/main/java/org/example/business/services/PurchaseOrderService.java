@@ -2,8 +2,8 @@ package org.example.business.services;
 
 import org.example.SQSOps;
 import org.example.business.utils.PurchaseOrderStatusPrecedence;
-import org.example.customexceptions.InvalidUpdateException;
-import org.example.customexceptions.OrderNotFoundException;
+import org.example.customexceptions.InvalidResourceUpdateException;
+import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
 import org.example.persistence.utils.data.OrderStatus;
@@ -48,13 +48,13 @@ public class PurchaseOrderService {
      *
      * @param identifier order UUID
      * @return the retrieved PurchaseOrder object
-     * @throws OrderNotFoundException if the purchase order with the given identifier is not found
+     * @throws ResourceNotFoundException if the purchase order with the given identifier is not found
      */
     public PurchaseOrder getPurchaseOrder(UUID identifier) {
         Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(identifier);
 
         return existingPurchaseOrder
-                .orElseThrow(() -> new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier.toString()));
     }
 
     /**
@@ -63,13 +63,13 @@ public class PurchaseOrderService {
      * @param identifier order UUID
      * @param filters    list of filters to apply while retrieving the purchase order
      * @return the retrieved PurchaseOrder object
-     * @throws OrderNotFoundException if the purchase order with the given identifier and filters is not found
+     * @throws ResourceNotFoundException if the purchase order with the given identifier and filters is not found
      */
     public PurchaseOrder getPurchaseOrder(UUID identifier, List<PurchaseOrderFilter> filters) {
         PurchaseOrder purchaseOrder = purchaseOrderRepository.findByUUIDAndFilters(identifier, filters);
 
         if (purchaseOrder == null) {
-            throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier);
+            throw new ResourceNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier.toString());
         }
 
         return purchaseOrder;
@@ -119,7 +119,7 @@ public class PurchaseOrderService {
             Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
 
             if (existingPurchaseOrder.isEmpty()) {
-                throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, purchaseOrder.getIdentifier());
+                throw new ResourceNotFoundException(ErrorMessages.ORDER_NOT_FOUND, purchaseOrder.getIdentifier().toString());
             }
 
             if (!Objects.equals(existingPurchaseOrder.get().getVersion(), purchaseOrder.getVersion())) {
@@ -127,7 +127,7 @@ public class PurchaseOrderService {
             }
 
             if (!existingPurchaseOrder.get().getOrderStatus().equals(requiredOldStatus)) {
-                throw new InvalidUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
+                throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
             }
         }
 
@@ -148,7 +148,7 @@ public class PurchaseOrderService {
         int deletedRowsCount = this.purchaseOrderRepository.customDeleteById(identifier);
 
         if (deletedRowsCount == 0) {
-            throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier);
+            throw new ResourceNotFoundException(ErrorMessages.ORDER_NOT_FOUND, identifier.toString());
         }
     }
 

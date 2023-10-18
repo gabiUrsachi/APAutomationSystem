@@ -1,8 +1,7 @@
 package org.example.unit.purchaseOrder.business.services;
 
 import org.example.business.services.PurchaseOrderValidatorService;
-import org.example.customexceptions.ForbiddenUpdateException;
-import org.example.customexceptions.IdentifiersMismatchException;
+import org.example.customexceptions.ForbiddenActionException;
 import org.example.persistence.utils.data.OrderStatus;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class PurchaseOrderValidatorServiceShould {
         UUID uuid1 = UUID.randomUUID();
         UUID uuid2 = UUID.randomUUID();
 
-        Assertions.assertThrows(IdentifiersMismatchException.class, () -> purchaseOrderValidatorService.verifyIdentifiersMatch(uuid1, uuid2));
+        Assertions.assertThrows(ForbiddenActionException.class, () -> purchaseOrderValidatorService.verifyIdentifiersMatch(uuid1, uuid2));
     }
 
     @Test
@@ -39,41 +38,41 @@ public class PurchaseOrderValidatorServiceShould {
     }
 
     @Test
-    public void throwForbiddenUpdateExceptionForBuyerTryingToApproveOrder() {
+    public void throwForbiddenActionExceptionForBuyerTryingToApproveOrder() {
         OrderStatus newOrderStatus = OrderStatus.APPROVED;
         UUID userCompanyUUID = UUID.randomUUID();
         UUID sellerCompanyUUID = UUID.randomUUID();
 
-        Assertions.assertThrows(ForbiddenUpdateException.class, () -> purchaseOrderValidatorService.verifyUpdatePermission(newOrderStatus, userCompanyUUID, userCompanyUUID, sellerCompanyUUID));
+        Assertions.assertThrows(ForbiddenActionException.class, () -> purchaseOrderValidatorService.verifyUpdatePermission(newOrderStatus, userCompanyUUID, userCompanyUUID, sellerCompanyUUID));
     }
 
     @Test
-    public void throwForbiddenUpdateExceptionForBuyerTryingToSaveAnotherBuyersOrder() {
+    public void throwForbiddenActionExceptionForBuyerTryingToSaveAnotherBuyersOrder() {
         OrderStatus newOrderStatus = OrderStatus.SAVED;
         UUID userCompanyUUID = UUID.randomUUID();
         UUID buyerCompanyUUID = UUID.randomUUID();
         UUID sellerCompanyUUID = UUID.randomUUID();
 
-        Assertions.assertThrows(ForbiddenUpdateException.class, () -> purchaseOrderValidatorService.verifyUpdatePermission(newOrderStatus, userCompanyUUID, buyerCompanyUUID, sellerCompanyUUID));
+        Assertions.assertThrows(ForbiddenActionException.class, () -> purchaseOrderValidatorService.verifyUpdatePermission(newOrderStatus, userCompanyUUID, buyerCompanyUUID, sellerCompanyUUID));
     }
 
     @Test
-    public void throwForbiddenUpdateExceptionForSellerTryingToSaveOrder() {
+    public void throwForbiddenActionExceptionForSellerTryingToSaveOrder() {
         OrderStatus newOrderStatus = OrderStatus.SAVED;
         UUID userCompanyUUID = UUID.randomUUID();
         UUID buyerCompanyUUID = UUID.randomUUID();
 
-        Assertions.assertThrows(ForbiddenUpdateException.class, () -> purchaseOrderValidatorService.verifyUpdatePermission(newOrderStatus, userCompanyUUID, buyerCompanyUUID, userCompanyUUID));
+        Assertions.assertThrows(ForbiddenActionException.class, () -> purchaseOrderValidatorService.verifyUpdatePermission(newOrderStatus, userCompanyUUID, buyerCompanyUUID, userCompanyUUID));
     }
 
     @Test
-    public void throwForbiddenUpdateExceptionForSellerTryingToApproveAnotherSellersOrder() {
+    public void throwForbiddenActionExceptionForSellerTryingToApproveAnotherSellersOrder() {
         OrderStatus newOrderStatus = OrderStatus.APPROVED;
         UUID userCompanyUUID = UUID.randomUUID();
         UUID buyerCompanyUUID = UUID.randomUUID();
         UUID sellerCompanyUUID = UUID.randomUUID();
 
-        Assertions.assertThrows(ForbiddenUpdateException.class, () -> purchaseOrderValidatorService.verifyUpdatePermission(newOrderStatus, userCompanyUUID, buyerCompanyUUID, sellerCompanyUUID));
+        Assertions.assertThrows(ForbiddenActionException.class, () -> purchaseOrderValidatorService.verifyUpdatePermission(newOrderStatus, userCompanyUUID, buyerCompanyUUID, sellerCompanyUUID));
     }
 
 }

@@ -1,9 +1,9 @@
 package org.example.business.services;
 
 import org.example.business.utils.Password;
-import org.example.customexceptions.AlreadyExistingUserException;
+import org.example.customexceptions.AlreadyExistingResourceException;
 import org.example.customexceptions.InvalidCredentialsException;
-import org.example.customexceptions.OrderNotFoundException;
+import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.User;
 import org.example.persistence.repository.UserRepository;
 import org.example.utils.ErrorMessages;
@@ -28,13 +28,13 @@ public class UserService {
      * It creates new user, if another one with the same username doesn't exist
      *
      * @param user resource to be created
-     * @throws AlreadyExistingUserException if a user with the same username already exists
+     * @throws AlreadyExistingResourceException if a user with the same username already exists
      */
     public void registerUser(User user) {
         Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
 
         if (existingUser.isPresent()) {
-            throw new AlreadyExistingUserException(ErrorMessages.ALREADY_EXISTING_USER, user.getUsername());
+            throw new AlreadyExistingResourceException(ErrorMessages.ALREADY_EXISTING_USER, user.getUsername());
         }
 
         user.setIdentifier(UUID.randomUUID());
@@ -83,7 +83,7 @@ public class UserService {
         int deletedRowsCount = this.userRepository.customDeleteById(identifier);
 
         if (deletedRowsCount == 0) {
-            throw new OrderNotFoundException(ErrorMessages.USER_NOT_FOUND, identifier);
+            throw new ResourceNotFoundException(ErrorMessages.USER_NOT_FOUND, identifier.toString());
         }
     }
 }

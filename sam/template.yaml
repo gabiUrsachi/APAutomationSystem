@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-0097014f99d6f7afd"
+    Default: "vpc-0a0ec981937f11302"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-0ee9d094afbf0f343,subnet-042a3a99b78916193,subnet-0353805c9b10dbfcd,subnet-04ba6c128f5512b54,subnet-057b86b09d1cf9e6f,subnet-0ff69ff09070ee5c4"
+    Default: "subnet-0eed297b9b2c2e00c,subnet-0a21e347d18fcf5d3,subnet-0bc03159b97c41774,subnet-0cc21cd43f55c4c52,subnet-02b22e76d5a208c3c,subnet-06d8e7ca0d76ddefb"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -179,7 +179,7 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       FifoQueue: true
-      QueueName: "testQueue.fifo"
+      QueueName: "fileTransferQueue.fifo"
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt DLQueue.Arn
         maxReceiveCount: 15
@@ -188,7 +188,7 @@ Resources:
   DLQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: "testDLQ.fifo"
+      QueueName: "fileTransferDLQ.fifo"
       FifoQueue: true
 
   LambdaFunctionEventSourceMapping:
@@ -245,7 +245,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
       Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:576471317280:certificate/43964265-8925-4131-8935-623e25e7d43e"
+        - CertificateArn: "arn:aws:acm:us-east-1:712576552912:certificate/f3f730f4-182e-4077-aa57-39ab98805369"
       DefaultActions:
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'

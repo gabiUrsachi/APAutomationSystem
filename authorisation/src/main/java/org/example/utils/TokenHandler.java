@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.example.customexceptions.InvalidTokenException;
 import org.example.utils.data.Roles;
 
 import java.util.Date;
@@ -46,7 +45,7 @@ public class TokenHandler {
      *
      * @param token the token string to validate
      * @return the decoded JWT object.
-     * @throws InvalidTokenException if the token is invalid or blacklisted
+     * @throws com.auth0.jwt.exceptions.JWTVerificationException if the token is invalid or blacklisted
      */
     public static DecodedJWT validateToken(String token) {
         String jwt = token.split(" ")[1];

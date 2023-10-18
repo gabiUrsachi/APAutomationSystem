@@ -1,11 +1,11 @@
 package org.example;
 
+import org.example.awsClients.AWSS3Client;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.waiters.WaiterResponse;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
@@ -16,41 +16,50 @@ import software.amazon.awssdk.services.s3.waiters.S3Waiter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 public class S3BucketOps {
-    public static boolean checkS3ObjectExistence(String bucketName, String keyName)  {
-        S3Client s3Client = createS3Client();
-
+    public static boolean s3ObjectExists(String bucketName, String keyName) {
         try{
-            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
-            HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+            S3Client s3Client = AWSS3Client.getInstance();
 
+            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder().bucket(bucketName).key(keyName).build();
+            s3Client.headObject(headObjectRequest);
             return true;
         }
         catch (S3Exception ex){
-            System.out.println("s3 bucket ops: "+ex.getMessage());
             return false;
         }
     }
 
     public static Resource getS3Object(String bucketName, String keyName) {
-        S3Client s3Client = createS3Client();
+        S3Client s3Client = AWSS3Client.getInstance();
 
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
                 .key(keyName)
                 .build();
 
-        ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
-        byte[] objectData = objectBytes.asByteArray();
+        try {
+            ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
+            byte[] objectData = objectBytes.asByteArray();
 
-        return new ByteArrayResource(objectData);
+            return new ByteArrayResource(objectData);
+        } catch (NoSuchBucketException exception) {
+            throw exception;
+        } catch (RuntimeException ex) {
+            System.out.println("Global check: "+ex.getClass()+" -> "+ex.getMessage());
+
+            boolean objectExists = s3ObjectExists(bucketName, keyName);
+            if(!objectExists){
+                throw NoSuchKeyException.builder().build();
+            }else{
+                throw ex;
+            }
+        }
     }
 
     public static void createS3Bucket(String bucketName) {
-        S3Client s3Client = createS3Client();
+        S3Client s3Client = AWSS3Client.getInstance();
 
         try {
             S3Waiter s3Waiter = s3Client.waiter();
@@ -68,34 +77,34 @@ public class S3BucketOps {
             waiterResponse.matched().response().ifPresent(System.out::println);
 
         } catch (S3Exception e) {
+            /// TODO loggers
             System.err.println(e.awsErrorDetails().errorMessage());
         }
     }
 
     public static void putS3Object(String bucketName, String keyName, InputStream inputStream) throws IOException {
-        S3Client s3Client = createS3Client();
+        S3Client s3Client = AWSS3Client.getInstance();
 
         try {
-            Map<String, String> metadata = new HashMap<>();
-            metadata.put("x-amz-meta-myVal", "test");
             PutObjectRequest putOb = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(keyName)
-                    .metadata(metadata)
                     .build();
 
             RequestBody requestBody = RequestBody.fromInputStream(inputStream, inputStream.available());
+            /// TODO preluare raspuns
             s3Client.putObject(putOb, requestBody);
             System.out.println("Successfully placed " + keyName + " into bucket " + bucketName);
 
         } catch (S3Exception e) {
+            /// TODO logger
             System.err.println(e.getMessage());
         }
     }
 
 
-    public static void copyS3Object(String sourceBucketName, String destBucketName, String sourceKeyName, String destKeyName ) throws IOException {
-        S3Client s3Client = createS3Client();
+    public static void copyS3Object(String sourceBucketName, String destBucketName, String sourceKeyName, String destKeyName) throws IOException {
+        S3Client s3Client = AWSS3Client.getInstance();
 
         CopyObjectRequest copyReq = CopyObjectRequest.builder()
                 .sourceBucket(sourceBucketName)
@@ -135,11 +144,4 @@ public class S3BucketOps {
         return presignedGetObjectRequest.url().toString();
     }
 
-    private static S3Client createS3Client() {
-        Region region = Region.US_EAST_1;
-
-        return S3Client.builder()
-                .region(region)
-                .build();
-    }
 }

@@ -1,6 +1,6 @@
 package org.example.business.services;
 
-import org.example.customexceptions.CompanyNotFoundException;
+import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Company;
 import org.example.persistence.repository.CompanyRepository;
 import org.example.utils.ErrorMessages;
@@ -31,7 +31,7 @@ public class CompanyService {
         Optional<Company> company = companyRepository.findById(uuid);
 
         if (company.isEmpty()) {
-            throw new CompanyNotFoundException(ErrorMessages.COMPANY_NOT_FOUND, uuid);
+            throw new ResourceNotFoundException(ErrorMessages.COMPANY_NOT_FOUND, uuid.toString());
         }
 
         return company.get();
