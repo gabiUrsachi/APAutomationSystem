@@ -29,7 +29,6 @@ public class S3BucketOps {
         catch (S3Exception ex){
             return false;
         }
-
     }
 
     public static Resource getS3Object(String bucketName, String keyName) {
@@ -40,7 +39,6 @@ public class S3BucketOps {
                 .key(keyName)
                 .build();
 
-        /// TODO handler eroare legata de inexistenta bucket-ului: daca nu exista obiectul -> 404, daca nu exista bucket-ul -> server error
         try {
             ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
             byte[] objectData = objectBytes.asByteArray();

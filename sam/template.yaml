@@ -179,7 +179,7 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       FifoQueue: true
-      QueueName: "testQueue.fifo"
+      QueueName: "fileTransferQueue.fifo"
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt DLQueue.Arn
         maxReceiveCount: 15
@@ -188,7 +188,7 @@ Resources:
   DLQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: "testDLQ.fifo"
+      QueueName: "fileTransferDLQ.fifo"
       FifoQueue: true
 
   LambdaFunctionEventSourceMapping:

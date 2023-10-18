@@ -87,8 +87,8 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(NoSuchBucketException.class)
     public ResponseEntity<ExceptionResponseDTO> handleAWSException(NoSuchBucketException ex) {
         System.out.println("NoSuchBucketException handler: "+ex.getMessage());
-        String details = ex.getMessage();
-        HttpStatus status = HttpStatus.PRECONDITION_FAILED;
+        String details = "Server error";
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);
 
@@ -98,7 +98,7 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponseDTO> handleGenericException(Exception ex) {
         System.out.println("Generic handler: "+ex.getClass()+" -> "+ex.getMessage());
-        String details = ex.getClass() + ": " + ex.getMessage();
+        String details = "Server error";
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), details);

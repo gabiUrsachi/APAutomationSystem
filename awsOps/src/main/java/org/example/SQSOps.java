@@ -10,8 +10,8 @@ import java.util.UUID;
 
 /// TODO unit tests for AWS ops (in S3Ops si in SQSOps)
 public class SQSOps {
-    private final static String QUEUE_NAME = "testQueue.fifo";
-    private final static String MESSAGE_GROUP_ID = "custom_msg_group_id";
+    private final static String QUEUE_NAME = "fileTransferQueue.fifo";
+    private final static String MESSAGE_GROUP_ID = "file_transfer_group_id";
 
     public static void getQueueUrl() {
 
