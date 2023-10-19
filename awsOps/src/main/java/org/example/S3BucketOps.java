@@ -62,6 +62,7 @@ public class S3BucketOps {
     }
 
     public static void createS3Bucket(String bucketName) {
+        logger.info("[AWS - create S3 bucket] -> {}", bucketName);
         S3Client s3Client = AWSS3Client.getInstance();
 
         try {
@@ -80,7 +81,7 @@ public class S3BucketOps {
             waiterResponse.matched().response().ifPresent(System.out::println);
 
         } catch (S3Exception e) {
-            logger.error("[AWS - create S3 bucket] -> {}",e.awsErrorDetails().errorMessage());
+            logger.error("[AWS - create S3 bucket] -> {}", e.awsErrorDetails().errorMessage());
         }
     }
 
@@ -99,7 +100,7 @@ public class S3BucketOps {
             logger.info("Successfully placed {} into {}.", keyName, bucketName);
 
         } catch (S3Exception e) {
-            logger.error("[AWS - put S3 object] -> {}",e.awsErrorDetails().errorMessage());
+            logger.error("[AWS - put S3 object] -> {}", e.awsErrorDetails().errorMessage());
         }
     }
 
@@ -118,7 +119,7 @@ public class S3BucketOps {
             CopyObjectResponse copyRes = s3Client.copyObject(copyReq);
 
         } catch (S3Exception e) {
-            logger.error("[AWS - put S3 object] -> {}",e.awsErrorDetails().errorMessage());
+            logger.error("[AWS - put S3 object] -> {}", e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }
