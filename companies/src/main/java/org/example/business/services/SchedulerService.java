@@ -18,9 +18,8 @@ public class SchedulerService {
         this.companyRepository = companyRepository;
     }
 
-
-    @Scheduled(cron="1 * * * * *")
-    public void checkBucketsExistence(){
+    @Scheduled(cron = "1 * * * * *")
+    public void checkBucketsExistence() {
         List<Company> existingCompanies = this.companyRepository.findAll();
         List<Bucket> existingS3Buckets = S3BucketOps.getS3Buckets();
 
@@ -30,7 +29,8 @@ public class SchedulerService {
                 .filter(company -> !bucketsName.contains(company))
                 .collect(Collectors.toList());
 
-        System.out.println("Nonexistent buckets: ");
-        System.out.println(nonExistentBuckets);
+        for (String nonExistingBucket : nonExistentBuckets) {
+            S3BucketOps.createS3Bucket(nonExistingBucket);
+        }
     }
 }
