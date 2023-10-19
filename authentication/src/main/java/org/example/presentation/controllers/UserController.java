@@ -51,6 +51,8 @@ public class UserController {
     @PostMapping(value = "register")
     @SuppressWarnings("unchecked cast")
     public HttpStatus registerUser(@RequestBody RegisterRequestDTO registerRequestDTO, HttpServletRequest request) {
+        logger.info("[POST request] -> register user:{}", registerRequestDTO.getUsername());
+
         Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
 
         authorisationService.authorize(userRoles, Roles.ADMIN);
@@ -70,9 +72,8 @@ public class UserController {
             })
     @PostMapping(value = "login")
     public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO) {
-        logger.info("login operation");
-        logger.warn("custom warning");
-        logger.error("custom error");
+        logger.info("[POST request] -> login user:{}", loginRequestDTO.getUsername());
+
         String username = loginRequestDTO.getUsername();
         String password = loginRequestDTO.getPassword();
 
@@ -94,6 +95,7 @@ public class UserController {
     @GetMapping
     @SuppressWarnings("unchecked cast")
     public List<UserDTO> getUsers(HttpServletRequest request) {
+        logger.info("[GET request] -> getUsers");
         Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
 
         authorisationService.authorize(userRoles, Roles.ADMIN);
@@ -114,6 +116,7 @@ public class UserController {
     @DeleteMapping("{identifier}")
     @SuppressWarnings("unchecked cast")
     public void deleteUser(@PathVariable UUID identifier, HttpServletRequest request) {
+        logger.info("[DELETE request] -> remove user:{}", identifier);
         Set<Roles> userRoles = new HashSet<>((List<Roles>) request.getAttribute("roles"));
 
         authorisationService.authorize(userRoles, Roles.ADMIN);

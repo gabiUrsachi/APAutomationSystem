@@ -1,6 +1,8 @@
 package org.example;
 
 import org.example.awsClients.AWSS3Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import software.amazon.awssdk.core.ResponseBytes;
@@ -19,6 +21,8 @@ import java.time.Duration;
 import java.util.List;
 
 public class S3BucketOps {
+    private static final Logger logger = LoggerFactory.getLogger(S3BucketOps.class);
+
     public static boolean checkS3ObjectExistence(String bucketName, String keyName) {
         try {
             S3Client s3Client = AWSS3Client.getInstance();
@@ -47,7 +51,6 @@ public class S3BucketOps {
         } catch (NoSuchBucketException exception) {
             throw exception;
         } catch (RuntimeException ex) {
-            System.out.println("Global check: " + ex.getClass() + " -> " + ex.getMessage());
 
             boolean itExistsObject = checkS3ObjectExistence(bucketName, keyName);
             if (!itExistsObject) {
@@ -77,8 +80,7 @@ public class S3BucketOps {
             waiterResponse.matched().response().ifPresent(System.out::println);
 
         } catch (S3Exception e) {
-            /// TODO loggers
-            System.err.println(e.awsErrorDetails().errorMessage());
+            logger.error("[AWS - create S3 bucket] -> {}",e.awsErrorDetails().errorMessage());
         }
     }
 
@@ -94,11 +96,10 @@ public class S3BucketOps {
             RequestBody requestBody = RequestBody.fromInputStream(inputStream, inputStream.available());
             /// TODO preluare raspuns
             s3Client.putObject(putOb, requestBody);
-            System.out.println("Successfully placed " + keyName + " into bucket " + bucketName);
+            logger.info("Successfully placed {} into {}.", keyName, bucketName);
 
         } catch (S3Exception e) {
-            /// TODO logger
-            System.err.println(e.getMessage());
+            logger.error("[AWS - put S3 object] -> {}",e.awsErrorDetails().errorMessage());
         }
     }
 
@@ -117,7 +118,7 @@ public class S3BucketOps {
             CopyObjectResponse copyRes = s3Client.copyObject(copyReq);
 
         } catch (S3Exception e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            logger.error("[AWS - put S3 object] -> {}",e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }

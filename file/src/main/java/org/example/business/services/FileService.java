@@ -1,8 +1,6 @@
 package org.example.business.services;
 
 import org.example.S3BucketOps;
-import org.example.customexceptions.ResourceNotFoundException;
-import org.example.utils.ErrorMessages;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
