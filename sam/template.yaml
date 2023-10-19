@@ -467,34 +467,39 @@ Resources:
           sudo systemctl daemon-reload
           sudo systemctl enable mongod
           sudo systemctl start mongod
-          
-          echo '
+           
+          gen_uuid() {
+            uuidgen -r | tr -d "-"
+          }
+
+          cat > /home/ec2-user/init_data.js << EOF
           db = db.getSiblingDB("APsystem");
           db.createCollection("user");
           db.user.insert({
-            _id: "FB4E91A2-84A3-7983-8B12-8EBD940EE998",
-            username : "admin",
-            password : "$2a$15$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW",
-            roles : [
-              "ADMIN"
-            ]
+          _id: "FB4E91A2-84A3-7983-8B12-8EBD940EE998",
+          username : "admin",
+          password : "$2a$15$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW",
+          roles : [
+            "ADMIN"
+          ]
           });
           
           db.createCollection("company");
           db.company.insertMany([
           {
-            "_id" : Binary(Buffer.from("3a4577a7143f08eb56f03e1921738db9", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
             "name" : "CompanyA"
           },
           {
-            "_id" : Binary(Buffer.from("7f4577a7143f33fb56f03e1921738db9", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
             "name" : "CompanyB"
           },
           {
-            "_id" : Binary(Buffer.from("1a4577a7143f33ca78f03e1921738db9", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
             "name" : "CompanyC"
           }
-          ])' > /home/ec2-user/init_data.js
+          ]);
+          EOF
 
           # Add a delay to ensure the file is fully written
           sleep 5
