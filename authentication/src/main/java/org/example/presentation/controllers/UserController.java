@@ -1,5 +1,6 @@
 package org.example.presentation.controllers;
 
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,10 +12,11 @@ import org.example.presentation.view.LoginResponseDTO;
 import org.example.presentation.view.RegisterRequestDTO;
 import org.example.presentation.view.UserDTO;
 import org.example.services.AuthorisationService;
-import org.example.utils.AuthorizationMapper;
-import org.example.utils.data.JwtClaims;
-import org.example.utils.data.Roles;
 import org.example.utils.TokenHandler;
+import org.example.utils.data.Roles;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final UserMapperService userMapperService;
     private final AuthorisationService authorisationService;
@@ -67,6 +70,9 @@ public class UserController {
             })
     @PostMapping(value = "login")
     public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        logger.info("login operation");
+        logger.warn("custom warning");
+        logger.error("custom error");
         String username = loginRequestDTO.getUsername();
         String password = loginRequestDTO.getPassword();
 

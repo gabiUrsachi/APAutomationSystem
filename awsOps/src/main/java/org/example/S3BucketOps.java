@@ -19,7 +19,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class S3BucketOps {
-    public static boolean s3ObjectExists(String bucketName, String keyName) {
+    public static boolean checkS3ObjectExistence(String bucketName, String keyName) {
         try {
             S3Client s3Client = AWSS3Client.getInstance();
 
@@ -49,8 +49,8 @@ public class S3BucketOps {
         } catch (RuntimeException ex) {
             System.out.println("Global check: " + ex.getClass() + " -> " + ex.getMessage());
 
-            boolean objectExists = s3ObjectExists(bucketName, keyName);
-            if (!objectExists) {
+            boolean itExistsObject = checkS3ObjectExistence(bucketName, keyName);
+            if (!itExistsObject) {
                 throw NoSuchKeyException.builder().build();
             } else {
                 throw ex;

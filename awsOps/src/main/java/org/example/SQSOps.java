@@ -8,7 +8,7 @@ import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 import java.util.UUID;
 
-/// TODO unit tests for AWS ops (in S3Ops si in SQSOps)
+///TODO unit tests for AWS ops (in S3Ops si in SQSOps)
 public class SQSOps {
     private final static String QUEUE_NAME = "fileTransferQueue.fifo";
     private final static String MESSAGE_GROUP_ID = "file_transfer_group_id";
