@@ -481,7 +481,7 @@ Resources:
           db.user.insert({
           _id: "FB4E91A2-84A3-7983-8B12-8EBD940EE998",
           username : "admin",
-          password : "$2a$15$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW",
+          password : '\$2a\$15\$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW',
           roles : [
             "ADMIN"
           ]
