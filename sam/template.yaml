@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-0b3a6187b0d713b06"
+    Default: "vpc-0ca1dd2591edd48d8"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-070b93a9691e87589,subnet-0f5b919b80770f654,subnet-07fc719e860583179,subnet-04a68a53bac1a3e8d,subnet-0ca307e77680e179a,subnet-0e98fed6e62077ccc"
+    Default: "subnet-0e3da061d2ddecd5c,subnet-08e4c2c6f9c19a046,subnet-046e3a72e53dcc0dc,subnet-0e9df264cec4d4ad2,subnet-0e42bdad174d4bbd8,subnet-0ac4f544beec663c4"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -245,7 +245,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
       Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:535833081514:certificate/f61dbb16-fb5a-47d6-87a8-169dc6ac5347"
+        - CertificateArn: "arn:aws:acm:us-east-1:064839693847:certificate/1e24592e-32e9-4095-9fcc-1ed375986dcc"
       DefaultActions:
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'
@@ -471,33 +471,38 @@ Resources:
           sudo systemctl enable mongod
           sudo systemctl start mongod
           
-          echo '
+          gen_uuid() {
+            uuidgen -r | tr -d "-"
+          }
+
+          cat > /home/ec2-user/init_data.js << EOF
           db = db.getSiblingDB("APsystem");
           db.createCollection("user");
           db.user.insert({
-            _id: "FB4E91A2-84A3-7983-8B12-8EBD940EE998",
-            username : "admin",
-            password : "$2a$15$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW",
-            roles : [
-              "ADMIN"
-            ]
+          _id: "FB4E91A2-84A3-7983-8B12-8EBD940EE998",
+          username : "admin",
+          password : "$2a$15$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW",
+          roles : [
+            "ADMIN"
+          ]
           });
           
           db.createCollection("company");
           db.company.insertMany([
           {
-            "_id" : Binary(Buffer.from("3a4577a7143f08eb56f03e1921738db9", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
             "name" : "CompanyA"
           },
           {
-            "_id" : Binary(Buffer.from("7f4577a7143f33fb56f03e1921738db9", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
             "name" : "CompanyB"
           },
           {
-            "_id" : Binary(Buffer.from("1a4577a7143f33ca78f03e1921738db9", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
             "name" : "CompanyC"
           }
-          ])' > /home/ec2-user/init_data.js
+          ]);
+          EOF
 
           # Add a delay to ensure the file is fully written
           sleep 5
