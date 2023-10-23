@@ -25,7 +25,7 @@ public class FileController {
 
     @GetMapping(path = "/{fileIdentifier}", produces = "application/pdf")
     public Resource getFile(@PathVariable String fileIdentifier, HttpServletRequest request) {
-        logger.info("[GET request] -> get file by identifier: {}", fileIdentifier);
+        logger.info("[GET request] -> get file identified by {}", fileIdentifier);
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
         String fileBucket = jwtClaims.getCompanyUUID().toString();
