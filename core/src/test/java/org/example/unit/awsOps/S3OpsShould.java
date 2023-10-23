@@ -101,7 +101,7 @@ public class S3OpsShould {
     }
 
     @Test
-    public void throwNoSuchKeyExceptionWhenQueryingNonExistentObjectFromExistingBucket() {
+    public void throwNoSuchKeyExceptionWhenQueryingNonExistentObjectFromExistentBucket() {
         String bucketName = RandomString.make().toLowerCase();
         String keyName = RandomString.make().toLowerCase();
 
@@ -114,7 +114,7 @@ public class S3OpsShould {
     }
 
     @Test
-    public void successfullyRetrieveExistingObjectFromExistingBucket() throws IOException {
+    public void successfullyRetrieveExistentObjectFromExistentBucket() throws IOException {
         String bucketName = RandomString.make().toLowerCase();
         String keyName = RandomString.make().toLowerCase();
 
@@ -148,7 +148,7 @@ public class S3OpsShould {
     }
 
     @Test
-    public void returnNullWhenTryingToCopyNonExistingObject() throws IOException {
+    public void returnNullWhenTryingToCopyNonExistentObject() throws IOException {
         String sourceBucketName = RandomString.make().toLowerCase();
         String destBucketName = RandomString.make().toLowerCase();
         String keyName = RandomString.make().toLowerCase();
