@@ -11,7 +11,7 @@ import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 import java.util.UUID;
 
-///TODO unit tests for AWS ops (in S3Ops si in SQSOps)
+/// TODO unit tests for SQSOps
 public class SQSOps {
     private static final Logger logger = LoggerFactory.getLogger(SQSOps.class);
     private final static String QUEUE_NAME = "fileTransferQueue.fifo";
