@@ -1,16 +1,20 @@
 package org.example.business.services;
 
+import org.example.S3BucketOps;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Company;
 import org.example.persistence.repository.CompanyRepository;
-import org.example.presentation.view.CompanyDTO;
 import org.example.utils.ErrorMessages;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.example.S3BucketOps;
 import software.amazon.awssdk.services.s3.model.Bucket;
+import software.amazon.awssdk.services.s3.model.HeadBucketResponse;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * This service is used for performing CRUD operations on company related resources
@@ -46,6 +50,12 @@ public class CompanyService {
         return companyRepository.insert(company);
     }
 
+    public Company updateCompany(Company company){
+        company.setHasBucket(true);
+
+        return companyRepository.save(company);
+    }
+
     public List<Company> getCompanies() {
         return companyRepository.findAll();
     }
@@ -54,19 +64,17 @@ public class CompanyService {
         companyRepository.deleteById(identifier);
     }
 
-    @Scheduled(fixedRate = 500)
-    public void createBucketIfNotExists() {
-        List<Company> companies = getCompanies();
-        List<Bucket> buckets = S3BucketOps.getBucketList();
+    @Scheduled(cron = "1 * * * * *")
+    public void checkBucketsExistence() {
+        Set<Company> existingCompanies = this.companyRepository.findAllByHasBucket(true);
 
-        for(Company company:companies){
-            boolean companyExists = buckets.stream().anyMatch(bucket -> bucket.name().equals(String.valueOf(company.getCompanyIdentifier())));
-            if(!companyExists){
-                S3BucketOps.createS3Bucket(company.getCompanyIdentifier().toString());
+        for(Company company: existingCompanies){
+            HeadBucketResponse headBucketResponse = S3BucketOps.createS3Bucket(company.getCompanyIdentifier().toString());
+
+            if(headBucketResponse != null){
+                this.updateCompany(company);
             }
         }
-
-
     }
 }
 

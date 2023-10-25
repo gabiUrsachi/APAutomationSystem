@@ -18,20 +18,22 @@ public class SchedulerService {
         this.companyRepository = companyRepository;
     }
 
-    @Scheduled(cron = "1 * * * * *")
-    public void checkBucketsExistence() {
-        ///TODO field nou: exista sau nu S3 bucket (find dupa proprietate)
-        List<Company> existingCompanies = this.companyRepository.findAll();
-        List<Bucket> existingS3Buckets = S3BucketOps.getS3Buckets();
+//    @Scheduled(cron = "1 * * * * *")
+//    public void checkBucketsExistence() {
+//        ///TODO field nou: exista sau nu S3 bucket (find dupa proprietate)
+//        List<Company> existingCompanies = this.companyRepository.findAll();
+//        List<Bucket> existingS3Buckets = S3BucketOps.getS3Buckets();
+//
+//        List<String> bucketsName = existingS3Buckets.stream().map((Bucket::name)).collect(Collectors.toList());
+//        List<String> nonExistentBuckets = existingCompanies.stream()
+//                .map((company -> company.getCompanyIdentifier().toString()))
+//                .filter(company -> !bucketsName.contains(company))
+//                .collect(Collectors.toList());
+//
+//        for (String nonExistingBucket : nonExistentBuckets) {
+//            S3BucketOps.createS3Bucket(nonExistingBucket);
+//        }
+//    }
 
-        List<String> bucketsName = existingS3Buckets.stream().map((Bucket::name)).collect(Collectors.toList());
-        List<String> nonExistentBuckets = existingCompanies.stream()
-                .map((company -> company.getCompanyIdentifier().toString()))
-                .filter(company -> !bucketsName.contains(company))
-                .collect(Collectors.toList());
 
-        for (String nonExistingBucket : nonExistentBuckets) {
-            S3BucketOps.createS3Bucket(nonExistingBucket);
-        }
-    }
 }

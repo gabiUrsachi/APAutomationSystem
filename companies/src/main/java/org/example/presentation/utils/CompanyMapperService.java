@@ -21,8 +21,8 @@ public class CompanyMapperService {
      */
     public Company mapToEntity(CompanyDTO companyDTO) {
         return Company.builder()
-                //.companyIdentifier(companyDTO.getCompanyIdentifier())
                 .name(companyDTO.getName())
+                .hasBucket(false)
                 .build();
     }
 
