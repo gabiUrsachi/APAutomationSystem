@@ -20,6 +20,7 @@ public class SchedulerService {
 
     @Scheduled(cron = "1 * * * * *")
     public void checkBucketsExistence() {
+        ///TODO field nou: exista sau nu S3 bucket (find dupa proprietate)
         List<Company> existingCompanies = this.companyRepository.findAll();
         List<Bucket> existingS3Buckets = S3BucketOps.getS3Buckets();
 
