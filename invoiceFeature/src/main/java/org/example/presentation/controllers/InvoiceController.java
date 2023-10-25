@@ -1,29 +1,31 @@
 package org.example.presentation.controllers;
 
 import org.example.S3BucketOps;
+import org.example.business.models.InvoiceDDO;
+import org.example.business.models.InvoiceDPO;
+import org.example.business.models.InvoiceDTO;
 import org.example.business.services.InvoiceFilteringService;
+import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.presentation.controllers.utils.InvoiceActionsPermissions;
 import org.example.presentation.controllers.utils.ResourceActionType;
+import org.example.presentation.view.OrderResponseDTO;
+import org.example.services.AuthorisationService;
+import org.example.services.InvoiceMapperService;
+import org.example.services.InvoiceService;
 import org.example.services.InvoiceValidationService;
 import org.example.utils.AuthorizationMapper;
 import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
-import org.example.business.models.*;
-
-import org.example.services.AuthorisationService;
-import org.example.services.InvoiceMapperService;
-import org.example.services.InvoiceService;
-import org.example.persistence.collections.Invoice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.example.presentation.view.OrderResponseDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -32,6 +34,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/invoices")
 public class InvoiceController {
+    private static final Logger logger = LoggerFactory.getLogger(InvoiceController.class);
     private final InvoiceService invoiceService;
     private final InvoiceFilteringService invoiceFilteringService;
     private final InvoiceMapperService invoiceMapperService;
@@ -51,6 +54,8 @@ public class InvoiceController {
 
     @PostMapping
     public InvoiceDTO createInvoice(@RequestPart("invoiceDPO") InvoiceDPO invoiceDPO, @RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+        logger.info("[POST request] -> create invoice with buyer {} and seller {}.", invoiceDPO.getBuyerId(), invoiceDPO.getSellerId());
+
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
         Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
 
@@ -70,6 +75,7 @@ public class InvoiceController {
 
     @GetMapping
     public List<InvoiceDDO> getInvoices(HttpServletRequest request) {
+        logger.info("[GET request] -> get all invoices");
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
@@ -84,6 +90,7 @@ public class InvoiceController {
 
     @PostMapping("/fromOR")
     public InvoiceDTO createInvoiceFromPurchaseOrder(@RequestBody OrderResponseDTO orderResponseDTO, HttpServletRequest request) throws IOException {
+        logger.info("[POST request] -> create invoice from purchase order identified by {}.", orderResponseDTO.getIdentifier());
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
         Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR);
@@ -98,16 +105,17 @@ public class InvoiceController {
         invoiceEntity.setUri(orderResponseDTO.getUri().split("\\.")[1]);
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
 
-
+        ///TODO
         String sourceBucket = String.valueOf(orderResponseDTO.getBuyer().getCompanyIdentifier());
         String destBucket = String.valueOf(responseInvoice.getSellerId());
-        S3BucketOps.copyS3Object(sourceBucket,destBucket,orderResponseDTO.getUri(),responseInvoice.getUri());
+        S3BucketOps.copyS3Object(sourceBucket, destBucket, orderResponseDTO.getUri(), responseInvoice.getUri());
         return invoiceMapperService.mapToDTO(responseInvoice);
 
     }
 
     @GetMapping("/{identifier}")
     public InvoiceDTO getById(@PathVariable UUID identifier, HttpServletRequest request) {
+        logger.info("[GET request] -> get invoice by UUID: {}.", identifier);
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
@@ -124,6 +132,7 @@ public class InvoiceController {
 
     @PutMapping("/{identifier}")
     public InvoiceDTO updateInvoice(@PathVariable UUID identifier, @RequestBody InvoiceDTO invoiceDTO, HttpServletRequest request) {
+        logger.info("[PUT request] -> update invoice identified by {}.", identifier);
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
@@ -140,6 +149,7 @@ public class InvoiceController {
 
     @DeleteMapping("/{identifier}")
     public void deleteById(@PathVariable UUID identifier, HttpServletRequest request) {
+        logger.info("[DELETE request] -> remove invoice identified by {}.", identifier);
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 

@@ -52,6 +52,13 @@
             <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.findify/s3mock -->
+        <dependency>
+            <groupId>io.findify</groupId>
+            <artifactId>s3mock_2.13</artifactId>
+            <version>0.2.6</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

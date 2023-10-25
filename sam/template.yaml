@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-0a0ec981937f11302"
+    Default: "vpc-05004167eb2038a3a"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-0eed297b9b2c2e00c,subnet-0a21e347d18fcf5d3,subnet-0bc03159b97c41774,subnet-0cc21cd43f55c4c52,subnet-02b22e76d5a208c3c,subnet-06d8e7ca0d76ddefb"
+    Default: "subnet-0d9756a8c2f600856,subnet-09ceb055421a8d184,subnet-0586cde386a121c3b,subnet-001d5eb0f30590540,subnet-09a862848305956fd,subnet-038662833871d59bc"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -241,17 +241,18 @@ Resources:
       Port: 80
       Protocol: HTTP
 
-#  HTTPSAutoScalingListener:
-#    Type: 'AWS::ElasticLoadBalancingV2::Listener'
-#    Properties:
-#      Certificates:
-#        - CertificateArn: "arn:aws:acm:us-east-1:712576552912:certificate/f3f730f4-182e-4077-aa57-39ab98805369"
-#      DefaultActions:
-#        - TargetGroupArn: !Ref EC2TargetGroup
-#          Type: 'forward'
-#      LoadBalancerArn: !Ref LoadBalancer
-#      Port: 443
-#      Protocol: HTTPS
+
+  HTTPSAutoScalingListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      Certificates:
+        - CertificateArn: "arn:aws:acm:us-east-1:582251705870:certificate/ece42848-8105-4a8b-a60b-e7e2c76875ca"
+      DefaultActions:
+        - TargetGroupArn: !Ref EC2TargetGroup
+          Type: 'forward'
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 443
+      Protocol: HTTPS
 
   WebappRole:
     Type: AWS::IAM::Role
@@ -467,7 +468,7 @@ Resources:
           sudo systemctl daemon-reload
           sudo systemctl enable mongod
           sudo systemctl start mongod
-           
+
           gen_uuid() {
             uuidgen -r | tr -d "-"
           }
@@ -478,7 +479,7 @@ Resources:
           db.user.insert({
           _id: "FB4E91A2-84A3-7983-8B12-8EBD940EE998",
           username : "admin",
-          password : "$2a$15$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW",
+          password : '\$2a\$15\$EDXzPtbMw2AxW4OXRDvs6.qdWDegH.bLhegtMGEywcETSxksrGDCW',
           roles : [
             "ADMIN"
           ]

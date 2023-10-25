@@ -18,6 +18,8 @@ import org.example.services.AuthorisationService;
 import org.example.utils.AuthorizationMapper;
 import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +39,7 @@ public class PurchaseOrderController {
     private final AuthorisationService authorisationService;
     private final PurchaseOrderFilteringService purchaseOrderFilteringService;
     private final PurchaseOrderValidatorService purchaseOrderValidatorService;
+    private static final Logger logger = LoggerFactory.getLogger(PurchaseOrderController.class);
 
     public PurchaseOrderController(PurchaseOrderService purchaseOrderService, PurchaseOrderMapperService purchaseOrderMapperService, AuthorisationService authorisationService, PurchaseOrderFilteringService purchaseOrderFilteringService, PurchaseOrderValidatorService purchaseOrderValidatorService) {
         this.purchaseOrderService = purchaseOrderService;
@@ -55,6 +58,7 @@ public class PurchaseOrderController {
             })
     @PostMapping
     public OrderResponseDTO createPurchaseOrder(@RequestPart("order") OrderRequestDTO orderRequestDTO, @RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+        logger.info("[POST request] -> create purchase order from company {} to company {}", orderRequestDTO.getBuyer(), orderRequestDTO.getSeller());
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
@@ -80,6 +84,7 @@ public class PurchaseOrderController {
             })
     @GetMapping("/{identifier}")
     public OrderResponseDTO getPurchaseOrder(@PathVariable UUID identifier, HttpServletRequest request) {
+        logger.info("[GET request] -> get purchase order by UUID: {}", identifier);
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
@@ -88,7 +93,6 @@ public class PurchaseOrderController {
         List<PurchaseOrderFilter> queryFilters = purchaseOrderFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
         PurchaseOrder purchaseOrder = purchaseOrderService.getPurchaseOrder(identifier, queryFilters);
 
-        //purchaseOrder.setUri(S3BucketOps.getPresignedURL(purchaseOrder.getBuyer().toString(), purchaseOrder.getUri()));
         return purchaseOrderMapperService.mapToDTO(purchaseOrder);
     }
 
@@ -101,6 +105,7 @@ public class PurchaseOrderController {
             })
     @GetMapping
     public List<OrderResponseDTO> getPurchaseOrders(HttpServletRequest request) {
+        logger.info("[GET request] -> get all purchase orders");
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
@@ -124,6 +129,7 @@ public class PurchaseOrderController {
             })
     @PutMapping("/{identifier}")
     public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
+        logger.info("[PUT request] -> update purchase order identified by {}. New status: {}", identifier, orderRequestDTO.getOrderStatus());
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
@@ -147,6 +153,7 @@ public class PurchaseOrderController {
             })
     @DeleteMapping("/{identifier}")
     public void removePurchaseOrder(@PathVariable UUID identifier, HttpServletRequest request) {
+        logger.info("[DELETE request] -> remove purchase order identified by {}", identifier);
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.DELETE);

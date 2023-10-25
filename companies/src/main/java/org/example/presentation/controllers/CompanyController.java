@@ -5,6 +5,8 @@ import org.example.business.services.CompanyService;
 import org.example.persistence.collections.Company;
 import org.example.presentation.utils.CompanyMapperService;
 import org.example.presentation.view.CompanyDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/companies")
 public class CompanyController {
+    private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
+
     @Autowired
     private CompanyService companyService;
 
@@ -23,39 +27,32 @@ public class CompanyController {
 
     @PostMapping
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
+        logger.info("[POST request] -> create company:{}", companyDTO.getName());
+
         Company company = companyMapperService.mapToEntity(companyDTO);
         Company savedCompany = companyService.createCompany(company);
 
-        /// TODO task scheduler - cron job
         S3BucketOps.createS3Bucket(savedCompany.getCompanyIdentifier().toString());
 
         return companyMapperService.mapToDTO(savedCompany);
     }
 
-    private CompanyDTO initializeCompany(CompanyDTO companyDTO) {
-        UUID identifier = UUID.randomUUID();
-        companyDTO.setCompanyIdentifier(identifier);
-
-        return companyDTO;
-    }
-
     @GetMapping
     public List<CompanyDTO> getCompanies() {
-
+        logger.info("[GET request] -> get all companies");
         return companyMapperService.mapToDTO(companyService.getCompanies());
     }
 
 
     @GetMapping("/{identifier}")
     public CompanyDTO getById(@PathVariable UUID identifier) {
+        logger.info("[GET request] -> get company by UUID: {}", identifier);
         return companyMapperService.mapToDTO(companyService.getCompanyById(identifier));
-
     }
 
     @DeleteMapping("/{identifier}")
     public void deleteById(@PathVariable UUID identifier) {
-
+        logger.info("[DELETE request] -> remove company by UUID: {}", identifier);
         companyService.deleteCompany(identifier);
-
     }
 }

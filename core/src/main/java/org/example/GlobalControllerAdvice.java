@@ -3,6 +3,8 @@ package org.example;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.example.customexceptions.*;
 import org.example.utils.ExceptionResponseDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,11 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalControllerAdvice.class);
+
     @ExceptionHandler({ResourceNotFoundException.class, NoSuchKeyException.class})
     public ResponseEntity<ExceptionResponseDTO> handleResourceNotFoundException(RuntimeException ex) {
-        System.out.println("Resource not found handler: "+ex.getClass()+" -> "+ex.getMessage());
+        logger.info("[ClientError] -> {}:{}", ex.getClass(), ex.getMessage());
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.NOT_FOUND;
 
@@ -27,6 +31,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(AlreadyExistingResourceException.class)
     public ResponseEntity<ExceptionResponseDTO> handleAlreadyExistingResourceException(AlreadyExistingResourceException ex) {
+        logger.info("[ClientError] -> {}:{}", ex.getClass(), ex.getMessage());
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.CONFLICT;
 
@@ -37,6 +42,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(InvalidResourceUpdateException.class)
     public ResponseEntity<ExceptionResponseDTO> handleInvalidUpdateException(InvalidResourceUpdateException ex) {
+        logger.info("[ClientError] -> {}:{}", ex.getClass(), ex.getMessage());
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -47,6 +53,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler({InvalidFormatException.class, IllegalArgumentException.class, MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ExceptionResponseDTO> handleFormatExceptions(Exception ex) {
+        logger.info("[ClientError] -> {}: {}", ex.getClass(), ex.getMessage());
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO(status.name(), status.value(), status.toString());
@@ -56,6 +63,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(OptimisticLockingFailureException.class)
     public ResponseEntity<ExceptionResponseDTO> handleOptimisticLockingFailureException(OptimisticLockingFailureException ex) {
+        logger.info("[ClientError] -> {}: {}", ex.getClass(), ex.getMessage());
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.PRECONDITION_FAILED;
 
@@ -66,6 +74,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler({ForbiddenActionException.class})
     public ResponseEntity<ExceptionResponseDTO> handleInvalidRoleException(Exception ex) {
+        logger.info("[ClientError] -> {}: {}", ex.getClass(), ex.getMessage());
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.FORBIDDEN;
 
@@ -76,6 +85,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ExceptionResponseDTO> handleInvalidCredentialsException(InvalidCredentialsException ex) {
+        logger.info("[ClientError] -> {}: {}", ex.getClass(), ex.getMessage());
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.UNAUTHORIZED;
 
@@ -86,7 +96,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(NoSuchBucketException.class)
     public ResponseEntity<ExceptionResponseDTO> handleAWSException(NoSuchBucketException ex) {
-        System.out.println("NoSuchBucketException handler: "+ex.getMessage());
+        logger.error("[ServerError] -> {}: {}", ex.getClass(), ex.getMessage());
         String details = "Server error";
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -97,7 +107,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponseDTO> handleGenericException(Exception ex) {
-        System.out.println("Generic handler: "+ex.getClass()+" -> "+ex.getMessage());
+        logger.error("[ServerError] -> {}: {}", ex.getClass(), ex.getMessage());
         String details = "Server error";
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
