@@ -134,4 +134,16 @@ public class S3BucketOps {
         return s3Client.listBuckets().buckets();
     }
 
+    public static List<Bucket> getBucketList() {
+
+        S3Client s3Client = AWSS3Client.getInstance();
+        List<Bucket> buckets = null;
+        try {
+            buckets = s3Client.listBuckets().buckets();
+        } catch (S3Exception e) {
+            System.err.println(e.awsErrorDetails().errorMessage());
+        }
+
+        return buckets;
+    }
 }

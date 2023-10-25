@@ -241,6 +241,7 @@ Resources:
       Port: 80
       Protocol: HTTP
 
+
   HTTPSAutoScalingListener:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
@@ -292,18 +293,15 @@ Resources:
               -
                 Effect: "Allow"
                 Action:
-                  - "s3:CreateBucket"
-                  - "s3:ListAllMyBuckets"
-                Resource: !Sub arn:${AWS::Partition}:s3:::*
-              -
-                Effect: "Allow"
-                Action:
                   - "s3:PutObject"
                   - "s3:PutObjectAcl"
                   - "s3:GetObject"
+                  - "s3:ListBucket"
+                  - "s3:ListAllMyBuckets"
                   - "s3:GetObjectAcl"
                   - "s3:DeleteObject"
                   - "s3:HeadObject"
+                  - "s3:CreateBucket"
                 Resource: !Sub arn:${AWS::Partition}:s3:::*
               -
                 Effect: "Allow"
@@ -470,7 +468,7 @@ Resources:
           sudo systemctl daemon-reload
           sudo systemctl enable mongod
           sudo systemctl start mongod
-          
+
           gen_uuid() {
             uuidgen -r | tr -d "-"
           }

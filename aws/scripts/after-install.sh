@@ -6,6 +6,7 @@ set -xe
 aws s3 cp s3://backendstack-webappdeploymentbucket-192t9e31aoa55/core-0.0.1-SNAPSHOT.jar	 /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
 
 
+
 stack_name="BackendStack"
 db_private_ip=$(aws cloudformation describe-stacks --stack-name "$stack_name" --query "Stacks[0].Outputs[?OutputKey=='MongoEC2InstancePrivateIP'].OutputValue" --output text)
 
