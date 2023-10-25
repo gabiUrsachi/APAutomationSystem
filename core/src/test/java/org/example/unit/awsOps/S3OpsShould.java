@@ -129,19 +129,18 @@ public class S3OpsShould {
     }
 
     @Test
-    public void successfullyCopyObjectFromOneBucketToAnother() throws IOException {
-        String sourceBucketName = RandomString.make().toLowerCase();
-        String destBucketName = RandomString.make().toLowerCase();
-        String keyName = RandomString.make().toLowerCase();
+    public void successfullyDuplicateObject() throws IOException {
+        String bucketName = RandomString.make().toLowerCase();
+        String srcKeyName = RandomString.make().toLowerCase();
+        String destKeyName = RandomString.make().toLowerCase();
 
         awsS3ClientMockedStatic.when(AWSS3Client::getInstance).thenReturn(s3Client);
 
-        S3BucketOps.createS3Bucket(sourceBucketName);
-        S3BucketOps.createS3Bucket(destBucketName);
-        S3BucketOps.putS3Object(sourceBucketName, keyName, inputStream);
+        S3BucketOps.createS3Bucket(bucketName);
+        S3BucketOps.putS3Object(bucketName, srcKeyName, inputStream);
 
-        S3BucketOps.copyS3Object(sourceBucketName, destBucketName, keyName, keyName);
-        Resource resource = S3BucketOps.getS3Object(destBucketName, keyName);
+        S3BucketOps.duplicateS3Object(bucketName, srcKeyName, destKeyName);
+        Resource resource = S3BucketOps.getS3Object(bucketName, destKeyName);
 
         Assertions.assertTrue(resource.exists());
         awsS3ClientMockedStatic.verify(AWSS3Client::getInstance, atLeast(1));
@@ -149,16 +148,15 @@ public class S3OpsShould {
 
     @Test
     public void returnNullWhenTryingToCopyNonExistentObject() throws IOException {
-        String sourceBucketName = RandomString.make().toLowerCase();
-        String destBucketName = RandomString.make().toLowerCase();
-        String keyName = RandomString.make().toLowerCase();
+        String bucketName = RandomString.make().toLowerCase();
+        String srcKeyName = RandomString.make().toLowerCase();
+        String destKeyName = RandomString.make().toLowerCase();
 
         awsS3ClientMockedStatic.when(AWSS3Client::getInstance).thenReturn(s3Client);
 
-        S3BucketOps.createS3Bucket(sourceBucketName);
-        S3BucketOps.createS3Bucket(destBucketName);
+        S3BucketOps.createS3Bucket(bucketName);
 
-        CopyObjectResponse copyObjectResponse = S3BucketOps.copyS3Object(sourceBucketName, destBucketName, keyName, keyName);
+        CopyObjectResponse copyObjectResponse = S3BucketOps.duplicateS3Object(bucketName, srcKeyName, destKeyName);
 
         Assertions.assertNull(copyObjectResponse);
         awsS3ClientMockedStatic.verify(AWSS3Client::getInstance, atLeast(1));

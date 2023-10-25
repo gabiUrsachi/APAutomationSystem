@@ -105,10 +105,8 @@ public class InvoiceController {
         invoiceEntity.setUri(orderResponseDTO.getUri().split("\\.")[1]);
         Invoice responseInvoice = invoiceService.createInvoice(invoiceEntity);
 
-        ///TODO
-        String sourceBucket = String.valueOf(orderResponseDTO.getBuyer().getCompanyIdentifier());
-        String destBucket = String.valueOf(responseInvoice.getSellerId());
-        S3BucketOps.copyS3Object(sourceBucket, destBucket, orderResponseDTO.getUri(), responseInvoice.getUri());
+        String bucketName = String.valueOf(responseInvoice.getSellerId());
+        S3BucketOps.duplicateS3Object(bucketName, orderResponseDTO.getUri(), responseInvoice.getUri());
         return invoiceMapperService.mapToDTO(responseInvoice);
 
     }

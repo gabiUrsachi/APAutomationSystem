@@ -1,0 +1,794 @@
+222  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+219  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3726 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object ohzoa7tz/lp4u4wft (signed)
+3823 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3828 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> jltnhuzj
+3892 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket jltnhuzj
+3940 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket jltnhuzj with prefix=None, delimiter=None
+3961 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3971 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object jltnhuzj/hyws9qxg (signed)
+4067 [main] INFO  org.example.S3BucketOps - Successfully placed object hyws9qxg with version null into jltnhuzj.
+4196 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> kktgbhli
+4202 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket kktgbhli
+4218 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket kktgbhli with prefix=None, delimiter=None
+4220 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4220 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 9cieup1u
+4227 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 9cieup1u
+4234 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket 9cieup1u with prefix=None, delimiter=None
+4236 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4275 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.CopyObject - cannot copy object kktgbhli/yslgotde: no such key
+4287 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+4291 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ej8o2dlw
+4298 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ej8o2dlw
+4306 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket ej8o2dlw with prefix=None, delimiter=None
+4310 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4359 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 5mafbmoe
+4364 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 5mafbmoe
+4370 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket 5mafbmoe with prefix=None, delimiter=None
+4372 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4372 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> xnwwy4q6
+4377 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket xnwwy4q6
+4384 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket xnwwy4q6 with prefix=None, delimiter=None
+4385 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4393 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object 5mafbmoe/fhjwomiw (signed)
+4397 [main] INFO  org.example.S3BucketOps - Successfully placed object fhjwomiw with version null into 5mafbmoe.
+4404 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - copied object 5mafbmoe/fhjwomiw
+4412 [main] INFO  org.example.S3BucketOps - Successfully copied object fhjwomiw from bucket 5mafbmoe to bucket xnwwy4q6.
+4423 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 9vkmogil
+4428 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 9vkmogil
+4434 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket 9vkmogil with prefix=None, delimiter=None
+4435 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4442 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object 9vkmogil/knwqcsj0 (signed)
+4446 [main] INFO  org.example.S3BucketOps - Successfully placed object knwqcsj0 with version null into 9vkmogil.
+4448 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> awgonngr
+4453 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket awgonngr
+4460 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket awgonngr with prefix=None, delimiter=None
+4461 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+278  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3626 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object 9vqdok9x/plzahrg9 (signed)
+3748 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3755 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> krduiinp
+3830 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket krduiinp
+3879 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket krduiinp with prefix=None, delimiter=None
+3900 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3909 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object krduiinp/ml6ggvih (signed)
+4000 [main] INFO  org.example.S3BucketOps - Successfully placed object ml6ggvih with version null into krduiinp.
+4115 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> qzphgjn9
+4121 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket qzphgjn9
+4130 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket qzphgjn9 with prefix=None, delimiter=None
+4132 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4132 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> kriq3bpp
+4138 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket kriq3bpp
+4144 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket kriq3bpp with prefix=None, delimiter=None
+4146 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4188 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.CopyObject - cannot copy object qzphgjn9/ngmmiltc: no such key
+4204 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+4208 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> xbtacn9o
+4214 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket xbtacn9o
+4221 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket xbtacn9o with prefix=None, delimiter=None
+4222 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4278 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> dqj4bvjg
+4284 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket dqj4bvjg
+4291 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket dqj4bvjg with prefix=None, delimiter=None
+4293 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4294 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> cxnhhln5
+4300 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket cxnhhln5
+4306 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket cxnhhln5 with prefix=None, delimiter=None
+4307 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4315 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object dqj4bvjg/dcmdyt3v (signed)
+4319 [main] INFO  org.example.S3BucketOps - Successfully placed object dcmdyt3v with version null into dqj4bvjg.
+4329 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - copied object dqj4bvjg/dcmdyt3v
+4338 [main] INFO  org.example.S3BucketOps - Successfully copied object dcmdyt3v from bucket dqj4bvjg to bucket cxnhhln5.
+4353 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> jbauqs8o
+4359 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket jbauqs8o
+4365 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket jbauqs8o with prefix=None, delimiter=None
+4367 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4374 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object jbauqs8o/jtheojva (signed)
+4379 [main] INFO  org.example.S3BucketOps - Successfully placed object jtheojva with version null into jbauqs8o.
+4386 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> mrlyq1xd
+4392 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket mrlyq1xd
+4398 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket mrlyq1xd with prefix=None, delimiter=None
+4400 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+248  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3793 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object skrucuvx/ck4mvkps (signed)
+3884 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3887 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> mckw9duf
+3952 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket mckw9duf
+4005 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket mckw9duf with prefix=None, delimiter=None
+4024 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4033 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object mckw9duf/qy5ytoxm (signed)
+4126 [main] INFO  org.example.S3BucketOps - Successfully placed object qy5ytoxm with version null into mckw9duf.
+4245 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> n1zzp9ai
+4252 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket n1zzp9ai
+4260 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket n1zzp9ai with prefix=None, delimiter=None
+4262 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4262 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> onaalgzg
+4271 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket onaalgzg
+4280 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket onaalgzg with prefix=None, delimiter=None
+4282 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4320 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.CopyObject - cannot copy object n1zzp9ai/3kl6eehm: no such key
+4336 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+4339 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> pkhllc6x
+4346 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket pkhllc6x
+4355 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket pkhllc6x with prefix=None, delimiter=None
+4357 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4406 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> vzyywxhu
+4412 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket vzyywxhu
+4420 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket vzyywxhu with prefix=None, delimiter=None
+4423 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4423 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> vk63e3j1
+4430 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket vk63e3j1
+4438 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket vk63e3j1 with prefix=None, delimiter=None
+4440 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4450 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object vzyywxhu/jxtkfkrx (signed)
+4457 [main] INFO  org.example.S3BucketOps - Successfully placed object jxtkfkrx with version null into vzyywxhu.
+4467 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.CopyObject - copied object vzyywxhu/jxtkfkrx
+4475 [main] INFO  org.example.S3BucketOps - Successfully copied object jxtkfkrx from bucket vzyywxhu to bucket vk63e3j1.
+4485 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> emqcfxji
+4490 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket emqcfxji
+4495 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket emqcfxji with prefix=None, delimiter=None
+4497 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4504 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object emqcfxji/d4xhv1cy (signed)
+4509 [main] INFO  org.example.S3BucketOps - Successfully placed object d4xhv1cy with version null into emqcfxji.
+4512 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> jxensq5j
+4517 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket jxensq5j
+4524 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket jxensq5j with prefix=None, delimiter=None
+4525 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+234  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3459 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object egeiyxem/llifmwpm (signed)
+3566 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3570 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 4vfqetkm
+3631 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 4vfqetkm
+3686 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket 4vfqetkm with prefix=None, delimiter=None
+3707 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3716 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object 4vfqetkm/hxtrqj7b (signed)
+3812 [main] INFO  org.example.S3BucketOps - Successfully placed object hxtrqj7b with version null into 4vfqetkm.
+3929 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ejkpnnzr
+3935 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ejkpnnzr
+3944 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket ejkpnnzr with prefix=None, delimiter=None
+3946 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3946 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ojgctsh2
+3952 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ojgctsh2
+3959 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket ojgctsh2 with prefix=None, delimiter=None
+3961 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4014 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.CopyObject - cannot copy object ejkpnnzr/pgwa7nxa: no such key
+4036 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+4038 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> tyjgns4v
+4044 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket tyjgns4v
+4051 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket tyjgns4v with prefix=None, delimiter=None
+4053 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4108 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> tasgl4tu
+4113 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket tasgl4tu
+4119 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket tasgl4tu with prefix=None, delimiter=None
+4121 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4121 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 9lc3tzot
+4127 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 9lc3tzot
+4133 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket 9lc3tzot with prefix=None, delimiter=None
+4135 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4145 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object tasgl4tu/x9loeuil (signed)
+4150 [main] INFO  org.example.S3BucketOps - Successfully placed object x9loeuil with version null into tasgl4tu.
+4160 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.CopyObject - copied object tasgl4tu/x9loeuil
+4175 [main] INFO  org.example.S3BucketOps - Successfully copied object x9loeuil from bucket tasgl4tu to bucket 9lc3tzot.
+4187 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> sld51dsn
+4192 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket sld51dsn
+4198 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket sld51dsn with prefix=None, delimiter=None
+4200 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4207 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object sld51dsn/m30wv2qm (signed)
+4212 [main] INFO  org.example.S3BucketOps - Successfully placed object m30wv2qm with version null into sld51dsn.
+4215 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> vvmedx5r
+4220 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket vvmedx5r
+4225 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket vvmedx5r with prefix=None, delimiter=None
+4227 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+238  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3513 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object lose0ara/iydnuazc (signed)
+3601 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3606 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 6wkglj6b
+3675 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 6wkglj6b
+3736 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket 6wkglj6b with prefix=None, delimiter=None
+3763 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3774 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object 6wkglj6b/imeqsq07 (signed)
+3891 [main] INFO  org.example.S3BucketOps - Successfully placed object imeqsq07 with version null into 6wkglj6b.
+4013 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> n1tnktvz
+4019 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket n1tnktvz
+4026 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket n1tnktvz with prefix=None, delimiter=None
+4028 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4028 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ysvg19wa
+4034 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ysvg19wa
+4041 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket ysvg19wa with prefix=None, delimiter=None
+4043 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4095 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.CopyObject - cannot copy object n1tnktvz/gmp4uusd: no such key
+4110 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+4116 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ofr27tvp
+4123 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ofr27tvp
+4130 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket ofr27tvp with prefix=None, delimiter=None
+4132 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4184 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ssmzpqkq
+4189 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ssmzpqkq
+4195 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket ssmzpqkq with prefix=None, delimiter=None
+4197 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4197 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> kgzlr8dn
+4203 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket kgzlr8dn
+4209 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket kgzlr8dn with prefix=None, delimiter=None
+4211 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4220 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object ssmzpqkq/mg5so1s4 (signed)
+4225 [main] INFO  org.example.S3BucketOps - Successfully placed object mg5so1s4 with version null into ssmzpqkq.
+4234 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - copied object ssmzpqkq/mg5so1s4
+4248 [main] INFO  org.example.S3BucketOps - Successfully copied object mg5so1s4 from bucket ssmzpqkq to bucket kgzlr8dn.
+4261 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 0n65odbw
+4267 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 0n65odbw
+4273 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket 0n65odbw with prefix=None, delimiter=None
+4275 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4284 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object 0n65odbw/bne9fjvl (signed)
+4289 [main] INFO  org.example.S3BucketOps - Successfully placed object bne9fjvl with version null into 0n65odbw.
+4295 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ytzpkc5g
+4303 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ytzpkc5g
+4310 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket ytzpkc5g with prefix=None, delimiter=None
+4312 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+211  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3585 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object ij7wttzg/snclpely (signed)
+3708 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3712 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> jealoshf
+3800 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket jealoshf
+3864 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket jealoshf with prefix=None, delimiter=None
+3893 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3904 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object jealoshf/pskcqugh (signed)
+4006 [main] INFO  org.example.S3BucketOps - Successfully placed object pskcqugh with version null into jealoshf.
+4138 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> h8zk7aac
+4144 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket h8zk7aac
+4152 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket h8zk7aac with prefix=None, delimiter=None
+4155 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4155 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> xpuvasty
+4162 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket xpuvasty
+4169 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket xpuvasty with prefix=None, delimiter=None
+4172 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4224 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.CopyObject - cannot copy object h8zk7aac/smtgk68n: no such key
+4240 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+4246 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> wk9njpzs
+4252 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket wk9njpzs
+4260 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket wk9njpzs with prefix=None, delimiter=None
+4262 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4319 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> jykxzdd0
+4326 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket jykxzdd0
+4333 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket jykxzdd0 with prefix=None, delimiter=None
+4334 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4334 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rj0a0hw3
+4340 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rj0a0hw3
+4348 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket rj0a0hw3 with prefix=None, delimiter=None
+4350 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4359 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object jykxzdd0/59k6ytys (signed)
+4363 [main] INFO  org.example.S3BucketOps - Successfully placed object 59k6ytys with version null into jykxzdd0.
+4373 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - copied object jykxzdd0/59k6ytys
+4383 [main] INFO  org.example.S3BucketOps - Successfully copied object 59k6ytys from bucket jykxzdd0 to bucket rj0a0hw3.
+4393 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> mp81c0fj
+4399 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket mp81c0fj
+4405 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket mp81c0fj with prefix=None, delimiter=None
+4407 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4415 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object mp81c0fj/kxlpdywp (signed)
+4420 [main] INFO  org.example.S3BucketOps - Successfully placed object kxlpdywp with version null into mp81c0fj.
+4423 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rddriqfa
+4430 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rddriqfa
+4436 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket rddriqfa with prefix=None, delimiter=None
+4438 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+247  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3358 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object i3myzlpj/g2qkbhwd (signed)
+3449 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3454 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> csv8qzfz
+3517 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket csv8qzfz
+3565 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket csv8qzfz with prefix=None, delimiter=None
+3584 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3593 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object csv8qzfz/qxhc6jgb (signed)
+3705 [main] INFO  org.example.S3BucketOps - Successfully placed object qxhc6jgb with version null into csv8qzfz.
+3817 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 5fuh5cax
+3822 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 5fuh5cax
+3830 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket 5fuh5cax with prefix=None, delimiter=None
+3831 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3832 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> sdipy4zq
+3837 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket sdipy4zq
+3844 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket sdipy4zq with prefix=None, delimiter=None
+3846 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3890 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.CopyObject - cannot copy object 5fuh5cax/q8sfs2sm: no such key
+3907 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+3911 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> qoikpct5
+3916 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket qoikpct5
+3923 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket qoikpct5 with prefix=None, delimiter=None
+3925 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3969 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> bwef40tb
+3974 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket bwef40tb
+3980 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket bwef40tb with prefix=None, delimiter=None
+3982 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3982 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> wtebvtvv
+3988 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket wtebvtvv
+3995 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket wtebvtvv with prefix=None, delimiter=None
+3996 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4006 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object bwef40tb/6nlwazlt (signed)
+4013 [main] INFO  org.example.S3BucketOps - Successfully placed object 6nlwazlt with version null into bwef40tb.
+4021 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.CopyObject - copied object bwef40tb/6nlwazlt
+4027 [main] INFO  org.example.S3BucketOps - Successfully copied object 6nlwazlt from bucket bwef40tb to bucket wtebvtvv.
+4038 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> sm0jtkca
+4043 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket sm0jtkca
+4048 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket sm0jtkca with prefix=None, delimiter=None
+4050 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4057 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object sm0jtkca/g9hczqeo (signed)
+4061 [main] INFO  org.example.S3BucketOps - Successfully placed object g9hczqeo with version null into sm0jtkca.
+4063 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> k3iqpcyl
+4068 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket k3iqpcyl
+4074 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket k3iqpcyl with prefix=None, delimiter=None
+4074 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+236  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3093 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object 5s1qjezn/hem73uyl (signed)
+3177 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3180 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> pkczncuv
+3249 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket pkczncuv
+3287 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/pkczncuv
+3312 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> zn2tpfoq
+3333 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket zn2tpfoq
+3344 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/zn2tpfoq
+3351 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> hvzatylk
+3366 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket hvzatylk
+3374 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/hvzatylk
+3383 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> wic5y1eo
+3395 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket wic5y1eo
+3403 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/wic5y1eo
+3411 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> sjdtxg6w
+3424 [s3mock-akka.actor.default-dispatcher-12] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket sjdtxg6w
+3432 [s3mock-akka.actor.default-dispatcher-12] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/sjdtxg6w
+3442 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> hhq3pzhg
+3455 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket hhq3pzhg
+3463 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/hhq3pzhg
+203  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3221 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object xnu3zdel/yr36qoop (signed)
+3303 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3308 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> xffpgfpi
+3366 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket xffpgfpi
+3414 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket xffpgfpi with prefix=None, delimiter=None
+3438 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3447 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object xffpgfpi/lz8bmces (signed)
+3549 [main] INFO  org.example.S3BucketOps - Successfully placed object lz8bmces with version null into xffpgfpi.
+3656 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> gcom9mxe
+3662 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket gcom9mxe
+3671 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket gcom9mxe with prefix=None, delimiter=None
+3673 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3673 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ber43k4p
+3678 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ber43k4p
+3686 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket ber43k4p with prefix=None, delimiter=None
+3689 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3726 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.CopyObject - cannot copy object gcom9mxe/tooxlctl: no such key
+3739 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+3742 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rrrs23kk
+3750 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rrrs23kk
+3758 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket rrrs23kk with prefix=None, delimiter=None
+3760 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3812 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> mptpcju5
+3818 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket mptpcju5
+3824 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket mptpcju5 with prefix=None, delimiter=None
+3826 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3826 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 0n6fvmgd
+3831 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 0n6fvmgd
+3837 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket 0n6fvmgd with prefix=None, delimiter=None
+3839 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3848 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object mptpcju5/6ord8r9j (signed)
+3854 [main] INFO  org.example.S3BucketOps - Successfully placed object 6ord8r9j with version null into mptpcju5.
+3860 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - copied object mptpcju5/6ord8r9j
+3867 [main] INFO  org.example.S3BucketOps - Successfully copied object 6ord8r9j from bucket mptpcju5 to bucket 0n6fvmgd.
+3878 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ir0hjqij
+3884 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ir0hjqij
+3890 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket ir0hjqij with prefix=None, delimiter=None
+3892 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3898 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object ir0hjqij/vl7qhxdk (signed)
+3903 [main] INFO  org.example.S3BucketOps - Successfully placed object vl7qhxdk with version null into ir0hjqij.
+3906 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> e3ky9shy
+3911 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket e3ky9shy
+3918 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket e3ky9shy with prefix=None, delimiter=None
+3920 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+217  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3274 [s3mock-akka.actor.default-dispatcher-5] INFO  io.findify.s3mock.route.PutObject - put object rnkg6qp3/uyrsq09j (signed)
+3360 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3365 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 7nrk6udm
+3434 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 7nrk6udm
+3471 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/7nrk6udm
+3497 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 5y0mksrn
+3518 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 5y0mksrn
+3528 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/5y0mksrn
+3535 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> tzykhxbj
+3549 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket tzykhxbj
+3560 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/tzykhxbj
+3567 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> uoetrmao
+3581 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket uoetrmao
+3589 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/uoetrmao
+3598 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> jj1gq7gd
+3613 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket jj1gq7gd
+3623 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/jj1gq7gd
+3631 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> q7fqzljh
+3644 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket q7fqzljh
+3651 [s3mock-akka.actor.default-dispatcher-15] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/q7fqzljh
+207  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3172 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object ddzjkcn4/kcs6wxjk (signed)
+3257 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3260 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> f94qoca6
+3323 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket f94qoca6
+3361 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/f94qoca6
+3386 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> llofwo2f
+3408 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket llofwo2f
+3417 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/llofwo2f
+3425 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 42xv6kvl
+3439 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 42xv6kvl
+3450 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/42xv6kvl
+3457 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> x9tgp05s
+3475 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket x9tgp05s
+3484 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/x9tgp05s
+3491 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> e2qtpfle
+3503 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket e2qtpfle
+3512 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/e2qtpfle
+3521 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rjmbx28n
+3535 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rjmbx28n
+3544 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/rjmbx28n
+204  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3039 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object ceqnq0pb/akcblfh2 (signed)
+3130 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3134 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> u4n6ihmj
+3197 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket u4n6ihmj
+3249 [s3mock-akka.actor.default-dispatcher-5] INFO  io.findify.s3mock.route.ListBucket - listing bucket u4n6ihmj with prefix=None, delimiter=None
+3276 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3284 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object u4n6ihmj/v4ezmlz7 (signed)
+3401 [main] INFO  org.example.S3BucketOps - Successfully placed object v4ezmlz7 with version null into u4n6ihmj.
+3512 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> bgtgghy5
+3517 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket bgtgghy5
+3524 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket bgtgghy5 with prefix=None, delimiter=None
+3525 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3525 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> pxug8ehu
+3530 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket pxug8ehu
+3536 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket pxug8ehu with prefix=None, delimiter=None
+3538 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3578 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.CopyObject - cannot copy object bgtgghy5/cquegtqa: no such key
+3591 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+3594 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> pxxoollo
+3599 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket pxxoollo
+3606 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket pxxoollo with prefix=None, delimiter=None
+3607 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3650 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> u7cbwqne
+3655 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket u7cbwqne
+3660 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket u7cbwqne with prefix=None, delimiter=None
+3661 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3661 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> dm70vupt
+3666 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket dm70vupt
+3671 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket dm70vupt with prefix=None, delimiter=None
+3673 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3679 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object u7cbwqne/btjpeqhv (signed)
+3683 [main] INFO  org.example.S3BucketOps - Successfully placed object btjpeqhv with version null into u7cbwqne.
+3691 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - copied object u7cbwqne/btjpeqhv
+3698 [main] INFO  org.example.S3BucketOps - Successfully copied object btjpeqhv from bucket u7cbwqne to bucket dm70vupt.
+3709 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> fppzjbgw
+3714 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket fppzjbgw
+3719 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket fppzjbgw with prefix=None, delimiter=None
+3720 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3728 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object fppzjbgw/lyhpukfb (signed)
+3732 [main] INFO  org.example.S3BucketOps - Successfully placed object lyhpukfb with version null into fppzjbgw.
+3735 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 83xkbu8w
+3742 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 83xkbu8w
+3747 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket 83xkbu8w with prefix=None, delimiter=None
+3749 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+222  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+2997 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object cmylc2au/dpeqpcrq (signed)
+3072 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3076 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> cyxfcndl
+3134 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket cyxfcndl
+3179 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket cyxfcndl with prefix=None, delimiter=None
+3203 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3211 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object cyxfcndl/6zwmtbre (signed)
+3296 [main] INFO  org.example.S3BucketOps - Successfully placed object 6zwmtbre with version null into cyxfcndl.
+3401 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 5xgbropk
+3406 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 5xgbropk
+3413 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket 5xgbropk with prefix=None, delimiter=None
+3415 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3415 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ohz3dy40
+3421 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ohz3dy40
+3427 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket ohz3dy40 with prefix=None, delimiter=None
+3429 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3466 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - cannot copy object 5xgbropk/wmdajtru: no such key
+3477 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+3479 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> wrqb7dgl
+3485 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket wrqb7dgl
+3492 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket wrqb7dgl with prefix=None, delimiter=None
+3494 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3539 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> tcmkzjts
+3544 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket tcmkzjts
+3550 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket tcmkzjts with prefix=None, delimiter=None
+3552 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3552 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> yxg7lcx7
+3556 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket yxg7lcx7
+3563 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket yxg7lcx7 with prefix=None, delimiter=None
+3566 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3574 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object tcmkzjts/jzcmd3sq (signed)
+3580 [main] INFO  org.example.S3BucketOps - Successfully placed object jzcmd3sq with version null into tcmkzjts.
+3587 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - copied object tcmkzjts/jzcmd3sq
+3593 [main] INFO  org.example.S3BucketOps - Successfully copied object jzcmd3sq from bucket tcmkzjts to bucket yxg7lcx7.
+3603 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> togr04xn
+3609 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket togr04xn
+3614 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket togr04xn with prefix=None, delimiter=None
+3616 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3622 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object togr04xn/ie42uz2z (signed)
+3627 [main] INFO  org.example.S3BucketOps - Successfully placed object ie42uz2z with version null into togr04xn.
+3629 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rpl1vdkv
+3633 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rpl1vdkv
+3639 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket rpl1vdkv with prefix=None, delimiter=None
+3641 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+225  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3127 [s3mock-akka.actor.default-dispatcher-7] INFO  io.findify.s3mock.route.PutObject - put object sbvf7yu3/ze6l9juq (signed)
+3208 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3213 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> lq1qzosq
+3272 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket lq1qzosq
+3309 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/lq1qzosq
+3334 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> t4ldc1xs
+3355 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket t4ldc1xs
+3366 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/t4ldc1xs
+3374 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 8z3luxec
+3388 [s3mock-akka.actor.default-dispatcher-10] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 8z3luxec
+3397 [s3mock-akka.actor.default-dispatcher-10] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/8z3luxec
+3406 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> exvljvo4
+3419 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket exvljvo4
+3429 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/exvljvo4
+3439 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> wdk1kxbx
+3455 [s3mock-akka.actor.default-dispatcher-12] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket wdk1kxbx
+3464 [s3mock-akka.actor.default-dispatcher-12] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/wdk1kxbx
+3471 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> w193soef
+3483 [s3mock-akka.actor.default-dispatcher-11] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket w193soef
+3491 [s3mock-akka.actor.default-dispatcher-13] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/w193soef
+203  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+2974 [s3mock-akka.actor.default-dispatcher-5] INFO  io.findify.s3mock.route.PutObject - put object 6oe85w19/mrmcywao (signed)
+3052 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3056 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> tggzjtj2
+3121 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket tggzjtj2
+3156 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/tggzjtj2
+3179 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> hvgejlpe
+3198 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket hvgejlpe
+3209 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/hvgejlpe
+3217 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> dzcnelnr
+3232 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket dzcnelnr
+3243 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/dzcnelnr
+3251 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> dxdid9pv
+3264 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket dxdid9pv
+3273 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/dxdid9pv
+3281 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> c4lc6vxw
+3292 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket c4lc6vxw
+3302 [s3mock-akka.actor.default-dispatcher-13] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/c4lc6vxw
+3309 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> lkiam4hh
+3320 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket lkiam4hh
+3328 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/lkiam4hh
+250  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+1951 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> nwbaewle
+2803 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket nwbaewle
+41812 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/nwbaewle
+200  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3034 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object vyncc3ps/7awfcx0h (signed)
+3112 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3116 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> qmkrgseq
+3180 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket qmkrgseq
+3214 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/qmkrgseq
+3240 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> aptb4zzw
+3258 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket aptb4zzw
+3269 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/aptb4zzw
+3276 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> bjxqzgjc
+3289 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket bjxqzgjc
+3301 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/bjxqzgjc
+3309 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> kd0zmmlb
+3322 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket kd0zmmlb
+3330 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/kd0zmmlb
+3339 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> k95lc4wt
+3352 [s3mock-akka.actor.default-dispatcher-11] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket k95lc4wt
+3360 [s3mock-akka.actor.default-dispatcher-11] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/k95lc4wt
+3369 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> epkz2pzi
+3383 [s3mock-akka.actor.default-dispatcher-12] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket epkz2pzi
+3391 [s3mock-akka.actor.default-dispatcher-12] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/epkz2pzi
+197  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3006 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object dt7x6vrn/7bzovzaq (signed)
+3080 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3084 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ikijabks
+3153 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ikijabks
+3189 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/ikijabks
+3213 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> x24bgka7
+3231 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket x24bgka7
+3241 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/x24bgka7
+3250 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> tcznhl8r
+3262 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket tcznhl8r
+3272 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/tcznhl8r
+3278 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> abj04crx
+3290 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket abj04crx
+3300 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/abj04crx
+3307 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> tjg5mssh
+3321 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket tjg5mssh
+3330 [s3mock-akka.actor.default-dispatcher-11] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/tjg5mssh
+3340 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ghuiszni
+3353 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ghuiszni
+3361 [s3mock-akka.actor.default-dispatcher-15] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/ghuiszni
+3005 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object h8tvclo5/rjkjl8zp (signed)
+3096 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3104 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 1dbf530g
+3161 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 1dbf530g
+3198 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/1dbf530g
+3225 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rnmwzudd
+3245 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rnmwzudd
+3256 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/rnmwzudd
+3264 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> eqtrrwky
+3278 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket eqtrrwky
+3288 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/eqtrrwky
+3296 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> otqobccn
+3309 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket otqobccn
+3318 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/otqobccn
+3326 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> jytww2n4
+3338 [s3mock-akka.actor.default-dispatcher-12] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket jytww2n4
+3346 [s3mock-akka.actor.default-dispatcher-12] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/jytww2n4
+3354 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> zh3aif1c
+3367 [s3mock-akka.actor.default-dispatcher-14] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket zh3aif1c
+3374 [s3mock-akka.actor.default-dispatcher-14] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/zh3aif1c
+3008 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object n0thetkr/i7h1jzyl (signed)
+3075 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3081 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> lqyohmqw
+3144 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket lqyohmqw
+3181 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/lqyohmqw
+3203 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 6oxegfyl
+3222 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 6oxegfyl
+3232 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/6oxegfyl
+3241 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 4g0d5y5z
+3255 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 4g0d5y5z
+3265 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/4g0d5y5z
+3272 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> pe9ee8j2
+3284 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket pe9ee8j2
+3294 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/pe9ee8j2
+3302 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> wxod3t84
+3314 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket wxod3t84
+3322 [s3mock-akka.actor.default-dispatcher-10] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/wxod3t84
+3329 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> gbrchzra
+3342 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket gbrchzra
+3350 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/gbrchzra
+2976 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object 7c2axrvz/dzik8tof (signed)
+3034 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3040 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ciafrdei
+3106 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ciafrdei
+3139 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/ciafrdei
+3164 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ed65rnoz
+3183 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ed65rnoz
+3193 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/ed65rnoz
+3201 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 6bqlhgzc
+3214 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 6bqlhgzc
+3223 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/6bqlhgzc
+3230 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 53lsmu1o
+3242 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 53lsmu1o
+3250 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/53lsmu1o
+3258 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> xj9g0stw
+3269 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket xj9g0stw
+3277 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/xj9g0stw
+3284 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> awm2bcqn
+3297 [s3mock-akka.actor.default-dispatcher-11] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket awm2bcqn
+3305 [s3mock-akka.actor.default-dispatcher-11] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/awm2bcqn
+197  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3049 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object ltllycap/mvvbz0zz (signed)
+3137 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3142 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> fe4wjr6s
+3205 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket fe4wjr6s
+3250 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket fe4wjr6s with prefix=None, delimiter=None
+3270 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3279 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object fe4wjr6s/scnghfd5 (signed)
+3369 [main] INFO  org.example.S3BucketOps - Successfully placed object scnghfd5 with version null into fe4wjr6s.
+3480 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rhvmx37h
+3486 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rhvmx37h
+3493 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket rhvmx37h with prefix=None, delimiter=None
+3495 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3496 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 5akjchdx
+3501 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 5akjchdx
+3508 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket 5akjchdx with prefix=None, delimiter=None
+3509 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3549 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.CopyObject - cannot copy object rhvmx37h/0n3tkpjk: no such key
+3560 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+3563 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> exw4jyik
+3570 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket exw4jyik
+3578 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket exw4jyik with prefix=None, delimiter=None
+3580 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3623 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ewlwww8s
+3629 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ewlwww8s
+3635 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket ewlwww8s with prefix=None, delimiter=None
+3636 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3637 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> ucx8uhyu
+3642 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket ucx8uhyu
+3648 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket ucx8uhyu with prefix=None, delimiter=None
+3650 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3659 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object ewlwww8s/hcczznbv (signed)
+3664 [main] INFO  org.example.S3BucketOps - Successfully placed object hcczznbv with version null into ewlwww8s.
+3671 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.CopyObject - copied object ewlwww8s/hcczznbv
+3677 [main] INFO  org.example.S3BucketOps - Successfully copied object hcczznbv from bucket ewlwww8s to bucket ucx8uhyu.
+3687 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rbsfb7lf
+3692 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rbsfb7lf
+3697 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket rbsfb7lf with prefix=None, delimiter=None
+3699 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3705 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object rbsfb7lf/sqqy3oxd (signed)
+3710 [main] INFO  org.example.S3BucketOps - Successfully placed object sqqy3oxd with version null into rbsfb7lf.
+3712 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> yovpx1jr
+3717 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket yovpx1jr
+3722 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket yovpx1jr with prefix=None, delimiter=None
+3724 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+206  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3008 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object hnocrpia/tsq79uxl (signed)
+3085 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3088 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 5bg4uzjq
+3147 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 5bg4uzjq
+3182 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/5bg4uzjq
+3203 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> dkgimnnl
+3222 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket dkgimnnl
+3231 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/dkgimnnl
+3239 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> dgubacpt
+3252 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket dgubacpt
+3262 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/dgubacpt
+3270 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> jput8lry
+3285 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket jput8lry
+3296 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/jput8lry
+3305 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> irhzv953
+3317 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket irhzv953
+3325 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/irhzv953
+3332 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> knfmnudr
+3343 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket knfmnudr
+3350 [s3mock-akka.actor.default-dispatcher-10] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/knfmnudr
+247  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3500 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object wazmdq0s/joqma53c (signed)
+3598 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3604 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 9qxe99uq
+3699 [s3mock-akka.actor.default-dispatcher-8] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 9qxe99uq
+3739 [s3mock-akka.actor.default-dispatcher-8] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/9qxe99uq
+3778 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> zued5mia
+3794 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket zued5mia
+3805 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/zued5mia
+3811 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> n1e1rxbc
+3826 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket n1e1rxbc
+3837 [s3mock-akka.actor.default-dispatcher-6] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/n1e1rxbc
+3847 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> qld03ymm
+3860 [s3mock-akka.actor.default-dispatcher-9] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket qld03ymm
+3869 [s3mock-akka.actor.default-dispatcher-9] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/qld03ymm
+3879 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> pagjjqxl
+3891 [s3mock-akka.actor.default-dispatcher-5] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket pagjjqxl
+3902 [s3mock-akka.actor.default-dispatcher-5] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/pagjjqxl
+3913 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> gh1cdoke
+3926 [s3mock-akka.actor.default-dispatcher-15] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket gh1cdoke
+3934 [s3mock-akka.actor.default-dispatcher-10] ERROR io.findify.s3mock.S3Mock - method not implemented: HEAD http://localhost:8001/gh1cdoke
+216  [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+3381 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object 9xxlcbzi/bhegaxzx (signed)
+3488 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+3496 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> qn07id0n
+3558 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket qn07id0n
+3618 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket qn07id0n with prefix=None, delimiter=None
+3640 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3649 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object qn07id0n/shcdvnd6 (signed)
+3743 [main] INFO  org.example.S3BucketOps - Successfully placed object shcdvnd6 with version null into qn07id0n.
+3851 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> xmd20hyg
+3858 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket xmd20hyg
+3865 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket xmd20hyg with prefix=None, delimiter=None
+3867 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3867 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rryo0ura
+3873 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rryo0ura
+3879 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket rryo0ura with prefix=None, delimiter=None
+3881 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+3921 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.CopyObject - cannot copy object xmd20hyg/okkq7ehx: no such key
+3940 [main] ERROR org.example.S3BucketOps - [AWS - copy S3 object] -> The resource you requested does not exist
+3945 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> li1r5nmo
+3952 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket li1r5nmo
+3960 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket li1r5nmo with prefix=None, delimiter=None
+3962 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4027 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> bnm9gpet
+4033 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket bnm9gpet
+4039 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket bnm9gpet with prefix=None, delimiter=None
+4041 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4041 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> awhax4no
+4054 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket awhax4no
+4061 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket awhax4no with prefix=None, delimiter=None
+4063 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4076 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object bnm9gpet/ngmnnwcn (signed)
+4081 [main] INFO  org.example.S3BucketOps - Successfully placed object ngmnnwcn with version null into bnm9gpet.
+4090 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.CopyObject - copied object bnm9gpet/ngmnnwcn
+4096 [main] INFO  org.example.S3BucketOps - Successfully copied object ngmnnwcn from bucket bnm9gpet to bucket awhax4no.
+4109 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> wesb9rzu
+4114 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket wesb9rzu
+4120 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket wesb9rzu with prefix=None, delimiter=None
+4122 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+4131 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object wesb9rzu/puddykrw (signed)
+4135 [main] INFO  org.example.S3BucketOps - Successfully placed object puddykrw with version null into wesb9rzu.
+4138 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> bj1frnyd
+4144 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket bj1frnyd
+4148 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket bj1frnyd with prefix=None, delimiter=None
+4150 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
