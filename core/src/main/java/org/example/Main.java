@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Set;
 
-@EnableScheduling
+
 @EnableWebMvc
 @EnableScheduling
 @SpringBootApplication
