@@ -7,14 +7,11 @@ import org.example.persistence.repository.CompanyRepository;
 import org.example.utils.ErrorMessages;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.s3.model.Bucket;
 import software.amazon.awssdk.services.s3.model.HeadBucketResponse;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * This service is used for performing CRUD operations on company related resources
@@ -50,7 +47,7 @@ public class CompanyService {
         return companyRepository.insert(company);
     }
 
-    public Company updateCompany(Company company){
+    public Company updateCompany(Company company) {
         company.setHasBucket(true);
 
         return companyRepository.save(company);
@@ -66,12 +63,12 @@ public class CompanyService {
 
     @Scheduled(cron = "1 * * * * *")
     public void checkBucketsExistence() {
-        Set<Company> existingCompanies = this.companyRepository.findAllByHasBucket(false);
+        List<Company> existingCompanies = this.companyRepository.findAllByHasBucketOrNull(false);
 
-        for(Company company: existingCompanies){
+        for (Company company : existingCompanies) {
             HeadBucketResponse headBucketResponse = S3BucketOps.createS3Bucket(company.getCompanyIdentifier().toString());
 
-            if(headBucketResponse != null){
+            if (headBucketResponse != null) {
                 this.updateCompany(company);
             }
         }
