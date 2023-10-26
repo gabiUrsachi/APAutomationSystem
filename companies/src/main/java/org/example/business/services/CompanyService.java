@@ -4,7 +4,10 @@ import org.example.S3BucketOps;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Company;
 import org.example.persistence.repository.CompanyRepository;
+import org.example.presentation.controllers.CompanyController;
 import org.example.utils.ErrorMessages;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.model.HeadBucketResponse;
@@ -18,7 +21,7 @@ import java.util.UUID;
  */
 @Service
 public class CompanyService {
-
+    private static final Logger logger = LoggerFactory.getLogger(CompanyService.class);
     private final CompanyRepository companyRepository;
 
     public CompanyService(CompanyRepository companyRepository) {
@@ -64,6 +67,7 @@ public class CompanyService {
     @Scheduled(cron = "1 * * * * *")
     public void checkBucketsExistence() {
         List<Company> existingCompanies = this.companyRepository.findAllByHasBucketOrNull(false);
+        logger.info("[Scheduler] -> there are {} companies without S3 bucket: {}", existingCompanies.size(), existingCompanies);
 
         for (Company company : existingCompanies) {
             HeadBucketResponse headBucketResponse = S3BucketOps.createS3Bucket(company.getCompanyIdentifier().toString());
