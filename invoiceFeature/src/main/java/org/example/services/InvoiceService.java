@@ -35,6 +35,7 @@ public class InvoiceService {
                 .items(invoiceEntity.getItems())
                 .version(0)
                 .invoiceStatus(InvoiceStatus.CREATED)
+                .totalAmount(invoiceEntity.getTotalAmount())
                 .build();
         initializedInvoice.setUri(initializedInvoice.getIdentifier()+"."+invoiceEntity.getUri());
 
