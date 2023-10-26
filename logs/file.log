@@ -1140,3 +1140,69 @@ software.amazon.awssdk.services.s3.model.S3Exception: The AWS Access Key Id you 
 16913 [scheduling-1] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 19326bf1-428c-425a-a603-37233e55dbab
 21381 [scheduling-1] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
 21730 [http-nio-8080-exec-2] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+1173 [main] INFO  org.example.Main - Starting Main using Java 11.0.19 on 2WGWM13 with PID 39228 (C:\Users\gabrielaurs\Desktop\projects\APAutomationSystem\core\target\classes started by gabrielaurs in C:\Users\gabrielaurs\Desktop\projects\APAutomationSystem)
+1177 [main] INFO  org.example.Main - No active profile set, falling back to 1 default profile: "default"
+3792 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+3929 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 128 ms. Found 4 MongoDB repository interfaces.
+4767 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+4782 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+4782 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+4782 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.63]
+5031 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+5031 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3746 ms
+5660 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "4.6.0"}, "os": {"type": "Windows", "name": "Windows 10", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Amazon.com Inc./11.0.19+7-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, streamFactoryFactory=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@17c0274c], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.Jep395RecordCodecProvider@756808cc]}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='5000 ms', localThreshold='5000 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, sendBufferSize=0}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, sendBufferSize=0}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@26e0d39c], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, contextProvider=null}
+5674 [cluster-ClusterId{value='6539053001272506cb592c2e', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:262}] to localhost:27017
+5675 [cluster-ClusterId{value='6539053001272506cb592c2e', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=17, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=37544300}
+5675 [cluster-rtt-ClusterId{value='6539053001272506cb592c2e', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:261}] to localhost:27017
+7286 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+7326 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+7350 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+7379 [main] INFO  org.example.Main - Started Main in 6.912 seconds (JVM running for 10.941)
+8374 [RMI TCP Connection(1)-192.168.16.176] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+8375 [RMI TCP Connection(1)-192.168.16.176] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+8376 [RMI TCP Connection(1)-192.168.16.176] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+8442 [RMI TCP Connection(2)-192.168.16.176] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:263}] to localhost:27017
+33599 [http-nio-8080-exec-1] INFO  o.e.p.controllers.CompanyController - [POST request] -> create company:aaaaaaaaaaaaaaaaaaaaa
+37351 [http-nio-8080-exec-1] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 8037d212-9885-4183-ac4b-eae656e21979
+52915 [http-nio-8080-exec-1] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+70537 [scheduling-1] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:4, serverValue:274}] to localhost:27017
+1082 [main] INFO  org.example.Main - Starting Main using Java 11.0.19 on 2WGWM13 with PID 20048 (C:\Users\gabrielaurs\Desktop\projects\APAutomationSystem\core\target\classes started by gabrielaurs in C:\Users\gabrielaurs\Desktop\projects\APAutomationSystem)
+1085 [main] INFO  org.example.Main - No active profile set, falling back to 1 default profile: "default"
+3661 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+3798 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 129 ms. Found 4 MongoDB repository interfaces.
+4584 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+4598 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+4598 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+4598 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.63]
+4840 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+4840 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3654 ms
+5442 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "4.6.0"}, "os": {"type": "Windows", "name": "Windows 10", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Amazon.com Inc./11.0.19+7-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, streamFactoryFactory=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@551be9f6], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.Jep395RecordCodecProvider@4def7d36]}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='5000 ms', localThreshold='5000 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, sendBufferSize=0}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, sendBufferSize=0}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@626b639e], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, contextProvider=null}
+5445 [cluster-rtt-ClusterId{value='65390688f9bdc04a93b9a2ad', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:275}] to localhost:27017
+5445 [cluster-ClusterId{value='65390688f9bdc04a93b9a2ad', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:276}] to localhost:27017
+5446 [cluster-ClusterId{value='65390688f9bdc04a93b9a2ad', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=17, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=35974800}
+6980 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+7018 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+7041 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+7070 [main] INFO  org.example.Main - Started Main in 6.624 seconds (JVM running for 10.552)
+7302 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+7302 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+7306 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+7391 [http-nio-8080-exec-1] INFO  o.e.p.controllers.CompanyController - [GET request] -> get all companies
+7419 [RMI TCP Connection(1)-192.168.16.176] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:277}] to localhost:27017
+7442 [http-nio-8080-exec-1] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:4, serverValue:278}] to localhost:27017
+66118 [scheduling-1] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 8037d212-9885-4183-ac4b-eae656e21979
+68536 [scheduling-1] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+126076 [scheduling-1] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 8037d212-9885-4183-ac4b-eae656e21979
+127711 [scheduling-1] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+186079 [scheduling-1] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 8037d212-9885-4183-ac4b-eae656e21979
+190998 [scheduling-1] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+246084 [scheduling-1] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 8037d212-9885-4183-ac4b-eae656e21979
+247407 [scheduling-1] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+306075 [scheduling-1] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 8037d212-9885-4183-ac4b-eae656e21979
+307242 [scheduling-1] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+324577 [http-nio-8080-exec-6] INFO  o.e.p.controllers.CompanyController - [POST request] -> create company:aaaaaaaaaaaaaaaaaaaaa
+324588 [http-nio-8080-exec-6] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 25bd10b3-2258-40f0-ba13-d64ae5ef59ea
+329517 [http-nio-8080-exec-6] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+329517 [http-nio-8080-exec-6] WARN  o.e.p.controllers.CompanyController - Unsuccessfully trying to create S3 bucket for company aaaaaaaaaaaaaaaaaaaaa
+338077 [http-nio-8080-exec-7] INFO  o.e.p.controllers.CompanyController - [GET request] -> get all companies
+488517 [http-nio-8080-exec-3] INFO  o.e.p.controllers.CompanyController - [GET request] -> get all companies

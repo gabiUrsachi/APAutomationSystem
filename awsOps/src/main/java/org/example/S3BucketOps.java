@@ -74,6 +74,7 @@ public class S3BucketOps {
             // Wait until the bucket is created and print out the response.
             WaiterResponse<HeadBucketResponse> waiterResponse = s3Waiter.waitUntilBucketExists(bucketRequestWait);
             HeadBucketResponse headBucketResponse = waiterResponse.matched().response().orElse(null);
+
             logger.info("Successfully created S3 bucket {}.", headBucketResponse);
 
             return headBucketResponse;

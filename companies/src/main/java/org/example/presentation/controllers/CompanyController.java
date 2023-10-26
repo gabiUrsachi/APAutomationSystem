@@ -36,7 +36,7 @@ public class CompanyController {
         HeadBucketResponse headBucketResponse = S3BucketOps.createS3Bucket(savedCompany.getCompanyIdentifier().toString());
 
         if(headBucketResponse != null){
-            logger.warn("Successfully created S3 bucket for company {}", companyDTO.getName());
+            logger.info("Successfully created S3 bucket for company {}", companyDTO.getName());
             companyService.updateCompany(savedCompany);
         }
 
