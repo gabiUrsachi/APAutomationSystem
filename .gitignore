@@ -34,4 +34,4 @@ build/
 
 
 sam/.aws-sam
-logs
+logs/

@@ -66,7 +66,7 @@ public class CompanyService {
 
     @Scheduled(cron = "1 * * * * *")
     public void checkBucketsExistence() {
-        Set<Company> existingCompanies = this.companyRepository.findAllByHasBucket(true);
+        Set<Company> existingCompanies = this.companyRepository.findAllByHasBucket(false);
 
         for(Company company: existingCompanies){
             HeadBucketResponse headBucketResponse = S3BucketOps.createS3Bucket(company.getCompanyIdentifier().toString());
