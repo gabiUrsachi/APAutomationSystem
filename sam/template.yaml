@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-05004167eb2038a3a"
+    Default: "vpc-04f25beed9f66f1ea"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-0d9756a8c2f600856,subnet-09ceb055421a8d184,subnet-0586cde386a121c3b,subnet-001d5eb0f30590540,subnet-09a862848305956fd,subnet-038662833871d59bc"
+    Default: "subnet-080950e2a1660c0cc,subnet-0566a74082606641c,subnet-0761b37fb5c8de7d0,subnet-01bcd07e273a9afe2,subnet-0b7f8406e9e3fe966,subnet-08d28d0b2324d5b6b"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -242,17 +242,19 @@ Resources:
       Protocol: HTTP
 
 
-  #HTTPSAutoScalingListener:
-    #Type: 'AWS::ElasticLoadBalancingV2::Listener'
-    #Properties:
-      #Certificates:
-        #- CertificateArn: "arn:aws:acm:us-east-1:582251705870:certificate/ece42848-8105-4a8b-a60b-e7e2c76875ca"
-      #DefaultActions:
-        #- TargetGroupArn: !Ref EC2TargetGroup
-          #Type: 'forward'
-      #LoadBalancerArn: !Ref LoadBalancer
-      #Port: 443
-      #Protocol: HTTPS
+
+  HTTPSAutoScalingListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      Certificates:
+        - CertificateArn: "arn:aws:acm:us-east-1:076546368365:certificate/d7fc3585-a952-4927-b7ec-49e028214e0e"
+      DefaultActions:
+        - TargetGroupArn: !Ref EC2TargetGroup
+          Type: 'forward'
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 443
+      Protocol: HTTPS
+
 
   WebappRole:
     Type: AWS::IAM::Role
@@ -293,15 +295,16 @@ Resources:
               -
                 Effect: "Allow"
                 Action:
-                  - "s3:PutObject"
-                  - "s3:PutObjectAcl"
-                  - "s3:GetObject"
-                  - "s3:ListBucket"
-                  - "s3:ListAllMyBuckets"
-                  - "s3:GetObjectAcl"
-                  - "s3:DeleteObject"
-                  - "s3:HeadObject"
-                  - "s3:CreateBucket"
+                  - "s3:*"
+#                  - "s3:PutObject"
+#                  - "s3:PutObjectAcl"
+#                  - "s3:GetObject"
+#                  - "s3:ListBucket"
+#                  - "s3:ListAllMyBuckets"
+#                  - "s3:GetObjectAcl"
+#                  - "s3:DeleteObject"
+#                  - "s3:HeadObject"
+#                  - "s3:CreateBucket"
                 Resource: !Sub arn:${AWS::Partition}:s3:::*
               -
                 Effect: "Allow"

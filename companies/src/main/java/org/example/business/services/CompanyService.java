@@ -1,23 +1,26 @@
 package org.example.business.services;
 
+import org.example.S3BucketOps;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Company;
 import org.example.persistence.repository.CompanyRepository;
-import org.example.presentation.view.CompanyDTO;
 import org.example.utils.ErrorMessages;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.example.S3BucketOps;
-import software.amazon.awssdk.services.s3.model.Bucket;
+import software.amazon.awssdk.services.s3.model.HeadBucketResponse;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * This service is used for performing CRUD operations on company related resources
  */
 @Service
 public class CompanyService {
-
+    private static final Logger logger = LoggerFactory.getLogger(CompanyService.class);
     private final CompanyRepository companyRepository;
 
     public CompanyService(CompanyRepository companyRepository) {
@@ -46,6 +49,12 @@ public class CompanyService {
         return companyRepository.insert(company);
     }
 
+    public Company updateCompany(Company company) {
+        company.setHasBucket(true);
+
+        return companyRepository.save(company);
+    }
+
     public List<Company> getCompanies() {
         return companyRepository.findAll();
     }
@@ -54,19 +63,18 @@ public class CompanyService {
         companyRepository.deleteById(identifier);
     }
 
-    @Scheduled(fixedRate = 500)
-    public void createBucketIfNotExists() {
-        List<Company> companies = getCompanies();
-        List<Bucket> buckets = S3BucketOps.getBucketList();
+    @Scheduled(cron = "1 * * * * *")
+    public void checkBucketsExistence() {
+        List<Company> existingCompanies = this.companyRepository.findAllByHasBucketOrEmpty(false);
+        logger.info("[Scheduler] -> there are {} companies without S3 bucket: {}", existingCompanies.size(), existingCompanies);
 
-        for(Company company:companies){
-            boolean companyExists = buckets.stream().anyMatch(bucket -> bucket.name().equals(String.valueOf(company.getCompanyIdentifier())));
-            if(!companyExists){
-                S3BucketOps.createS3Bucket(company.getCompanyIdentifier().toString());
+        for (Company company : existingCompanies) {
+            HeadBucketResponse headBucketResponse = S3BucketOps.createS3Bucket(company.getCompanyIdentifier().toString());
+
+            if (headBucketResponse != null) {
+                this.updateCompany(company);
             }
         }
-
-
     }
 }
 

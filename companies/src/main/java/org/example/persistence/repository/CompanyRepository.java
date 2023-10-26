@@ -7,9 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-public interface CompanyRepository extends MongoRepository<Company, UUID> {
+public interface CompanyRepository extends MongoRepository<Company, UUID>, CompanyCustomRepository {
     Optional<Company> findById(UUID uuid);
-    Set<Company> findAllByName(String name);
     Company findByName(String name);
-
 }

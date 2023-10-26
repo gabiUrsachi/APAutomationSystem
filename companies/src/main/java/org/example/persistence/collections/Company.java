@@ -20,4 +20,6 @@ public class Company {
     UUID companyIdentifier;
 
     String name;
+
+    Boolean hasBucket;
 }

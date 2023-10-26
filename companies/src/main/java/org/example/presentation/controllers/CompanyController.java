@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.services.s3.model.HeadBucketResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +33,12 @@ public class CompanyController {
         Company company = companyMapperService.mapToEntity(companyDTO);
         Company savedCompany = companyService.createCompany(company);
 
-        S3BucketOps.createS3Bucket(savedCompany.getCompanyIdentifier().toString());
+        HeadBucketResponse headBucketResponse = S3BucketOps.createS3Bucket(savedCompany.getCompanyIdentifier().toString());
+
+        if(headBucketResponse != null){
+            logger.info("Successfully created S3 bucket for company {}", companyDTO.getName());
+            companyService.updateCompany(savedCompany);
+        }
 
         return companyMapperService.mapToDTO(savedCompany);
     }
