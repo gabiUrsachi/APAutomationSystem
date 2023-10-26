@@ -242,6 +242,7 @@ Resources:
       Protocol: HTTP
 
 
+
   HTTPSAutoScalingListener:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
@@ -253,6 +254,7 @@ Resources:
       LoadBalancerArn: !Ref LoadBalancer
       Port: 443
       Protocol: HTTPS
+
 
   WebappRole:
     Type: AWS::IAM::Role

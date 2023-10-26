@@ -107,24 +107,24 @@ public class S3BucketOps {
     }
 
 
-    public static CopyObjectResponse copyS3Object(String sourceBucketName, String destBucketName, String sourceKeyName, String destKeyName) throws IOException {
+    public static CopyObjectResponse duplicateS3Object(String bucketName, String sourceKeyName, String newKeyName) throws IOException {
         S3Client s3Client = AWSS3Client.getInstance();
 
         CopyObjectRequest copyReq = CopyObjectRequest.builder()
-                .sourceBucket(sourceBucketName)
+                .sourceBucket(bucketName)
                 .sourceKey(sourceKeyName)
-                .destinationBucket(destBucketName)
-                .destinationKey(destKeyName)
+                .destinationBucket(bucketName)
+                .destinationKey(newKeyName)
                 .build();
 
         try {
             CopyObjectResponse copyRes = s3Client.copyObject(copyReq);
-            logger.info("Successfully copied object {} from bucket {} to bucket {}.", sourceKeyName, sourceBucketName, destBucketName);
+            logger.info("Successfully duplicated object {} .", sourceKeyName);
 
             return copyRes;
 
         } catch (S3Exception e) {
-            logger.error("[AWS - copy S3 object] -> {}", e.awsErrorDetails().errorMessage());
+            logger.error("[AWS - duplication of S3 object] -> {}", e.awsErrorDetails().errorMessage());
             return null;
         }
     }
