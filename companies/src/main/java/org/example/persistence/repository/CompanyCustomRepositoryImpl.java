@@ -15,8 +15,8 @@ public class CompanyCustomRepositoryImpl implements CompanyCustomRepository{
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<Company> findAllByHasBucketOrNull(Boolean hasBucket) {
-        Criteria searchCriteria = Criteria.where("hasBucket").is(hasBucket).orOperator(Criteria.where("hasBucket").isNull());
+    public List<Company> findAllByHasBucketOrEmpty(Boolean hasBucket) {
+        Criteria searchCriteria = Criteria.where("hasBucket").is(hasBucket).orOperator(Criteria.where("hasBucket").exists(false));
         Query searchQuery = new Query(searchCriteria);
 
         return mongoTemplate.find(searchQuery, Company.class);

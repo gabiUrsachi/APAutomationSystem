@@ -4,7 +4,6 @@ import org.example.S3BucketOps;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Company;
 import org.example.persistence.repository.CompanyRepository;
-import org.example.presentation.controllers.CompanyController;
 import org.example.utils.ErrorMessages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +65,7 @@ public class CompanyService {
 
     @Scheduled(cron = "1 * * * * *")
     public void checkBucketsExistence() {
-        List<Company> existingCompanies = this.companyRepository.findAllByHasBucketOrNull(false);
+        List<Company> existingCompanies = this.companyRepository.findAllByHasBucketOrEmpty(false);
         logger.info("[Scheduler] -> there are {} companies without S3 bucket: {}", existingCompanies.size(), existingCompanies);
 
         for (Company company : existingCompanies) {
