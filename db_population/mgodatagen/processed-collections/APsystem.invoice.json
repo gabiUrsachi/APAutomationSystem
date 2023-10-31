@@ -1,0 +1,677 @@
+[{
+  "_id": {
+    "$binary": {
+      "base64": "PLzxcWB5RnexT0OKxZZvKQ==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "70035cf4-cf93-4c4e-93ca-6325d0a7c6ce.pdf",
+  "items": [
+    {
+      "description": "direct trade",
+      "quantity": 4,
+      "price": 65.23048740909329
+    }
+  ],
+  "version": 4,
+  "invoiceStatus": "REJECTED",
+  "sellerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "rke/oykcTDqRN50ADE68uw==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "d503e7d3-9b15-4872-9c7d-150e963ec65b.pdf",
+  "items": [
+    {
+      "description": "beard",
+      "quantity": 14,
+      "price": 43.33321047453205
+    },
+    {
+      "description": "bespoke",
+      "quantity": 5,
+      "price": 48.343233763879624
+    },
+    {
+      "description": "polaroid",
+      "quantity": 15,
+      "price": 92.43469242829735
+    },
+    {
+      "description": "helvetica",
+      "quantity": 4,
+      "price": 50.34757310738222
+    },
+    {
+      "description": "you probably haven't heard of them",
+      "quantity": 1,
+      "price": 74.17102660805504
+    }
+  ],
+  "version": 6,
+  "invoiceStatus": "CREATED",
+  "sellerId": {
+    "$binary": {
+      "base64": "dOavRPUiTamhnnTwFAXnTw==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "ZbXY2R9oSXygtO5Kh2chIg==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "myaFwHXFQt2RNCTP7TrEZw==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "cebb2720-e427-4293-bc7d-081bbdcd4172.pdf",
+  "items": [
+    {
+      "description": "meggings",
+      "quantity": 9,
+      "price": 71.18623804040422
+    },
+    {
+      "description": "health",
+      "quantity": 2,
+      "price": 28.23044544382406
+    },
+    {
+      "description": "listicle",
+      "quantity": 13,
+      "price": 18.062115036166265
+    }
+  ],
+  "version": 8,
+  "invoiceStatus": "CREATED",
+  "sellerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "HqFjQwWvQ8KxT6/lj/gLgg==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "15ae3015-347d-40c3-bd15-e379a76f7c15.pdf",
+  "items": [
+    {
+      "description": "crucifix",
+      "quantity": 4,
+      "price": 78.70469368588034
+    },
+    {
+      "description": "offal",
+      "quantity": 2,
+      "price": 24.15419131005273
+    },
+    {
+      "description": "wayfarers",
+      "quantity": 11,
+      "price": 114.37683617947461
+    },
+    {
+      "description": "selfies",
+      "quantity": 7,
+      "price": 55.251447397399524
+    },
+    {
+      "description": "health",
+      "quantity": 6,
+      "price": 47.421551899089025
+    }
+  ],
+  "version": 1,
+  "invoiceStatus": "CREATED",
+  "sellerId": {
+    "$binary": {
+      "base64": "ZbXY2R9oSXygtO5Kh2chIg==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "ZbXY2R9oSXygtO5Kh2chIg==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "81Hyj7NwQ/KC0QzjoAq5ow==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "022c49c0-5562-478e-bed9-d6283c90be20.pdf",
+  "items": [
+    {
+      "description": "health",
+      "quantity": 9,
+      "price": 81.52751485883859
+    },
+    {
+      "description": "everyday",
+      "quantity": 12,
+      "price": 24.21365690829171
+    },
+    {
+      "description": "cronut",
+      "quantity": 11,
+      "price": 14.1418060636834
+    },
+    {
+      "description": "iPhone",
+      "quantity": 8,
+      "price": 40.43278171300088
+    },
+    {
+      "description": "paleo",
+      "quantity": 2,
+      "price": 36.15422743968488
+    },
+    {
+      "description": "8-bit",
+      "quantity": 19,
+      "price": 32.585656922635614
+    },
+    {
+      "description": "put a bird on it",
+      "quantity": 3,
+      "price": 52.34078005327218
+    },
+    {
+      "description": "marfa",
+      "quantity": 5,
+      "price": 116.31065919507192
+    },
+    {
+      "description": "8-bit",
+      "quantity": 16,
+      "price": 106.08359039664529
+    },
+    {
+      "description": "iPhone",
+      "quantity": 7,
+      "price": 25.55886763943677
+    },
+    {
+      "description": "tofu",
+      "quantity": 11,
+      "price": 86.2788245366087
+    }
+  ],
+  "version": 6,
+  "invoiceStatus": "APPROVED",
+  "sellerId": {
+    "$binary": {
+      "base64": "dOavRPUiTamhnnTwFAXnTw==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "dOavRPUiTamhnnTwFAXnTw==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "sISgcy7BR1Wip55xdEyHxw==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "05ac8ef5-01e2-4e88-932a-e490d42864db.pdf",
+  "items": [
+    {
+      "description": "mixtape",
+      "quantity": 4,
+      "price": 19.082889930932012
+    },
+    {
+      "description": "park",
+      "quantity": 17,
+      "price": 27.446692408479045
+    },
+    {
+      "description": "plaid",
+      "quantity": 5,
+      "price": 112.77879850310075
+    },
+    {
+      "description": "bespoke",
+      "quantity": 19,
+      "price": 117.30232660315326
+    },
+    {
+      "description": "cray",
+      "quantity": 6,
+      "price": 90.47511320909442
+    },
+    {
+      "description": "tousled",
+      "quantity": 9,
+      "price": 10.538364106168117
+    },
+    {
+      "description": "meggings",
+      "quantity": 4,
+      "price": 78.87498859855523
+    },
+    {
+      "description": "kinfolk",
+      "quantity": 16,
+      "price": 117.95083128819972
+    }
+  ],
+  "version": 6,
+  "invoiceStatus": "APPROVED",
+  "sellerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "ZbXY2R9oSXygtO5Kh2chIg==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "gRvhax0xTmutCl32OfBHzg==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "629813b8-9954-45ff-a60e-7f4a2ffcc533.pdf",
+  "items": [
+    {
+      "description": "semiotics",
+      "quantity": 7,
+      "price": 65.70743916295902
+    },
+    {
+      "description": "hashtag",
+      "quantity": 17,
+      "price": 81.182566843724
+    },
+    {
+      "description": "photo booth",
+      "quantity": 15,
+      "price": 28.23174642077473
+    },
+    {
+      "description": "master",
+      "quantity": 14,
+      "price": 25.39203520606064
+    },
+    {
+      "description": "sriracha",
+      "quantity": 19,
+      "price": 57.300581938492115
+    },
+    {
+      "description": "pickled",
+      "quantity": 19,
+      "price": 122.70060087948461
+    },
+    {
+      "description": "selfies",
+      "quantity": 3,
+      "price": 16.375399760936464
+    },
+    {
+      "description": "pour-over",
+      "quantity": 1,
+      "price": 105.94926903964299
+    },
+    {
+      "description": "stumptown",
+      "quantity": 20,
+      "price": 53.20357058348782
+    },
+    {
+      "description": "bitters",
+      "quantity": 7,
+      "price": 58.018854773676765
+    }
+  ],
+  "version": 4,
+  "invoiceStatus": "SAVED",
+  "sellerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "unvcXHshRu2hCsciQ8fIQQ==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "8ab2daf2-aff4-4f75-8461-340342285c70.pdf",
+  "items": [
+    {
+      "description": "pug",
+      "quantity": 5,
+      "price": 57.87271663787156
+    },
+    {
+      "description": "leggings",
+      "quantity": 8,
+      "price": 91.15361774168775
+    },
+    {
+      "description": "butcher",
+      "quantity": 5,
+      "price": 13.98345117210144
+    },
+    {
+      "description": "portland",
+      "quantity": 4,
+      "price": 66.0043541805233
+    },
+    {
+      "description": "carry",
+      "quantity": 15,
+      "price": 100.41971430545054
+    },
+    {
+      "description": "banh mi",
+      "quantity": 19,
+      "price": 44.74941570471685
+    },
+    {
+      "description": "banjo",
+      "quantity": 19,
+      "price": 24.153482979773166
+    },
+    {
+      "description": "echo",
+      "quantity": 7,
+      "price": 124.80712303937543
+    },
+    {
+      "description": "readymade",
+      "quantity": 5,
+      "price": 23.22860904475288
+    },
+    {
+      "description": "everyday",
+      "quantity": 12,
+      "price": 12.49427166075416
+    },
+    {
+      "description": "ugh",
+      "quantity": 6,
+      "price": 65.91757093078627
+    }
+  ],
+  "version": 3,
+  "invoiceStatus": "SAVED",
+  "sellerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "aOq+GQwuR5yid8aUJL/9eg==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "501d5a33-50af-4da6-ac6c-5a698014ebaa.pdf",
+  "items": [
+    {
+      "description": "kogi",
+      "quantity": 1,
+      "price": 11.480939124414007
+    },
+    {
+      "description": "art party",
+      "quantity": 10,
+      "price": 109.8769660792938
+    },
+    {
+      "description": "yr",
+      "quantity": 3,
+      "price": 97.62944636482561
+    },
+    {
+      "description": "pabst",
+      "quantity": 7,
+      "price": 77.01147826054077
+    },
+    {
+      "description": "drinking",
+      "quantity": 15,
+      "price": 107.73131623998577
+    },
+    {
+      "description": "occupy",
+      "quantity": 17,
+      "price": 119.31687670992567
+    },
+    {
+      "description": "lomo",
+      "quantity": 3,
+      "price": 92.1563524956622
+    },
+    {
+      "description": "squid",
+      "quantity": 6,
+      "price": 111.47003426481078
+    },
+    {
+      "description": "cliche",
+      "quantity": 11,
+      "price": 55.04396270496491
+    },
+    {
+      "description": "fingerstache",
+      "quantity": 18,
+      "price": 87.06832857016506
+    }
+  ],
+  "version": 6,
+  "invoiceStatus": "SAVED",
+  "sellerId": {
+    "$binary": {
+      "base64": "dOavRPUiTamhnnTwFAXnTw==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "QsT8moPbQVW2cWkGU960pw==",
+      "subType": "03"
+    }
+  },
+  "_class": "org.example.persistence.collections.Invoice",
+  "uri": "a458a6b3-d3b4-4860-8b48-aeee80f220bd.pdf",
+  "items": [
+    {
+      "description": "cardigan",
+      "quantity": 7,
+      "price": 39.5702450458124
+    },
+    {
+      "description": "knausgaard",
+      "quantity": 13,
+      "price": 72.30978001859773
+    },
+    {
+      "description": "skateboard",
+      "quantity": 7,
+      "price": 28.896253653438027
+    },
+    {
+      "description": "jean shorts",
+      "quantity": 12,
+      "price": 88.3442927449137
+    },
+    {
+      "description": "everyday",
+      "quantity": 5,
+      "price": 75.96748781572558
+    },
+    {
+      "description": "dreamcatcher",
+      "quantity": 15,
+      "price": 104.8165512417581
+    },
+    {
+      "description": "Yuccie",
+      "quantity": 6,
+      "price": 73.97137284700216
+    },
+    {
+      "description": "carry",
+      "quantity": 6,
+      "price": 67.54239158182338
+    },
+    {
+      "description": "small batch",
+      "quantity": 3,
+      "price": 23.336190005729513
+    },
+    {
+      "description": "pinterest",
+      "quantity": 20,
+      "price": 89.62502405141801
+    },
+    {
+      "description": "small batch",
+      "quantity": 4,
+      "price": 62.702635954631305
+    },
+    {
+      "description": "ennui",
+      "quantity": 7,
+      "price": 17.519825502127915
+    },
+    {
+      "description": "knausgaard",
+      "quantity": 6,
+      "price": 84.26335347186512
+    }
+  ],
+  "version": 5,
+  "invoiceStatus": "REJECTED",
+  "sellerId": {
+    "$binary": {
+      "base64": "dOavRPUiTamhnnTwFAXnTw==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  }
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "QkOxkI428XpV8PgI89KXnQ==",
+      "subType": "03"
+    }
+  },
+  "buyerId": {
+    "$binary": {
+      "base64": "dOavRPUiTamhnnTwFAXnTw==",
+      "subType": "03"
+    }
+  },
+  "sellerId": {
+    "$binary": {
+      "base64": "woGfM+rFQ+GQTtRlsQzgJg==",
+      "subType": "03"
+    }
+  },
+  "items": [
+    {
+      "description": "Item2",
+      "quantity": 1,
+      "price": 35
+    }
+  ],
+  "totalAmount": 35,
+  "invoiceStatus": "SENT",
+  "version": 1,
+  "uri": "7af1368e-90b1-4342-9d97-d2f308f8f055.csv",
+  "_class": "org.example.persistence.collections.Invoice"
+}]

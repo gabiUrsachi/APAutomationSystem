@@ -1,0 +1,67 @@
+[
+  {
+    "database": "APsystem",
+    "collection": "purchaseOrder",
+    "count": 200,
+    "content": {
+      "_id": {
+        "type": "uuid",
+        "format": "binary"
+      },
+      "buyer": {
+        "type": "uuid",
+        "format": "binary"
+      },
+      "seller": {
+        "type": "uuid",
+        "format": "binary"
+      },
+      "version": {
+        "type": "int",
+        "min": 1,
+        "max": 10
+      },
+      "items": {
+        "type": "array",
+        "minLength": 1,
+        "maxLength": 15,
+        "arrayContent": {
+          "type": "object",
+          "objectContent": {
+            "description": {
+              "type": "faker",
+              "method": "HipsterWord"
+            },
+            "quantity": {
+              "type": "int",
+              "min": 1,
+              "max": 20
+            },
+            "price": {
+              "type": "double",
+              "min": 10.0,
+              "max": 250.0
+            }
+          }
+        }
+      },
+      "uri": {
+        "type": "stringFromParts",
+        "parts": [
+          {
+            "type": "uuid",
+            "format": "string"
+          },
+          {
+            "type": "constant",
+            "constVal": ".pdf"
+          }
+        ]
+      },
+      "_class": {
+        "type": "constant",
+        "constVal": "org.example.persistence.collections.PurchaseOrder"
+      }
+    }
+  }
+]
