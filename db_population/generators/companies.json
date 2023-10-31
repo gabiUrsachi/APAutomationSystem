@@ -1,0 +1,18 @@
+[
+  {
+    "database": "APsystem",
+    "collection": "company",
+    "count": 50,
+    "content": {
+      "_id":{
+    "type":"uuid",
+	"format":"binary"
+},
+      "name": {
+        "type": "faker",
+        "method": "Company"
+      }
+    
+  }
+}
+]
