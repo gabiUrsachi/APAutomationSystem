@@ -1,6 +1,7 @@
 package org.example.services;
 
 import org.example.SQSOps;
+import org.example.business.utils.InvoiceStatusHistoryHelper;
 import org.example.business.utils.InvoiceStatusPrecedence;
 import org.example.customexceptions.InvalidResourceUpdateException;
 import org.example.customexceptions.ResourceNotFoundException;
@@ -34,10 +35,10 @@ public class InvoiceService {
                 .sellerId(invoiceEntity.getSellerId())
                 .items(invoiceEntity.getItems())
                 .version(0)
-                .invoiceStatus(InvoiceStatus.CREATED)
+                .statusHistory(InvoiceStatusHistoryHelper.initStatusHistory(InvoiceStatus.CREATED))
                 .totalAmount(invoiceEntity.getTotalAmount())
                 .build();
-        initializedInvoice.setUri(initializedInvoice.getIdentifier()+"."+invoiceEntity.getUri());
+        initializedInvoice.setUri(initializedInvoice.getIdentifier() + "." + invoiceEntity.getUri());
 
         return invoiceRepository.insert(initializedInvoice);
     }
@@ -67,14 +68,14 @@ public class InvoiceService {
     public Invoice updateInvoice(UUID identifier, Invoice invoice) {
 
         int currentVersion = invoice.getVersion();
-        InvoiceStatus requiredInvoiceStatus = InvoiceStatusPrecedence.PREDECESSORS.get(invoice.getInvoiceStatus());
+        InvoiceStatus requiredInvoiceStatus = InvoiceStatusPrecedence.PREDECESSORS.get(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus());
 
         Invoice updatedInvoice = Invoice.builder()
                 .identifier(invoice.getIdentifier())
                 .buyerId(invoice.getBuyerId())
                 .sellerId(invoice.getSellerId())
                 .items(invoice.getItems())
-                .invoiceStatus(invoice.getInvoiceStatus())
+                .statusHistory(invoice.getStatusHistory())
                 .totalAmount(invoice.getTotalAmount())
                 .version(currentVersion + 1)
                 .uri(invoice.getUri())
@@ -84,12 +85,12 @@ public class InvoiceService {
         Optional<Invoice> oldInvoice = invoiceRepository.findByIdentifier(identifier);
 
         if (oldInvoice.isPresent()) {
-            if ( oldInvoice.get().getInvoiceStatus() != requiredInvoiceStatus) {
+            if (InvoiceStatusHistoryHelper.getMostRecentHistoryObject(oldInvoice.get().getStatusHistory()).getInvoiceStatus() != requiredInvoiceStatus) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, oldInvoice.get().getIdentifier());
 
             }
         }
-        if (!isInEnum(String.valueOf(invoice.getInvoiceStatus()))) {
+        if (!isInEnum(String.valueOf(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus()))) {
             throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, invoice.getIdentifier());
         }
 
@@ -106,27 +107,19 @@ public class InvoiceService {
                 throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
             }
 
-            if (!existingInvoice.get().getInvoiceStatus().equals(InvoiceStatus.CREATED)) {
+            if (!InvoiceStatusHistoryHelper.getMostRecentHistoryObject(existingInvoice.get().getStatusHistory()).getInvoiceStatus().equals(requiredInvoiceStatus)) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingInvoice.get().getIdentifier());
             }
 
         }
-
-        if (updatedInvoice.getInvoiceStatus().equals(InvoiceStatus.SENT)) {
+        if (InvoiceStatusHistoryHelper.getMostRecentHistoryObject(updatedInvoice.getStatusHistory()).getInvoiceStatus().equals(InvoiceStatus.SENT)) {
             // sellerCompany/documentId/buyerCompany
             SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
         }
 
-            return updatedInvoice;
+        return updatedInvoice;
     }
 
-    public Invoice changeInvoiceStatus(Invoice invoice, InvoiceStatus invoiceStatus) {
-
-        invoice.setInvoiceStatus(invoiceStatus);
-        return invoice;
-
-
-    }
 
     public static boolean isInEnum(String value) {
         return Arrays.stream(InvoiceStatus.values()).anyMatch(e -> e.name().equals(value));
