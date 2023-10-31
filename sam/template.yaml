@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-04f25beed9f66f1ea"
+    Default: "vpc-0e3970517859ba529"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-080950e2a1660c0cc,subnet-0566a74082606641c,subnet-0761b37fb5c8de7d0,subnet-01bcd07e273a9afe2,subnet-0b7f8406e9e3fe966,subnet-08d28d0b2324d5b6b"
+    Default: "subnet-01fad9044ac56819e,subnet-0791246a034e5a6ee,subnet-0f7e81757b5ce5d06,subnet-0eea699f30ab49e10,subnet-0476bf544c4577f45,subnet-039de25ed774834fa"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -247,7 +247,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
       Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:076546368365:certificate/d7fc3585-a952-4927-b7ec-49e028214e0e"
+        - CertificateArn: "arn:aws:acm:us-east-1:040222318952:certificate/35e0f7d7-90ad-481a-87ca-50ad79d7a9e7"
       DefaultActions:
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'
@@ -491,15 +491,15 @@ Resources:
           db.createCollection("company");
           db.company.insertMany([
           {
-            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 4),
             "name" : "CompanyA"
           },
           {
-            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 4),
             "name" : "CompanyB"
           },
           {
-            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 4),
             "name" : "CompanyC"
           }
           ]);

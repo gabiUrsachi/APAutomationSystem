@@ -1,9 +1,8 @@
 package org.example.persistence.collections;
 
 
-import com.mongodb.lang.NonNull;
 import lombok.*;
-import org.example.persistence.utils.InvoiceStatus;
+import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -30,7 +29,7 @@ public class Invoice {
 
     private Float totalAmount;
 
-    private InvoiceStatus invoiceStatus;
+    Set<InvoiceStatusHistoryObject> statusHistory;
 
     private Integer version;
 
