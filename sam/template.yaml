@@ -491,15 +491,15 @@ Resources:
           db.createCollection("company");
           db.company.insertMany([
           {
-            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 4),
             "name" : "CompanyA"
           },
           {
-            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 4),
             "name" : "CompanyB"
           },
           {
-            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 3),
+            "_id" : Binary(Buffer.from("$(gen_uuid)", "hex"), 4),
             "name" : "CompanyC"
           }
           ]);
