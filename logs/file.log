@@ -3623,3 +3623,71 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 7884 [RMI TCP Connection(2)-192.168.16.103] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
 7962 [RMI TCP Connection(3)-192.168.16.103] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:300}] to localhost:27017
 7988 [http-nio-8080-exec-1] INFO  o.e.p.controllers.CompanyController - [GET request] -> get all companies
+1013 [main] INFO  org.example.Main - Starting Main using Java 11.0.19 on 2WGWM13 with PID 23120 (C:\Users\gabrielaurs\Desktop\projects\APAutomationSystem\core\target\classes started by gabrielaurs in C:\Users\gabrielaurs\Desktop\projects\APAutomationSystem)
+1017 [main] INFO  org.example.Main - No active profile set, falling back to 1 default profile: "default"
+3246 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+3380 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 124 ms. Found 4 MongoDB repository interfaces.
+4127 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+4140 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+4140 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+4141 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.63]
+4333 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+4333 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3242 ms
+4911 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "4.6.0"}, "os": {"type": "Windows", "name": "Windows 10", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Amazon.com Inc./11.0.19+7-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, streamFactoryFactory=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@40d848f9], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.Jep395RecordCodecProvider@21b51e59]}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='5000 ms', localThreshold='5000 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, sendBufferSize=0}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, sendBufferSize=0}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@7ab2a07e], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=STANDARD, serverApi=null, autoEncryptionSettings=null, contextProvider=null}
+4913 [cluster-ClusterId{value='654107940ea0ed45c2e2d6c7', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:302}] to localhost:27017
+4914 [cluster-rtt-ClusterId{value='654107940ea0ed45c2e2d6c7', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:301}] to localhost:27017
+4914 [cluster-ClusterId{value='654107940ea0ed45c2e2d6c7', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=17, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=35648200}
+6411 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+6450 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+6474 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+6504 [main] INFO  org.example.Main - Started Main in 6.103 seconds (JVM running for 8.965)
+7885 [RMI TCP Connection(3)-192.168.16.103] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+7885 [RMI TCP Connection(3)-192.168.16.103] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+7887 [RMI TCP Connection(3)-192.168.16.103] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+7964 [RMI TCP Connection(2)-192.168.16.103] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:303}] to localhost:27017
+24955 [http-nio-8080-exec-1] INFO  o.e.p.controllers.UserController - [GET request] -> getUsers
+29733 [scheduling-1] INFO  o.e.b.services.CompanyService - [Scheduler] -> there are 2 companies without S3 bucket: [org.example.persistence.collections.Company@70f8de2f, org.example.persistence.collections.Company@2b43a38c]
+29735 [scheduling-1] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 67975c47-aa61-47e6-8f62-99767b2a8069
+32474 [scheduling-1] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+32521 [scheduling-1] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+34204 [http-nio-8080-exec-2] INFO  o.e.p.controllers.UserController - [GET request] -> getUsers
+35596 [http-nio-8080-exec-8] INFO  o.e.p.controllers.CompanyController - [GET request] -> get all companies
+37515 [scheduling-1] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+44844 [http-nio-8080-exec-3] INFO  o.e.p.controllers.UserController - [POST request] -> login user:b
+48500 [http-nio-8080-exec-4] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+50915 [http-nio-8080-exec-9] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+50924 [http-nio-8080-exec-1] INFO  o.e.p.controllers.InvoiceController - [GET request] -> get all invoices
+89740 [scheduling-1] INFO  o.e.b.services.CompanyService - [Scheduler] -> there are 0 companies without S3 bucket: []
+101633 [http-nio-8080-exec-2] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+101637 [http-nio-8080-exec-6] INFO  o.e.p.controllers.InvoiceController - [GET request] -> get all invoices
+133963 [http-nio-8080-exec-8] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+133972 [http-nio-8080-exec-5] INFO  o.e.p.controllers.InvoiceController - [GET request] -> get all invoices
+138439 [http-nio-8080-exec-3] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+138443 [http-nio-8080-exec-7] INFO  o.e.p.controllers.CompanyController - [GET request] -> get all companies
+138449 [http-nio-8080-exec-9] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get all purchase orders
+139854 [http-nio-8080-exec-10] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+139859 [http-nio-8080-exec-1] INFO  o.e.p.controllers.InvoiceController - [GET request] -> get all invoices
+149724 [scheduling-1] INFO  o.e.b.services.CompanyService - [Scheduler] -> there are 0 companies without S3 bucket: []
+150902 [http-nio-8080-exec-2] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+150911 [http-nio-8080-exec-8] INFO  o.e.p.controllers.InvoiceController - [GET request] -> get invoice by UUID: 621d8224-8e17-4c2e-a392-687be0099882.
+152285 [http-nio-8080-exec-3] INFO  o.e.p.controllers.FileController - [GET request] -> get file identified by 621d8224-8e17-4c2e-a392-687be0099882.pdf
+154622 [http-nio-8080-exec-3] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class software.amazon.awssdk.services.s3.model.NoSuchKeyException:null
+163264 [http-nio-8080-exec-4] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+163270 [http-nio-8080-exec-7] INFO  o.e.p.controllers.InvoiceController - [GET request] -> get invoice by UUID: 621d8224-8e17-4c2e-a392-687be0099882.
+168617 [http-nio-8080-exec-9] INFO  o.e.p.controllers.FileController - [GET request] -> get file identified by 621d8224-8e17-4c2e-a392-687be0099882.pdf
+169313 [http-nio-8080-exec-9] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class software.amazon.awssdk.services.s3.model.NoSuchKeyException:null
+170781 [http-nio-8080-exec-10] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+170795 [http-nio-8080-exec-1] INFO  o.e.p.controllers.InvoiceController - [GET request] -> get invoice by UUID: 621d8224-8e17-4c2e-a392-687be0099882.
+176895 [http-nio-8080-exec-2] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+176900 [http-nio-8080-exec-6] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get all purchase orders
+180782 [http-nio-8080-exec-8] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+180787 [http-nio-8080-exec-5] INFO  o.e.p.controllers.InvoiceController - [GET request] -> get all invoices
+182081 [http-nio-8080-exec-3] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: b9c5de4d-0923-4b66-ad79-abfc27dec3ce
+182086 [http-nio-8080-exec-4] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get all purchase orders
+186969 [http-nio-8080-exec-7] INFO  o.e.p.controllers.UserController - [POST request] -> login user:a
+190644 [http-nio-8080-exec-10] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: 67975c47-aa61-47e6-8f62-99767b2a8069
+194235 [http-nio-8080-exec-1] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: 67975c47-aa61-47e6-8f62-99767b2a8069
+194240 [http-nio-8080-exec-2] INFO  o.e.p.controllers.InvoiceController - [GET request] -> get all invoices
+196728 [http-nio-8080-exec-6] INFO  o.e.p.controllers.CompanyController - [GET request] -> get company by UUID: 67975c47-aa61-47e6-8f62-99767b2a8069
+196733 [http-nio-8080-exec-8] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get all purchase orders
+209737 [scheduling-1] INFO  o.e.b.services.CompanyService - [Scheduler] -> there are 0 companies without S3 bucket: []
