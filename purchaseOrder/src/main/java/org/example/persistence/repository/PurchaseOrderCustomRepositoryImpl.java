@@ -37,21 +37,21 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
         return this.findOneByQuery(searchQuery);
     }
 
-    @Override
-    public int updateByIdentifierAndVersionAndStatus(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder) {
-        Query query = new Query(Criteria.where("identifier").is(identifier)
-                .and("version").is(version)
-                .and("orderStatus").is(orderStatus));
-
-        Update update = new Update()
-                .set("buyer", purchaseOrder.getBuyer())
-                .set("seller", purchaseOrder.getSeller())
-                .set("version", purchaseOrder.getVersion())
-                .set("items", purchaseOrder.getItems())
-                .set("orderStatus", purchaseOrder.getOrderStatus());
-
-        return (int) mongoTemplate.updateMulti(query, update, PurchaseOrder.class).getModifiedCount();
-    }
+//    @Override
+//    public int updateByIdentifierAndVersionAndStatus(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder) {
+//        Query query = new Query(Criteria.where("identifier").is(identifier)
+//                .and("version").is(version)
+//                .and("orderStatus").is(orderStatus));
+//
+//        Update update = new Update()
+//                .set("buyer", purchaseOrder.getBuyer())
+//                .set("seller", purchaseOrder.getSeller())
+//                .set("version", purchaseOrder.getVersion())
+//                .set("items", purchaseOrder.getItems())
+//                .set("orderStatus", purchaseOrder.getOrderStatus());
+//
+//        return (int) mongoTemplate.updateMulti(query, update, PurchaseOrder.class).getModifiedCount();
+//    }
 
 
     private List<PurchaseOrder> findAllByQuery(Query query) {

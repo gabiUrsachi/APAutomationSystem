@@ -95,7 +95,6 @@ public class InvoiceMapperService {
 
     public InvoiceDPO mapToDPO(OrderResponseDTO orderResponseDTO) {
 
-        int orderStatusValue = orderResponseDTO.getOrderStatus().ordinal();
         return InvoiceDPO.builder()
                 .buyerId(orderResponseDTO.getBuyer().getCompanyIdentifier())
                 .sellerId(orderResponseDTO.getSeller().getCompanyIdentifier())

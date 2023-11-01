@@ -117,31 +117,32 @@ public class PurchaseOrderController {
         return purchaseOrderMapperService.mapToDTO(purchaseOrders);
     }
 
-    @Operation(summary = "updates an existing purchase order")
-    @ApiResponses(value =
-            {
-                    @ApiResponse(responseCode = "200", description = "Successfully updated order resource"),
-                    @ApiResponse(responseCode = "401", description = "Invalid token"),
-                    @ApiResponse(responseCode = "403", description = "Invalid role or lack of permission for a valid role"),
-                    @ApiResponse(responseCode = "404", description = "Order not found"),
-                    @ApiResponse(responseCode = "412", description = "Invalid resource version for update"),
-                    @ApiResponse(responseCode = "422", description = "Invalid resource status for update")
-            })
-    @PutMapping("/{identifier}")
-    public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
-        logger.info("[PUT request] -> update purchase order identified by {}. New status: {}", identifier, orderRequestDTO.getOrderStatus());
-        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
-
-        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
-
-        authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
-        purchaseOrderValidatorService.verifyUpdatePermission(orderRequestDTO.getOrderStatus(), jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer(), orderRequestDTO.getSeller());
-
-        PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
-        PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrderRequest);
-
-        return purchaseOrderMapperService.mapToDTO(updatedPurchaseOrder);
-    }
+//    @Operation(summary = "updates an existing purchase order")
+//    @ApiResponses(value =
+//            {
+//                    @ApiResponse(responseCode = "200", description = "Successfully updated order resource"),
+//                    @ApiResponse(responseCode = "401", description = "Invalid token"),
+//                    @ApiResponse(responseCode = "403", description = "Invalid role or lack of permission for a valid role"),
+//                    @ApiResponse(responseCode = "404", description = "Order not found"),
+//                    @ApiResponse(responseCode = "412", description = "Invalid resource version for update"),
+//                    @ApiResponse(responseCode = "422", description = "Invalid resource status for update")
+//            })
+//    @PutMapping("/{identifier}")
+//    public OrderResponseDTO updatePurchaseOrder(@PathVariable UUID identifier, @RequestBody OrderRequestDTO orderRequestDTO, HttpServletRequest request) {
+//        logger.info("[PUT request] -> update purchase order identified by {}. New status: {}", identifier, orderRequestDTO.getOrderHistory());
+//        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
+//
+//        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
+//
+//        authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
+//
+//        purchaseOrderValidatorService.verifyUpdatePermission(orderRequestDTO.getOrderHistory(), jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer(), orderRequestDTO.getSeller());
+//
+//        PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);
+//        PurchaseOrder updatedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(purchaseOrderRequest);
+//
+//        return purchaseOrderMapperService.mapToDTO(updatedPurchaseOrder);
+//    }
 
     @Operation(summary = "remove purchase order by id")
     @ApiResponses(value =

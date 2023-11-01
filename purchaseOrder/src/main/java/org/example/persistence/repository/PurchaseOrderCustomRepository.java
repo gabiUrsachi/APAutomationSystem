@@ -11,5 +11,5 @@ public interface PurchaseOrderCustomRepository{
 
     List<PurchaseOrder> findByFilters(List<PurchaseOrderFilter> filters);
     PurchaseOrder findByUUIDAndFilters(UUID identifier,List<PurchaseOrderFilter> filters);
-    int updateByIdentifierAndVersionAndStatus(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder);
+//    int updateByIdentifierAndVersionAndStatus(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder);
 }
