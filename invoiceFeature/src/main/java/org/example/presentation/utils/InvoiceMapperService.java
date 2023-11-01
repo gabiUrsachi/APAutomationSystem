@@ -1,14 +1,13 @@
-package org.example.services;
+package org.example.presentation.utils;
 
-import org.example.business.models.InvoiceDDO;
-import org.example.business.models.InvoiceDPO;
-import org.example.business.models.InvoiceDTO;
+import org.example.presentation.view.InvoiceDDO;
+import org.example.presentation.view.InvoiceDPO;
+import org.example.presentation.view.InvoiceDTO;
 import org.example.business.services.CompanyService;
 import org.example.business.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.InvoiceStatus;
-import org.example.presentation.utils.CompanyMapperService;
 import org.example.presentation.view.OrderResponseDTO;
 import org.springframework.stereotype.Service;
 

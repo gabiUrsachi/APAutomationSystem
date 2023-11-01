@@ -12,7 +12,7 @@ public class AuthorizationMapper {
     @SuppressWarnings("unchecked cast")
     public static JwtClaims servletRequestToJWTClaims(HttpServletRequest httpServletRequest){
         return JwtClaims.builder()
-                .username((String) httpServletRequest.getAttribute("username"))
+                .username((String) httpServletRequest.getAttribute("user"))
                 .companyUUID((UUID) httpServletRequest.getAttribute("company"))
                 .roles(new HashSet<>((List<Roles>) httpServletRequest.getAttribute("roles")))
                 .build();

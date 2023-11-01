@@ -1,6 +1,6 @@
 package org.example.presentation.utils;
 
-public enum ResourceActionType {
+public enum PurchaseOrderResourceActionType {
     GET,
     CREATE,
     UPDATE,

@@ -1,4 +1,4 @@
-package org.example.services;
+package org.example.business.services;
 
 import org.example.SQSOps;
 import org.example.business.utils.InvoiceStatusHistoryHelper;

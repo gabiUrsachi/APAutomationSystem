@@ -1,28 +1,40 @@
-package org.example.business.models;
+package org.example.presentation.view;
 
-import com.mongodb.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.persistence.collections.Item;
 import org.example.persistence.utils.InvoiceStatus;
+import org.example.presentation.view.CompanyDTO;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.UUID;
 
-//DDO = Data Display Object
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InvoiceDDO {
+public class InvoiceDTO {
 
     private UUID identifier;
 
-    private String buyerName;
+    @NotNull
+    private CompanyDTO buyer;
 
-    private String sellerName;
+    @NotNull
+    private CompanyDTO seller;
+
+    @NotNull
+    private Set<Item> items;
 
     private InvoiceStatus invoiceStatus;
+
+    private Float totalAmount;
+
+    @NotNull
+    private Integer version;
+
+    private String uri;
 }

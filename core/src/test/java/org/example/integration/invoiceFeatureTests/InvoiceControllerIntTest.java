@@ -7,8 +7,8 @@
 //import net.minidev.json.parser.JSONParser;
 //import net.minidev.json.parser.ParseException;
 //import org.example.AuthorisationControllerAdvice;
-//import org.example.business.models.InvoiceDPO;
-//import org.example.business.models.InvoiceDTO;
+//import org.example.presentation.view.InvoiceDPO;
+//import org.example.presentation.view.InvoiceDTO;
 //import org.example.filters.TokenValidationFilter;
 //import org.example.persistence.collections.Company;
 //import org.example.persistence.collections.Invoice;

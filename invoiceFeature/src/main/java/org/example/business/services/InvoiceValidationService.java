@@ -1,4 +1,4 @@
-package org.example.services;
+package org.example.business.services;
 
 import org.example.customexceptions.ForbiddenActionException;
 import org.example.persistence.utils.InvoiceStatus;
