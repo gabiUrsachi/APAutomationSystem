@@ -6,6 +6,7 @@ import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ public class Invoice {
 
     private Float totalAmount;
 
-    Set<InvoiceStatusHistoryObject> statusHistory;
+    List<InvoiceStatusHistoryObject> statusHistory;
 
     private Integer version;
 
