@@ -1,11 +1,14 @@
 package org.example.persistence.repository;
 
+import org.example.business.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.collections.Invoice;
-import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.InvoiceHelper;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -21,20 +24,19 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
     @Override
     public List<Invoice> findByFilters(List<InvoiceFilter> filters) {
-        Criteria criteria = InvoiceHelper.createQueryCriteria(filters);
-        Query searchQuery = new Query(criteria);
+        List<AggregationOperation> aggregationOperations = InvoiceHelper.createHistoryBasedAggregators(filters);
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
-        return this.findAllByQuery(searchQuery);
+        return this.findAllByAggregation(aggregation);
     }
 
     @Override
     public Invoice findByUUIDAndFilters(UUID identifier, List<InvoiceFilter> filters) {
-        Criteria criteria = InvoiceHelper.createQueryCriteria(filters);
-        criteria = criteria.and("identifier").is(identifier);
+        List<AggregationOperation> aggregationOperations = InvoiceHelper.createHistoryBasedAggregators(filters);
+        aggregationOperations.add(0, Aggregation.match(new Criteria().and("_id").is(identifier)));
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
-        Query searchQuery = new Query(criteria);
-
-        return this.findOneByQuery(searchQuery);
+        return this.findOneByAggregation(aggregation);
     }
 
     @Override
@@ -47,7 +49,8 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
                 .set("sellerId", invoice.getSellerId())
                 .set("version", invoice.getVersion())
                 .set("items", invoice.getItems())
-                .set("invoiceStatus", invoice.getInvoiceStatus());
+                //.set("invoiceStatus", invoice.getInvoiceStatus())
+                .addToSet("statusHistory", InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()));
 
         return (int) mongoTemplate.updateMulti(query, update, Invoice.class).getModifiedCount();
     }
@@ -57,8 +60,21 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         return mongoTemplate.find(query, Invoice.class);
     }
 
+    private List<Invoice> findAllByAggregation(Aggregation aggregation) {
+        return this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getMappedResults();
+    }
+
     private Invoice findOneByQuery(Query query) {
         return mongoTemplate.findOne(query, Invoice.class);
+    }
+
+    private Invoice findOneByAggregation(Aggregation aggregation) {
+        AggregationResults<Invoice> aggregationResults = this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class);
+        if(!aggregationResults.getMappedResults().isEmpty()){
+            return aggregationResults.getMappedResults().get(0);
+        }
+
+        return null;
     }
 
 }

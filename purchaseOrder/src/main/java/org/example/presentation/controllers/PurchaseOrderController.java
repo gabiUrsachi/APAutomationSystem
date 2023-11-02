@@ -11,7 +11,7 @@ import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.presentation.utils.ActionsPermissions;
 import org.example.presentation.utils.PurchaseOrderMapperService;
-import org.example.presentation.utils.ResourceActionType;
+import org.example.presentation.utils.PurchaseOrderResourceActionType;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.presentation.view.OrderResponseDTO;
 import org.example.services.AuthorisationService;
@@ -61,7 +61,7 @@ public class PurchaseOrderController {
         logger.info("[POST request] -> create purchase order from company {} to company {}", orderRequestDTO.getBuyer(), orderRequestDTO.getSeller());
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(PurchaseOrderResourceActionType.CREATE);
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
         purchaseOrderValidatorService.verifyIdentifiersMatch(jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer());
@@ -87,7 +87,7 @@ public class PurchaseOrderController {
         logger.info("[GET request] -> get purchase order by UUID: {}", identifier);
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(PurchaseOrderResourceActionType.GET);
         Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
         List<PurchaseOrderFilter> queryFilters = purchaseOrderFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
@@ -108,7 +108,7 @@ public class PurchaseOrderController {
         logger.info("[GET request] -> get all purchase orders");
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(PurchaseOrderResourceActionType.GET);
         Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
         List<PurchaseOrderFilter> queryFilters = purchaseOrderFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
@@ -132,7 +132,7 @@ public class PurchaseOrderController {
         logger.info("[PUT request] -> update purchase order identified by {}. New status: {}", identifier, orderRequestDTO.getOrderStatus());
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(PurchaseOrderResourceActionType.UPDATE);
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
@@ -157,7 +157,7 @@ public class PurchaseOrderController {
         logger.info("[DELETE request] -> remove purchase order identified by {}", identifier);
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(ResourceActionType.DELETE);
+        Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(PurchaseOrderResourceActionType.DELETE);
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 

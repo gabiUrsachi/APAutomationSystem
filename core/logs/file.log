@@ -794,3 +794,56 @@
 4148 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket bj1frnyd with prefix=None, delimiter=None
 4150 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
 
+332  [main] ERROR org.example.GlobalControllerAdvice - [ServerError] -> class java.lang.Exception: null
+384  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.AlreadyExistingResourceException:null
+393  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidCredentialsException: null
+403  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.springframework.dao.OptimisticLockingFailureException: null
+412  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidResourceUpdateException:null
+420  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.ResourceNotFoundException:null
+933  [main] ERROR org.example.SQSOps - [AWS - send message to SQS queue] -> null
+4454 [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+6736 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object 0yr3qzjl/jp4sy7x6 (signed)
+6838 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+6843 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 7kz0rt9l
+6908 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 7kz0rt9l
+6948 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket 7kz0rt9l with prefix=None, delimiter=None
+6967 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6975 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object 7kz0rt9l/o23edpdf (signed)
+7065 [main] INFO  org.example.S3BucketOps - Successfully placed object o23edpdf with version null into 7kz0rt9l.
+7159 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 4y5hajrw
+7167 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 4y5hajrw
+7174 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket 4y5hajrw with prefix=None, delimiter=None
+7175 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7220 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - cannot copy object 4y5hajrw/4h1mviao: no such key
+7238 [main] ERROR org.example.S3BucketOps - [AWS - duplication of S3 object] -> The resource you requested does not exist
+7240 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> gpdxb6po
+7245 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket gpdxb6po
+7252 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket gpdxb6po with prefix=None, delimiter=None
+7253 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7293 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> vzbx3pgp
+7298 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket vzbx3pgp
+7304 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket vzbx3pgp with prefix=None, delimiter=None
+7306 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7313 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object vzbx3pgp/kacla3ps (signed)
+7317 [main] INFO  org.example.S3BucketOps - Successfully placed object kacla3ps with version null into vzbx3pgp.
+7324 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.CopyObject - copied object vzbx3pgp/kacla3ps
+7330 [main] INFO  org.example.S3BucketOps - Successfully duplicated object kacla3ps .
+7341 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 1itsek1n
+7348 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 1itsek1n
+7353 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket 1itsek1n with prefix=None, delimiter=None
+7355 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7362 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object 1itsek1n/s23etzgy (signed)
+7366 [main] INFO  org.example.S3BucketOps - Successfully placed object s23etzgy with version null into 1itsek1n.
+7369 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rl8f5chn
+7375 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rl8f5chn
+7382 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket rl8f5chn with prefix=None, delimiter=None
+7384 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7911 [main] INFO  o.e.p.c.PurchaseOrderController - [PUT request] -> update purchase order identified by 6d8b3917-16ea-46dd-af98-865d61139ff0. New status: SAVED
+7960 [main] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get purchase order by UUID: d989cc2d-1f3a-4347-856a-248f859b0349
+7968 [main] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get purchase order by UUID: 48b45018-2129-4938-9cda-489fa28140a1
+313  [main] ERROR org.example.GlobalControllerAdvice - [ServerError] -> class java.lang.Exception: null
+365  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.AlreadyExistingResourceException:null
+372  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidCredentialsException: null
+379  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.springframework.dao.OptimisticLockingFailureException: null
+386  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidResourceUpdateException:null
+394  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.ResourceNotFoundException:null

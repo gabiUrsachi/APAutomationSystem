@@ -1,19 +1,19 @@
 package org.example.presentation.controllers;
 
 import org.example.S3BucketOps;
-import org.example.business.models.InvoiceDDO;
-import org.example.business.models.InvoiceDPO;
-import org.example.business.models.InvoiceDTO;
+import org.example.presentation.utils.InvoiceActionsPermissions;
+import org.example.presentation.utils.InvoiceResourceActionType;
+import org.example.presentation.view.InvoiceDDO;
+import org.example.presentation.view.InvoiceDPO;
+import org.example.presentation.view.InvoiceDTO;
 import org.example.business.services.InvoiceFilteringService;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.data.InvoiceFilter;
-import org.example.presentation.controllers.utils.InvoiceActionsPermissions;
-import org.example.presentation.controllers.utils.ResourceActionType;
 import org.example.presentation.view.OrderResponseDTO;
 import org.example.services.AuthorisationService;
-import org.example.services.InvoiceMapperService;
-import org.example.services.InvoiceService;
-import org.example.services.InvoiceValidationService;
+import org.example.presentation.utils.InvoiceMapperService;
+import org.example.business.services.InvoiceService;
+import org.example.business.services.InvoiceValidationService;
 import org.example.utils.AuthorizationMapper;
 import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -57,7 +58,7 @@ public class InvoiceController {
         logger.info("[POST request] -> create invoice with buyer {} and seller {}.", invoiceDPO.getBuyerId(), invoiceDPO.getSellerId());
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
-        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(InvoiceResourceActionType.CREATE);
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
@@ -79,7 +80,7 @@ public class InvoiceController {
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(InvoiceResourceActionType.GET);
         Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
         List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
@@ -93,7 +94,7 @@ public class InvoiceController {
         logger.info("[POST request] -> create invoice from purchase order identified by {}.", orderResponseDTO.getIdentifier());
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
-        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.CREATE_FROM_OR);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(InvoiceResourceActionType.CREATE_FROM_OR);
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
@@ -117,7 +118,7 @@ public class InvoiceController {
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.GET);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(InvoiceResourceActionType.GET);
         Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
         List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
@@ -134,7 +135,7 @@ public class InvoiceController {
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.UPDATE);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(InvoiceResourceActionType.UPDATE);
         Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
         invoiceValidatorService.verifyUpdatePermission(invoiceDTO.getInvoiceStatus(), jwtClaims.getCompanyUUID(), invoiceDTO.getBuyer().getCompanyIdentifier(), invoiceDTO.getSeller().getCompanyIdentifier());
@@ -151,7 +152,7 @@ public class InvoiceController {
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
-        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(ResourceActionType.DELETE);
+        Set<Roles> validRoles = InvoiceActionsPermissions.VALID_ROLES.get(InvoiceResourceActionType.DELETE);
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
         invoiceService.deleteInvoice(identifier);

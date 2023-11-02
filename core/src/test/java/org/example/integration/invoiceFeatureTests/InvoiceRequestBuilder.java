@@ -2,8 +2,8 @@ package org.example.integration.invoiceFeatureTests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.business.models.InvoiceDPO;
-import org.example.business.models.InvoiceDTO;
+import org.example.presentation.view.InvoiceDPO;
+import org.example.presentation.view.InvoiceDTO;
 import org.example.presentation.view.OrderResponseDTO;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.RequestBuilder;
