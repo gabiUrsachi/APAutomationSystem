@@ -3,10 +3,12 @@ package org.example.persistence.collections;
 
 import com.mongodb.lang.NonNull;
 import lombok.*;
+import org.example.persistence.utils.data.OrderHistoryObject;
 import org.example.persistence.utils.data.OrderStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -33,7 +35,7 @@ public class PurchaseOrder {
 
     private Set<Item> items;
 
-    private OrderStatus orderStatus;
+    private List<OrderHistoryObject> statusHistory;
 
     private Integer version;
 
