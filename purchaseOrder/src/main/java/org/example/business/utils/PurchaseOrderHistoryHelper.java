@@ -9,7 +9,7 @@ import java.util.*;
 public class PurchaseOrderHistoryHelper {
 
 
-    public static OrderHistoryObject getLastestOrderHistoryObject(List<OrderHistoryObject> orderHistory) {
+    public static OrderHistoryObject getLatestOrderHistoryObject(List<OrderHistoryObject> orderHistory) {
 
         return orderHistory.stream()
                 .max(Comparator.comparing(OrderHistoryObject::getDate))

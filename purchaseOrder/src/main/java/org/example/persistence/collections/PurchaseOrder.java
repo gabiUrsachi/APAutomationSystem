@@ -35,7 +35,7 @@ public class PurchaseOrder {
 
     private Set<Item> items;
 
-    private List<OrderHistoryObject> orderHistory;
+    private List<OrderHistoryObject> statusHistory;
 
     private Integer version;
 

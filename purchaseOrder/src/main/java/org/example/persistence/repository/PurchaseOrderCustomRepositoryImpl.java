@@ -6,6 +6,9 @@ import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.UUID;
 
+import static org.example.business.utils.PurchaseOrderHistoryHelper.getLatestOrderHistoryObject;
+
 @Component
 public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRepository {
     @Autowired
@@ -21,45 +26,49 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
 
     @Override
     public List<PurchaseOrder> findByFilters(List<PurchaseOrderFilter> filters) {
-        Criteria criteria = PurchaseOrderHelper.createQueryCriteria(filters);
-        Query searchQuery = new Query(criteria);
+        List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createHistoryBasedAggregators(filters);
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
-        return this.findAllByQuery(searchQuery);
+        return this.findAllByAggregation(aggregation);
+
     }
 
     @Override
     public PurchaseOrder findByUUIDAndFilters(UUID identifier, List<PurchaseOrderFilter> filters) {
-        Criteria criteria = PurchaseOrderHelper.createQueryCriteria(filters);
-        criteria = criteria.and("identifier").is(identifier);
+        List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createHistoryBasedAggregators(filters);
+        aggregationOperations.add(0, Aggregation.match(new Criteria().and("_id").is(identifier)));
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
-        Query searchQuery = new Query(criteria);
-
-        return this.findOneByQuery(searchQuery);
+        return this.findOneByAggregation(aggregation);
     }
 
-//    @Override
-//    public int updateByIdentifierAndVersionAndStatus(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder) {
-//        Query query = new Query(Criteria.where("identifier").is(identifier)
-//                .and("version").is(version)
-//                .and("orderStatus").is(orderStatus));
-//
-//        Update update = new Update()
-//                .set("buyer", purchaseOrder.getBuyer())
-//                .set("seller", purchaseOrder.getSeller())
-//                .set("version", purchaseOrder.getVersion())
-//                .set("items", purchaseOrder.getItems())
-//                .set("orderStatus", purchaseOrder.getOrderStatus());
-//
-//        return (int) mongoTemplate.updateMulti(query, update, PurchaseOrder.class).getModifiedCount();
-//    }
+    @Override
+    public int updateByIdentifierAndVersion(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder) {
+        Query query = new Query(Criteria.where("identifier").is(identifier)
+                .and("version").is(version));
 
+        Update update = new Update()
+                .set("buyer", purchaseOrder.getBuyer())
+                .set("seller", purchaseOrder.getSeller())
+                .set("version", purchaseOrder.getVersion())
+                .set("items", purchaseOrder.getItems())
+                .addToSet("statusHistory", getLatestOrderHistoryObject(purchaseOrder.getStatusHistory()));
 
-    private List<PurchaseOrder> findAllByQuery(Query query) {
-        return mongoTemplate.find(query, PurchaseOrder.class);
+        return (int) mongoTemplate.updateMulti(query, update, PurchaseOrder.class).getModifiedCount();
     }
 
-    private PurchaseOrder findOneByQuery(Query query) {
-        return mongoTemplate.findOne(query, PurchaseOrder.class);
+
+    private List<PurchaseOrder> findAllByAggregation(Aggregation aggregation) {
+        return this.mongoTemplate.aggregate(aggregation, "purchaseOrder", PurchaseOrder.class).getMappedResults();
+    }
+
+    private PurchaseOrder findOneByAggregation(Aggregation aggregation) {
+        AggregationResults<PurchaseOrder> aggregationResults = this.mongoTemplate.aggregate(aggregation, "purchaseOrder", PurchaseOrder.class);
+        if (!aggregationResults.getMappedResults().isEmpty()) {
+            return aggregationResults.getMappedResults().get(0);
+        }
+
+        return null;
     }
 
 }

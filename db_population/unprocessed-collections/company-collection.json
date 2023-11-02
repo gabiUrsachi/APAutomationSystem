@@ -1,454 +1,454 @@
 {
   "APsystem.company": [
     {
-      "name": "Ontodia, Inc",
       "_id": {
         "$binary": {
-          "base64": "yr3da7NSRUumKujZdnvfWg==",
+          "base64": "HszKyJQlRkim+w5gU4UHGg==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Gallup"
     },
     {
-      "name": "McGraw Hill Financial",
       "_id": {
         "$binary": {
-          "base64": "381by8NfQSqcMmod/Ac+OQ==",
+          "base64": "2QWY7PM3SPWubplrt+57tA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Propeller Health"
     },
     {
-      "name": "Dun \u0026 Bradstreet",
       "_id": {
         "$binary": {
-          "base64": "53lNWRNoRhuO3BGareBT8g==",
+          "base64": "PklY9FvyTvifv7TcW0WcDw==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Open Data Nation"
     },
     {
-      "name": "Google Public Data Explorer",
       "_id": {
         "$binary": {
-          "base64": "FmkVJuP+RuK8eAGQZPWe6w==",
+          "base64": "3blMusKmSo2+jmtCV7Ns7Q==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Revelstone"
     },
     {
-      "name": "CitySourced",
       "_id": {
         "$binary": {
-          "base64": "8xmJarNxTTWsqkeD9m7Xlw==",
+          "base64": "4eXF0dHIQsyzHt//1UszMg==",
           "subType": "04"
         }
-      }
+      },
+      "name": "OSIsoft"
     },
     {
-      "name": "gRadiant Research LLC",
       "_id": {
         "$binary": {
-          "base64": "/XLMKJXjRf+RSaDKdCK2cA==",
+          "base64": "WTmkUvsNQyG/1fe5drzgBA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Deloitte"
     },
     {
-      "name": "Panjiva",
       "_id": {
         "$binary": {
-          "base64": "PYi6WzYzTSKQhNONATHcXg==",
+          "base64": "qRtjhUGJRDqWHRRvLe484A==",
           "subType": "04"
         }
-      }
+      },
+      "name": "PublicEngines"
     },
     {
-      "name": "BuildZoom",
       "_id": {
         "$binary": {
-          "base64": "HDewOyy7Qr+kjxglVIm8ng==",
+          "base64": "ar+9vM1jSv+qglvU3BGQEA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Zoner"
     },
     {
-      "name": "Paxata",
       "_id": {
         "$binary": {
-          "base64": "HUyIfi+kQL6bQAbG4gFatA==",
+          "base64": "gQL3F8WqR3+vN35Q8idk2w==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Atlas Van Lines"
     },
     {
-      "name": "Pave",
       "_id": {
         "$binary": {
-          "base64": "gmQSam5PSIWrdRqtuFu/og==",
+          "base64": "fQAgFAHXT6yfF/jEgYg8ng==",
           "subType": "04"
         }
-      }
+      },
+      "name": "DataWeave"
     },
     {
-      "name": "MetLife",
       "_id": {
         "$binary": {
-          "base64": "0pfpeefiTompj9pK5/Nw0Q==",
+          "base64": "/4zUHn9nTYe5BtmAZWzzjw==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Cloudspyre"
     },
     {
-      "name": "FlightAware",
       "_id": {
         "$binary": {
-          "base64": "NeGzIfL+Q6S6Nfuj6Ybz8Q==",
+          "base64": "gDCi/dT9RkWpO6du5GgPjA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Ayasdi"
     },
     {
-      "name": "Impaq International",
       "_id": {
         "$binary": {
-          "base64": "vaz+xcGXQeuup5gUprLh7w==",
+          "base64": "9agX8JUORU2/dmip+GjAIA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Analytica"
     },
     {
-      "name": "PlaceILive.com",
       "_id": {
         "$binary": {
-          "base64": "3FrfaRc2SoWnbeiQxL2bUw==",
+          "base64": "Mj5g8t1CQv+VOxkXZrcVYQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Webitects"
     },
     {
-      "name": "Intelius",
       "_id": {
         "$binary": {
-          "base64": "onL6oinfSeSHD/ocA/730A==",
+          "base64": "8CyGgk5gRS2CY9kc5VFNWQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "ZocDoc"
     },
     {
-      "name": "IBM",
       "_id": {
         "$binary": {
-          "base64": "oTt19ezyRJurD5rE/72rjg==",
+          "base64": "kseX+7XoRCO67R7RwRstHQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Civic Impulse LLC"
     },
     {
-      "name": "Remi",
       "_id": {
         "$binary": {
-          "base64": "2p404IGHQS+e7AYG7pWDWQ==",
+          "base64": "FLnNmS92SEmEDCHqsdueag==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Atlas Van Lines"
     },
     {
-      "name": "Vizzuality",
       "_id": {
         "$binary": {
-          "base64": "NQWQ/6iCRJGdWOwZs3z8sw==",
+          "base64": "XTWsAiVXRHK3ydgM/MFMPw==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Patently-O"
     },
     {
-      "name": "Lawdragon",
       "_id": {
         "$binary": {
-          "base64": "1XGGx6S8RxSHnWTzUhOI1g==",
+          "base64": "d8VHaeEFR2GjMrK/ayg4rA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Rapid Cycle Solutions"
     },
     {
-      "name": "College Abacus, an ECMC initiative",
       "_id": {
         "$binary": {
-          "base64": "X1b4RjTATlOhk3CtUyKX9Q==",
+          "base64": "lWfkoz3AQRuF6mDiw5yNiQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "PlaceILive.com"
     },
     {
-      "name": "Walk Score",
       "_id": {
         "$binary": {
-          "base64": "WkBvDA1KRjuuho6OW/Y12A==",
+          "base64": "CgUfN+qWQ0yYIjYs+dh7Qw==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Aureus Sciences (*Now part of Elsevier)"
     },
     {
-      "name": "Roadify Transit",
       "_id": {
         "$binary": {
-          "base64": "5+wKR95MSDm76Wt9s7RR/Q==",
+          "base64": "z9CAMypcQliQQM1pyLi7KA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Splunk"
     },
     {
-      "name": "Healthgrades",
       "_id": {
         "$binary": {
-          "base64": "MHiyEs2RRKyNmmYRk8tkzg==",
+          "base64": "o1mXdv5aSDeHCFOfTg8IFw==",
           "subType": "04"
         }
-      }
+      },
+      "name": "AllState Insurance Group"
     },
     {
-      "name": "PlanetEcosystems",
       "_id": {
         "$binary": {
-          "base64": "r+VpZ57EQHGIuAFUsewYjw==",
+          "base64": "Pym+02F6QSOYt/D1cDfnVg==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Rezolve Group"
     },
     {
-      "name": "Thomson Reuters",
       "_id": {
         "$binary": {
-          "base64": "Spop16+ORVmVxVyV/620BQ==",
+          "base64": "91JwNnKEQVuhmMOQphfwAg==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Personal, Inc."
     },
     {
-      "name": "5PSolutions",
       "_id": {
         "$binary": {
-          "base64": "DrWekvsXSoWFIMrUx+Hjtw==",
+          "base64": "/tT0k1AVS5e17Uvu7SEddQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "CARFAX"
     },
     {
-      "name": "USAA Group",
       "_id": {
         "$binary": {
-          "base64": "vKRH3FpxR+aBMInHsITFXw==",
+          "base64": "dGpJggkXQ8+TEs5iLwu4+A==",
           "subType": "04"
         }
-      }
+      },
+      "name": "KPMG"
     },
     {
-      "name": "Recargo",
       "_id": {
         "$binary": {
-          "base64": "/3POji2QRimGw+QJiLUolQ==",
+          "base64": "o0qLEybaSUCx2va6ggsGWQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Unigo LLC"
     },
     {
-      "name": "Amazon Web Services",
       "_id": {
         "$binary": {
-          "base64": "LY7A/4emRnKjN2FFxk7PcQ==",
+          "base64": "JL7iVvpCStumxdx1zbAMSg==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Simple Energy"
     },
     {
-      "name": "HelloWallet",
       "_id": {
         "$binary": {
-          "base64": "Wo16JBOST6ah8YDZUtRrNg==",
+          "base64": "qX0cpI7zTCykz2/IlbjLxA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "TagniFi"
     },
     {
-      "name": "Lilly Open Innovation Drug Discovery",
       "_id": {
         "$binary": {
-          "base64": "WyLFhXdVS2yp7bdG2c17yQ==",
+          "base64": "/4pJRFi4THmhwpP2obXy2g==",
           "subType": "04"
         }
-      }
+      },
+      "name": "PowerAdvocate"
     },
     {
-      "name": "BuildFax",
       "_id": {
         "$binary": {
-          "base64": "sxYG+cmHTQ6zfm5m4/jGBA==",
+          "base64": "4hofGB9lQ3G2TTEc9XlwUg==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Overture Technologies"
     },
     {
-      "name": "Rank and Filed",
       "_id": {
         "$binary": {
-          "base64": "Hd93hphlQZaQYPxWwJp+zA==",
+          "base64": "eunuELceQRKXdflGLvSGCw==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Child Care Desk"
     },
     {
-      "name": "CB Insights",
       "_id": {
         "$binary": {
-          "base64": "cP/4FmPnTqyoptk3SAyNwQ==",
+          "base64": "OOegFdmfRwKOGD3VZaV+uA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "BaleFire Global"
     },
     {
-      "name": "LegiStorm",
       "_id": {
         "$binary": {
-          "base64": "+sqXcc4bRkOfq/6mZjBkVQ==",
+          "base64": "UFabg/QrTCimTbduF80pIA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "AreaVibes Inc."
     },
     {
-      "name": "Relationship Science",
       "_id": {
         "$binary": {
-          "base64": "pBfYDtOxTN2XJI9d4ICIQA==",
+          "base64": "NA5i46sITzOmzjvTJMC1Mg==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Asset4"
     },
     {
-      "name": "Atlas Van Lines",
       "_id": {
         "$binary": {
-          "base64": "F8Qt0AFxSzOBj6uYKllogw==",
+          "base64": "w4Y9ym2uTKi1xZn/3+3XbQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "BuildZoom"
     },
     {
-      "name": "Ernst \u0026 Young LLP",
       "_id": {
         "$binary": {
-          "base64": "RRcEtbEJTOSsCfRDuB9awQ==",
+          "base64": "aAYLc4JlS769WooHpO+WaQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Junyo"
     },
     {
-      "name": "Liberty Mutual Insurance Cos.",
       "_id": {
         "$binary": {
-          "base64": "NgRz/OJ4Rdyp/7b5DCWE4g==",
+          "base64": "n8d3OXMcQB6r7+c/1tlIyw==",
           "subType": "04"
         }
-      }
+      },
+      "name": "How's My Offer?"
     },
     {
-      "name": "Dun \u0026 Bradstreet",
       "_id": {
         "$binary": {
-          "base64": "HB34yRH9QcW8KlYm5YFKMw==",
+          "base64": "AbqEMQUkT92Whp0P0uJY5A==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Redfin"
     },
     {
-      "name": "Datamyne",
       "_id": {
         "$binary": {
-          "base64": "Jwa7q3+ZRaW3+ENBVniy2A==",
+          "base64": "5Fi7BfQtSlCf2cmWFJZdyQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Knowledge Agency"
     },
     {
-      "name": "Onvia",
       "_id": {
         "$binary": {
-          "base64": "JkSinK3cTG60zTe/FoH7Lw==",
+          "base64": "P33gAyk7RUqqce65AiYLOQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Amida Technology Solutions"
     },
     {
-      "name": "Govzilla, Inc.",
       "_id": {
         "$binary": {
-          "base64": "JJLyIGSIQZyK1GZAqvjuCw==",
+          "base64": "dFOHAyxARgGjHO9Cw8vodQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Headlight"
     },
     {
-      "name": "HealthMap",
       "_id": {
         "$binary": {
-          "base64": "7y2IYN08Q0qTgQ3jZBjK2w==",
+          "base64": "DiGBWBDgRFecVDLvXnNk0Q==",
           "subType": "04"
         }
-      }
+      },
+      "name": "LegiStorm"
     },
     {
-      "name": "CGI",
       "_id": {
         "$binary": {
-          "base64": "Vh60DI0WT8WycHSpmYseZw==",
+          "base64": "aPPCDGR1QRegADN+jN64Rg==",
           "subType": "04"
         }
-      }
+      },
+      "name": "(Leg)Cyte"
     },
     {
-      "name": "Weather Underground",
       "_id": {
         "$binary": {
-          "base64": "nyf2IQ8OTN2KtR/2D8elnQ==",
+          "base64": "SzPmV1dSQ5O6NewHnF+aLA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Docket Alarm, Inc."
     },
     {
-      "name": "CGI",
       "_id": {
         "$binary": {
-          "base64": "HjpexXGCREeE9ZfAN5Dtbw==",
+          "base64": "jbB5naDLRuOUJ3Z1FwvgnA==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Weather Channel"
     },
     {
-      "name": "Galorath Incorporated",
       "_id": {
         "$binary": {
-          "base64": "dqptMle0RCi02T+jFdUifQ==",
+          "base64": "n2sbS7h2RGiHf7XF/OBVEQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Lending Club"
     },
     {
-      "name": "Spikes Cavell Analytic Inc",
       "_id": {
         "$binary": {
-          "base64": "Le/HRZb5RJy+7naVXExW4A==",
+          "base64": "b/E389rVQh+0Yzwxgiq1KQ==",
           "subType": "04"
         }
-      }
+      },
+      "name": "Ecodesk"
     },
     {
-      "name": "Pave",
       "_id": {
         "$binary": {
-          "base64": "chtq3tfCRnyPaQm0dOd3xw==",
+          "base64": "rhPtbcw0Qqm8plri5ccqAg==",
           "subType": "04"
         }
-      }
+      },
+      "name": "StreamLink Software"
     }
   ]
 }

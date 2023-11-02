@@ -35,3 +35,6 @@ build/
 
 sam/.aws-sam
 logs/
+
+db_population/unprocessed-collections/*
+db_population/processed-collections/*

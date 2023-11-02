@@ -6,14 +6,12 @@ import org.example.customexceptions.InvalidResourceUpdateException;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
-import org.example.persistence.utils.data.OrderHistoryObject;
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.utils.ErrorMessages;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import static org.example.business.utils.PurchaseOrderHistoryHelper.*;
 
@@ -41,7 +39,7 @@ public class PurchaseOrderService {
 
         purchaseOrder.setUri(purchaseOrder.getIdentifier() + "." + purchaseOrder.getUri());
 
-        purchaseOrder.setOrderHistory(generateOrderHistoryList(OrderStatus.CREATED));
+        purchaseOrder.setStatusHistory(generateOrderHistoryList(OrderStatus.CREATED));
 
         return purchaseOrderRepository.save(purchaseOrder);
 
@@ -103,46 +101,47 @@ public class PurchaseOrderService {
      * @param purchaseOrder updated order content
      * @return updated order
      */
-//    public PurchaseOrder updatePurchaseOrder(PurchaseOrder purchaseOrder) {
-//        int oldVersion = purchaseOrder.getVersion();
-//
-//        OrderStatus requiredOldStatus = PurchaseOrderStatusPrecedence.PREDECESSORS.get(purchaseOrder.getOrderStatus());
-//
-//        PurchaseOrder updatedPurchaseOrder = PurchaseOrder.builder()
-//                .identifier(purchaseOrder.getIdentifier())
-//                .buyer(purchaseOrder.getBuyer())
-//                .seller(purchaseOrder.getSeller())
-//                .items(purchaseOrder.getItems())
-//                .orderStatus(purchaseOrder.getOrderStatus())
-//                .version(oldVersion + 1)
-//                .uri(purchaseOrder.getUri())
-//                .build();
-//
-//        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(purchaseOrder.getIdentifier(), oldVersion, requiredOldStatus, updatedPurchaseOrder);
-//
-//        if (updateCount == 0) {
-//            Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
-//
-//            if (existingPurchaseOrder.isEmpty()) {
-//                throw new ResourceNotFoundException(ErrorMessages.ORDER_NOT_FOUND, purchaseOrder.getIdentifier().toString());
-//            }
-//
-//            if (!Objects.equals(existingPurchaseOrder.get().getVersion(), purchaseOrder.getVersion())) {
-//                throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
-//            }
-//
-//            if (!existingPurchaseOrder.get().getOrderStatus().equals(requiredOldStatus)) {
-//                throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
-//            }
-//        }
-//
-//        if (updatedPurchaseOrder.getOrderStatus().equals(OrderStatus.SAVED)) {
-//            // buyerCompany/documentId/sellerCompany
-//            SQSOps.sendMessage(updatedPurchaseOrder.getBuyer() + "/" + updatedPurchaseOrder.getIdentifier() + "/" + updatedPurchaseOrder.getSeller());
-//        }
-//
-//        return updatedPurchaseOrder;
-//    }
+    public PurchaseOrder updatePurchaseOrder(PurchaseOrder purchaseOrder) {
+        int oldVersion = purchaseOrder.getVersion();
+
+        OrderStatus requiredOldStatus = PurchaseOrderStatusPrecedence.PREDECESSORS.get(getLatestOrderHistoryObject(purchaseOrder.getStatusHistory()).getStatus());
+
+        PurchaseOrder updatedPurchaseOrder = PurchaseOrder.builder()
+                .identifier(purchaseOrder.getIdentifier())
+                .buyer(purchaseOrder.getBuyer())
+                .seller(purchaseOrder.getSeller())
+                .items(purchaseOrder.getItems())
+                .statusHistory(purchaseOrder.getStatusHistory())
+                .version(oldVersion + 1)
+                .uri(purchaseOrder.getUri())
+                .build();
+
+        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersion(purchaseOrder.getIdentifier(), oldVersion, requiredOldStatus, updatedPurchaseOrder);
+
+        if (updateCount == 0) {
+            Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
+
+            if (existingPurchaseOrder.isEmpty()) {
+                throw new ResourceNotFoundException(ErrorMessages.ORDER_NOT_FOUND, purchaseOrder.getIdentifier().toString());
+            }
+
+            if (!Objects.equals(existingPurchaseOrder.get().getVersion(), purchaseOrder.getVersion())) {
+                throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
+            }
+
+            OrderStatus latestOrderStatus = getLatestOrderHistoryObject(existingPurchaseOrder.get().getStatusHistory()).getStatus();
+            if (!latestOrderStatus.equals(requiredOldStatus)) {
+                throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
+            }
+        }
+
+        if (getLatestOrderHistoryObject(updatedPurchaseOrder.getStatusHistory()).equals(OrderStatus.SAVED)) {
+            // buyerCompany/documentId/sellerCompany
+            SQSOps.sendMessage(updatedPurchaseOrder.getBuyer() + "/" + updatedPurchaseOrder.getIdentifier() + "/" + updatedPurchaseOrder.getSeller());
+        }
+
+        return updatedPurchaseOrder;
+    }
 
     /**
      * It removes the order identified by the given UUID from existing order list

@@ -37,7 +37,7 @@ public class PurchaseOrderMapperService {
                 .seller(orderRequestDTO.getSeller())
                 .items(orderRequestDTO.getItems())
                 .version(orderRequestDTO.getVersion())
-                .orderHistory(generateOrderHistoryList(orderRequestDTO.getOrderStatus()))
+                .statusHistory(generateOrderHistoryList(orderRequestDTO.getOrderStatus()))
                 .uri(orderRequestDTO.getUri())
                 .build();
     }
@@ -55,7 +55,7 @@ public class PurchaseOrderMapperService {
                 .buyer(companyMapperService.mapToDTO(companyService.getCompanyById(purchaseOrder.getBuyer())))
                 .seller(companyMapperService.mapToDTO(companyService.getCompanyById(purchaseOrder.getSeller())))
                 .items(purchaseOrder.getItems())
-                .orderStatus(PurchaseOrderHistoryHelper.getLastestOrderHistoryObject(purchaseOrder.getOrderHistory()).getStatus())
+                .orderStatus(PurchaseOrderHistoryHelper.getLatestOrderHistoryObject(purchaseOrder.getStatusHistory()).getStatus())
                 .version(purchaseOrder.getVersion())
                 .uri(purchaseOrder.getUri())
                 .build();

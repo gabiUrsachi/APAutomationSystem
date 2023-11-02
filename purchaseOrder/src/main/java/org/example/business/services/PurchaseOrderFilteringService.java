@@ -45,7 +45,7 @@ public class PurchaseOrderFilteringService {
                     newFilter = PurchaseOrderFilter.builder()
                             .companyUUID(companyUUID)
                             .companyType(CompanyRole.SELLER)
-//                            .requiredStatus(OrderStatus.APPROVED)
+                            .requiredStatus(OrderStatus.APPROVED)
                             .build();
                     filters.add(newFilter);
                     break;
@@ -53,7 +53,7 @@ public class PurchaseOrderFilteringService {
                     newFilter = PurchaseOrderFilter.builder()
                             .companyUUID(companyUUID)
                             .companyType(CompanyRole.SELLER)
-//                            .requiredStatus(OrderStatus.SAVED)
+                            .requiredStatus(OrderStatus.SAVED)
                             .build();
                     filters.add(newFilter);
                     break;
