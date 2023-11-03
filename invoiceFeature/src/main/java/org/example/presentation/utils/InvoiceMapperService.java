@@ -4,7 +4,7 @@ import org.example.presentation.view.InvoiceDDO;
 import org.example.presentation.view.InvoiceDPO;
 import org.example.presentation.view.InvoiceDTO;
 import org.example.business.services.CompanyService;
-import org.example.business.utils.InvoiceStatusHistoryHelper;
+import org.example.persistence.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.InvoiceStatus;
@@ -70,7 +70,6 @@ public class InvoiceMapperService {
 
     public InvoiceDDO mapToDDO(Invoice invoice) {
 
-        InvoiceStatus mostRecent = InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus();
         Company buyer = companyService.getCompanyById(invoice.getBuyerId());
         Company seller = companyService.getCompanyById(invoice.getSellerId());
         return InvoiceDDO.builder()
@@ -98,7 +97,6 @@ public class InvoiceMapperService {
 
     public InvoiceDPO mapToDPO(OrderResponseDTO orderResponseDTO) {
 
-        int orderStatusValue = orderResponseDTO.getOrderStatus().ordinal();
         return InvoiceDPO.builder()
                 .buyerId(orderResponseDTO.getBuyer().getCompanyIdentifier())
                 .sellerId(orderResponseDTO.getSeller().getCompanyIdentifier())

@@ -1,8 +1,8 @@
 package org.example.persistence.repository;
 
-import org.example.business.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.InvoiceHelper;
+import org.example.persistence.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Component
@@ -24,7 +25,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
     @Override
     public List<Invoice> findByFilters(List<InvoiceFilter> filters) {
-        List<AggregationOperation> aggregationOperations = InvoiceHelper.createHistoryBasedAggregators(filters);
+        List<AggregationOperation> aggregationOperations = InvoiceHelper.createFiltersBasedAggregators(filters);
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
         return this.findAllByAggregation(aggregation);
@@ -32,7 +33,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
     @Override
     public Invoice findByUUIDAndFilters(UUID identifier, List<InvoiceFilter> filters) {
-        List<AggregationOperation> aggregationOperations = InvoiceHelper.createHistoryBasedAggregators(filters);
+        List<AggregationOperation> aggregationOperations = InvoiceHelper.createFiltersBasedAggregators(filters);
         aggregationOperations.add(0, Aggregation.match(new Criteria().and("_id").is(identifier)));
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
@@ -55,6 +56,13 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         return (int) mongoTemplate.updateMulti(query, update, Invoice.class).getModifiedCount();
     }
 
+    @Override
+    public Float getPaidAmountForLastNMonths(UUID buyerId, int monthsNumber) {
+        List<AggregationOperation> aggregationOperations = InvoiceHelper.createPaidAmountOverNMonthsAggregators(buyerId, monthsNumber);
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
+
+        return Objects.requireNonNull(this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getUniqueMappedResult()).getTotalAmount();
+    }
 
     private List<Invoice> findAllByQuery(Query query) {
         return mongoTemplate.find(query, Invoice.class);
@@ -70,7 +78,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
     private Invoice findOneByAggregation(Aggregation aggregation) {
         AggregationResults<Invoice> aggregationResults = this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class);
-        if(!aggregationResults.getMappedResults().isEmpty()){
+        if (!aggregationResults.getMappedResults().isEmpty()) {
             return aggregationResults.getMappedResults().get(0);
         }
 

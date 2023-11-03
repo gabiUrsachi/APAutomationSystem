@@ -1,16 +1,18 @@
 package org.example.business.services;
 
 import org.example.SQSOps;
-import org.example.business.utils.InvoiceStatusHistoryHelper;
+import org.example.business.discountStrategies.DiscountByAmountStrategy;
+import org.example.business.discountStrategies.DiscountStrategy;
+import org.example.business.discountStrategies.formulas.AmountBasedFormulaStrategy;
 import org.example.business.utils.InvoiceStatusPrecedence;
 import org.example.customexceptions.InvalidResourceUpdateException;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
 import org.example.persistence.utils.InvoiceStatus;
+import org.example.persistence.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.utils.ErrorMessages;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +21,14 @@ import java.util.*;
 
 @Service
 public class InvoiceService {
-    @Autowired
+
     private InvoiceRepository invoiceRepository;
+
+    private DiscountStrategy discountStrategy;
 
     public InvoiceService(InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
+        this.discountStrategy = new DiscountByAmountStrategy(this.invoiceRepository, new AmountBasedFormulaStrategy());
     }
 
 
@@ -115,6 +120,10 @@ public class InvoiceService {
         if (InvoiceStatusHistoryHelper.getMostRecentHistoryObject(updatedInvoice.getStatusHistory()).getInvoiceStatus().equals(InvoiceStatus.SENT)) {
             // sellerCompany/documentId/buyerCompany
             SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
+
+            Float discountRate = this.discountStrategy.applyDiscount(invoice.getBuyerId());
+            /// TODO add new amount to response
+            Float newAmount = updatedInvoice.getTotalAmount() - discountRate * updatedInvoice.getTotalAmount();
         }
 
         return updatedInvoice;

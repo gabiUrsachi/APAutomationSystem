@@ -1,6 +1,5 @@
-package org.example.business.utils;
+package org.example.persistence.utils;
 
-import org.example.persistence.utils.InvoiceStatus;
 import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 
 import java.time.LocalDateTime;
