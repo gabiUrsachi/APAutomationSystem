@@ -56,6 +56,8 @@ public class InvoiceMapperService {
 
         Company buyer = companyService.getCompanyById(invoice.getBuyerId());
         Company seller = companyService.getCompanyById(invoice.getSellerId());
+        Float reducedAmount = invoice.getDiscountRate() != null ? invoice.getTotalAmount() - invoice.getDiscountRate() * invoice.getTotalAmount() : null;
+
         return InvoiceDTO.builder()
                 .identifier(invoice.getIdentifier())
                 .buyer(companyMapperService.mapToDTO(buyer))
@@ -64,6 +66,8 @@ public class InvoiceMapperService {
                 .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus()) //get the most recent status
                 .version(invoice.getVersion())
                 .totalAmount(invoice.getTotalAmount())
+                .discountRate(invoice.getDiscountRate())
+                .finalAmount(reducedAmount)
                 .uri(invoice.getUri())
                 .build();
     }
@@ -89,7 +93,8 @@ public class InvoiceMapperService {
                 .items(invoice.getItems())
                 .build();
     }
-    public List<InvoiceDDO> mapToDDO(List<Invoice> invoices){
+
+    public List<InvoiceDDO> mapToDDO(List<Invoice> invoices) {
         return invoices.stream()
                 .map(this::mapToDDO)
                 .collect(Collectors.toList());

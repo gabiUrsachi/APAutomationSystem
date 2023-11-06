@@ -18,7 +18,7 @@ public class DiscountByAmountStrategy extends DiscountStrategy {
     }
 
     @Override
-    public Float applyDiscount(UUID buyerUUID) {
+    public Float computeDiscount(UUID buyerUUID) {
         int MONTHS_NUMBER = 3;
         Float paidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(buyerUUID, MONTHS_NUMBER);
 

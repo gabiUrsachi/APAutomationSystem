@@ -50,12 +50,19 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
                 .set("sellerId", invoice.getSellerId())
                 .set("version", invoice.getVersion())
                 .set("items", invoice.getItems())
-                //.set("invoiceStatus", invoice.getInvoiceStatus())
+                .set("discountRate", invoice.getDiscountRate())
                 .addToSet("statusHistory", InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()));
 
         return (int) mongoTemplate.updateMulti(query, update, Invoice.class).getModifiedCount();
     }
 
+    /**
+     * This method is used for retrieving the total paid amount over some past months for a specific customer/buyer
+     *
+     * @param buyerId      the buyer whose total paid amount is retrieved
+     * @param monthsNumber the number of considered past months
+     * @return the total paid amount
+     */
     @Override
     public Float getPaidAmountForLastNMonths(UUID buyerId, int monthsNumber) {
         List<AggregationOperation> aggregationOperations = InvoiceHelper.createPaidAmountOverNMonthsAggregators(buyerId, monthsNumber);

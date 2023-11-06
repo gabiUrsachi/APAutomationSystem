@@ -73,7 +73,8 @@ public class InvoiceService {
     public Invoice updateInvoice(UUID identifier, Invoice invoice) {
 
         int currentVersion = invoice.getVersion();
-        InvoiceStatus requiredInvoiceStatus = InvoiceStatusPrecedence.PREDECESSORS.get(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus());
+        InvoiceStatus updatedInvoiceStatus = InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus();
+        InvoiceStatus requiredInvoiceStatus = InvoiceStatusPrecedence.PREDECESSORS.get(updatedInvoiceStatus);
 
         Invoice updatedInvoice = Invoice.builder()
                 .identifier(invoice.getIdentifier())
@@ -86,17 +87,20 @@ public class InvoiceService {
                 .uri(invoice.getUri())
                 .build();
 
-
         Optional<Invoice> oldInvoice = invoiceRepository.findByIdentifier(identifier);
 
         if (oldInvoice.isPresent()) {
             if (InvoiceStatusHistoryHelper.getMostRecentHistoryObject(oldInvoice.get().getStatusHistory()).getInvoiceStatus() != requiredInvoiceStatus) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, oldInvoice.get().getIdentifier());
-
             }
         }
-        if (!isInEnum(String.valueOf(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus()))) {
+
+        if (!isInEnum(String.valueOf(updatedInvoiceStatus))) {
             throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, invoice.getIdentifier());
+        }
+
+        if (updatedInvoiceStatus.equals(InvoiceStatus.SENT)) {
+            updatedInvoice = applyDiscount(updatedInvoice);
         }
 
         int updateCount = invoiceRepository.updateByIdentifierAndVersion(identifier, currentVersion, updatedInvoice);
@@ -115,20 +119,40 @@ public class InvoiceService {
             if (!InvoiceStatusHistoryHelper.getMostRecentHistoryObject(existingInvoice.get().getStatusHistory()).getInvoiceStatus().equals(requiredInvoiceStatus)) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingInvoice.get().getIdentifier());
             }
-
         }
-        if (InvoiceStatusHistoryHelper.getMostRecentHistoryObject(updatedInvoice.getStatusHistory()).getInvoiceStatus().equals(InvoiceStatus.SENT)) {
+
+        if (updatedInvoiceStatus.equals(InvoiceStatus.SENT)) {
             // sellerCompany/documentId/buyerCompany
             SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
-
-            Float discountRate = this.discountStrategy.applyDiscount(invoice.getBuyerId());
-            /// TODO add new amount to response
-            Float newAmount = updatedInvoice.getTotalAmount() - discountRate * updatedInvoice.getTotalAmount();
         }
 
         return updatedInvoice;
     }
 
+    /**
+     * This method is responsible for updating an invoice by adding a new field
+     * related to the discount rate which should be applied to the total amount
+     *
+     * @param invoice document to be updated
+     * @return updated document
+     */
+    private Invoice applyDiscount(Invoice invoice) {
+        Invoice updatedInvoice = Invoice.builder()
+                .identifier(invoice.getIdentifier())
+                .buyerId(invoice.getBuyerId())
+                .sellerId(invoice.getSellerId())
+                .items(invoice.getItems())
+                .statusHistory(invoice.getStatusHistory())
+                .totalAmount(invoice.getTotalAmount())
+                .version(invoice.getVersion())
+                .uri(invoice.getUri())
+                .build();
+
+        Float discountRate = this.discountStrategy.computeDiscount(invoice.getBuyerId());
+        updatedInvoice.setDiscountRate(discountRate);
+
+        return updatedInvoice;
+    }
 
     public static boolean isInEnum(String value) {
         return Arrays.stream(InvoiceStatus.values()).anyMatch(e -> e.name().equals(value));

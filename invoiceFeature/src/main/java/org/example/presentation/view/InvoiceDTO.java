@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.persistence.collections.Item;
 import org.example.persistence.utils.InvoiceStatus;
-import org.example.presentation.view.CompanyDTO;
 
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -32,6 +31,10 @@ public class InvoiceDTO {
     private InvoiceStatus invoiceStatus;
 
     private Float totalAmount;
+
+    private Float discountRate;
+
+    private Float finalAmount;
 
     @NotNull
     private Integer version;

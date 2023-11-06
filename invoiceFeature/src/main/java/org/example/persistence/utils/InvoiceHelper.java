@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This class contain methods for creating mongo query criteria and aggregations operations based on given conditions
+ */
 public class InvoiceHelper {
     public static Criteria createQueryCriteria(List<InvoiceFilter> filters) {
         List<Criteria> criteriaList = new ArrayList<Criteria>(filters.size());
@@ -30,14 +33,21 @@ public class InvoiceHelper {
         return new Criteria().orOperator(criteriaList.toArray(new Criteria[criteriaList.size()]));
     }
 
+    /**
+     * This method creates aggregation operations for retrieve and check that the most recent status of an invoice
+     * matches the required status from filters for a specific company
+     *
+     * @param filters conditions used for creating match criteria
+     * @return aggregation operations to be applied
+     */
     public static List<AggregationOperation> createFiltersBasedAggregators(List<InvoiceFilter> filters) {
         List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
         MatchOperation statusExistsOperation = Aggregation.match(Criteria.where("statusHistory").exists(true));
         String sortString = "{$sortArray: { input: '$statusHistory', sortBy: {date: -1}}}";
         SetOperation setOperation = SetOperation.builder().set("statusHistory").toValue(Document.parse(sortString));
-        Criteria matchCriteria = createCriteriaByFilters(filters);
-        MatchOperation statusAndCompanyMatchOperation = Aggregation.match(matchCriteria);
+        Criteria statusAndCompanyCriteria = createStatusAndCompanyCriteria(filters);
+        MatchOperation statusAndCompanyMatchOperation = Aggregation.match(statusAndCompanyCriteria);
 
         aggregationOperations.add(statusExistsOperation);
         aggregationOperations.add(setOperation);
@@ -46,6 +56,14 @@ public class InvoiceHelper {
         return aggregationOperations;
     }
 
+    /**
+     * This method creates aggregation operations for retrieve the total paid amount over some
+     * past months for a specific customer/buyer
+     *
+     * @param buyerId the buyer whose total paid amount will be retrieved
+     * @param monthsNumber the number of considered past months
+     * @return aggregation operations to be applied
+     */
     public static List<AggregationOperation> createPaidAmountOverNMonthsAggregators(UUID buyerId, int monthsNumber) {
         List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
@@ -66,11 +84,10 @@ public class InvoiceHelper {
         aggregationOperations.add(Aggregation.project("totalAmount"));
         aggregationOperations.add(Aggregation.project().andExclude("_id"));
 
-
         return aggregationOperations;
     }
 
-    private static Criteria createCriteriaByFilters(List<InvoiceFilter> filters) {
+    private static Criteria createStatusAndCompanyCriteria(List<InvoiceFilter> filters) {
         List<Criteria> criteriaList = new ArrayList<>(filters.size());
 
         for (InvoiceFilter filter : filters) {

@@ -20,11 +20,11 @@ public abstract class DiscountStrategy {
     }
 
     /**
-     * It applies a discount for a specific customer/buyer
+     * It computes a discount for a specific customer/buyer
      *
      * @param buyerUUID The buyer company which will receive the discount
      * @return The discount rate to be applied
      */
-    public abstract Float applyDiscount(UUID buyerUUID);
+    public abstract Float computeDiscount(UUID buyerUUID);
 }
 
