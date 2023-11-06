@@ -12,10 +12,8 @@ import org.example.utils.ErrorMessages;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import static org.example.business.utils.PurchaseOrderHistoryHelper.*;
 
 /**
  * This service is used for performing CRUD operations
@@ -28,6 +26,7 @@ public class PurchaseOrderService {
         this.purchaseOrderRepository = purchaseOrderRepository;
     }
 
+
     /**
      * It creates a new purchase order with random identifier and CREATED status
      *
@@ -37,10 +36,13 @@ public class PurchaseOrderService {
     public PurchaseOrder createPurchaseOrder(PurchaseOrder purchaseOrder) {
         purchaseOrder.setIdentifier(UUID.randomUUID());
         purchaseOrder.setVersion(0);
-        purchaseOrder.setOrderStatus(OrderStatus.CREATED);
+
         purchaseOrder.setUri(purchaseOrder.getIdentifier() + "." + purchaseOrder.getUri());
 
+        purchaseOrder.setStatusHistory(generateOrderHistoryList(OrderStatus.CREATED));
+
         return purchaseOrderRepository.save(purchaseOrder);
+
     }
 
     /**
@@ -101,19 +103,20 @@ public class PurchaseOrderService {
      */
     public PurchaseOrder updatePurchaseOrder(PurchaseOrder purchaseOrder) {
         int oldVersion = purchaseOrder.getVersion();
-        OrderStatus requiredOldStatus = PurchaseOrderStatusPrecedence.PREDECESSORS.get(purchaseOrder.getOrderStatus());
+
+        OrderStatus requiredOldStatus = PurchaseOrderStatusPrecedence.PREDECESSORS.get(getLatestOrderHistoryObject(purchaseOrder.getStatusHistory()).getStatus());
 
         PurchaseOrder updatedPurchaseOrder = PurchaseOrder.builder()
                 .identifier(purchaseOrder.getIdentifier())
                 .buyer(purchaseOrder.getBuyer())
                 .seller(purchaseOrder.getSeller())
                 .items(purchaseOrder.getItems())
-                .orderStatus(purchaseOrder.getOrderStatus())
+                .statusHistory(purchaseOrder.getStatusHistory())
                 .version(oldVersion + 1)
                 .uri(purchaseOrder.getUri())
                 .build();
 
-        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersionAndStatus(purchaseOrder.getIdentifier(), oldVersion, requiredOldStatus, updatedPurchaseOrder);
+        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersion(purchaseOrder.getIdentifier(), oldVersion, requiredOldStatus, updatedPurchaseOrder);
 
         if (updateCount == 0) {
             Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
@@ -126,12 +129,13 @@ public class PurchaseOrderService {
                 throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
             }
 
-            if (!existingPurchaseOrder.get().getOrderStatus().equals(requiredOldStatus)) {
+            OrderStatus latestOrderStatus = getLatestOrderHistoryObject(existingPurchaseOrder.get().getStatusHistory()).getStatus();
+            if (!latestOrderStatus.equals(requiredOldStatus)) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
             }
         }
 
-        if (updatedPurchaseOrder.getOrderStatus().equals(OrderStatus.SAVED)) {
+        if (getLatestOrderHistoryObject(updatedPurchaseOrder.getStatusHistory()).equals(OrderStatus.SAVED)) {
             // buyerCompany/documentId/sellerCompany
             SQSOps.sendMessage(updatedPurchaseOrder.getBuyer() + "/" + updatedPurchaseOrder.getIdentifier() + "/" + updatedPurchaseOrder.getSeller());
         }

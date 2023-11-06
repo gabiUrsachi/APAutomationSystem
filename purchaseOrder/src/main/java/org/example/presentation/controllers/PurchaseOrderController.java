@@ -135,6 +135,7 @@ public class PurchaseOrderController {
         Set<Roles> validRoles = ActionsPermissions.VALID_ROLES.get(PurchaseOrderResourceActionType.UPDATE);
 
         authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
+
         purchaseOrderValidatorService.verifyUpdatePermission(orderRequestDTO.getOrderStatus(), jwtClaims.getCompanyUUID(), orderRequestDTO.getBuyer(), orderRequestDTO.getSeller());
 
         PurchaseOrder purchaseOrderRequest = purchaseOrderMapperService.mapToEntity(orderRequestDTO);

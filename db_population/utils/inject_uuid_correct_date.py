@@ -52,8 +52,8 @@ def inject_history_array(element,collection_name):
 
 	
 	dates = sorted([generate_random_date() for _ in range(random.randint(1, len(statuses)))])
-	order_history = [{"date": format_as_isodate(date), "status": statuses[i]} for i, date in enumerate(dates)]
-	element['orderHistory'] = order_history
+	status_history = [{"date": format_as_isodate(date), "status": statuses[i]} for i, date in enumerate(dates)]
+	element['statusHistory'] = status_history
 	return element
 
 	
