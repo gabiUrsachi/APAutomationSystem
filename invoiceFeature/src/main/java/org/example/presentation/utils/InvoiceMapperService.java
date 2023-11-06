@@ -70,7 +70,6 @@ public class InvoiceMapperService {
 
     public InvoiceDDO mapToDDO(Invoice invoice) {
 
-        InvoiceStatus mostRecent = InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus();
         Company buyer = companyService.getCompanyById(invoice.getBuyerId());
         Company seller = companyService.getCompanyById(invoice.getSellerId());
         return InvoiceDDO.builder()
