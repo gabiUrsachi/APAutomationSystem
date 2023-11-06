@@ -7,7 +7,6 @@ import org.example.business.services.CompanyService;
 import org.example.persistence.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
-import org.example.persistence.utils.InvoiceStatus;
 import org.example.presentation.view.OrderResponseDTO;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +62,7 @@ public class InvoiceMapperService {
                 .buyer(companyMapperService.mapToDTO(buyer))
                 .seller(companyMapperService.mapToDTO(seller))
                 .items(invoice.getItems())
-                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus()) //get the most recent status
+                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus()) //get the most recent status
                 .version(invoice.getVersion())
                 .totalAmount(invoice.getTotalAmount())
                 .discountRate(invoice.getDiscountRate())
@@ -80,7 +79,7 @@ public class InvoiceMapperService {
                 .identifier(invoice.getIdentifier())
                 .buyerName(buyer.getName())
                 .sellerName(seller.getName())
-                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus()) //get the most recent status
+                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus()) //get the most recent status
                 .build();
     }
 

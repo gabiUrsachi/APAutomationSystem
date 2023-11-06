@@ -73,7 +73,7 @@ public class InvoiceService {
     public Invoice updateInvoice(UUID identifier, Invoice invoice) {
 
         int currentVersion = invoice.getVersion();
-        InvoiceStatus updatedInvoiceStatus = InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus();
+        InvoiceStatus updatedInvoiceStatus = InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus();
         InvoiceStatus requiredInvoiceStatus = InvoiceStatusPrecedence.PREDECESSORS.get(updatedInvoiceStatus);
 
         Invoice updatedInvoice = Invoice.builder()
@@ -90,7 +90,7 @@ public class InvoiceService {
         Optional<Invoice> oldInvoice = invoiceRepository.findByIdentifier(identifier);
 
         if (oldInvoice.isPresent()) {
-            if (InvoiceStatusHistoryHelper.getMostRecentHistoryObject(oldInvoice.get().getStatusHistory()).getInvoiceStatus() != requiredInvoiceStatus) {
+            if (InvoiceStatusHistoryHelper.getMostRecentHistoryObject(oldInvoice.get().getStatusHistory()).getStatus() != requiredInvoiceStatus) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, oldInvoice.get().getIdentifier());
             }
         }
@@ -116,7 +116,7 @@ public class InvoiceService {
                 throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
             }
 
-            if (!InvoiceStatusHistoryHelper.getMostRecentHistoryObject(existingInvoice.get().getStatusHistory()).getInvoiceStatus().equals(requiredInvoiceStatus)) {
+            if (!InvoiceStatusHistoryHelper.getMostRecentHistoryObject(existingInvoice.get().getStatusHistory()).getStatus().equals(requiredInvoiceStatus)) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingInvoice.get().getIdentifier());
             }
         }

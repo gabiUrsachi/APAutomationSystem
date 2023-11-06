@@ -19,7 +19,7 @@ public class InvoiceStatusHistoryHelper {
                 InvoiceStatusHistoryObject
                         .builder()
                         .date(LocalDateTime.now())
-                        .invoiceStatus(invoiceStatus)
+                        .status(invoiceStatus)
                         .build()
         );
     }

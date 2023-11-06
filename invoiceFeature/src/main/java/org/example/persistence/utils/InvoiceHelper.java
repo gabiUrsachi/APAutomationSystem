@@ -4,7 +4,6 @@ import org.bson.Document;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.SetOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 
@@ -24,7 +23,7 @@ public class InvoiceHelper {
             Criteria criteria = Criteria.where(filter.getCompanyType().toString().toLowerCase() + "Id").is(filter.getCompanyUUID());
 
             if (filter.getRequiredStatus() != null) {
-                criteria = criteria.and("invoiceStatus").is(filter.getRequiredStatus());
+                criteria = criteria.and("status").is(filter.getRequiredStatus());
             }
 
             criteriaList.add(criteria);
@@ -74,7 +73,7 @@ public class InvoiceHelper {
         Criteria buyerAndHistoryMatchCriteria = new Criteria().andOperator(criteriaList.toArray(new Criteria[0]));
 
         criteriaList = new ArrayList<>();
-        criteriaList.add(Criteria.where("statusHistory.invoiceStatus").is(InvoiceStatus.PAID.toString()));
+        criteriaList.add(Criteria.where("statusHistory.status").is(InvoiceStatus.PAID.toString()));
         criteriaList.add(Criteria.where("statusHistory.date").gte(LocalDateTime.now().minusMonths(monthsNumber)));
         Criteria invoiceStatusMatchCriteria = new Criteria().andOperator(criteriaList.toArray(new Criteria[0]));
 
@@ -95,7 +94,7 @@ public class InvoiceHelper {
             Criteria criteria = createCompanyCriteria(filter);
 
             if (filter.getRequiredStatus() != null) {
-                Criteria statusCriteria = Criteria.where("statusHistory.0.invoiceStatus").is(filter.getRequiredStatus().toString());
+                Criteria statusCriteria = Criteria.where("statusHistory.0.status").is(filter.getRequiredStatus().toString());
                 criteria = new Criteria().andOperator(criteria, statusCriteria);
             }
 

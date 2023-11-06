@@ -68,7 +68,8 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         List<AggregationOperation> aggregationOperations = InvoiceHelper.createPaidAmountOverNMonthsAggregators(buyerId, monthsNumber);
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
-        return Objects.requireNonNull(this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getUniqueMappedResult()).getTotalAmount();
+        Invoice resultedInvoice = this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getUniqueMappedResult();
+        return resultedInvoice != null? resultedInvoice.getTotalAmount():null;
     }
 
     private List<Invoice> findAllByQuery(Query query) {
