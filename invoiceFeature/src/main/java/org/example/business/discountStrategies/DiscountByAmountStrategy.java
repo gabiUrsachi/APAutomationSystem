@@ -12,14 +12,15 @@ import java.util.UUID;
  */
 @Component
 public class DiscountByAmountStrategy extends DiscountStrategy {
+    private final int MONTHS_NUMBER;
 
     public DiscountByAmountStrategy(InvoiceCustomRepository invoiceRepository, DiscountFormulaStrategy discountFormulaStrategy) {
         super(invoiceRepository, discountFormulaStrategy);
+        MONTHS_NUMBER = 3;
     }
 
     @Override
     public Float computeDiscount(UUID buyerUUID) {
-        int MONTHS_NUMBER = 3;
         Float paidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(buyerUUID, MONTHS_NUMBER);
 
         return this.discountFormulaStrategy.computeDiscountRate(paidAmountForLast3Months);
