@@ -82,29 +82,29 @@ public class PurchaseOrderControllerShould {
 
     @Test
     public void returnForbiddenResponseForValidRolesWithoutSomePermissionsWhenUpdate(){
-//        Set<Roles> userRoles = Set.of(Roles.BUYER_CUSTOMER, Roles.SUPPLIER_MANAGEMENT);
-//        UUID userCompanyUUID = UUID.randomUUID();
-//        OrderRequestDTO orderRequestDTO = createOrderRequestDTO(UUID.randomUUID(), UUID.randomUUID(), OrderStatus.SAVED);
-//
-//        given(request.getAttribute("roles")).willReturn(List.copyOf(userRoles));
-//        given(request.getAttribute("company")).willReturn(userCompanyUUID);
-//        given(authorisationService.authorize(eq(userRoles), any())).willAnswer((answer) -> answer.getArgument(0));
-//
-//        assertThrows(ForbiddenActionException.class, () -> purchaseOrderController.updatePurchaseOrder(UUID.randomUUID(), orderRequestDTO, request));
-//
-//        verify(request).getAttribute("roles");
-//        verify(request).getAttribute("company");
-//        verify(authorisationService).authorize(eq(userRoles), any());
+        Set<Roles> userRoles = Set.of(Roles.BUYER_CUSTOMER, Roles.SUPPLIER_MANAGEMENT);
+        UUID userCompanyUUID = UUID.randomUUID();
+        OrderRequestDTO orderRequestDTO = createOrderRequestDTO(UUID.randomUUID(), UUID.randomUUID(), OrderStatus.SAVED);
+
+        given(request.getAttribute("roles")).willReturn(List.copyOf(userRoles));
+        given(request.getAttribute("company")).willReturn(userCompanyUUID);
+        given(authorisationService.authorize(eq(userRoles), any())).willAnswer((answer) -> answer.getArgument(0));
+
+        assertThrows(ForbiddenActionException.class, () -> purchaseOrderController.updatePurchaseOrder(UUID.randomUUID(), orderRequestDTO, request));
+
+        verify(request).getAttribute("roles");
+        verify(request).getAttribute("company");
+        verify(authorisationService).authorize(eq(userRoles), any());
     }
 
-//    private OrderRequestDTO createOrderRequestDTO(UUID buyer, UUID seller, OrderStatus orderStatus){
-//        return OrderRequestDTO.builder()
-//                .identifier(UUID.randomUUID())
-//                .buyer(buyer)
-//                .seller(seller)
-//                .orderStatus(orderStatus)
-//                .items(Set.of())
-//                .version(0)
-//                .build();
-//    }
+    private OrderRequestDTO createOrderRequestDTO(UUID buyer, UUID seller, OrderStatus orderStatus){
+        return OrderRequestDTO.builder()
+                .identifier(UUID.randomUUID())
+                .buyer(buyer)
+                .seller(seller)
+                .orderStatus(orderStatus)
+                .items(Set.of())
+                .version(0)
+                .build();
+    }
 }

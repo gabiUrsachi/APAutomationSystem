@@ -85,7 +85,8 @@ public class InvoiceController {
 
         List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
 
-        return invoiceMapperService.mapToDDO(invoiceService.getInvoices(queryFilters));
+        List<InvoiceDDO> myList = invoiceMapperService.mapToDDO(invoiceService.getInvoices(queryFilters));
+        return  myList;
 
     }
 
