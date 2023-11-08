@@ -4,10 +4,9 @@ import org.example.presentation.view.InvoiceDDO;
 import org.example.presentation.view.InvoiceDPO;
 import org.example.presentation.view.InvoiceDTO;
 import org.example.business.services.CompanyService;
-import org.example.business.utils.InvoiceStatusHistoryHelper;
+import org.example.persistence.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
-import org.example.persistence.utils.InvoiceStatus;
 import org.example.presentation.view.OrderResponseDTO;
 import org.springframework.stereotype.Service;
 
@@ -56,14 +55,18 @@ public class InvoiceMapperService {
 
         Company buyer = companyService.getCompanyById(invoice.getBuyerId());
         Company seller = companyService.getCompanyById(invoice.getSellerId());
+        Float reducedAmount = invoice.getDiscountRate() != null ? invoice.getTotalAmount() - invoice.getDiscountRate() * invoice.getTotalAmount() : null;
+
         return InvoiceDTO.builder()
                 .identifier(invoice.getIdentifier())
                 .buyer(companyMapperService.mapToDTO(buyer))
                 .seller(companyMapperService.mapToDTO(seller))
                 .items(invoice.getItems())
-                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus()) //get the most recent status
+                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus()) //get the most recent status
                 .version(invoice.getVersion())
                 .totalAmount(invoice.getTotalAmount())
+                .discountRate(invoice.getDiscountRate())
+                .finalAmount(reducedAmount)
                 .uri(invoice.getUri())
                 .build();
     }
@@ -76,7 +79,7 @@ public class InvoiceMapperService {
                 .identifier(invoice.getIdentifier())
                 .buyerName(buyer.getName())
                 .sellerName(seller.getName())
-                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getInvoiceStatus()) //get the most recent status
+                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus()) //get the most recent status
                 .build();
     }
 
@@ -89,7 +92,8 @@ public class InvoiceMapperService {
                 .items(invoice.getItems())
                 .build();
     }
-    public List<InvoiceDDO> mapToDDO(List<Invoice> invoices){
+
+    public List<InvoiceDDO> mapToDDO(List<Invoice> invoices) {
         return invoices.stream()
                 .map(this::mapToDDO)
                 .collect(Collectors.toList());

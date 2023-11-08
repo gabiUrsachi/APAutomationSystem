@@ -30,6 +30,8 @@ public class Invoice {
 
     private Float totalAmount;
 
+    private Float discountRate;
+
     List<InvoiceStatusHistoryObject> statusHistory;
 
     private Integer version;

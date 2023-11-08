@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-0b932ed78a1aa32ce"
+    Default: "vpc-0b4bb7fa2aa08d7ca"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-027c0c1009603d2f0,subnet-09d369260dccfb717,subnet-002fd26e9dd7e0e4c,subnet-058f9f54498f85f58,subnet-06b1929d6337cf124,subnet-01ddea1251b8ab28c"
+    Default: "subnet-07f70007a24311a38,subnet-0120fe97dd02ca3bd,subnet-0410d0ca5cd1b7c5b,subnet-09aa027571fbf9908,subnet-080937de32e3e1536,subnet-063d9ad928675e5df"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String

@@ -14,5 +14,5 @@ import java.time.LocalDateTime;
 @Builder
 public class InvoiceStatusHistoryObject {
     LocalDateTime date;
-    InvoiceStatus invoiceStatus;
+    InvoiceStatus status;
 }
