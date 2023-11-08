@@ -12,8 +12,14 @@ import org.example.utils.ErrorMessages;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
+
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+
 import static org.example.business.utils.PurchaseOrderHistoryHelper.*;
+
 
 /**
  * This service is used for performing CRUD operations
@@ -157,4 +163,30 @@ public class PurchaseOrderService {
     }
 
 
+    /**
+     * Compute purchase order company taxes for a given month
+     *
+     * @param month  Integer
+     * @param year   Integer
+     * @param filter PurchaseOrderFilter Filter containing the company uuid
+     */
+    public Float computePurchaseOrderTax(Integer month, Integer year, PurchaseOrderFilter filter) {
+
+        try {
+            ZonedDateTime firstDay = ZonedDateTime.of(year, month, 1, 0, 0, 0, 0, ZoneId.of("Z"));
+            ZonedDateTime lastDay = firstDay.with(TemporalAdjusters.lastDayOfMonth());
+            lastDay = lastDay.withHour(23).withMinute(59).withSecond(59).withNano(999000000);
+
+            Date lowerTimestamp = Date.from(firstDay.toInstant());
+            Date upperTimestamp = Date.from(lastDay.toInstant());
+
+            List<PurchaseOrder> filteredPurchaseOrders = purchaseOrderRepository.findByBuyerUUIDAndDate(filter.getCompanyUUID(), lowerTimestamp, upperTimestamp);
+            System.out.println(filteredPurchaseOrders);
+            System.out.println("cine te creeeeezi");
+        } catch (Exception e) {
+            throw new DateTimeException("Invalid date format");
+        }
+
+        return 0.0f;
+    }
 }

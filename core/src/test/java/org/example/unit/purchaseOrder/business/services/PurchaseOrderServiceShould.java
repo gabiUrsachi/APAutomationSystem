@@ -113,7 +113,7 @@ public class PurchaseOrderServiceShould {
             PurchaseOrder savedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(updatedPurchaseOrder);
 
             verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder);
-//            sqsOpsMockedStatic.verify(() -> SQSOps.sendMessage(any()));
+            sqsOpsMockedStatic.verify(() -> SQSOps.sendMessage(any()));
 
             OrderStatus updatedPurchaseOrderStatus = PurchaseOrderHistoryHelper.getLatestOrderHistoryObject(updatedPurchaseOrder.getStatusHistory()).getStatus();
             OrderStatus savedPurchaseOrderStatus = PurchaseOrderHistoryHelper.getLatestOrderHistoryObject(savedPurchaseOrder.getStatusHistory()).getStatus();

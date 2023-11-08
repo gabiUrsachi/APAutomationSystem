@@ -61,4 +61,10 @@ public class PurchaseOrderFilteringService {
         }
         return filters;
     }
+
+    public PurchaseOrderFilter createCompanyBasedFilter(UUID companyUUID){
+        return PurchaseOrderFilter.builder()
+                .companyUUID(companyUUID)
+                .build();
+    }
 }
