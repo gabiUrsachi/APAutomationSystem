@@ -5,6 +5,7 @@ import org.example.business.discountStrategies.DiscountByAmountStrategy;
 import org.example.business.discountStrategies.DiscountStrategy;
 import org.example.business.discountStrategies.formulas.AmountBasedFormulaStrategy;
 import org.example.business.utils.InvoiceStatusPrecedence;
+import org.example.business.utils.InvoiceTaxationRate;
 import org.example.customexceptions.InvalidResourceUpdateException;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Invoice;
@@ -12,12 +13,19 @@ import org.example.persistence.repository.InvoiceRepository;
 import org.example.persistence.utils.InvoiceStatus;
 import org.example.persistence.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.utils.data.InvoiceFilter;
+import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.example.utils.ErrorMessages;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.DateTimeException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class InvoiceService {
@@ -156,5 +164,49 @@ public class InvoiceService {
 
     public static boolean isInEnum(String value) {
         return Arrays.stream(InvoiceStatus.values()).anyMatch(e -> e.name().equals(value));
+    }
+
+    public Float computeInvoiceTax(Integer month, Integer year, InvoiceFilter filter) {
+
+
+        try {
+            Date[] timestampsArray = generateMonthInterval(month, year);
+            List<Invoice> filteredInvoices = invoiceRepository.findByBuyerUUIDAndDate(filter.getCompanyUUID(), timestampsArray[0], timestampsArray[1]);
+
+            List<InvoiceStatus> statusList = filteredInvoices.stream()
+                    .flatMap(purchaseOrder -> purchaseOrder.getStatusHistory().stream())
+                    .map(InvoiceStatusHistoryObject::getStatus)
+                    .collect(Collectors.toList());
+
+            Map<InvoiceStatus, Long> monthlyStatusCounts = statusList.stream()
+                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            Float taxAmount = 0.0f;
+            for (Map.Entry<InvoiceStatus, Long> entry : monthlyStatusCounts.entrySet()) {
+
+                Float statusTax = InvoiceTaxationRate.invoiceTaxRate.get(entry.getKey());
+                Long statusChangesAmount = entry.getValue();
+                taxAmount += statusTax * statusChangesAmount;
+            }
+
+            return taxAmount;
+
+        } catch (Exception e) {
+            throw new DateTimeException("Invalid date format");
+        }
+
+    }
+
+    public Date[] generateMonthInterval(Integer month, Integer year) {
+
+        ZonedDateTime firstDay = ZonedDateTime.of(year, month, 1, 0, 0, 0, 0, ZoneId.of("Z"));
+        ZonedDateTime lastDay = firstDay.with(TemporalAdjusters.lastDayOfMonth());
+        lastDay = lastDay.withHour(23).withMinute(59).withSecond(59).withNano(999000000);
+
+        Date lowerTimestamp = Date.from(firstDay.toInstant());
+        Date upperTimestamp = Date.from(lastDay.toInstant());
+
+        return new Date[]{lowerTimestamp, upperTimestamp};
+
     }
 }

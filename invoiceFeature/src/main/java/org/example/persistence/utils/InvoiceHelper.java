@@ -2,13 +2,12 @@ package org.example.persistence.utils;
 
 import org.bson.Document;
 import org.example.persistence.utils.data.InvoiceFilter;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.SetOperation;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,5 +108,27 @@ public class InvoiceHelper {
         UUID checkedFieldValue = invoiceFilter.getCompanyUUID();
 
         return Criteria.where(checkedFieldName).is(checkedFieldValue);
+    }
+
+    public static Aggregation createDateBasedAggregation(UUID sellerId, Date lowerTimestamp, Date upperTimestamp) {
+
+        MatchOperation matchStage = Aggregation.match(new Criteria("sellerId").is(sellerId));
+
+        AggregationExpression dateGt = ComparisonOperators.Gt.valueOf("status.date")
+                .greaterThanValue(lowerTimestamp);
+
+        AggregationExpression dateLt = ComparisonOperators.Lt.valueOf("status.date")
+                .lessThanValue(upperTimestamp);
+
+        AggregationExpression dateFilterExpression = BooleanOperators.And.and(dateGt,dateLt);
+
+        AddFieldsOperation addFieldsStage = Aggregation.addFields().addFieldWithValue("statusHistory",
+                ArrayOperators.Filter.filter("statusHistory")
+                        .as("status")
+                        .by(dateFilterExpression)).build();
+
+        MatchOperation matchStage2 = Aggregation.match(new Criteria("statusHistory.0").exists(true));
+
+        return Aggregation.newAggregation(matchStage, addFieldsStage, matchStage2);
     }
 }

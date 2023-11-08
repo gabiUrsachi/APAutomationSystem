@@ -1,6 +1,7 @@
 package org.example.presentation.controllers;
 
 import org.example.S3BucketOps;
+import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.presentation.utils.InvoiceActionsPermissions;
 import org.example.presentation.utils.InvoiceResourceActionType;
 import org.example.presentation.view.InvoiceDDO;
@@ -159,5 +160,13 @@ public class InvoiceController {
 
     }
 
+    @GetMapping("/tax")
+    public Float computeInvoiceTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
 
+        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
+        logger.info("[GET request] -> Compute Total Invoice tax for company with UUID: {}", jwtClaims.getCompanyUUID());
+
+        InvoiceFilter queryFilter = invoiceFilteringService.createCompanyBasedFilter(jwtClaims.getCompanyUUID());
+        return invoiceService.computeInvoiceTax(month,year,queryFilter);
+    }
 }
