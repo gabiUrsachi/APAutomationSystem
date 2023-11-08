@@ -2,21 +2,27 @@ package org.example.business.services;
 
 import org.example.SQSOps;
 import org.example.business.utils.PurchaseOrderStatusPrecedence;
+import org.example.business.utils.PurchaseOrderTaxationRate;
 import org.example.customexceptions.InvalidResourceUpdateException;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
+import org.example.persistence.utils.data.OrderHistoryObject;
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.utils.ErrorMessages;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.s3.endpoints.internal.Value;
+import software.amazon.awssdk.utils.Pair;
 
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.example.business.utils.PurchaseOrderHistoryHelper.*;
 
@@ -173,20 +179,43 @@ public class PurchaseOrderService {
     public Float computePurchaseOrderTax(Integer month, Integer year, PurchaseOrderFilter filter) {
 
         try {
-            ZonedDateTime firstDay = ZonedDateTime.of(year, month, 1, 0, 0, 0, 0, ZoneId.of("Z"));
-            ZonedDateTime lastDay = firstDay.with(TemporalAdjusters.lastDayOfMonth());
-            lastDay = lastDay.withHour(23).withMinute(59).withSecond(59).withNano(999000000);
+            Date[] timestampsArray = generateMonthInterval(month, year);
+            List<PurchaseOrder> filteredPurchaseOrders = purchaseOrderRepository.findByBuyerUUIDAndDate(filter.getCompanyUUID(), timestampsArray[0], timestampsArray[1]);
 
-            Date lowerTimestamp = Date.from(firstDay.toInstant());
-            Date upperTimestamp = Date.from(lastDay.toInstant());
+            List<OrderStatus> statusList = filteredPurchaseOrders.stream()
+                    .flatMap(purchaseOrder -> purchaseOrder.getStatusHistory().stream())
+                    .map(OrderHistoryObject::getStatus)
+                    .collect(Collectors.toList());
 
-            List<PurchaseOrder> filteredPurchaseOrders = purchaseOrderRepository.findByBuyerUUIDAndDate(filter.getCompanyUUID(), lowerTimestamp, upperTimestamp);
-            System.out.println(filteredPurchaseOrders);
-            System.out.println("cine te creeeeezi");
+            Map<OrderStatus, Long> monthlyStatusCounts = statusList.stream()
+                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            Float taxAmount = 0.0f;
+            for (Map.Entry<OrderStatus, Long> entry : monthlyStatusCounts.entrySet()) {
+
+                Float statusTax = PurchaseOrderTaxationRate.purchaseOrderTaxRate.get(entry.getKey());
+                Long statusChangesAmount = entry.getValue();
+                taxAmount += statusTax * statusChangesAmount;
+            }
+
+            return taxAmount;
+
         } catch (Exception e) {
             throw new DateTimeException("Invalid date format");
         }
 
-        return 0.0f;
+    }
+
+    public Date[] generateMonthInterval(Integer month, Integer year) {
+
+        ZonedDateTime firstDay = ZonedDateTime.of(year, month, 1, 0, 0, 0, 0, ZoneId.of("Z"));
+        ZonedDateTime lastDay = firstDay.with(TemporalAdjusters.lastDayOfMonth());
+        lastDay = lastDay.withHour(23).withMinute(59).withSecond(59).withNano(999000000);
+
+        Date lowerTimestamp = Date.from(firstDay.toInstant());
+        Date upperTimestamp = Date.from(lastDay.toInstant());
+
+        return new Date[]{lowerTimestamp, upperTimestamp};
+
     }
 }
