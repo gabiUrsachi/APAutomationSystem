@@ -243,17 +243,17 @@ Resources:
 
 
 
-  HTTPSAutoScalingListener:
-    Type: 'AWS::ElasticLoadBalancingV2::Listener'
-    Properties:
-      Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:512543510504:certificate/7daf4bc9-2f4b-4e1d-9bec-fcdf5a516433"
-      DefaultActions:
-        - TargetGroupArn: !Ref EC2TargetGroup
-          Type: 'forward'
-      LoadBalancerArn: !Ref LoadBalancer
-      Port: 443
-      Protocol: HTTPS
+#  HTTPSAutoScalingListener:
+#    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+#    Properties:
+#      Certificates:
+#        - CertificateArn: "arn:aws:acm:us-east-1:000255843146:certificate/cd5f9f69-616d-4aea-9980-09314cb437a9"
+#      DefaultActions:
+#        - TargetGroupArn: !Ref EC2TargetGroup
+#          Type: 'forward'
+#      LoadBalancerArn: !Ref LoadBalancer
+#      Port: 443
+#      Protocol: HTTPS
 
 
   WebappRole:

@@ -14,6 +14,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +45,11 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
         return this.findOneByAggregation(aggregation);
     }
 
+    @Override
+    public List<PurchaseOrder> findByBuyerUUIDAndDate(UUID buyerId, Date lowerTimestamp, Date upperTimestamp){
+        Aggregation aggregation = PurchaseOrderHelper.createDateBasedAggregation(buyerId,lowerTimestamp,upperTimestamp);
+        return this.findAllByAggregation(aggregation);
+    }
     @Override
     public int updateByIdentifierAndVersion(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder) {
         Query query = new Query(Criteria.where("identifier").is(identifier)

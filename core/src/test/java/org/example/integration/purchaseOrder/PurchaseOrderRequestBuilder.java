@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.presentation.view.OrderRequestDTO;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -15,18 +16,23 @@ public class PurchaseOrderRequestBuilder {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static RequestBuilder createPostRequest(OrderRequestDTO orderRequestDTO, String... authHeader) throws JsonProcessingException {
+
+        MockMultipartFile order = new MockMultipartFile("order", "", "application/json", mapper.writeValueAsString(orderRequestDTO).getBytes());
+        MockMultipartFile file = new MockMultipartFile("file", "test.pdf", "application/pdf", "PDF content".getBytes());
+
         if (authHeader.length != 0) {
+
             return MockMvcRequestBuilders
-                    .post(ORDER_API_URL)
-                    .content(mapper.writeValueAsString(orderRequestDTO))
-                    .contentType(MediaType.APPLICATION_JSON)
+                    .multipart(ORDER_API_URL)
+                    .file(order)
+                    .file(file)
                     .header("authorization", "Bearer " + authHeader[0]);
         }
 
         return MockMvcRequestBuilders
-                .post(ORDER_API_URL)
-                .content(mapper.writeValueAsString(orderRequestDTO))
-                .contentType(MediaType.APPLICATION_JSON);
+                .multipart(ORDER_API_URL)
+                .file(order)
+                .file(file);
     }
 
     public static RequestBuilder createPutRequest(UUID orderIdentifier, OrderRequestDTO orderRequestDTO, String... authHeader) throws JsonProcessingException {
