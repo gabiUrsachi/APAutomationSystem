@@ -3,6 +3,7 @@ package org.example.business.services;
 import org.example.persistence.utils.CompanyRole;
 import org.example.persistence.utils.InvoiceStatus;
 import org.example.persistence.utils.data.InvoiceFilter;
+import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.utils.data.Roles;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,10 @@ public class InvoiceFilteringService {
             }
         }
         return filters;
+    }
+    public InvoiceFilter createCompanyBasedFilter(UUID companyUUID){
+        return InvoiceFilter.builder()
+                .companyUUID(companyUUID)
+                .build();
     }
 }

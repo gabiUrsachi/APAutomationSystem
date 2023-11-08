@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,13 +72,19 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         return resultedInvoice != null? resultedInvoice.getTotalAmount():null;
     }
 
+    @Override
+    public List<Invoice>findByBuyerUUIDAndDate(UUID sellerId, Date lowerTimestamp, Date upperTimestamp){
+        Aggregation aggregation = InvoiceHelper.createDateBasedAggregation(sellerId,lowerTimestamp,upperTimestamp);
+        return this.findAllByAggregation(aggregation);
+    }
+
     private List<Invoice> findAllByQuery(Query query) {
         return mongoTemplate.find(query, Invoice.class);
     }
 
     private List<Invoice> findAllByAggregation(Aggregation aggregation) {
         return this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getMappedResults();
-    }
+    }  
 
     private Invoice findOneByQuery(Query query) {
         return mongoTemplate.findOne(query, Invoice.class);

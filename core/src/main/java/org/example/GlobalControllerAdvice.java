@@ -14,6 +14,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import software.amazon.awssdk.services.s3.model.NoSuchBucketException;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
+import java.time.DateTimeException;
+import java.util.zip.DataFormatException;
+
 @ControllerAdvice
 public class GlobalControllerAdvice {
     private static final Logger logger = LoggerFactory.getLogger(GlobalControllerAdvice.class);
@@ -51,7 +54,7 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<>(exceptionResponse, status);
     }
 
-    @ExceptionHandler({InvalidFormatException.class, IllegalArgumentException.class, MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler({DateTimeException.class, InvalidFormatException.class, IllegalArgumentException.class, MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ExceptionResponseDTO> handleFormatExceptions(Exception ex) {
         logger.info("[ClientError] -> {}: {}", ex.getClass(), ex.getMessage());
         HttpStatus status = HttpStatus.BAD_REQUEST;

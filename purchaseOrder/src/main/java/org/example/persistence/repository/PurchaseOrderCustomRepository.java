@@ -14,7 +14,7 @@ public interface PurchaseOrderCustomRepository{
 
     List<PurchaseOrder> findByFilters(List<PurchaseOrderFilter> filters);
     PurchaseOrder findByUUIDAndFilters(UUID identifier,List<PurchaseOrderFilter> filters);
-    public List<PurchaseOrder> findByBuyerUUIDAndDate(UUID buyerId, Date lowerTimestamp, Date upperTimestamp);
+    public List<PurchaseOrder> findByBuyerUUIDAndDate(UUID sellerId, Date lowerTimestamp, Date upperTimestamp);
 
     int updateByIdentifierAndVersion(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder);
 }
