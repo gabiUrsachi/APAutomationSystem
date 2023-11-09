@@ -77,3 +77,184 @@
 13585 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
 13607 [main] INFO  o.e.p.c.PurchaseOrderController - [POST request] -> create purchase order from company 2c70891c-50b5-436d-9496-7c3722adcab0 to company 2c70891c-50b5-436d-9496-7c3722adcab0
 20144 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+332  [main] ERROR org.example.GlobalControllerAdvice - [ServerError] -> class java.lang.Exception: null
+388  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.AlreadyExistingResourceException:null
+396  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidCredentialsException: null
+406  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.springframework.dao.OptimisticLockingFailureException: null
+415  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidResourceUpdateException:null
+422  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.ResourceNotFoundException:null
+901  [main] ERROR org.example.SQSOps - [AWS - send message to SQS queue] -> null
+4431 [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+6646 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object w14uo5dt/dv2uxafq (signed)
+6745 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+6749 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> wjquyhxg
+6803 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket wjquyhxg
+6844 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket wjquyhxg with prefix=None, delimiter=None
+6864 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6872 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object wjquyhxg/qxdmng8t (signed)
+6959 [main] INFO  org.example.S3BucketOps - Successfully placed object qxdmng8t with version null into wjquyhxg.
+7061 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> bziyey6q
+7069 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket bziyey6q
+7076 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket bziyey6q with prefix=None, delimiter=None
+7077 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7120 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.CopyObject - cannot copy object bziyey6q/399xnyoo: no such key
+7135 [main] ERROR org.example.S3BucketOps - [AWS - duplication of S3 object] -> The resource you requested does not exist
+7137 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 8il1zc82
+7142 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 8il1zc82
+7149 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket 8il1zc82 with prefix=None, delimiter=None
+7150 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7197 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> yewt7soe
+7203 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket yewt7soe
+7209 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket yewt7soe with prefix=None, delimiter=None
+7211 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7218 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object yewt7soe/l4h3tz0w (signed)
+7222 [main] INFO  org.example.S3BucketOps - Successfully placed object l4h3tz0w with version null into yewt7soe.
+7228 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.CopyObject - copied object yewt7soe/l4h3tz0w
+7236 [main] INFO  org.example.S3BucketOps - Successfully duplicated object l4h3tz0w .
+7246 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> hekctqxn
+7252 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket hekctqxn
+7258 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket hekctqxn with prefix=None, delimiter=None
+7260 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7266 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object hekctqxn/ebr69vob (signed)
+7270 [main] INFO  org.example.S3BucketOps - Successfully placed object ebr69vob with version null into hekctqxn.
+7273 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> goqusfx9
+7278 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket goqusfx9
+7284 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket goqusfx9 with prefix=None, delimiter=None
+7285 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7808 [main] INFO  o.e.p.c.PurchaseOrderController - [PUT request] -> update purchase order identified by 63252f02-fb02-463a-9043-d337b2a3eea1. New status: SAVED
+7847 [main] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get purchase order by UUID: 09f4951f-a9f3-4dfd-912c-1f4dd501f2bd
+7854 [main] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get purchase order by UUID: 0efa9cd3-b898-420a-878b-b103ce61c04c
+328  [main] ERROR org.example.GlobalControllerAdvice - [ServerError] -> class java.lang.Exception: null
+374  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.AlreadyExistingResourceException:null
+382  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidCredentialsException: null
+392  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.springframework.dao.OptimisticLockingFailureException: null
+400  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidResourceUpdateException:null
+408  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.ResourceNotFoundException:null
+906  [main] ERROR org.example.SQSOps - [AWS - send message to SQS queue] -> null
+4082 [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+6144 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object zxcwsvjt/bjayppdh (signed)
+6222 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+6225 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> 3xib8hpw
+6280 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket 3xib8hpw
+6326 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket 3xib8hpw with prefix=None, delimiter=None
+6345 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6353 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object 3xib8hpw/ynddtu44 (signed)
+6435 [main] INFO  org.example.S3BucketOps - Successfully placed object ynddtu44 with version null into 3xib8hpw.
+6541 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> dqffgov0
+6548 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket dqffgov0
+6555 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket dqffgov0 with prefix=None, delimiter=None
+6556 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6595 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.CopyObject - cannot copy object dqffgov0/d7psg7v3: no such key
+6609 [main] ERROR org.example.S3BucketOps - [AWS - duplication of S3 object] -> The resource you requested does not exist
+6611 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> kax3uyui
+6616 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket kax3uyui
+6622 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket kax3uyui with prefix=None, delimiter=None
+6625 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6671 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> c3g3fx2p
+6678 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket c3g3fx2p
+6686 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket c3g3fx2p with prefix=None, delimiter=None
+6688 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6697 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.PutObject - put object c3g3fx2p/ba5x84zc (signed)
+6702 [main] INFO  org.example.S3BucketOps - Successfully placed object ba5x84zc with version null into c3g3fx2p.
+6709 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.CopyObject - copied object c3g3fx2p/ba5x84zc
+6716 [main] INFO  org.example.S3BucketOps - Successfully duplicated object ba5x84zc .
+6728 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> rr0ab9gl
+6734 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket rr0ab9gl
+6742 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket rr0ab9gl with prefix=None, delimiter=None
+6743 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6751 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.PutObject - put object rr0ab9gl/x9gtdwsi (signed)
+6755 [main] INFO  org.example.S3BucketOps - Successfully placed object x9gtdwsi with version null into rr0ab9gl.
+6758 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> lspkqeku
+6762 [s3mock-akka.actor.default-dispatcher-2] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket lspkqeku
+6769 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket lspkqeku with prefix=None, delimiter=None
+6770 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7282 [main] INFO  o.e.p.c.PurchaseOrderController - [PUT request] -> update purchase order identified by c54751bf-8c2c-4261-93b1-505790d6c0f2. New status: SAVED
+7298 [main] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get purchase order by UUID: 3a84eae3-518f-4933-b9c4-0fe02d5ef663
+7307 [main] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get purchase order by UUID: e5efeb09-a46e-42d9-86c7-4f65030a8e65
+357  [main] ERROR org.example.GlobalControllerAdvice - [ServerError] -> class java.lang.Exception: null
+413  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.AlreadyExistingResourceException:null
+421  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidCredentialsException: null
+431  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.springframework.dao.OptimisticLockingFailureException: null
+439  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.InvalidResourceUpdateException:null
+448  [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.ResourceNotFoundException:null
+954  [main] ERROR org.example.SQSOps - [AWS - send message to SQS queue] -> null
+4176 [main] INFO  io.findify.s3mock.S3Mock - bound to 0.0.0.0:8001
+6349 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object sdmxlghx/bfygdt0l (signed)
+6428 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist
+6432 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> kwsqlvty
+6500 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket kwsqlvty
+6546 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket kwsqlvty with prefix=None, delimiter=None
+6565 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6573 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object kwsqlvty/spaawcpb (signed)
+6650 [main] INFO  org.example.S3BucketOps - Successfully placed object spaawcpb with version null into kwsqlvty.
+6746 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> xcfhr4om
+6751 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket xcfhr4om
+6759 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket xcfhr4om with prefix=None, delimiter=None
+6761 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6801 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.CopyObject - cannot copy object xcfhr4om/gubqxt79: no such key
+6822 [main] ERROR org.example.S3BucketOps - [AWS - duplication of S3 object] -> The resource you requested does not exist
+6827 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> zihj1cc7
+6832 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket zihj1cc7
+6839 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.ListBucket - listing bucket zihj1cc7 with prefix=None, delimiter=None
+6841 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6883 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> kskluh7f
+6888 [s3mock-akka.actor.default-dispatcher-3] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket kskluh7f
+6894 [s3mock-akka.actor.default-dispatcher-3] INFO  io.findify.s3mock.route.ListBucket - listing bucket kskluh7f with prefix=None, delimiter=None
+6896 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6903 [s3mock-akka.actor.default-dispatcher-2] INFO  io.findify.s3mock.route.PutObject - put object kskluh7f/7s46xg0j (signed)
+6908 [main] INFO  org.example.S3BucketOps - Successfully placed object 7s46xg0j with version null into kskluh7f.
+6915 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.CopyObject - copied object kskluh7f/7s46xg0j
+6922 [main] INFO  org.example.S3BucketOps - Successfully duplicated object 7s46xg0j .
+6932 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> noi9h6ia
+6937 [s3mock-akka.actor.default-dispatcher-6] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket noi9h6ia
+6943 [s3mock-akka.actor.default-dispatcher-6] INFO  io.findify.s3mock.route.ListBucket - listing bucket noi9h6ia with prefix=None, delimiter=None
+6945 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+6951 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.PutObject - put object noi9h6ia/vp0exbvf (signed)
+6955 [main] INFO  org.example.S3BucketOps - Successfully placed object vp0exbvf with version null into noi9h6ia.
+6958 [main] INFO  org.example.S3BucketOps - [AWS - create S3 bucket] -> araf0srr
+6963 [s3mock-akka.actor.default-dispatcher-4] INFO  i.findify.s3mock.route.CreateBucket - PUT bucket araf0srr
+6969 [s3mock-akka.actor.default-dispatcher-4] INFO  io.findify.s3mock.route.ListBucket - listing bucket araf0srr with prefix=None, delimiter=None
+6971 [main] INFO  org.example.S3BucketOps - Successfully created S3 bucket HeadBucketResponse().
+7514 [main] INFO  o.e.p.c.PurchaseOrderController - [PUT request] -> update purchase order identified by 9d8ad61f-3cff-43b9-a37b-55d7bae3ad05. New status: SAVED
+7568 [main] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get purchase order by UUID: 7c65f116-0844-4a8f-ba67-8f9ef7f45913
+7577 [main] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get purchase order by UUID: 382869e4-4e3c-46a5-a40f-ca1eb6b10bb8
+411  [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [org.example.integration.purchaseOrder.PurchaseOrderIntegrationTest], using SpringBootContextLoader
+424  [main] INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [org.example.integration.purchaseOrder.PurchaseOrderIntegrationTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+879  [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+923  [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6063d80a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@1133ec6e, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@355e34c7, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@54709809, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@2a2da905, org.springframework.test.context.support.DirtiesContextTestExecutionListener@24f360b2, org.springframework.test.context.transaction.TransactionalTestExecutionListener@60cf80e7, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@302fec27, org.springframework.test.context.event.EventPublishingTestExecutionListener@770d0ea6, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@48c40605, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@54107f42, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@1b11ef33, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@476aac9, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@6cea706c, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@3bd7f8dc]
+1583 [main] INFO  o.e.i.p.PurchaseOrderIntegrationTest - Starting PurchaseOrderIntegrationTest using Java 11.0.19 on 2WGWM13 with PID 44388 (started by gabrielaurs in C:\Users\gabrielaurs\Desktop\projects\APAutomationSystem\core)
+1584 [main] INFO  o.e.i.p.PurchaseOrderIntegrationTest - No active profile set, falling back to 1 default profile: "default"
+3892 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+4051 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 148 ms. Found 4 MongoDB repository interfaces.
+6200 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "4.6.0"}, "os": {"type": "Windows", "name": "Windows 10", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Amazon.com Inc./11.0.19+7-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, streamFactoryFactory=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@b379bc6], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.Jep395RecordCodecProvider@559991f5]}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='5000 ms', localThreshold='5000 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, sendBufferSize=0}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, sendBufferSize=0}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@40d848f9], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=STANDARD, serverApi=null, autoEncryptionSettings=null, contextProvider=null}
+6212 [cluster-ClusterId{value='654cecc3182b3f5db6f1b7be', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:1, serverValue:879}] to localhost:27017
+6213 [cluster-ClusterId{value='654cecc3182b3f5db6f1b7be', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=17, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=53042500}
+6214 [cluster-rtt-ClusterId{value='654cecc3182b3f5db6f1b7be', description='null'}-localhost:27017] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:2, serverValue:878}] to localhost:27017
+6384 [main] WARN  o.s.data.convert.CustomConversions - Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+6655 [main] WARN  o.s.data.convert.CustomConversions - Registering converter from class java.time.LocalDateTime to class org.joda.time.LocalDateTime as reading converter although it doesn't convert from a store-supported type! You might want to check your annotation setup at the converter implementation.
+9352 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+9352 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+9366 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+9429 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 77 ms
+9493 [main] INFO  o.e.i.p.PurchaseOrderIntegrationTest - Started PurchaseOrderIntegrationTest in 8.477 seconds (JVM running for 10.742)
+11085 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+11085 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+11085 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 0 ms
+11234 [main] INFO  org.mongodb.driver.connection - Opened connection [connectionId{localValue:3, serverValue:880}] to localhost:27017
+11629 [main] INFO  o.e.p.c.PurchaseOrderController - [GET request] -> get purchase order by UUID: 889cc7f2-1eae-49bb-8c4f-efd7d100a139
+11943 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+11943 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+11944 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+11953 [main] INFO  o.e.p.c.PurchaseOrderController - [DELETE request] -> remove purchase order identified by 2b856e57-ecfb-4123-9e71-ba6b4cf75250
+11995 [main] INFO  o.e.p.c.PurchaseOrderController - [DELETE request] -> remove purchase order identified by 2b856e57-ecfb-4123-9e71-ba6b4cf75250
+12002 [main] INFO  org.example.GlobalControllerAdvice - [ClientError] -> class org.example.customexceptions.ResourceNotFoundException:Could not find order identified by 2b856e57-ecfb-4123-9e71-ba6b4cf75250
+12018 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+12018 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+12019 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+12090 [main] INFO  o.e.p.c.PurchaseOrderController - [PUT request] -> update purchase order identified by 2b58bc6a-cc10-4305-9ed6-9223247e7864. New status: CREATED
+12121 [main] INFO  o.e.p.c.PurchaseOrderController - [PUT request] -> update purchase order identified by 2b58bc6a-cc10-4305-9ed6-9223247e7864. New status: CREATED
+12142 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+12142 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+12143 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 0 ms
+12163 [main] INFO  o.e.p.c.PurchaseOrderController - [POST request] -> create purchase order from company 2c70891c-50b5-436d-9496-7c3722adcab0 to company 2c70891c-50b5-436d-9496-7c3722adcab0
+14860 [main] ERROR org.example.S3BucketOps - [AWS - put S3 object] -> The specified bucket does not exist

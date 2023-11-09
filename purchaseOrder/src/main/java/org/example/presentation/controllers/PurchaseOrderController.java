@@ -12,6 +12,7 @@ import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.presentation.utils.ActionsPermissions;
 import org.example.presentation.utils.PurchaseOrderMapperService;
 import org.example.presentation.utils.PurchaseOrderResourceActionType;
+import org.example.presentation.view.SimpleOrderResponseDTO;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.presentation.view.OrderResponseDTO;
 import org.example.services.AuthorisationService;
@@ -105,7 +106,7 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "403", description = "Invalid role")
             })
     @GetMapping
-    public List<OrderResponseDTO> getPurchaseOrders(
+    public List<SimpleOrderResponseDTO> getPurchaseOrders(
             HttpServletRequest request,
             @RequestParam(required = false) @Min(0) Integer page,
             @RequestParam(defaultValue = "50", required = false) @Min(value = 1, message = "Page size should not be less than one") Integer pageSize
@@ -121,7 +122,7 @@ public class PurchaseOrderController {
 
         List<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders(queryFilters, page, pageSize);
 
-        return purchaseOrderMapperService.mapToDTO(purchaseOrders);
+        return purchaseOrderMapperService.mapToSimpleDTO(purchaseOrders);
     }
 
     @GetMapping("/tax")
