@@ -153,7 +153,7 @@ public class PurchaseOrderService {
             }
         }
 
-        if (getLatestOrderHistoryObject(updatedPurchaseOrder.getStatusHistory()).equals(OrderStatus.SAVED)) {
+        if (getLatestOrderHistoryObject(updatedPurchaseOrder.getStatusHistory()).getStatus().equals(OrderStatus.SAVED)) {
             // buyerCompany/documentId/sellerCompany
             SQSOps.sendMessage(updatedPurchaseOrder.getBuyer() + "/" + updatedPurchaseOrder.getIdentifier() + "/" + updatedPurchaseOrder.getSeller());
         }
