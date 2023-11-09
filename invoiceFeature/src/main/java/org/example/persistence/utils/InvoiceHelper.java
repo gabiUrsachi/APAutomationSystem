@@ -80,8 +80,7 @@ public class InvoiceHelper {
         aggregationOperations.add(Aggregation.unwind("statusHistory"));
         aggregationOperations.add(Aggregation.match(invoiceStatusMatchCriteria));
         aggregationOperations.add(Aggregation.group("buyerId").sum("totalAmount").as("totalAmount"));
-        aggregationOperations.add(Aggregation.project("totalAmount"));
-        aggregationOperations.add(Aggregation.project().andExclude("_id"));
+        aggregationOperations.add(Aggregation.project("totalAmount").andExclude("_id"));
 
         return aggregationOperations;
     }
