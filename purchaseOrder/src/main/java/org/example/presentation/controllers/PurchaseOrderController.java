@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Min;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -104,7 +105,12 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "403", description = "Invalid role")
             })
     @GetMapping
-    public List<OrderResponseDTO> getPurchaseOrders(HttpServletRequest request) {
+    public List<OrderResponseDTO> getPurchaseOrders(
+            HttpServletRequest request,
+            @RequestParam(required = false) @Min(0) Integer page,
+            @RequestParam(defaultValue = "50", required = false) @Min(value = 1, message = "Page size should not be less than one") Integer pageSize
+    ) {
+
         logger.info("[GET request] -> get all purchase orders");
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
 
@@ -112,7 +118,8 @@ public class PurchaseOrderController {
         Set<Roles> matchingRoles = authorisationService.authorize(jwtClaims.getRoles(), validRoles.toArray(new Roles[0]));
 
         List<PurchaseOrderFilter> queryFilters = purchaseOrderFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
-        List<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders(queryFilters);
+
+        List<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders(queryFilters, page, pageSize);
 
         return purchaseOrderMapperService.mapToDTO(purchaseOrders);
     }
@@ -124,7 +131,7 @@ public class PurchaseOrderController {
         logger.info("[GET request] -> Compute Total Purchase Order tax for company with UUID: {}", jwtClaims.getCompanyUUID());
 
         PurchaseOrderFilter queryFilter = purchaseOrderFilteringService.createCompanyBasedFilter(jwtClaims.getCompanyUUID());
-        return purchaseOrderService.computePurchaseOrderTax(month,year,queryFilter);
+        return purchaseOrderService.computePurchaseOrderTax(month, year, queryFilter);
     }
 
     @Operation(summary = "updates an existing purchase order")
