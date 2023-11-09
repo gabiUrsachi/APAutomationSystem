@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Min;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -75,7 +76,11 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public List<InvoiceDDO> getInvoices(HttpServletRequest request) {
+    public List<InvoiceDDO> getInvoices(
+            HttpServletRequest request,
+            @RequestParam(required = false) @Min(0) Integer page,
+            @RequestParam(defaultValue = "50", required = false) @Min(value = 1, message = "Page size should not be less than one") Integer pageSize
+    ) {
         logger.info("[GET request] -> get all invoices");
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
@@ -85,8 +90,9 @@ public class InvoiceController {
 
         List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
 
-        List<InvoiceDDO> myList = invoiceMapperService.mapToDDO(invoiceService.getInvoices(queryFilters));
-        return  myList;
+        List<Invoice> invoices = invoiceService.getInvoices(queryFilters, page, pageSize);
+
+        return  invoiceMapperService.mapToDDO(invoices);
 
     }
 

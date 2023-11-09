@@ -36,9 +36,9 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
     }
 
     @Override
-    public List<PurchaseOrder> findByFiltersPageable(List<PurchaseOrderFilter> filters, Integer page, Integer size){
+    public List<PurchaseOrder> findByFiltersPageable(List<PurchaseOrderFilter> filters, Integer page, Integer size) {
         List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createHistoryBasedAggregators(filters);
-        aggregationOperations.add(new SkipOperation((long) page *size));
+        aggregationOperations.add(new SkipOperation((long) page * size));
         aggregationOperations.add(Aggregation.limit(size));
 
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
@@ -56,10 +56,11 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
     }
 
     @Override
-    public List<PurchaseOrder> findByBuyerUUIDAndDate(UUID buyerId, Date lowerTimestamp, Date upperTimestamp){
-        Aggregation aggregation = PurchaseOrderHelper.createDateBasedAggregation(buyerId,lowerTimestamp,upperTimestamp);
+    public List<PurchaseOrder> findByBuyerUUIDAndDate(UUID buyerId, Date lowerTimestamp, Date upperTimestamp) {
+        Aggregation aggregation = PurchaseOrderHelper.createDateBasedAggregation(buyerId, lowerTimestamp, upperTimestamp);
         return this.findAllByAggregation(aggregation);
     }
+
     @Override
     public int updateByIdentifierAndVersion(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder) {
         Query query = new Query(Criteria.where("identifier").is(identifier)
