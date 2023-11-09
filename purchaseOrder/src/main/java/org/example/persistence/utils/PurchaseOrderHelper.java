@@ -2,16 +2,12 @@ package org.example.persistence.utils;
 
 import org.bson.Document;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.MatchOperation;
-import org.springframework.data.mongodb.core.aggregation.SetOperation;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import static org.springframework.data.mongodb.core.aggregation.ArrayOperators.*;
+
 
 public class PurchaseOrderHelper {
     public static Criteria createQueryCriteria(List<PurchaseOrderFilter> filters) {
@@ -44,6 +40,28 @@ public class PurchaseOrderHelper {
         aggregationOperations.add(statusExistsOperation);
 
         return aggregationOperations;
+    }
+
+    public static Aggregation createDateBasedAggregation(UUID buyerId, Date lowerTimestamp, Date upperTimestamp) {
+
+        MatchOperation matchStage = Aggregation.match(new Criteria("buyer").is(buyerId));
+
+        AggregationExpression dateGt = ComparisonOperators.Gt.valueOf("status.date")
+                .greaterThanValue(lowerTimestamp);
+
+        AggregationExpression dateLt = ComparisonOperators.Lt.valueOf("status.date")
+                .lessThanValue(upperTimestamp);
+
+        AggregationExpression dateFilterExpression = BooleanOperators.And.and(dateGt,dateLt);
+
+        AddFieldsOperation addFieldsStage = Aggregation.addFields().addFieldWithValue("statusHistory",
+                Filter.filter("statusHistory")
+                        .as("status")
+                        .by(dateFilterExpression)).build();
+
+        MatchOperation matchStage2 = Aggregation.match(new Criteria("statusHistory.0").exists(true));
+
+        return Aggregation.newAggregation(matchStage, addFieldsStage, matchStage2);
     }
 
     private static Criteria createCriteriaByFilters(List<PurchaseOrderFilter> filters) {

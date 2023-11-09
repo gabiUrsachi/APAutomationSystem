@@ -117,6 +117,16 @@ public class PurchaseOrderController {
         return purchaseOrderMapperService.mapToDTO(purchaseOrders);
     }
 
+    @GetMapping("/tax")
+    public Float computePurchaseOrderTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
+
+        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
+        logger.info("[GET request] -> Compute Total Purchase Order tax for company with UUID: {}", jwtClaims.getCompanyUUID());
+
+        PurchaseOrderFilter queryFilter = purchaseOrderFilteringService.createCompanyBasedFilter(jwtClaims.getCompanyUUID());
+        return purchaseOrderService.computePurchaseOrderTax(month,year,queryFilter);
+    }
+
     @Operation(summary = "updates an existing purchase order")
     @ApiResponses(value =
             {
