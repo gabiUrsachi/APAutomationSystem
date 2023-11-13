@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-010c347a46a98486e"
+    Default: "vpc-087ffa16ae45f4909"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-04ad06a651b08e82b,subnet-049e8cff6113c054c,subnet-066886597f4628306,subnet-0619a524561c5fc3d,subnet-0985b9e0851ecee6e,subnet-0c3435d644e287630"
+    Default: "subnet-016b2bb2776d33cc7,subnet-0ce877dfccbfbe07e,subnet-08fdc390b418d75ff,subnet-0966388ce16aadd22,subnet-0da98921170c3ccdb,subnet-0c4523711866f1a6f"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -247,7 +247,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
       Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:235721456806:certificate/e929194d-f1ac-4d6c-b496-161a72931b29"
+        - CertificateArn: "arn:aws:acm:us-east-1:287154350030:certificate/e26a785e-52b2-4bd3-88ea-6144900a65e6"
       DefaultActions:
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'

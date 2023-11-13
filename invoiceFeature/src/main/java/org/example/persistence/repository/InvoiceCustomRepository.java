@@ -18,4 +18,7 @@ public interface InvoiceCustomRepository {
     Float getPaidAmountForLastNMonths(UUID buyerId, int monthsNumber);
 
     List<Invoice> findByBuyerUUIDAndDate(UUID companyUUID, Date date, Date date1);
+
+    List<Invoice> findByFiltersPageable(List<InvoiceFilter> filters, Integer page, Integer size);
+
 }

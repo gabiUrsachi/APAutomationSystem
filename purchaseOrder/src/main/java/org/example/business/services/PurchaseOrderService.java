@@ -13,18 +13,17 @@ import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.utils.ErrorMessages;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value;
-import software.amazon.awssdk.utils.Pair;
 
-
-import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.time.DateTimeException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.example.business.utils.PurchaseOrderHistoryHelper.*;
+import static org.example.business.utils.PurchaseOrderHistoryHelper.generateOrderHistoryList;
+import static org.example.business.utils.PurchaseOrderHistoryHelper.getLatestOrderHistoryObject;
 
 
 /**
@@ -101,9 +100,16 @@ public class PurchaseOrderService {
     /**
      * It searches all existing purchase orders according to given filters
      *
+     * @param filters conditions to be applied for documents querying
+     * @param page    page number in case of pageable query
+     * @param size    number of documents for the requested page
      * @return the list of existing orders
      */
-    public List<PurchaseOrder> getPurchaseOrders(List<PurchaseOrderFilter> filters) {
+    public List<PurchaseOrder> getPurchaseOrders(List<PurchaseOrderFilter> filters, Integer page, Integer size) {
+        if (page != null) {
+            return purchaseOrderRepository.findByFiltersPageable(filters, page, size);
+        }
+
         return purchaseOrderRepository.findByFilters(filters);
     }
 
@@ -147,7 +153,7 @@ public class PurchaseOrderService {
             }
         }
 
-        if (getLatestOrderHistoryObject(updatedPurchaseOrder.getStatusHistory()).equals(OrderStatus.SAVED)) {
+        if (getLatestOrderHistoryObject(updatedPurchaseOrder.getStatusHistory()).getStatus().equals(OrderStatus.SAVED)) {
             // buyerCompany/documentId/sellerCompany
             SQSOps.sendMessage(updatedPurchaseOrder.getBuyer() + "/" + updatedPurchaseOrder.getIdentifier() + "/" + updatedPurchaseOrder.getSeller());
         }

@@ -56,7 +56,10 @@ public class InvoiceService {
         return invoiceRepository.insert(initializedInvoice);
     }
 
-    public List<Invoice> getInvoices(List<InvoiceFilter> filters) {
+    public List<Invoice> getInvoices(List<InvoiceFilter> filters, Integer page, Integer size) {
+        if (page != null) {
+            return invoiceRepository.findByFiltersPageable(filters, page, size);
+        }
 
         return invoiceRepository.findByFilters(filters);
     }

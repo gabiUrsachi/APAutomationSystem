@@ -1,6 +1,7 @@
 package org.example.presentation.utils;
 
 import org.example.business.services.CompanyService;
+import org.example.presentation.view.SimpleOrderResponseDTO;
 import org.example.presentation.view.OrderRequestDTO;
 import org.example.presentation.view.OrderResponseDTO;
 import org.example.persistence.collections.PurchaseOrder;
@@ -73,5 +74,31 @@ public class PurchaseOrderMapperService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * It creates a Simple Data Transfer Object with the same properties as the received entity
+     *
+     * @param purchaseOrder entity to be converted
+     * @return created DTO
+     */
+    public SimpleOrderResponseDTO mapToSimpleDTO(PurchaseOrder purchaseOrder) {
+        return SimpleOrderResponseDTO.builder()
+                .identifier(purchaseOrder.getIdentifier())
+                .buyer(companyService.getCompanyById(purchaseOrder.getBuyer()).getName())
+                .seller(companyService.getCompanyById(purchaseOrder.getSeller()).getName())
+                .orderStatus(PurchaseOrderHistoryHelper.getLatestOrderHistoryObject(purchaseOrder.getStatusHistory()).getStatus())
+                .build();
+    }
+
+    /**
+     * It creates a list of Data Transfer Object with the same properties as the received entities
+     *
+     * @param purchaseOrders entities to be converted
+     * @return created DTOs
+     */
+    public List<SimpleOrderResponseDTO> mapToSimpleDTO(List<PurchaseOrder> purchaseOrders) {
+        return purchaseOrders.stream()
+                .map(this::mapToSimpleDTO)
+                .collect(Collectors.toList());
+    }
 }
 

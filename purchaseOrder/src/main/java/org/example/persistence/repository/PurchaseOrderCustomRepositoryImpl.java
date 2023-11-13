@@ -9,13 +9,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.SkipOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +36,17 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
     }
 
     @Override
+    public List<PurchaseOrder> findByFiltersPageable(List<PurchaseOrderFilter> filters, Integer page, Integer size) {
+        List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createHistoryBasedAggregators(filters);
+        aggregationOperations.add(new SkipOperation((long) page * size));
+        aggregationOperations.add(Aggregation.limit(size));
+
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
+
+        return this.findAllByAggregation(aggregation);
+    }
+
+    @Override
     public PurchaseOrder findByUUIDAndFilters(UUID identifier, List<PurchaseOrderFilter> filters) {
         List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createHistoryBasedAggregators(filters);
         aggregationOperations.add(0, Aggregation.match(new Criteria().and("_id").is(identifier)));
@@ -46,10 +56,11 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
     }
 
     @Override
-    public List<PurchaseOrder> findByBuyerUUIDAndDate(UUID buyerId, Date lowerTimestamp, Date upperTimestamp){
-        Aggregation aggregation = PurchaseOrderHelper.createDateBasedAggregation(buyerId,lowerTimestamp,upperTimestamp);
+    public List<PurchaseOrder> findByBuyerUUIDAndDate(UUID buyerId, Date lowerTimestamp, Date upperTimestamp) {
+        Aggregation aggregation = PurchaseOrderHelper.createDateBasedAggregation(buyerId, lowerTimestamp, upperTimestamp);
         return this.findAllByAggregation(aggregation);
     }
+
     @Override
     public int updateByIdentifierAndVersion(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder) {
         Query query = new Query(Criteria.where("identifier").is(identifier)
