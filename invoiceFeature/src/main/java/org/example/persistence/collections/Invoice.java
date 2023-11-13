@@ -4,6 +4,7 @@ package org.example.persistence.collections;
 import lombok.*;
 import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -20,8 +21,10 @@ public class Invoice {
     @Id
     private UUID identifier;
 
+    @Indexed
     private UUID buyerId;
 
+    @Indexed
     private UUID sellerId;
 
     private Set<Item> items;
