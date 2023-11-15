@@ -3,13 +3,16 @@ package org.example.persistence.repository;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.PurchaseOrderHelper;
 import org.example.persistence.utils.data.OrderStatus;
+import org.example.persistence.utils.data.PagedPurchaseOrders;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.SkipOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -36,14 +39,14 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
     }
 
     @Override
-    public List<PurchaseOrder> findByFiltersPageable(List<PurchaseOrderFilter> filters, Integer page, Integer size) {
+    public Page<PurchaseOrder> findByFiltersPageable(List<PurchaseOrderFilter> filters, Pageable pageable) {
         List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createHistoryBasedAggregators(filters);
-        aggregationOperations.add(new SkipOperation((long) page * size));
-        aggregationOperations.add(Aggregation.limit(size));
+        List<AggregationOperation> pagingAggregationOperations = PurchaseOrderHelper.createPagingAggregators(pageable);
+
+        aggregationOperations.addAll(pagingAggregationOperations);
 
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
-
-        return this.findAllByAggregation(aggregation);
+        return this.findAllPagedByAggregation(aggregation);
     }
 
     @Override
@@ -79,6 +82,13 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
 
     private List<PurchaseOrder> findAllByAggregation(Aggregation aggregation) {
         return this.mongoTemplate.aggregate(aggregation, "purchaseOrder", PurchaseOrder.class).getMappedResults();
+    }
+
+    private Page<PurchaseOrder> findAllPagedByAggregation(Aggregation aggregation) {
+        PagedPurchaseOrders pagedPurchaseOrders = this.mongoTemplate.aggregate(aggregation, "purchaseOrder", PagedPurchaseOrders.class).getUniqueMappedResult();
+        List<PurchaseOrder> purchaseOrders = pagedPurchaseOrders.getContent();
+
+        return new PageImpl<>(purchaseOrders, Pageable.unpaged(), pagedPurchaseOrders.getTotal());
     }
 
     private PurchaseOrder findOneByAggregation(Aggregation aggregation) {

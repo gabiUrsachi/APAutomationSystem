@@ -21,6 +21,7 @@ import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -106,9 +107,9 @@ public class PurchaseOrderController {
                     @ApiResponse(responseCode = "403", description = "Invalid role")
             })
     @GetMapping
-    public List<SimpleOrderResponseDTO> getPurchaseOrders(
+    public Page<SimpleOrderResponseDTO> getPurchaseOrders(
             HttpServletRequest request,
-            @RequestParam(required = false) @Min(0) Integer page,
+            @RequestParam(defaultValue = "0", required = false) @Min(0) Integer page,
             @RequestParam(defaultValue = "50", required = false) @Min(value = 1, message = "Page size should not be less than one") Integer pageSize
     ) {
 
@@ -120,9 +121,10 @@ public class PurchaseOrderController {
 
         List<PurchaseOrderFilter> queryFilters = purchaseOrderFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
 
-        List<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders(queryFilters, page, pageSize);
+        Page<PurchaseOrder> purchaseOrders = purchaseOrderService.getPurchaseOrders(queryFilters, page, pageSize);
+        Page<SimpleOrderResponseDTO> simpleOrderResponseDTOS = purchaseOrders.map(purchaseOrderMapperService::mapToSimpleDTO);
 
-        return purchaseOrderMapperService.mapToSimpleDTO(purchaseOrders);
+        return simpleOrderResponseDTOS;
     }
 
     @GetMapping("/tax")

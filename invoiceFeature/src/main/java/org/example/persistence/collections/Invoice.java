@@ -38,6 +38,7 @@ public class Invoice {
     @Indexed
     List<InvoiceStatusHistoryObject> statusHistory;
 
+    @Indexed
     private Integer version;
 
     private String uri;
