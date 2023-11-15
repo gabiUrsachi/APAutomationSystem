@@ -2,6 +2,8 @@ package org.example.persistence.repository;
 
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.data.InvoiceFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,6 @@ public interface InvoiceCustomRepository {
 
     List<Invoice> findByBuyerUUIDAndDate(UUID companyUUID, Date date, Date date1);
 
-    List<Invoice> findByFiltersPageable(List<InvoiceFilter> filters, Integer page, Integer size);
+    Page<Invoice> findByFiltersPageable(List<InvoiceFilter> filters, Pageable pageable);
 
 }

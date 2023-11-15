@@ -1,26 +1,26 @@
 package org.example.presentation.controllers;
 
 import org.example.S3BucketOps;
-import org.example.persistence.utils.data.PurchaseOrderFilter;
+import org.example.business.services.InvoiceFilteringService;
+import org.example.business.services.InvoiceService;
+import org.example.business.services.InvoiceValidationService;
+import org.example.persistence.collections.Invoice;
+import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.presentation.utils.InvoiceActionsPermissions;
+import org.example.presentation.utils.InvoiceMapperService;
 import org.example.presentation.utils.InvoiceResourceActionType;
 import org.example.presentation.view.InvoiceDDO;
 import org.example.presentation.view.InvoiceDPO;
 import org.example.presentation.view.InvoiceDTO;
-import org.example.business.services.InvoiceFilteringService;
-import org.example.persistence.collections.Invoice;
-import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.presentation.view.OrderResponseDTO;
 import org.example.services.AuthorisationService;
-import org.example.presentation.utils.InvoiceMapperService;
-import org.example.business.services.InvoiceService;
-import org.example.business.services.InvoiceValidationService;
 import org.example.utils.AuthorizationMapper;
 import org.example.utils.data.JwtClaims;
 import org.example.utils.data.Roles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,9 +76,9 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public List<InvoiceDDO> getInvoices(
+    public Page<InvoiceDDO> getInvoices(
             HttpServletRequest request,
-            @RequestParam(required = false) @Min(0) Integer page,
+            @RequestParam(defaultValue = "0", required = false) @Min(0) Integer page,
             @RequestParam(defaultValue = "50", required = false) @Min(value = 1, message = "Page size should not be less than one") Integer pageSize
     ) {
         logger.info("[GET request] -> get all invoices");
@@ -90,10 +90,10 @@ public class InvoiceController {
 
         List<InvoiceFilter> queryFilters = invoiceFilteringService.createQueryFilters(matchingRoles, jwtClaims.getCompanyUUID());
 
-        List<Invoice> invoices = invoiceService.getInvoices(queryFilters, page, pageSize);
+        Page<Invoice> invoices = invoiceService.getInvoices(queryFilters, page, pageSize);
+        Page<InvoiceDDO> invoiceDDOS = invoices.map(invoiceMapperService::mapToDDO);
 
-        return  invoiceMapperService.mapToDDO(invoices);
-
+        return invoiceDDOS;
     }
 
     @PostMapping("/fromOR")
@@ -173,6 +173,6 @@ public class InvoiceController {
         logger.info("[GET request] -> Compute Total Invoice tax for company with UUID: {}", jwtClaims.getCompanyUUID());
 
         InvoiceFilter queryFilter = invoiceFilteringService.createCompanyBasedFilter(jwtClaims.getCompanyUUID());
-        return invoiceService.computeInvoiceTax(month,year,queryFilter);
+        return invoiceService.computeInvoiceTax(month, year, queryFilter);
     }
 }

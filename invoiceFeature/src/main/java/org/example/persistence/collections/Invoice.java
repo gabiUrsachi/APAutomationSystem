@@ -35,6 +35,7 @@ public class Invoice {
 
     private Float discountRate;
 
+    @Indexed
     List<InvoiceStatusHistoryObject> statusHistory;
 
     private Integer version;
