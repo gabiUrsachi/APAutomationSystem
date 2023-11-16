@@ -43,14 +43,9 @@ public class InvoiceHelper {
         List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
         Criteria statusHistoryCriteria = Criteria.where("statusHistory").exists(true);
-
-        String statusHistorySortingString = "{$sortArray: { input: '$statusHistory', sortBy: {date: -1}}}";
-        SetOperation statusHistorySetOperation = SetOperation.builder().set("statusHistory").toValue(Document.parse(statusHistorySortingString));
-
         Criteria statusAndCompanyCriteria = createStatusAndCompanyCriteria(filters);
 
         aggregationOperations.add(Aggregation.match(statusHistoryCriteria));
-        aggregationOperations.add(statusHistorySetOperation);
         aggregationOperations.add(Aggregation.match(statusAndCompanyCriteria));
 
         return aggregationOperations;
@@ -125,8 +120,10 @@ public class InvoiceHelper {
             Criteria criteria = createCompanyCriteria(filter);
 
             if (filter.getRequiredStatus() != null) {
-                Criteria statusCriteria = Criteria.where("statusHistory.0.status").is(filter.getRequiredStatus().toString());
-                criteria = new Criteria().andOperator(criteria, statusCriteria);
+                Criteria statusCriteria = Criteria.where("status").is(filter.getRequiredStatus().toString());
+                Criteria statusHistoryCriteria = Criteria.where("statusHistory").elemMatch(statusCriteria);
+
+                criteria = new Criteria().andOperator(criteria, statusHistoryCriteria);
             }
 
             criteriaList.add(criteria);

@@ -103,7 +103,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         PagedInvoices pagedInvoices = this.mongoTemplate.aggregate(aggregation, "invoice", PagedInvoices.class).getUniqueMappedResult();
         List<Invoice> invoices = pagedInvoices.getContent();
 
-        return new PageImpl<>(invoices, Pageable.unpaged(), pagedInvoices.getTotal());
+        return new PageImpl<>(invoices, Pageable.unpaged(), pagedInvoices.getTotal() != null ? pagedInvoices.getTotal() : 0);
     }
 
     private Invoice findOneByQuery(Query query) {

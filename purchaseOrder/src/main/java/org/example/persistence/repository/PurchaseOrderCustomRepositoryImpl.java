@@ -88,7 +88,7 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
         PagedPurchaseOrders pagedPurchaseOrders = this.mongoTemplate.aggregate(aggregation, "purchaseOrder", PagedPurchaseOrders.class).getUniqueMappedResult();
         List<PurchaseOrder> purchaseOrders = pagedPurchaseOrders.getContent();
 
-        return new PageImpl<>(purchaseOrders, Pageable.unpaged(), pagedPurchaseOrders.getTotal());
+        return new PageImpl<>(purchaseOrders, Pageable.unpaged(), pagedPurchaseOrders.getTotal() != null ? pagedPurchaseOrders.getTotal() : 0);
     }
 
     private PurchaseOrder findOneByAggregation(Aggregation aggregation) {
