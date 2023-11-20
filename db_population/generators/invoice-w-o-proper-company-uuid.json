@@ -2,7 +2,7 @@
   {
     "database": "APsystem",
     "collection": "invoice",
-    "count": 20000,
+    "count": 500000,
     "content": {
       "_id": {
         "type": "uuid",
