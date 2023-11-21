@@ -6,6 +6,8 @@ import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.util.List;
 import java.util.Set;
@@ -35,10 +37,8 @@ public class Invoice {
 
     private Float discountRate;
 
-    @Indexed
     List<InvoiceStatusHistoryObject> statusHistory;
 
-    @Indexed
     private Integer version;
 
     private String uri;

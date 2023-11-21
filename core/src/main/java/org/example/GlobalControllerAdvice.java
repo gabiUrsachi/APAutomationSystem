@@ -15,7 +15,6 @@ import software.amazon.awssdk.services.s3.model.NoSuchBucketException;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 import java.time.DateTimeException;
-import java.util.zip.DataFormatException;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
@@ -32,8 +31,8 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<>(exceptionResponse, status);
     }
 
-    @ExceptionHandler(AlreadyExistingResourceException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleAlreadyExistingResourceException(AlreadyExistingResourceException ex) {
+    @ExceptionHandler({AlreadyExistingResourceException.class, ResourceReferenceException.class})
+    public ResponseEntity<ExceptionResponseDTO> handleAlreadyExistingResourceException(Exception ex) {
         logger.info("[ClientError] -> {}:{}", ex.getClass(), ex.getMessage());
         String details = ex.getMessage();
         HttpStatus status = HttpStatus.CONFLICT;
