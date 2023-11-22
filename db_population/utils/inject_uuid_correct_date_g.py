@@ -57,6 +57,8 @@ def inject_history_array(element, collection_name, statuses_count):
     element['statusHistory'] = status_history
     return element
 
+def compute_total_amount(element):
+    return sum(int(item['quantity']['$numberInt']) * float(item['price']['$numberDouble']) for item in element['items'])
 
 if __name__ == "__main__":
 
@@ -102,6 +104,7 @@ if __name__ == "__main__":
 
                 element = inject_history_array(element, collection_name, statuses_count=statuses_count)
 
+            element['totalAmount']['$numberDouble'] = f"{compute_total_amount(element)}"
             last_invoice_per_buyer[buyer_id] = element
         else:
             element = inject_history_array(element, collection_name, statuses_count=2)
