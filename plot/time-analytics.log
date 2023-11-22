@@ -1,0 +1,430 @@
+****************************************************************************************************************************************************************************************************************
+STATUS DISTRIBUTION: 0 -> 0/500000 invoices PAID
+****************************************************************************************************************************************************************************************************************
+
+**********************************************************
+WITH INDEXES: buyerId, supplierId, statusHistory, version
+**********************************************************
+
+13:47:31.936 589383 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 162 ms 
+13:47:34.581 592028 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 61 ms 
+13:47:58.923 616370 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 61 ms 
+13:48:04.128 621575 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+13:48:11.797 629244 [http-nio-8080-exec-5] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2888 ms 
+13:48:29.462 646909 [http-nio-8080-exec-7] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 20 ms 
+13:48:30.106 647553 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 3 ms 
+13:48:36.843 654290 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 3 ms 
+13:48:36.915 654362 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 71 ms 
+13:48:36.932 654379 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 17 ms 
+13:49:01.355 678802 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 55 ms 
+13:49:10.118 687565 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 3 ms 
+13:49:11.709 689156 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+13:49:11.711 689158 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+13:52:23.335 880782 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 134 ms 
+13:52:28.991 886438 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 3 ms 
+13:52:30.313 887760 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 3 ms 
+13:52:30.316 887763 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+13:52:35.251 892698 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 112 ms 
+13:52:37.071 894518 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 101 ms 
+13:52:39.581 897028 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 113 ms 
+13:52:47.136 904583 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 104 ms 
+13:52:49.468 906915 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 102 ms 
+13:52:50.876 908323 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 105 ms 
+13:52:51.739 909186 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 100 ms 
+13:52:53.197 910644 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 101 ms 
+13:52:54.652 912099 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 109 ms 
+13:52:55.377 912824 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 97 ms 
+13:52:55.955 913402 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 110 ms 
+13:52:56.524 913971 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 102 ms 
+13:52:57.110 914557 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 104 ms 
+13:52:57.318 914765 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 103 ms 
+13:52:57.689 915136 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 99 ms 
+13:52:57.895 915342 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 99 ms 
+13:52:58.067 915514 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 101 ms 
+13:52:58.234 915681 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 104 ms 
+13:52:58.488 915935 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 149 ms 
+13:52:58.653 916100 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 152 ms 
+13:52:58.768 916215 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 101 ms 
+13:52:58.930 916377 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 100 ms 
+13:52:59.121 916568 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 102 ms 
+13:53:10.184 927631 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+13:53:11.885 929332 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+13:53:11.888 929335 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+13:53:13.913 931360 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 100 ms 
+13:53:44.559 962006 [http-nio-8080-exec-8] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2721 ms 
+13:53:56.844 974291 [http-nio-8080-exec-4] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 2 ms 
+13:53:57.510 974957 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+13:53:59.307 976754 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+13:53:59.379 976826 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 72 ms 
+13:53:59.380 976827 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 1 ms 
+13:54:01.396 978843 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 54 ms 
+13:54:04.211 981658 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 54 ms
+
+***************************************************************
+WITHOUT INDEXES
+***************************************************************
+
+13:55:18.167 1055614 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 451 ms 
+13:55:24.718 1062165 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 441 ms 
+13:55:33.997 1071444 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 425 ms 
+13:55:34.438 1071885 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 421 ms 
+13:55:34.960 1072407 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 418 ms 
+13:55:35.419 1072866 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 435 ms 
+13:55:35.924 1073371 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 480 ms 
+13:55:36.086 1073533 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 481 ms 
+13:55:36.318 1073765 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 574 ms 
+13:55:42.711 1080158 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+13:55:44.053 1081500 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+13:55:44.511 1081958 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 458 ms 
+13:55:44.513 1081960 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+13:55:54.446 1091893 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 431 ms 
+13:56:02.058 1099505 [http-nio-8080-exec-2] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2753 ms 
+13:56:10.476 1107923 [http-nio-8080-exec-7] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 1 ms 
+13:56:11.085 1108532 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+13:56:12.982 1110429 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+13:56:13.436 1110883 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 454 ms 
+13:56:13.438 1110885 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 1 ms 
+13:56:18.221 1115668 [http-nio-8080-exec-2] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2739 ms 
+13:58:16.638 1234085 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 437 ms 
+13:58:18.435 1235882 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 454 ms 
+13:58:18.559 1236006 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 452 ms 
+13:58:33.412 1250859 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 912 ms 
+13:58:36.671 1254118 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 903 ms 
+13:58:39.969 1257416 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 895 ms 
+13:58:50.396 1267843 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+13:58:51.749 1269196 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+13:58:51.751 1269198 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+13:59:26.244 1303691 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 926 ms 
+13:59:28.895 1306342 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 905 ms 
+13:59:30.344 1307791 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 906 ms 
+13:59:35.336 1312783 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 3 ms 
+13:59:50.187 1327634 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 428 ms 
+13:59:51.618 1329065 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 37 ms 
+13:59:53.095 1330542 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+13:59:54.081 1331528 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+13:59:54.531 1331978 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 450 ms 
+13:59:54.532 1331979 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 1 ms 
+13:59:56.206 1333653 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 439 ms 
+
+****************************************************************************************************************************************************************************************************************
+STATUS DISTRIBUTION: 1 -> 500000/500000 invoices PAID
+****************************************************************************************************************************************************************************************************************
+
+**********************************************************
+WITH INDEXES: buyerId, supplierId, statusHistory, version
+**********************************************************
+14:16:36.725 136967 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 150 ms 
+14:16:43.863 144105 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 74 ms 
+14:16:45.497 145739 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 68 ms 
+14:16:46.145 146387 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 60 ms 
+14:16:51.250 151492 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 65 ms 
+14:16:53.950 154192 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 3 ms 
+14:17:08.898 169140 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 58 ms 
+14:17:10.684 170926 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 57 ms 
+14:17:19.155 179397 [http-nio-8080-exec-2] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2718 ms 
+14:17:26.801 187043 [http-nio-8080-exec-1] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 17 ms 
+14:17:27.463 187705 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+14:17:30.518 190760 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+14:17:30.610 190852 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 91 ms 
+14:17:30.626 190868 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 15 ms 
+14:18:00.405 220647 [http-nio-8080-exec-10] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2681 ms 
+14:18:12.292 232534 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 66 ms 
+14:18:14.781 235023 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 61 ms 
+14:18:17.055 237297 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 62 ms 
+14:18:17.688 237930 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 58 ms 
+14:18:20.471 240713 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 62 ms 
+14:18:21.178 241420 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 58 ms 
+14:18:23.430 243672 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 65 ms 
+14:18:52.116 272358 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 54 ms 
+14:18:55.818 276060 [http-nio-8080-exec-5] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2645 ms 
+14:19:13.831 294073 [http-nio-8080-exec-4] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 2 ms 
+14:19:14.424 294666 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+14:19:15.808 296050 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+14:19:15.901 296143 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 93 ms 
+14:19:15.903 296145 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+14:21:26.023 426265 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 49 ms 
+14:21:27.316 427558 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 35 ms 
+14:21:28.550 428792 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+14:21:31.218 431460 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 52 ms 
+14:21:33.466 433708 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 187 ms 
+14:21:43.920 444162 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 182 ms 
+14:21:47.076 447318 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 186 ms 
+14:22:10.790 471032 [http-nio-8080-exec-1] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2729 ms 
+14:22:17.283 477525 [http-nio-8080-exec-5] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 2 ms 
+14:22:17.861 478103 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+14:22:19.238 479480 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+14:22:19.324 479566 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 86 ms 
+14:22:19.326 479568 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+14:22:26.978 487220 [http-nio-8080-exec-2] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2697 ms 
+14:22:33.409 493651 [http-nio-8080-exec-1] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 2 ms 
+14:22:33.976 494218 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+14:22:34.924 495166 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+14:22:35.020 495262 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 96 ms 
+14:22:35.022 495264 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+
+***************************************************************
+WITHOUT INDEXES
+***************************************************************
+
+14:23:07.728 527970 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 403 ms 
+14:23:14.764 535006 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 399 ms 
+14:23:17.224 537466 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 410 ms 
+14:24:00.089 580331 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1342 ms 
+14:26:41.685 741927 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1214 ms 
+14:26:48.169 748411 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1239 ms 
+14:26:48.516 748758 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1219 ms 
+14:26:48.670 748912 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1236 ms 
+14:26:48.834 749076 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1218 ms 
+14:26:48.988 749230 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1233 ms 
+14:27:17.212 777454 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 408 ms 
+14:27:19.561 779803 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 402 ms 
+14:27:22.254 782496 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 528 ms 
+14:27:50.863 811105 [http-nio-8080-exec-10] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2687 ms 
+14:28:03.376 823618 [http-nio-8080-exec-7] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 2 ms 
+14:28:03.969 824211 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+14:28:05.870 826112 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+14:28:06.317 826559 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 447 ms 
+14:28:06.319 826561 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 1 ms 
+14:28:19.217 839459 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 2 ms 
+14:28:20.587 840829 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 2 ms 
+14:28:40.841 861083 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1200 ms 
+14:28:44.661 864903 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1179 ms 
+14:28:47.480 867722 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1189 ms 
+14:28:50.667 870909 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+14:29:09.605 889847 [http-nio-8080-exec-9] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 3025 ms 
+14:29:22.504 902746 [http-nio-8080-exec-3] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 1 ms 
+14:29:23.084 903326 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+14:29:24.300 904542 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+14:29:24.752 904994 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 451 ms 
+14:29:24.753 904995 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 1 ms 
+14:29:27.734 907976 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1335 ms 
+14:29:30.260 910502 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1368 ms 
+14:29:30.428 910670 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1403 ms 
+14:29:30.533 910775 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1350 ms 
+14:29:35.485 915727 [http-nio-8080-exec-6] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2999 ms 
+14:29:43.447 923689 [http-nio-8080-exec-7] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 1 ms 
+14:29:44.048 924290 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+14:29:44.959 925201 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+14:29:45.414 925656 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 455 ms 
+14:29:45.415 925657 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 1 ms 
+
+****************************************************************************************************************************************************************************************************************
+STATUS DISTRIBUTION: 2 -> RANDOM DISTRIBUTION: 166500/500000 invoices PAID
+****************************************************************************************************************************************************************************************************************
+
+**********************************************************
+WITH INDEXES: buyerId, supplierId, statusHistory, version
+**********************************************************
+
+15:03:46.029 161201 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 156 ms 
+15:03:54.745 169917 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 71 ms 
+15:03:56.605 171777 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 62 ms 
+15:03:56.762 171934 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 61 ms 
+15:03:56.905 172077 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 58 ms 
+15:03:58.608 173780 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 185 ms 
+15:04:06.567 181739 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+15:04:07.929 183101 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+15:04:07.952 183124 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 22 ms 
+15:04:09.787 184959 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 54 ms 
+15:04:11.368 186540 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+15:04:12.723 187895 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+15:04:12.725 187897 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+15:04:14.446 189618 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 60 ms 
+15:04:16.072 191244 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 57 ms 
+15:04:16.204 191376 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 55 ms 
+15:04:18.403 193575 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 52 ms 
+15:04:31.070 206242 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 62 ms 
+15:04:32.881 208053 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 52 ms 
+15:04:41.762 216934 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+15:04:42.953 218125 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+15:04:43.041 218213 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 87 ms 
+15:04:43.044 218216 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+15:04:45.516 220688 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 64 ms 
+15:04:47.365 222537 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 38 ms 
+15:04:56.477 231649 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 59 ms 
+15:05:00.689 235861 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+15:05:06.553 241725 [http-nio-8080-exec-3] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2901 ms 
+15:05:21.625 256797 [http-nio-8080-exec-1] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 14 ms 
+15:05:22.236 257408 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+15:05:24.554 259726 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+15:05:24.632 259804 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 78 ms 
+15:05:24.634 259806 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+15:05:33.939 269111 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 61 ms 
+15:05:37.870 273042 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 59 ms 
+15:05:39.595 274767 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 55 ms 
+15:05:40.360 275532 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 1 ms 
+15:05:41.049 276221 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+15:05:48.170 283342 [http-nio-8080-exec-7] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2613 ms 
+15:07:03.425 358597 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 117 ms 
+15:07:12.388 367560 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 106 ms 
+15:07:14.328 369500 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 106 ms 
+15:07:14.754 369926 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 102 ms 
+15:07:27.606 382778 [http-nio-8080-exec-8] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 450 ms 
+
+***************************************************************
+WITHOUT INDEXES
+***************************************************************
+
+15:08:11.241 426413 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1169 ms
+15:08:13.835 429007 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1146 ms 
+15:08:16.059 431231 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1138 ms 
+15:08:17.695 432867 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1141 ms 
+15:08:24.402 439574 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+15:08:25.550 440722 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+15:08:26.001 441173 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 451 ms 
+15:08:26.003 441175 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+15:08:28.757 443929 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1140 ms 
+15:08:33.572 448744 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 1 ms 
+15:09:00.416 475588 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1004 ms 
+15:09:01.781 476953 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+15:09:02.890 478062 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+15:09:02.892 478064 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+15:09:05.706 480878 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1021 ms 
+15:09:08.289 483461 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1125 ms 
+15:09:12.946 488118 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+15:09:16.437 491609 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1008 ms 
+15:09:19.898 495070 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 995 ms 
+15:09:21.918 497090 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+15:09:23.218 498390 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+15:09:23.220 498392 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+15:09:35.902 511074 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 447 ms 
+15:09:39.751 514923 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+15:09:40.983 516155 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+15:09:41.440 516612 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 457 ms 
+15:09:41.442 516614 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+15:09:50.425 525597 [http-nio-8080-exec-5] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2659 ms 
+15:10:02.340 537512 [http-nio-8080-exec-7] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 3 ms 
+15:10:02.927 538099 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+15:10:05.067 540239 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+15:10:05.518 540690 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 450 ms 
+15:10:05.519 540691 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 1 ms 
+15:10:10.922 546094 [http-nio-8080-exec-8] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2649 ms 
+15:10:26.224 561396 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 436 ms 
+15:10:30.481 565653 [http-nio-8080-exec-6] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2653 ms 
+15:10:43.987 579159 [http-nio-8080-exec-2] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2677 ms 
+15:10:45.085 580257 [http-nio-8080-exec-8] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+15:10:46.206 581378 [http-nio-8080-exec-10] INFO  analytics - [Operation: PurchaseOrderCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 8 ms 
+15:10:51.810 586982 [http-nio-8080-exec-6] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 2664 ms 
+15:10:54.604 589776 [http-nio-8080-exec-9] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+15:10:54.617 589789 [http-nio-8080-exec-4] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 2 ms 
+15:10:55.230 590402 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+15:10:56.497 591669 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+15:10:56.952 592124 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 455 ms 
+15:10:56.954 592126 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+
+****************************************************************************************************************************************************************************************************************
+STATUS DISTRIBUTION: 3 -> 50% invoices PAID per BUYER
+****************************************************************************************************************************************************************************************************************
+
+**********************************************************
+WITH INDEXES: buyerId, supplierId, statusHistory, version
+**********************************************************
+16:33:16.726 181826 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 205 ms 
+16:33:30.594 195694 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 101 ms 
+16:33:32.404 197504 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 104 ms 
+16:33:33.007 198107 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 73 ms 
+16:33:38.173 203273 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 96 ms 
+16:33:39.767 204867 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 86 ms 
+16:33:44.932 210032 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 4 ms 
+16:33:46.597 211697 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:33:46.619 211719 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 21 ms 
+16:33:50.026 215126 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 77 ms 
+16:33:51.648 216748 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:33:52.605 217705 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:33:52.608 217708 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+16:33:56.037 221137 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 72 ms 
+16:33:58.727 223827 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 76 ms 
+16:34:23.374 248474 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 70 ms 
+16:34:25.133 250233 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 62 ms 
+16:34:26.968 252068 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 59 ms 
+16:34:27.842 252942 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+16:34:29.797 254897 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 55 ms 
+16:34:31.349 256449 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:34:32.568 257668 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 71 ms 
+16:34:33.620 258720 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:34:34.794 259894 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:34:34.908 260008 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 113 ms 
+16:34:34.912 260012 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 4 ms 
+16:34:48.743 273843 [http-nio-8080-exec-7] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4993 ms 
+16:35:00.197 285297 [http-nio-8080-exec-5] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4692 ms 
+16:35:16.440 301540 [http-nio-8080-exec-9] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4384 ms 
+16:35:28.032 313132 [http-nio-8080-exec-7] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4170 ms 
+16:35:50.995 336095 [http-nio-8080-exec-2] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4552 ms 
+16:35:57.808 342908 [http-nio-8080-exec-5] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4654 ms 
+16:36:04.619 349719 [http-nio-8080-exec-9] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 5423 ms 
+16:36:06.691 351791 [http-nio-8080-exec-10] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 5405 ms 
+16:36:09.849 354949 [http-nio-8080-exec-2] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:36:13.175 358275 [http-nio-8080-exec-6] INFO  analytics - [Operation: PurchaseOrderCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 8 ms 
+16:36:20.146 365246 [http-nio-8080-exec-4] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4702 ms 
+16:36:21.595 366695 [http-nio-8080-exec-9] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:36:21.633 366733 [http-nio-8080-exec-3] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 22 ms 
+16:36:22.423 367523 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:36:23.669 368769 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:36:23.772 368872 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 103 ms 
+16:36:23.775 368875 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+16:36:31.333 376433 [http-nio-8080-exec-9] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4733 ms 
+16:36:53.444 398544 [http-nio-8080-exec-6] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 3 ms 
+16:36:54.394 399494 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 3 ms 
+16:36:56.097 401197 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:36:56.209 401309 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 111 ms 
+16:36:56.212 401312 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+16:37:36.723 441823 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 173 ms 
+16:37:38.832 443932 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 3 ms 
+16:37:40.515 445615 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 171 ms 
+16:37:41.860 446960 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:37:42.764 447864 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+16:37:42.767 447867 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+16:37:47.323 452423 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 150 ms 
+16:37:49.232 454332 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 163 ms 
+16:37:50.923 456023 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 52 ms
+
+***************************************************************
+WITHOUT INDEXES
+***************************************************************
+
+16:38:26.286 491386 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 2421 ms 
+16:38:30.622 495722 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 2871 ms 
+16:39:24.025 549125 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:39:28.218 553318 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 2175 ms 
+16:39:29.083 554183 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 3 ms 
+16:39:32.710 557810 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 2233 ms 
+16:39:44.667 569767 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 2191 ms 
+16:39:47.190 572290 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 2215 ms 
+16:39:50.077 575177 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:39:50.953 576053 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 1 ms 
+16:39:51.767 576867 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 814 ms 
+16:39:51.770 576870 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+16:40:09.806 594906 [http-nio-8080-exec-9] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1922 ms 
+16:40:13.589 598689 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 1898 ms 
+16:40:16.519 601619 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:40:17.827 602927 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:40:17.829 602929 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 
+16:40:54.951 640051 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 706 ms 
+16:40:58.526 643626 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 743 ms 
+16:41:01.956 647056 [http-nio-8080-exec-7] INFO  analytics - [Operation: InvoiceRepository.deleteByIdentifier(..)], Execution time: 2 ms 
+16:41:04.134 649234 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:41:08.644 653744 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:41:09.466 654566 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 822 ms 
+16:41:09.469 654569 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+16:41:20.994 666094 [http-nio-8080-exec-7] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4639 ms 
+16:41:22.956 668056 [http-nio-8080-exec-6] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByUUIDAndFilters(..)], Execution time: 3 ms 
+16:41:22.972 668072 [http-nio-8080-exec-5] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 2 ms 
+16:41:23.695 668795 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:41:25.465 670565 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:41:26.207 671307 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 742 ms 
+16:41:26.210 671310 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+16:41:32.389 677489 [http-nio-8080-exec-6] INFO  analytics - [Operation: PurchaseOrderCustomRepository.findByFiltersPageable(..)], Execution time: 4690 ms 
+16:41:45.786 690886 [http-nio-8080-exec-5] INFO  analytics - [Operation: MongoRepository.insert(..)], Execution time: 1 ms 
+16:41:46.564 691664 [http-nio-8080-exec-10] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 1 ms 
+16:41:47.579 692679 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:41:48.388 693488 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 809 ms 
+16:41:48.391 693491 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 3 ms 
+16:42:16.758 721858 [http-nio-8080-exec-1] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 733 ms 
+16:42:19.275 724375 [http-nio-8080-exec-8] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 961 ms 
+16:42:26.591 731691 [http-nio-8080-exec-4] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 963 ms 
+16:42:49.596 754696 [http-nio-8080-exec-2] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 697 ms 
+16:42:54.125 759225 [http-nio-8080-exec-3] INFO  analytics - [Operation: InvoiceCustomRepository.findByFiltersPageable(..)], Execution time: 713 ms 
+16:42:55.197 760297 [http-nio-8080-exec-6] INFO  analytics - [Operation: InvoiceCustomRepository.findByUUIDAndFilters(..)], Execution time: 2 ms 
+16:42:56.836 761936 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceRepository.findByIdentifier(..)], Execution time: 2 ms 
+16:42:57.652 762752 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.getPaidAmountForLastNMonths(..)], Execution time: 816 ms 
+16:42:57.654 762754 [http-nio-8080-exec-5] INFO  analytics - [Operation: InvoiceCustomRepository.updateByIdentifierAndVersion(..)], Execution time: 2 ms 

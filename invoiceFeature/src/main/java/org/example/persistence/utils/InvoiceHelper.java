@@ -2,6 +2,7 @@ package org.example.persistence.utils;
 
 import org.bson.Document;
 import org.example.persistence.utils.data.InvoiceFilter;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 
@@ -42,14 +43,9 @@ public class InvoiceHelper {
         List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
         Criteria statusHistoryCriteria = Criteria.where("statusHistory").exists(true);
-
-        String statusHistorySortingString = "{$sortArray: { input: '$statusHistory', sortBy: {date: -1}}}";
-        SetOperation statusHistorySetOperation = SetOperation.builder().set("statusHistory").toValue(Document.parse(statusHistorySortingString));
-
         Criteria statusAndCompanyCriteria = createStatusAndCompanyCriteria(filters);
 
         aggregationOperations.add(Aggregation.match(statusHistoryCriteria));
-        aggregationOperations.add(statusHistorySetOperation);
         aggregationOperations.add(Aggregation.match(statusAndCompanyCriteria));
 
         return aggregationOperations;
@@ -85,6 +81,38 @@ public class InvoiceHelper {
         return aggregationOperations;
     }
 
+    /**
+     * This method creates aggregation operators for retrieving both paginated content of a collection
+     * and the total number of its documents
+     *
+     * @param pageable pagination params
+     * @return a list of aggregators based on the given params for pagination
+     */
+    public static List<AggregationOperation> createPagingAggregators(Pageable pageable) {
+        FacetOperation facetOperation = new FacetOperation();
+
+        facetOperation = facetOperation.and(
+                        new SkipOperation((long) pageable.getPageNumber() * pageable.getPageSize()),
+                        Aggregation.limit(pageable.getPageSize()))
+                .as("content");
+
+        facetOperation = facetOperation.and(
+                Aggregation.group().count().as("total"),
+                Aggregation.project("total").andExclude("_id")).as("total");
+
+        ProjectionOperation projectionOperation = Aggregation
+                .project("total")
+                .and("total.total")
+                .arrayElementAt(0)
+                .as("total")
+                .andInclude("content");
+
+        return List.of(
+                facetOperation,
+                projectionOperation
+        );
+    }
+
     private static Criteria createStatusAndCompanyCriteria(List<InvoiceFilter> filters) {
         List<Criteria> criteriaList = new ArrayList<>(filters.size());
 
@@ -92,8 +120,10 @@ public class InvoiceHelper {
             Criteria criteria = createCompanyCriteria(filter);
 
             if (filter.getRequiredStatus() != null) {
-                Criteria statusCriteria = Criteria.where("statusHistory.0.status").is(filter.getRequiredStatus().toString());
-                criteria = new Criteria().andOperator(criteria, statusCriteria);
+                Criteria statusCriteria = Criteria.where("status").is(filter.getRequiredStatus().toString());
+                Criteria statusHistoryCriteria = Criteria.where("statusHistory").elemMatch(statusCriteria);
+
+                criteria = new Criteria().andOperator(criteria, statusHistoryCriteria);
             }
 
             criteriaList.add(criteria);

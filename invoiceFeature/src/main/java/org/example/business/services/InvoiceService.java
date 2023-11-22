@@ -16,6 +16,9 @@ import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.example.utils.ErrorMessages;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -56,12 +59,9 @@ public class InvoiceService {
         return invoiceRepository.insert(initializedInvoice);
     }
 
-    public List<Invoice> getInvoices(List<InvoiceFilter> filters, Integer page, Integer size) {
-        if (page != null) {
-            return invoiceRepository.findByFiltersPageable(filters, page, size);
-        }
-
-        return invoiceRepository.findByFilters(filters);
+    public Page<Invoice> getInvoices(List<InvoiceFilter> filters, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return invoiceRepository.findByFiltersPageable(filters, pageable);
     }
 
     public Invoice getInvoice(UUID identifier, List<InvoiceFilter> filters) {

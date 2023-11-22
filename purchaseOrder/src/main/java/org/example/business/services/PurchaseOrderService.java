@@ -12,6 +12,9 @@ import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.utils.ErrorMessages;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.DateTimeException;
@@ -105,12 +108,10 @@ public class PurchaseOrderService {
      * @param size    number of documents for the requested page
      * @return the list of existing orders
      */
-    public List<PurchaseOrder> getPurchaseOrders(List<PurchaseOrderFilter> filters, Integer page, Integer size) {
-        if (page != null) {
-            return purchaseOrderRepository.findByFiltersPageable(filters, page, size);
-        }
+    public Page<PurchaseOrder> getPurchaseOrders(List<PurchaseOrderFilter> filters, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return purchaseOrderRepository.findByFiltersPageable(filters, pageable);
 
-        return purchaseOrderRepository.findByFilters(filters);
     }
 
     /**

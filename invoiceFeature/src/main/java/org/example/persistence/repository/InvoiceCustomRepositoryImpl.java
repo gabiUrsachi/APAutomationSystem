@@ -4,12 +4,13 @@ import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.InvoiceHelper;
 import org.example.persistence.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.utils.data.InvoiceFilter;
+import org.example.persistence.utils.data.PagedInvoices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.SkipOperation;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -33,14 +34,14 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
     }
 
     @Override
-    public List<Invoice> findByFiltersPageable(List<InvoiceFilter> filters, Integer page, Integer size) {
+    public Page<Invoice> findByFiltersPageable(List<InvoiceFilter> filters, Pageable pageable) {
         List<AggregationOperation> aggregationOperations = InvoiceHelper.createFiltersBasedAggregators(filters);
-        aggregationOperations.add(new SkipOperation((long) page * size));
-        aggregationOperations.add(Aggregation.limit(size));
+        List<AggregationOperation> pagingAggregationOperations = InvoiceHelper.createPagingAggregators(pageable);
+
+        aggregationOperations.addAll(pagingAggregationOperations);
 
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
-
-        return this.findAllByAggregation(aggregation);
+        return this.findAllPagedByAggregation(aggregation);
     }
 
     @Override
@@ -96,6 +97,13 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
     private List<Invoice> findAllByAggregation(Aggregation aggregation) {
         return this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getMappedResults();
+    }
+
+    private Page<Invoice> findAllPagedByAggregation(Aggregation aggregation) {
+        PagedInvoices pagedInvoices = this.mongoTemplate.aggregate(aggregation, "invoice", PagedInvoices.class).getUniqueMappedResult();
+        List<Invoice> invoices = pagedInvoices.getContent();
+
+        return new PageImpl<>(invoices, Pageable.unpaged(), pagedInvoices.getTotal() != null ? pagedInvoices.getTotal() : 0);
     }
 
     private Invoice findOneByQuery(Query query) {

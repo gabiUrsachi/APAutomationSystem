@@ -12,4 +12,6 @@ public interface UserRepository extends MongoRepository<User, UUID> {
 
     @DeleteQuery("{ 'identifier' : ?0 }")
     int customDeleteById(UUID uuid);
+
+    Optional<User> findFirstByCompanyIdentifier(UUID companyIdentifier);
 }
