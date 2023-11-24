@@ -1,6 +1,5 @@
 package org.example.persistence.utils;
 
-import org.bson.Document;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.aggregation.*;
@@ -42,10 +41,7 @@ public class InvoiceHelper {
     public static List<AggregationOperation> createFiltersBasedAggregators(List<InvoiceFilter> filters) {
         List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
-        Criteria statusHistoryCriteria = Criteria.where("statusHistory").exists(true);
         Criteria statusAndCompanyCriteria = createStatusAndCompanyCriteria(filters);
-
-        aggregationOperations.add(Aggregation.match(statusHistoryCriteria));
         aggregationOperations.add(Aggregation.match(statusAndCompanyCriteria));
 
         return aggregationOperations;
@@ -62,19 +58,15 @@ public class InvoiceHelper {
     public static List<AggregationOperation> createPaidAmountOverNMonthsAggregators(UUID buyerId, int monthsNumber) {
         List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
-        List<Criteria> criteriaList = new ArrayList<>();
-        criteriaList.add(Criteria.where("buyerId").is(buyerId));
-        criteriaList.add(Criteria.where("statusHistory").exists(true));
-        Criteria buyerAndHistoryMatchCriteria = new Criteria().andOperator(criteriaList.toArray(new Criteria[0]));
+        Criteria buyerCriteria = Criteria.where("buyerId").is(buyerId);
 
-        criteriaList = new ArrayList<>();
-        criteriaList.add(Criteria.where("statusHistory.status").is(InvoiceStatus.PAID.toString()));
-        criteriaList.add(Criteria.where("statusHistory.date").gte(LocalDateTime.now().minusMonths(monthsNumber)));
-        Criteria invoiceStatusMatchCriteria = new Criteria().andOperator(criteriaList.toArray(new Criteria[0]));
+        Criteria statusCriteria = Criteria.where("status").is(InvoiceStatus.PAID.toString());
+        Criteria dateCriteria = Criteria.where("date").gte(LocalDateTime.now().minusMonths(monthsNumber));
+        Criteria statusHistoryCriteria = Criteria.where("statusHistory").elemMatch(new Criteria().andOperator(statusCriteria, dateCriteria));
 
-        aggregationOperations.add(Aggregation.match(buyerAndHistoryMatchCriteria));
-        aggregationOperations.add(Aggregation.unwind("statusHistory"));
-        aggregationOperations.add(Aggregation.match(invoiceStatusMatchCriteria));
+        Criteria matchCriteria = new Criteria().andOperator(buyerCriteria, statusHistoryCriteria);
+
+        aggregationOperations.add(Aggregation.match(matchCriteria));
         aggregationOperations.add(Aggregation.group("buyerId").sum("totalAmount").as("totalAmount"));
         aggregationOperations.add(Aggregation.project("totalAmount").andExclude("_id"));
 
