@@ -35,11 +35,12 @@ public class DiscountByAmountStrategyShould {
     @Test
     public void returnNullIfThereIsNoPaidAmountForAGivenBuyer() {
         UUID buyerUUID = generateUUID();
+        UUID sellerUUID = generateUUID();
         int monthsNumber = 3;
 
-        given(invoiceCustomRepository.getPaidAmountForLastNMonths(buyerUUID, monthsNumber)).willReturn(null);
+        given(invoiceCustomRepository.getPaidAmountForLastNMonths(buyerUUID, sellerUUID, monthsNumber)).willReturn(null);
 
-        Float computedDiscount = this.discountStrategy.computeDiscount(buyerUUID);
+        Float computedDiscount = this.discountStrategy.computeDiscount(buyerUUID, sellerUUID);
 
         Assertions.assertNull(computedDiscount);
     }
@@ -47,12 +48,13 @@ public class DiscountByAmountStrategyShould {
     @Test
     public void returnAValidValueIfPaidInvoicesExistForAGivenBuyer() {
         UUID buyerUUID = generateUUID();
+        UUID sellerUUID = generateUUID();
         int monthsNumber = 3;
         Float baseDiscountValue = new Random().nextFloat() * 1000000;
 
-        given(invoiceCustomRepository.getPaidAmountForLastNMonths(buyerUUID, monthsNumber)).willReturn(baseDiscountValue);
+        given(invoiceCustomRepository.getPaidAmountForLastNMonths(buyerUUID, sellerUUID, monthsNumber)).willReturn(baseDiscountValue);
 
-        Float computedDiscount = this.discountStrategy.computeDiscount(buyerUUID);
+        Float computedDiscount = this.discountStrategy.computeDiscount(buyerUUID, sellerUUID);
 
         Assertions.assertNotNull(computedDiscount);
     }

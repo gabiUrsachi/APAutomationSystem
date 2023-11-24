@@ -53,7 +53,7 @@ public class InvoiceStatusHistoryHelperShould {
     private Map<LocalDateTime, InvoiceStatusHistoryObject> initStatusHistoryMap(LocalDateTime mostRecentDate){
         return  Map.of(
                 mostRecentDate.minusMonths(2), createRandomStatusHistoryObject(mostRecentDate.minusMonths(2)),
-                mostRecentDate, createRandomStatusHistoryObject(mostRecentDate.minusDays(12)),
+                mostRecentDate, createRandomStatusHistoryObject(mostRecentDate),
                 mostRecentDate.minusDays(12), createRandomStatusHistoryObject(mostRecentDate.minusDays(12))
         );
     }
