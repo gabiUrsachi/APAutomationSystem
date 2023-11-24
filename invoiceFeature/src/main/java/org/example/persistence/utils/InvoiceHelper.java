@@ -55,16 +55,18 @@ public class InvoiceHelper {
      * @param monthsNumber the number of considered past months
      * @return aggregation operations to be applied
      */
-    public static List<AggregationOperation> createPaidAmountOverNMonthsAggregators(UUID buyerId, int monthsNumber) {
+    public static List<AggregationOperation> createPaidAmountOverNMonthsAggregators(UUID buyerId, UUID sellerId, int monthsNumber) {
         List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
         Criteria buyerCriteria = Criteria.where("buyerId").is(buyerId);
+        Criteria supplierCriteria = Criteria.where("sellerId").is(sellerId);
+        Criteria companiesCriteria = new Criteria().andOperator(buyerCriteria, supplierCriteria);
 
         Criteria statusCriteria = Criteria.where("status").is(InvoiceStatus.PAID.toString());
         Criteria dateCriteria = Criteria.where("date").gte(LocalDateTime.now().minusMonths(monthsNumber));
         Criteria statusHistoryCriteria = Criteria.where("statusHistory").elemMatch(new Criteria().andOperator(statusCriteria, dateCriteria));
 
-        Criteria matchCriteria = new Criteria().andOperator(buyerCriteria, statusHistoryCriteria);
+        Criteria matchCriteria = new Criteria().andOperator(companiesCriteria, statusHistoryCriteria);
 
         aggregationOperations.add(Aggregation.match(matchCriteria));
         aggregationOperations.add(Aggregation.group("buyerId").sum("totalAmount").as("totalAmount"));

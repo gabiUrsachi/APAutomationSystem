@@ -17,7 +17,7 @@ public interface InvoiceCustomRepository {
 
     int updateByIdentifierAndVersion(UUID identifier, Integer version, Invoice invoice);
 
-    Float getPaidAmountForLastNMonths(UUID buyerId, int monthsNumber);
+    Float getPaidAmountForLastNMonths(UUID buyerId, UUID sellerId, int monthsNumber);
 
     List<Invoice> findByBuyerUUIDAndDate(UUID companyUUID, Date date, Date date1);
 

@@ -77,8 +77,8 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
      * @return the total paid amount
      */
     @Override
-    public Float getPaidAmountForLastNMonths(UUID buyerId, int monthsNumber) {
-        List<AggregationOperation> aggregationOperations = InvoiceHelper.createPaidAmountOverNMonthsAggregators(buyerId, monthsNumber);
+    public Float getPaidAmountForLastNMonths(UUID buyerId, UUID sellerId, int monthsNumber) {
+        List<AggregationOperation> aggregationOperations = InvoiceHelper.createPaidAmountOverNMonthsAggregators(buyerId, sellerId, monthsNumber);
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
         Invoice resultedInvoice = this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getUniqueMappedResult();
