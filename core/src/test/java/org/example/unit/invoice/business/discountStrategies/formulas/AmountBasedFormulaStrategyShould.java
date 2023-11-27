@@ -12,8 +12,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class AmountBasedFormulaStrategyShould {
     private DiscountFormulaStrategy discountFormulaStrategy;
 
-    private final Float LOW_BASE_VALUE = 10f;
-
     @Before
     public void initialize() {
         this.discountFormulaStrategy = new AmountBasedFormulaStrategy();
@@ -22,8 +20,13 @@ public class AmountBasedFormulaStrategyShould {
 
     @Test
     public void return0IfNoDiscountIsApplied() {
-        Float computedDiscountRate = this.discountFormulaStrategy.computeDiscountRate(LOW_BASE_VALUE);
+        // given
+        Float baseValue = 10f;
 
+        // when
+        Float computedDiscountRate = this.discountFormulaStrategy.computeDiscountRate(baseValue);
+
+        // then
         Assertions.assertEquals(0f, computedDiscountRate);
     }
 

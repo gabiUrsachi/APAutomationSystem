@@ -14,17 +14,17 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Random;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DiscountByAmountStrategyShould {
-
     @Mock
     InvoiceCustomRepository invoiceCustomRepository;
-
     @Mock
     DiscountFormulaStrategy discountFormulaStrategy;
-
     DiscountStrategy discountStrategy;
 
     @Before
@@ -34,32 +34,38 @@ public class DiscountByAmountStrategyShould {
 
     @Test
     public void returnNullIfThereIsNoPaidAmountForAGivenBuyer() {
+        // given
         UUID buyerUUID = generateUUID();
         UUID sellerUUID = generateUUID();
-        int monthsNumber = 3;
 
-        given(invoiceCustomRepository.getPaidAmountForLastNMonths(buyerUUID, sellerUUID, monthsNumber)).willReturn(null);
+        given(invoiceCustomRepository.getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt())).willReturn(null);
 
+        // when
         Float computedDiscount = this.discountStrategy.computeDiscount(buyerUUID, sellerUUID);
 
+        // then
+        verify(invoiceCustomRepository).getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt());
         Assertions.assertNull(computedDiscount);
     }
 
     @Test
     public void returnAValidValueIfPaidInvoicesExistForAGivenBuyer() {
+        // given
         UUID buyerUUID = generateUUID();
         UUID sellerUUID = generateUUID();
-        int monthsNumber = 3;
         Float baseDiscountValue = new Random().nextFloat() * 1000000;
 
-        given(invoiceCustomRepository.getPaidAmountForLastNMonths(buyerUUID, sellerUUID, monthsNumber)).willReturn(baseDiscountValue);
+        given(invoiceCustomRepository.getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt())).willReturn(baseDiscountValue);
 
+        // when
         Float computedDiscount = this.discountStrategy.computeDiscount(buyerUUID, sellerUUID);
 
+        // then
+        verify(invoiceCustomRepository).getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt());
         Assertions.assertNotNull(computedDiscount);
     }
 
-    private UUID generateUUID(){
+    private UUID generateUUID() {
         return UUID.randomUUID();
     }
 }
