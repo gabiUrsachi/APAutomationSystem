@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-0b890908fca8ef4f6"
+    Default: "vpc-05ff37f815d1eba72"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-0f77468975ddb1849,subnet-0797481fb2470f89d,subnet-08f36257daef3322c,subnet-077cb9d93db64e8c0,subnet-0c63f2e966ebac8bf,subnet-07873d83986af2ecc"
+    Default: "subnet-03d06de52d2967a6d,subnet-0a6b0dabf0fd69cf5,subnet-0ad38e057e141caca,subnet-0100b11119dc22812,subnet-02d697e9e405c0240,subnet-0a962f9950fbe8e02"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -247,7 +247,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::Listener'
     Properties:
       Certificates:
-        - CertificateArn: "arn:aws:acm:us-east-1:276959635024:certificate/8e853412-5764-4e7a-a634-beb5d482e706"
+        - CertificateArn: "arn:aws:acm:us-east-1:515986598384:certificate/f392901f-a4b2-41af-8dc9-8c3b18e62858"
       DefaultActions:
         - TargetGroupArn: !Ref EC2TargetGroup
           Type: 'forward'
@@ -574,6 +574,8 @@ Resources:
                 Action:
                   - 's3:putObject'
                 Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
+
+
 
   WebappApplication:
     Type: AWS::CodeDeploy::Application

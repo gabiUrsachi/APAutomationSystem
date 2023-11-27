@@ -18,14 +18,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@CompoundIndex(def = "{'sellerId': 1, 'statusHistory.status': 1}")
-@CompoundIndex(def = "{'buyerId': 1, 'statusHistory.status': 1}")
 public class Invoice {
     @Id
     private UUID identifier;
 
+    @Indexed
     private UUID buyerId;
 
+    @Indexed
     private UUID sellerId;
 
     private Set<Item> items;

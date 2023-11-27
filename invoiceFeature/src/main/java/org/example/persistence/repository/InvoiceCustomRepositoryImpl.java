@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +28,10 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
     @Override
     public List<Invoice> findByFilters(List<InvoiceFilter> filters) {
+        if(filters == null || filters.size() == 0){
+            return this.findAll();
+        }
+
         List<AggregationOperation> aggregationOperations = InvoiceHelper.createFiltersBasedAggregators(filters);
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
@@ -35,7 +40,12 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
     @Override
     public Page<Invoice> findByFiltersPageable(List<InvoiceFilter> filters, Pageable pageable) {
-        List<AggregationOperation> aggregationOperations = InvoiceHelper.createFiltersBasedAggregators(filters);
+        List<AggregationOperation> aggregationOperations = new ArrayList<>();
+
+        if(filters != null && filters.size() != 0){
+            aggregationOperations = InvoiceHelper.createFiltersBasedAggregators(filters);
+        }
+
         List<AggregationOperation> pagingAggregationOperations = InvoiceHelper.createPagingAggregators(pageable);
 
         aggregationOperations.addAll(pagingAggregationOperations);
@@ -77,8 +87,8 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
      * @return the total paid amount
      */
     @Override
-    public Float getPaidAmountForLastNMonths(UUID buyerId, int monthsNumber) {
-        List<AggregationOperation> aggregationOperations = InvoiceHelper.createPaidAmountOverNMonthsAggregators(buyerId, monthsNumber);
+    public Float getPaidAmountForLastNMonths(UUID buyerId, UUID sellerId, int monthsNumber) {
+        List<AggregationOperation> aggregationOperations = InvoiceHelper.createPaidAmountOverNMonthsAggregators(buyerId, sellerId, monthsNumber);
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
         Invoice resultedInvoice = this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getUniqueMappedResult();
@@ -90,6 +100,8 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         Aggregation aggregation = InvoiceHelper.createDateBasedAggregation(sellerId, lowerTimestamp, upperTimestamp);
         return this.findAllByAggregation(aggregation);
     }
+
+    private List<Invoice> findAll(){return this.mongoTemplate.findAll(Invoice.class);}
 
     private List<Invoice> findAllByQuery(Query query) {
         return mongoTemplate.find(query, Invoice.class);
