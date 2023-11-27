@@ -574,11 +574,7 @@ Resources:
                 Action:
                   - 's3:putObject'
                 Resource: !Sub arn:${AWS::Partition}:s3:::${WebappDeploymentBucket}/*
-              -
-                Effect: "Allow"
-                Action:
-                  - "cloudformation:DescribeStacks"
-                Resource: "*"
+
 
 
   WebappApplication:
