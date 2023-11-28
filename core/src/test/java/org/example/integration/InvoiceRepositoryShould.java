@@ -148,7 +148,7 @@ public class InvoiceRepositoryShould {
     }
 
     @Test
-    public void returnPagedInvoicesAccordingToTheGivenPAgingParams() {
+    public void returnPagedInvoicesAccordingToTheGivenPagingParams() {
         // given
         List<Invoice> paidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), null, null);
         List<Invoice> sentInvoices = generateInvoices(InvoiceStatus.SENT, randomValue(), null, null);

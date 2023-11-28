@@ -4,7 +4,7 @@ import org.example.business.discountStrategies.DiscountByAmountStrategy;
 import org.example.business.discountStrategies.DiscountStrategy;
 import org.example.business.discountStrategies.formulas.DiscountFormulaStrategy;
 import org.example.persistence.collections.Invoice;
-import org.example.persistence.repository.InvoiceCustomRepository;
+import org.example.persistence.repository.InvoiceRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DiscountByAmountStrategyShould {
     @Mock
-    InvoiceCustomRepository invoiceCustomRepository;
+    InvoiceRepository invoiceRepository;
     @Mock
     DiscountFormulaStrategy discountFormulaStrategy;
     @Mock
@@ -33,7 +33,7 @@ public class DiscountByAmountStrategyShould {
 
     @Before
     public void initialize() {
-        this.discountStrategy = new DiscountByAmountStrategy(invoiceCustomRepository, discountFormulaStrategy);
+        this.discountStrategy = new DiscountByAmountStrategy(invoiceRepository, discountFormulaStrategy);
     }
 
     @Test
@@ -45,13 +45,13 @@ public class DiscountByAmountStrategyShould {
         when(invoice.getBuyerId()).thenReturn(buyerUUID);
         when(invoice.getSellerId()).thenReturn(sellerUUID);
 
-        given(invoiceCustomRepository.getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt())).willReturn(null);
+        given(invoiceRepository.getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt())).willReturn(0f);
 
         // when
         Float computedDiscount = this.discountStrategy.computeDiscount(invoice);
 
         // then
-        verify(invoiceCustomRepository).getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt());
+        verify(invoiceRepository).getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt());
         Assertions.assertEquals(0f, computedDiscount);
     }
 
@@ -65,13 +65,13 @@ public class DiscountByAmountStrategyShould {
         when(invoice.getBuyerId()).thenReturn(buyerUUID);
         when(invoice.getSellerId()).thenReturn(sellerUUID);
 
-        given(invoiceCustomRepository.getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt())).willReturn(baseDiscountValue);
+        given(invoiceRepository.getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt())).willReturn(baseDiscountValue);
 
         // when
         Float computedDiscount = this.discountStrategy.computeDiscount(invoice);
 
         // then
-        verify(invoiceCustomRepository).getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt());
+        verify(invoiceRepository).getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt());
         Assertions.assertNotNull(computedDiscount);
     }
 
