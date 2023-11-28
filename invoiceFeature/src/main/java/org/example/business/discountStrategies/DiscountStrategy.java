@@ -2,7 +2,7 @@ package org.example.business.discountStrategies;
 
 import org.example.business.discountStrategies.formulas.DiscountFormulaStrategy;
 import org.example.persistence.collections.Invoice;
-import org.example.persistence.repository.InvoiceCustomRepository;
+import org.example.persistence.repository.InvoiceRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public abstract class DiscountStrategy {
-    protected InvoiceCustomRepository invoiceRepository;
+    protected InvoiceRepository invoiceRepository;
     protected DiscountFormulaStrategy discountFormulaStrategy;
 
-    public DiscountStrategy(InvoiceCustomRepository invoiceRepository, DiscountFormulaStrategy discountFormulaStrategy) {
+    public DiscountStrategy(InvoiceRepository invoiceRepository, DiscountFormulaStrategy discountFormulaStrategy) {
         this.invoiceRepository = invoiceRepository;
         this.discountFormulaStrategy = discountFormulaStrategy;
     }

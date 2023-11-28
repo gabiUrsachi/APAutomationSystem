@@ -1,9 +1,6 @@
 package org.example.business.services;
 
 import org.example.SQSOps;
-import org.example.business.discountStrategies.DiscountByAmountStrategy;
-import org.example.business.discountStrategies.DiscountStrategy;
-import org.example.business.discountStrategies.formulas.AmountBasedFormulaStrategy;
 import org.example.business.utils.InvoiceStatusPrecedence;
 import org.example.business.utils.InvoiceTaxationRate;
 import org.example.customexceptions.InvalidResourceUpdateException;
@@ -34,12 +31,11 @@ import java.util.stream.Collectors;
 public class InvoiceService {
 
     private InvoiceRepository invoiceRepository;
+    private InvoiceDiscountService invoiceDiscountService;
 
-    private DiscountStrategy discountStrategy;
-
-    public InvoiceService(InvoiceRepository invoiceRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceDiscountService invoiceDiscountService) {
         this.invoiceRepository = invoiceRepository;
-        this.discountStrategy = new DiscountByAmountStrategy(this.invoiceRepository, new AmountBasedFormulaStrategy());
+        this.invoiceDiscountService = invoiceDiscountService;
     }
 
 
@@ -111,7 +107,7 @@ public class InvoiceService {
         }
 
         if (updatedInvoiceStatus.equals(InvoiceStatus.SENT)) {
-            updatedInvoice = applyDiscount(updatedInvoice);
+            updatedInvoice = invoiceDiscountService.applyDiscount(updatedInvoice);
         }
 
         int updateCount = invoiceRepository.updateByIdentifierAndVersion(identifier, currentVersion, updatedInvoice);
@@ -136,31 +132,6 @@ public class InvoiceService {
             // sellerCompany/documentId/buyerCompany
             SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
         }
-
-        return updatedInvoice;
-    }
-
-    /**
-     * This method is responsible for updating an invoice by adding a new field
-     * related to the discount rate which should be applied to the total amount
-     *
-     * @param invoice document to be updated
-     * @return updated document
-     */
-    private Invoice applyDiscount(Invoice invoice) {
-        Invoice updatedInvoice = Invoice.builder()
-                .identifier(invoice.getIdentifier())
-                .buyerId(invoice.getBuyerId())
-                .sellerId(invoice.getSellerId())
-                .items(invoice.getItems())
-                .statusHistory(invoice.getStatusHistory())
-                .totalAmount(invoice.getTotalAmount())
-                .version(invoice.getVersion())
-                .uri(invoice.getUri())
-                .build();
-
-        Float discountRate = this.discountStrategy.computeDiscount(invoice);
-        updatedInvoice.setDiscountRate(discountRate);
 
         return updatedInvoice;
     }

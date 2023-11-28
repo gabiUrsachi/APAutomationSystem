@@ -3,6 +3,7 @@ package org.example.business.discountStrategies;
 import org.example.business.discountStrategies.formulas.DiscountFormulaStrategy;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceCustomRepository;
+import org.example.persistence.repository.InvoiceRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class DiscountByAmountStrategy extends DiscountStrategy {
     private final int MONTHS_NUMBER;
 
-    public DiscountByAmountStrategy(InvoiceCustomRepository invoiceRepository, DiscountFormulaStrategy discountFormulaStrategy) {
+    public DiscountByAmountStrategy(InvoiceRepository invoiceRepository, DiscountFormulaStrategy discountFormulaStrategy) {
         super(invoiceRepository, discountFormulaStrategy);
         MONTHS_NUMBER = 3;
     }
