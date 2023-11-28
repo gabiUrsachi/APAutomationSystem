@@ -37,7 +37,7 @@ public class DiscountByAmountStrategyShould {
     }
 
     @Test
-    public void returnNullIfThereIsNoPaidAmountForAGivenBuyer() {
+    public void return0IfThereIsNoPaidAmountForAGivenBuyer() {
         // given
         UUID buyerUUID = generateUUID();
         UUID sellerUUID = generateUUID();
@@ -52,7 +52,7 @@ public class DiscountByAmountStrategyShould {
 
         // then
         verify(invoiceCustomRepository).getPaidAmountForLastNMonths(eq(buyerUUID), eq(sellerUUID), anyInt());
-        Assertions.assertNull(computedDiscount);
+        Assertions.assertEquals(0f, computedDiscount);
     }
 
     @Test

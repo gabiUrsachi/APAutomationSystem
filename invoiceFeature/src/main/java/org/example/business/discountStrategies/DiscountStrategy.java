@@ -5,8 +5,6 @@ import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceCustomRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 /**
  * This class declares the behaviour which should be applied for different types of discount strategies
  */

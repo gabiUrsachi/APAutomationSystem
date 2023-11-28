@@ -27,10 +27,6 @@ public class DiscountByAmountStrategy extends DiscountStrategy {
 
         Float paidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(buyerUUID, sellerUUID, MONTHS_NUMBER);
 
-        if(paidAmountForLast3Months == null){
-            return null;
-        }
-
         return this.discountFormulaStrategy.computeDiscountRate(paidAmountForLast3Months);
     }
 }

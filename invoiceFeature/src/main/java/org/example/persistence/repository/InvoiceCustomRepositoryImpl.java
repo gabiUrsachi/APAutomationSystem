@@ -92,7 +92,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
         Invoice resultedInvoice = this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getUniqueMappedResult();
-        return resultedInvoice != null ? resultedInvoice.getTotalAmount() : null;
+        return resultedInvoice != null ? resultedInvoice.getTotalAmount() : 0f;
     }
 
     @Override

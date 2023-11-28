@@ -45,7 +45,7 @@ public class InvoiceRepositoryShould {
     }
 
     @Test
-    public void returnNullPaidAmountOverSomeMonthsIfNoPaidInvoicesExists() {
+    public void return0PaidAmountOverSomeMonthsIfNoPaidInvoicesExists() {
         // given
         List<Invoice> unpaidInvoices = generateInvoices(InvoiceStatus.SENT, randomValue(), null, null);
 
@@ -56,7 +56,7 @@ public class InvoiceRepositoryShould {
         Float computedPaidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(BUYER_ID, SELLER_ID, 3);
 
         // then
-        Assertions.assertNull(computedPaidAmountForLast3Months);
+        Assertions.assertEquals(0f, computedPaidAmountForLast3Months);
     }
 
     @Test
