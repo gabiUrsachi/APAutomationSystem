@@ -1,6 +1,7 @@
 package org.example.business.discountStrategies;
 
 import org.example.business.discountStrategies.formulas.DiscountFormulaStrategy;
+import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceCustomRepository;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +23,9 @@ public abstract class DiscountStrategy {
     /**
      * It computes a discount for a specific customer/buyer
      *
-     * @param buyerUUID The buyer company which will receive the discount
-     * @param sellerUUID The seller company which will applies the discount
+     * @param invoice The document on which the discount will be applied
      * @return The discount rate to be applied
      */
-    public abstract Float computeDiscount(UUID buyerUUID, UUID sellerUUID);
+    public abstract Float computeDiscount(Invoice invoice);
 }
 

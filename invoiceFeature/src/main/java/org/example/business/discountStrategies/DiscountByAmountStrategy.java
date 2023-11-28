@@ -1,6 +1,7 @@
 package org.example.business.discountStrategies;
 
 import org.example.business.discountStrategies.formulas.DiscountFormulaStrategy;
+import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceCustomRepository;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,10 @@ public class DiscountByAmountStrategy extends DiscountStrategy {
     }
 
     @Override
-    public Float computeDiscount(UUID buyerUUID, UUID sellerUUID) {
+    public Float computeDiscount(Invoice invoice) {
+        UUID buyerUUID = invoice.getBuyerId();
+        UUID sellerUUID = invoice.getSellerId();
+
         Float paidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(buyerUUID, sellerUUID, MONTHS_NUMBER);
 
         if(paidAmountForLast3Months == null){

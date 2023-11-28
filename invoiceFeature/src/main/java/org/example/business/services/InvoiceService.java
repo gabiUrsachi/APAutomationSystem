@@ -159,7 +159,7 @@ public class InvoiceService {
                 .uri(invoice.getUri())
                 .build();
 
-        Float discountRate = this.discountStrategy.computeDiscount(invoice.getBuyerId(), invoice.getSellerId());
+        Float discountRate = this.discountStrategy.computeDiscount(invoice);
         updatedInvoice.setDiscountRate(discountRate);
 
         return updatedInvoice;
