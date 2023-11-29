@@ -3,7 +3,7 @@ package org.example.presentation.utils;
 import org.example.business.services.CompanyService;
 import org.example.persistence.collections.Company;
 import org.example.persistence.collections.Invoice;
-import org.example.persistence.utils.InvoiceStatusHistoryHelper;
+import org.example.persistence.utils.InvoiceHelper;
 import org.example.presentation.view.InvoiceDDO;
 import org.example.presentation.view.InvoiceDPO;
 import org.example.presentation.view.InvoiceDTO;
@@ -43,9 +43,10 @@ public class InvoiceMapperService {
                 .buyerId(invoiceDTO.getBuyer().getCompanyIdentifier())
                 .sellerId(invoiceDTO.getSeller().getCompanyIdentifier())
                 .items(invoiceDTO.getItems())
-                .statusHistory(InvoiceStatusHistoryHelper.initStatusHistory(invoiceDTO.getInvoiceStatus()))
+                .statusHistory(InvoiceHelper.initStatusHistory(invoiceDTO.getInvoiceStatus()))
                 .version(invoiceDTO.getVersion())
                 .totalAmount(invoiceDTO.getTotalAmount())
+                .discountRate(invoiceDTO.getDiscountRate())
                 .uri(invoiceDTO.getUri())
                 .build();
 
@@ -62,7 +63,7 @@ public class InvoiceMapperService {
                 .buyer(companyMapperService.mapToDTO(buyer))
                 .seller(companyMapperService.mapToDTO(seller))
                 .items(invoice.getItems())
-                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus()) //get the most recent status
+                .invoiceStatus(InvoiceHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus()) //get the most recent status
                 .version(invoice.getVersion())
                 .totalAmount(invoice.getTotalAmount())
                 .discountRate(invoice.getDiscountRate())
@@ -79,7 +80,7 @@ public class InvoiceMapperService {
                 .identifier(invoice.getIdentifier())
                 .buyerName(buyer.getName())
                 .sellerName(seller.getName())
-                .invoiceStatus(InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus()) //get the most recent status
+                .invoiceStatus(InvoiceHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus()) //get the most recent status
                 .build();
     }
 

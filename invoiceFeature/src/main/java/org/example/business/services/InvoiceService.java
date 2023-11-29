@@ -1,6 +1,5 @@
 package org.example.business.services;
 
-import org.example.SQSOps;
 import org.example.business.utils.InvoiceStatusPrecedence;
 import org.example.business.utils.InvoiceTaxationRate;
 import org.example.customexceptions.InvalidResourceUpdateException;
@@ -8,7 +7,7 @@ import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
 import org.example.persistence.utils.InvoiceStatus;
-import org.example.persistence.utils.InvoiceStatusHistoryHelper;
+import org.example.persistence.utils.InvoiceHelper;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.example.utils.ErrorMessages;
@@ -47,7 +46,7 @@ public class InvoiceService {
                 .sellerId(invoiceEntity.getSellerId())
                 .items(invoiceEntity.getItems())
                 .version(0)
-                .statusHistory(InvoiceStatusHistoryHelper.initStatusHistory(InvoiceStatus.CREATED))
+                .statusHistory(InvoiceHelper.initStatusHistory(InvoiceStatus.CREATED))
                 .totalAmount(invoiceEntity.getTotalAmount())
                 .build();
         initializedInvoice.setUri(initializedInvoice.getIdentifier() + "." + invoiceEntity.getUri());
@@ -80,7 +79,7 @@ public class InvoiceService {
     public Invoice updateInvoice(UUID identifier, Invoice invoice) {
 
         int currentVersion = invoice.getVersion();
-        InvoiceStatus updatedInvoiceStatus = InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus();
+        InvoiceStatus updatedInvoiceStatus = InvoiceHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus();
         InvoiceStatus requiredInvoiceStatus = InvoiceStatusPrecedence.PREDECESSORS.get(updatedInvoiceStatus);
 
         Invoice updatedInvoice = Invoice.builder()
@@ -90,6 +89,7 @@ public class InvoiceService {
                 .items(invoice.getItems())
                 .statusHistory(invoice.getStatusHistory())
                 .totalAmount(invoice.getTotalAmount())
+                .discountRate(invoice.getDiscountRate())
                 .version(currentVersion + 1)
                 .uri(invoice.getUri())
                 .build();
@@ -97,7 +97,7 @@ public class InvoiceService {
         Optional<Invoice> oldInvoice = invoiceRepository.findByIdentifier(identifier);
 
         if (oldInvoice.isPresent()) {
-            if (InvoiceStatusHistoryHelper.getMostRecentHistoryObject(oldInvoice.get().getStatusHistory()).getStatus() != requiredInvoiceStatus) {
+            if (InvoiceHelper.getMostRecentHistoryObject(oldInvoice.get().getStatusHistory()).getStatus() != requiredInvoiceStatus) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, oldInvoice.get().getIdentifier());
             }
         }
@@ -123,14 +123,14 @@ public class InvoiceService {
                 throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
             }
 
-            if (!InvoiceStatusHistoryHelper.getMostRecentHistoryObject(existingInvoice.get().getStatusHistory()).getStatus().equals(requiredInvoiceStatus)) {
+            if (!InvoiceHelper.getMostRecentHistoryObject(existingInvoice.get().getStatusHistory()).getStatus().equals(requiredInvoiceStatus)) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingInvoice.get().getIdentifier());
             }
         }
 
         if (updatedInvoiceStatus.equals(InvoiceStatus.SENT)) {
             // sellerCompany/documentId/buyerCompany
-            SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
+            //SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
         }
 
         return updatedInvoice;
