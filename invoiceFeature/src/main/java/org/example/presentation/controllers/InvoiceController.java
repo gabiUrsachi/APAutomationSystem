@@ -166,7 +166,7 @@ public class InvoiceController {
 
     }
 
-    @GetMapping("/tax")
+    @GetMapping("/companyTax")
     public Float computeInvoiceTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
@@ -174,5 +174,14 @@ public class InvoiceController {
 
         InvoiceFilter queryFilter = invoiceFilteringService.createCompanyBasedFilter(jwtClaims.getCompanyUUID());
         return invoiceService.computeInvoiceTax(month, year, queryFilter);
+    }
+
+    @GetMapping("/totalTax")
+    public Float totalTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
+
+        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
+        logger.info("[GET request] -> Compute Total Invoice tax for all companies ", jwtClaims.getCompanyUUID());
+
+        return invoiceService.computeInvoiceTotalTax(month, year);
     }
 }

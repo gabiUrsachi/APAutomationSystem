@@ -3,6 +3,7 @@ package org.example.persistence.repository;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.PurchaseOrderHelper;
 import org.example.persistence.utils.data.OrderStatus;
+import org.example.persistence.utils.data.CompanyStatusChangeMap;
 import org.example.persistence.utils.data.PagedPurchaseOrders;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +11,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.example.business.utils.PurchaseOrderHistoryHelper.getLatestOrderHistoryObject;
 
@@ -98,6 +95,15 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
         }
 
         return null;
+    }
+
+    public List<CompanyStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp) {
+
+        List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createStatusCountsDateBasedAggregation(lowerTimestamp, upperTimestamp);
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
+
+        return this.mongoTemplate.aggregate(aggregation, "purchaseOrder", CompanyStatusChangeMap.class).getMappedResults();
+
     }
 
 }

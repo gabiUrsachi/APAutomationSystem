@@ -212,4 +212,8 @@ public class InvoiceService {
         return new Date[]{lowerTimestamp, upperTimestamp};
 
     }
+
+    public Float computeInvoiceTotalTax(Integer month, Integer year) {
+        return 0.0f;
+    }
 }
