@@ -8,6 +8,10 @@ import org.example.persistence.utils.InvoiceHelper;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This class handles the situation when discount is computed based on the
+ * already applied discount for the last month
+ */
 public class DiscountByExistingDiscountStrategy extends DiscountStrategy{
     private final Float MAX_LIMIT_OF_EXISTING_DISCOUNT = 10f;
 
@@ -15,7 +19,6 @@ public class DiscountByExistingDiscountStrategy extends DiscountStrategy{
         super(invoiceRepository, discountFormulaStrategy);
     }
 
-    //TODO add comments to all new methods
     @Override
     public Float computeDiscount(Invoice invoice) {
         UUID buyerUUID = invoice.getBuyerId();

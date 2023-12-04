@@ -19,7 +19,7 @@ public abstract class DiscountStrategy {
     }
 
     /**
-     * It computes a discount for a specific customer/buyer
+     * It computes a discount for a specific invoice
      *
      * @param invoice The document on which the discount will be applied
      * @return The discount rate to be applied

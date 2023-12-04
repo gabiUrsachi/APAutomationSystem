@@ -1,5 +1,6 @@
 package org.example.business.services;
 
+import org.example.SQSOps;
 import org.example.business.utils.InvoiceStatusPrecedence;
 import org.example.business.utils.InvoiceTaxationRate;
 import org.example.customexceptions.InvalidResourceUpdateException;
@@ -130,7 +131,7 @@ public class InvoiceService {
 
         if (updatedInvoiceStatus.equals(InvoiceStatus.SENT)) {
             // sellerCompany/documentId/buyerCompany
-            //SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
+            SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
         }
 
         return updatedInvoice;

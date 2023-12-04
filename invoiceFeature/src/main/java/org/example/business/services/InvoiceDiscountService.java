@@ -21,7 +21,9 @@ public class InvoiceDiscountService {
 
     /**
      * This method is responsible for updating an invoice by adding a new field
-     * related to the discount rate which should be applied to the total amount
+     * related to the discount rate which should be applied to the total amount.
+     * Discount rate is set only if there is an existing discount strategy that
+     * can be applied for the given invoice.
      *
      * @param invoice document to be updated
      * @return updated document
