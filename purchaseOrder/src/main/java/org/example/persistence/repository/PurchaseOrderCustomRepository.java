@@ -1,7 +1,7 @@
 package org.example.persistence.repository;
 
 import org.example.persistence.collections.PurchaseOrder;
-import org.example.persistence.utils.data.CompanyStatusChangeMap;
+import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.springframework.data.domain.Page;
@@ -22,6 +22,6 @@ public interface PurchaseOrderCustomRepository{
     Page<PurchaseOrder> findByFiltersPageable(List<PurchaseOrderFilter> filters, Pageable pageable);
 
 //    Map<OrderStatus,Long>
-    List<CompanyStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp);
+    List<CompanyOrderStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp);
 }
 

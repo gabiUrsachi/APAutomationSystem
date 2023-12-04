@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyStatusTaxMap {
+public class CompanyOrderStatusTaxMap {
     private UUID companyUUID;
     private List<OrderStatusTaxPair> orderStatusTaxPairs;
 }

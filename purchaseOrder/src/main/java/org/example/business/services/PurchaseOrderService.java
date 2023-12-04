@@ -1,9 +1,9 @@
 package org.example.business.services;
 
 import org.example.SQSOps;
-import org.example.business.utils.CompanyStatusTaxMap;
+import org.example.business.utils.CompanyOrderStatusTaxMap;
 import org.example.persistence.utils.PurchaseOrderHelper;
-import org.example.persistence.utils.data.CompanyStatusChangeMap;
+import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.business.utils.PurchaseOrderStatusPrecedence;
 import org.example.business.utils.PurchaseOrderTaxationRate;
 import org.example.customexceptions.InvalidResourceUpdateException;
@@ -216,7 +216,7 @@ public class PurchaseOrderService {
 
     }
 
-    public List<CompanyStatusTaxMap> computePurchaseOrderTotalTax(Integer month, Integer year) {
+    public List<CompanyOrderStatusTaxMap> computePurchaseOrderTotalTax(Integer month, Integer year) {
         Date[] timestampsArray;
         try {
            timestampsArray = generateMonthInterval(month, year);
@@ -224,7 +224,7 @@ public class PurchaseOrderService {
             throw new DateTimeException("Invalid date format");
         }
 
-        List<CompanyStatusChangeMap> purchaseOrderCountMapList = purchaseOrderRepository.findStatusCountMapByDate(timestampsArray[0], timestampsArray[1]);
+        List<CompanyOrderStatusChangeMap> purchaseOrderCountMapList = purchaseOrderRepository.findStatusCountMapByDate(timestampsArray[0], timestampsArray[1]);
         return PurchaseOrderHelper.createCompanyStatusTaxByCounts(purchaseOrderCountMapList);
     }
     public Date[] generateMonthInterval(Integer month, Integer year) {

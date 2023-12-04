@@ -3,6 +3,8 @@ package org.example.persistence.repository;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.InvoiceHelper;
 import org.example.persistence.utils.InvoiceStatusHistoryHelper;
+import org.example.persistence.utils.data.CompanyInvoiceStatusChangeMap;
+import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.persistence.utils.data.PagedInvoices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
     @Override
     public List<Invoice> findByFilters(List<InvoiceFilter> filters) {
-        if(filters == null || filters.size() == 0){
+        if (filters == null || filters.size() == 0) {
             return this.findAll();
         }
 
@@ -42,7 +44,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
     public Page<Invoice> findByFiltersPageable(List<InvoiceFilter> filters, Pageable pageable) {
         List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
-        if(filters != null && filters.size() != 0){
+        if (filters != null && filters.size() != 0) {
             aggregationOperations = InvoiceHelper.createFiltersBasedAggregators(filters);
         }
 
@@ -101,7 +103,9 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         return this.findAllByAggregation(aggregation);
     }
 
-    private List<Invoice> findAll(){return this.mongoTemplate.findAll(Invoice.class);}
+    private List<Invoice> findAll() {
+        return this.mongoTemplate.findAll(Invoice.class);
+    }
 
     private List<Invoice> findAllByQuery(Query query) {
         return mongoTemplate.find(query, Invoice.class);
@@ -131,4 +135,12 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         return null;
     }
 
+    public List<CompanyInvoiceStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp) {
+
+        List<AggregationOperation> aggregationOperations = InvoiceHelper.createStatusCountsDateBasedAggregation(lowerTimestamp, upperTimestamp);
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
+
+        return this.mongoTemplate.aggregate(aggregation, "invoice", CompanyInvoiceStatusChangeMap.class).getMappedResults();
+
+    }
 }

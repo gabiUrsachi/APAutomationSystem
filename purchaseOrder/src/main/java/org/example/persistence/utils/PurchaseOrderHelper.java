@@ -2,11 +2,10 @@ package org.example.persistence.utils;
 
 import com.mongodb.BasicDBObject;
 import org.bson.Document;
-import org.example.business.utils.CompanyStatusTaxMap;
+import org.example.business.utils.CompanyOrderStatusTaxMap;
 import org.example.business.utils.OrderStatusTaxPair;
-import org.example.persistence.utils.data.CompanyStatusChangeMap;
+import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.business.utils.PurchaseOrderTaxationRate;
-import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.OrderStatusOccurrencePair;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +17,6 @@ import java.util.*;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.aggregation.ArrayOperators.Filter.filter;
 import static org.springframework.data.mongodb.core.aggregation.BooleanOperators.And.and;
-import static org.springframework.data.mongodb.core.aggregation.ComparisonOperators.Gte.valueOf;
 
 
 public class PurchaseOrderHelper {
@@ -153,15 +151,15 @@ public class PurchaseOrderHelper {
 
     }
 
-    public static List<CompanyStatusTaxMap> createCompanyStatusTaxByCounts(List<CompanyStatusChangeMap> companyStatusChangeMaps) {
+    public static List<CompanyOrderStatusTaxMap> createCompanyStatusTaxByCounts(List<CompanyOrderStatusChangeMap> companyOrderStatusChangeMaps) {
 
-        List<CompanyStatusTaxMap> purchaseOrderCompanyTax = new ArrayList<>();
-        for (CompanyStatusChangeMap companyStatusMap : companyStatusChangeMaps) {
+        List<CompanyOrderStatusTaxMap> purchaseOrderCompanyTax = new ArrayList<>();
+        for (CompanyOrderStatusChangeMap companyStatusMap : companyOrderStatusChangeMaps) {
             List<OrderStatusTaxPair> orderStatusTaxPairs = new ArrayList<>();
             for (OrderStatusOccurrencePair orderStatusOccurrencePair : companyStatusMap.getStatusCounts()) {
                 orderStatusTaxPairs.add(new OrderStatusTaxPair(orderStatusOccurrencePair.getStatus(), orderStatusOccurrencePair.getCount() * PurchaseOrderTaxationRate.purchaseOrderTaxRate.get(orderStatusOccurrencePair.getStatus())));
             }
-            CompanyStatusTaxMap companyTaxMap = CompanyStatusTaxMap.builder()
+            CompanyOrderStatusTaxMap companyTaxMap = CompanyOrderStatusTaxMap.builder()
                     .companyUUID(companyStatusMap.get_id())
                     .orderStatusTaxPairs(orderStatusTaxPairs)
                     .build();

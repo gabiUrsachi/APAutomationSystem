@@ -3,7 +3,7 @@ package org.example.persistence.repository;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.PurchaseOrderHelper;
 import org.example.persistence.utils.data.OrderStatus;
-import org.example.persistence.utils.data.CompanyStatusChangeMap;
+import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.persistence.utils.data.PagedPurchaseOrders;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,12 +97,12 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
         return null;
     }
 
-    public List<CompanyStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp) {
+    public List<CompanyOrderStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp) {
 
         List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createStatusCountsDateBasedAggregation(lowerTimestamp, upperTimestamp);
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
-        return this.mongoTemplate.aggregate(aggregation, "purchaseOrder", CompanyStatusChangeMap.class).getMappedResults();
+        return this.mongoTemplate.aggregate(aggregation, "purchaseOrder", CompanyOrderStatusChangeMap.class).getMappedResults();
 
     }
 

@@ -4,6 +4,8 @@ import org.example.S3BucketOps;
 import org.example.business.services.InvoiceFilteringService;
 import org.example.business.services.InvoiceService;
 import org.example.business.services.InvoiceValidationService;
+import org.example.business.utils.CompanyInvoiceStatusTaxMap;
+import org.example.business.utils.CompanyOrderStatusTaxMap;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.presentation.utils.InvoiceActionsPermissions;
@@ -177,10 +179,9 @@ public class InvoiceController {
     }
 
     @GetMapping("/totalTax")
-    public Float totalTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
+    public List<CompanyInvoiceStatusTaxMap> computeTotalTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
 
-        JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
-        logger.info("[GET request] -> Compute Total Invoice tax for all companies ", jwtClaims.getCompanyUUID());
+        logger.info("[GET request] -> Compute Total Invoice tax for all companies ");
 
         return invoiceService.computeInvoiceTotalTax(month, year);
     }

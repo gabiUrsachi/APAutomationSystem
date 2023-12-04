@@ -7,8 +7,7 @@ import org.example.S3BucketOps;
 import org.example.business.services.PurchaseOrderFilteringService;
 import org.example.business.services.PurchaseOrderService;
 import org.example.business.services.PurchaseOrderValidatorService;
-import org.example.business.utils.CompanyStatusTaxMap;
-import org.example.persistence.utils.data.CompanyStatusChangeMap;
+import org.example.business.utils.CompanyOrderStatusTaxMap;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.presentation.utils.ActionsPermissions;
@@ -140,7 +139,7 @@ public class PurchaseOrderController {
     }
 
     @GetMapping("/totalTax")
-    public List<CompanyStatusTaxMap> computePurchaseOrderTotalTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
+    public List<CompanyOrderStatusTaxMap> computePurchaseOrderTotalTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
 
         logger.info("[GET request] -> Compute Total Purchase Order tax for all companies.");
 

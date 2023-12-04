@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyStatusChangeMap {
+public class CompanyOrderStatusChangeMap {
 
     private UUID _id; //companyUUID
     private List<OrderStatusOccurrencePair> statusCounts;
