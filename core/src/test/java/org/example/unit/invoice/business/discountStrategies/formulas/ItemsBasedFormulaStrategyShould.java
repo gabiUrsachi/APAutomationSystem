@@ -37,7 +37,7 @@ public class ItemsBasedFormulaStrategyShould {
     }
 
     @Test
-    public void returnZeroIfNoBaseValuesIsGiven() {
+    public void returnZeroIfNoBaseValuesAreGiven() {
         float computedDiscountRate = this.discountFormulaStrategy.computeDiscountRate();
 
         Assertions.assertEquals(0f, computedDiscountRate);
