@@ -1,6 +1,7 @@
 #!/bin/bash
 set -xe
 
+
 # Copy file from S3 bucket to EC2 instance
 
 aws s3 cp s3://backendstack-webappdeploymentbucket-a82jtra36fag/core-0.0.1-SNAPSHOT.jar	 /home/ec2-user/app/core-0.0.1-SNAPSHOT.jar
