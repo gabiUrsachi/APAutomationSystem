@@ -6,7 +6,7 @@ on: [push, pull_request]
 
 env:
   AWS_REGION: us-east-1
-  S3BUCKET: backendstack-webappdeploymentbucket-o6re2khd24na
+  S3BUCKET: backendstack-webappdeploymentbucket-14w2f4c67mr35
 
 
 jobs:
