@@ -1,13 +1,22 @@
 package org.example.persistence.utils;
 
+import com.mongodb.BasicDBObject;
 import org.bson.Document;
+import org.example.business.utils.CompanyOrderStatusTaxMap;
+import org.example.business.utils.OrderStatusTaxPair;
+import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
+import org.example.business.utils.PurchaseOrderTaxationRate;
+import org.example.persistence.utils.data.OrderStatusOccurrencePair;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.*;
-import static org.springframework.data.mongodb.core.aggregation.ArrayOperators.*;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
+import static org.springframework.data.mongodb.core.aggregation.ArrayOperators.Filter.filter;
+import static org.springframework.data.mongodb.core.aggregation.BooleanOperators.And.and;
 
 
 public class PurchaseOrderHelper {
@@ -53,10 +62,10 @@ public class PurchaseOrderHelper {
         AggregationExpression dateLt = ComparisonOperators.Lt.valueOf("status.date")
                 .lessThanValue(upperTimestamp);
 
-        AggregationExpression dateFilterExpression = BooleanOperators.And.and(dateGt,dateLt);
+        AggregationExpression dateFilterExpression = and(dateGt, dateLt);
 
         AddFieldsOperation addFieldsStage = Aggregation.addFields().addFieldWithValue("statusHistory",
-                Filter.filter("statusHistory")
+                filter("statusHistory")
                         .as("status")
                         .by(dateFilterExpression)).build();
 
@@ -82,10 +91,9 @@ public class PurchaseOrderHelper {
 
         facetOperation = facetOperation.and(
                 Aggregation.group().count().as("total"),
-                Aggregation.project("total").andExclude("_id")).as("total");
+                project("total").andExclude("_id")).as("total");
 
-        ProjectionOperation projectionOperation = Aggregation
-                .project("total")
+        ProjectionOperation projectionOperation = project("total")
                 .and("total.total")
                 .arrayElementAt(0)
                 .as("total")
@@ -120,4 +128,46 @@ public class PurchaseOrderHelper {
 
         return Criteria.where(checkedFieldName).is(checkedFieldValue);
     }
+
+    public static List<AggregationOperation> createStatusCountsDateBasedAggregation(Date lowerTimestamp, Date upperTimestamp) {
+
+        List<AggregationOperation> aggregationOperationList = new ArrayList<>();
+        MatchOperation matchOperation = Aggregation.match(Criteria.where("statusHistory.date").gte(lowerTimestamp).lte(upperTimestamp));
+        UnwindOperation unwindOperation = Aggregation.unwind("statusHistory");
+        MatchOperation dateCriteria = Aggregation.match(Criteria.where("statusHistory.date").gte(lowerTimestamp).lte(upperTimestamp));
+        GroupOperation groupOperation = Aggregation.group(Fields.fields().and("buyer").and("statusHistory.status")).count().as("count");
+        GroupOperation groupByStatusCountsOperation = Aggregation.group("_id.buyer").push(
+                new BasicDBObject("status", "$_id.status").append("count", "$count")
+        ).as("statusCounts");
+
+        aggregationOperationList.add(matchOperation);
+        aggregationOperationList.add(unwindOperation);
+        aggregationOperationList.add(dateCriteria);
+        aggregationOperationList.add(groupOperation);
+        aggregationOperationList.add(groupByStatusCountsOperation);
+
+        return aggregationOperationList;
+
+
+    }
+
+    public static List<CompanyOrderStatusTaxMap> createCompanyStatusTaxByCounts(List<CompanyOrderStatusChangeMap> companyOrderStatusChangeMaps) {
+
+        List<CompanyOrderStatusTaxMap> purchaseOrderCompanyTax = new ArrayList<>();
+        for (CompanyOrderStatusChangeMap companyStatusMap : companyOrderStatusChangeMaps) {
+            List<OrderStatusTaxPair> orderStatusTaxPairs = new ArrayList<>();
+            for (OrderStatusOccurrencePair orderStatusOccurrencePair : companyStatusMap.getStatusCounts()) {
+                orderStatusTaxPairs.add(new OrderStatusTaxPair(orderStatusOccurrencePair.getStatus(), orderStatusOccurrencePair.getCount() * PurchaseOrderTaxationRate.purchaseOrderTaxRate.get(orderStatusOccurrencePair.getStatus())));
+            }
+            CompanyOrderStatusTaxMap companyTaxMap = CompanyOrderStatusTaxMap.builder()
+                    .companyUUID(companyStatusMap.get_id())
+                    .orderStatusTaxPairs(orderStatusTaxPairs)
+                    .build();
+            purchaseOrderCompanyTax.add(companyTaxMap);
+        }
+
+        return purchaseOrderCompanyTax;
+    }
+
 }
+

@@ -7,6 +7,7 @@ import org.example.S3BucketOps;
 import org.example.business.services.PurchaseOrderFilteringService;
 import org.example.business.services.PurchaseOrderService;
 import org.example.business.services.PurchaseOrderValidatorService;
+import org.example.business.utils.CompanyOrderStatusTaxMap;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.example.presentation.utils.ActionsPermissions;
@@ -127,14 +128,22 @@ public class PurchaseOrderController {
         return simpleOrderResponseDTOS;
     }
 
-    @GetMapping("/tax")
-    public Float computePurchaseOrderTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
+    @GetMapping("/companyTax")
+    public Float computePurchaseOrderCompanyTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
 
         JwtClaims jwtClaims = AuthorizationMapper.servletRequestToJWTClaims(request);
         logger.info("[GET request] -> Compute Total Purchase Order tax for company with UUID: {}", jwtClaims.getCompanyUUID());
 
         PurchaseOrderFilter queryFilter = purchaseOrderFilteringService.createCompanyBasedFilter(jwtClaims.getCompanyUUID());
-        return purchaseOrderService.computePurchaseOrderTax(month, year, queryFilter);
+        return purchaseOrderService.computePurchaseOrderCompanyTax(month, year, queryFilter);
+    }
+
+    @GetMapping("/totalTax")
+    public List<CompanyOrderStatusTaxMap> computePurchaseOrderTotalTax(@RequestParam Integer month, @RequestParam Integer year, HttpServletRequest request) {
+
+        logger.info("[GET request] -> Compute Total Purchase Order tax for all companies.");
+
+        return purchaseOrderService.computePurchaseOrderTotalTax(month, year);
     }
 
     @Operation(summary = "updates an existing purchase order")

@@ -22,10 +22,10 @@ public class Invoice {
     @Id
     private UUID identifier;
 
-    @Indexed
+//    @Indexed
     private UUID buyerId;
 
-    @Indexed
+//    @Indexed
     private UUID sellerId;
 
     private Set<Item> items;
