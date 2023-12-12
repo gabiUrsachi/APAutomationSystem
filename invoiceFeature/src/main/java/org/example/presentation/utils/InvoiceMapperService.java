@@ -46,6 +46,7 @@ public class InvoiceMapperService {
                 .statusHistory(InvoiceHelper.initStatusHistory(invoiceDTO.getInvoiceStatus()))
                 .version(invoiceDTO.getVersion())
                 .totalAmount(invoiceDTO.getTotalAmount())
+                .discountRate(invoiceDTO.getDiscountRate())
                 .uri(invoiceDTO.getUri())
                 .build();
 

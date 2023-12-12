@@ -1,7 +1,7 @@
 package org.example.persistence.repository;
 
 import org.example.persistence.collections.PurchaseOrder;
-import org.example.persistence.utils.PurchaseOrderHelper;
+import org.example.persistence.utils.PurchaseOrderRepositoryHelper;
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.persistence.utils.data.PagedPurchaseOrders;
@@ -28,7 +28,7 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
 
     @Override
     public List<PurchaseOrder> findByFilters(List<PurchaseOrderFilter> filters) {
-        List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createHistoryBasedAggregators(filters);
+        List<AggregationOperation> aggregationOperations = PurchaseOrderRepositoryHelper.createHistoryBasedAggregators(filters);
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
         return this.findAllByAggregation(aggregation);
@@ -37,8 +37,8 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
 
     @Override
     public Page<PurchaseOrder> findByFiltersPageable(List<PurchaseOrderFilter> filters, Pageable pageable) {
-        List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createHistoryBasedAggregators(filters);
-        List<AggregationOperation> pagingAggregationOperations = PurchaseOrderHelper.createPagingAggregators(pageable);
+        List<AggregationOperation> aggregationOperations = PurchaseOrderRepositoryHelper.createHistoryBasedAggregators(filters);
+        List<AggregationOperation> pagingAggregationOperations = PurchaseOrderRepositoryHelper.createPagingAggregators(pageable);
 
         aggregationOperations.addAll(pagingAggregationOperations);
 
@@ -48,7 +48,7 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
 
     @Override
     public PurchaseOrder findByUUIDAndFilters(UUID identifier, List<PurchaseOrderFilter> filters) {
-        List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createHistoryBasedAggregators(filters);
+        List<AggregationOperation> aggregationOperations = PurchaseOrderRepositoryHelper.createHistoryBasedAggregators(filters);
         aggregationOperations.add(0, Aggregation.match(new Criteria().and("_id").is(identifier)));
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
@@ -57,7 +57,7 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
 
     @Override
     public List<PurchaseOrder> findByBuyerUUIDAndDate(UUID buyerId, Date lowerTimestamp, Date upperTimestamp) {
-        Aggregation aggregation = PurchaseOrderHelper.createDateBasedAggregation(buyerId, lowerTimestamp, upperTimestamp);
+        Aggregation aggregation = PurchaseOrderRepositoryHelper.createDateBasedAggregation(buyerId, lowerTimestamp, upperTimestamp);
         return this.findAllByAggregation(aggregation);
     }
 
@@ -99,7 +99,7 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
 
     public List<CompanyOrderStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp) {
 
-        List<AggregationOperation> aggregationOperations = PurchaseOrderHelper.createStatusCountsDateBasedAggregation(lowerTimestamp, upperTimestamp);
+        List<AggregationOperation> aggregationOperations = PurchaseOrderRepositoryHelper.createStatusCountsDateBasedAggregation(lowerTimestamp, upperTimestamp);
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
         return this.mongoTemplate.aggregate(aggregation, "purchaseOrder", CompanyOrderStatusChangeMap.class).getMappedResults();

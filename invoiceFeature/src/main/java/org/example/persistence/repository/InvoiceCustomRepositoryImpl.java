@@ -1,8 +1,9 @@
 package org.example.persistence.repository;
 
 import org.example.persistence.collections.Invoice;
-import org.example.persistence.utils.InvoiceRepositoryHelper;
 import org.example.persistence.utils.InvoiceHelper;
+import org.example.persistence.utils.InvoiceRepositoryHelper;
+import org.example.persistence.utils.InvoiceStatus;
 import org.example.persistence.utils.data.CompanyInvoiceStatusChangeMap;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.persistence.utils.data.PagedInvoices;
@@ -11,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.*;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -29,7 +32,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
     @Override
     public List<Invoice> findByFilters(List<InvoiceFilter> filters) {
-        if (filters == null || filters.size() == 0) {
+        if(filters == null || filters.size() == 0){
             return this.findAll();
         }
 
@@ -43,7 +46,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
     public Page<Invoice> findByFiltersPageable(List<InvoiceFilter> filters, Pageable pageable) {
         List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
-        if (filters != null && filters.size() != 0) {
+        if(filters != null && filters.size() != 0){
             aggregationOperations = InvoiceRepositoryHelper.createFiltersBasedAggregators(filters);
         }
 
@@ -53,6 +56,17 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
 
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
         return this.findAllPagedByAggregation(aggregation);
+    }
+
+    @Override
+    public List<Invoice> findLastMonthPaidInvoicesByBuyerUUIDAndSellerUUID(UUID buyerUUID, UUID sellerUUID) {
+        Query query = new Query();
+
+        List<Criteria> queryCriteria = InvoiceRepositoryHelper.createStatusAndDiscountBasedCriteria(buyerUUID, sellerUUID, InvoiceStatus.PAID, 1);
+        queryCriteria.forEach(query::addCriteria);
+        query.fields().include("totalAmount", "discountRate" , "items");
+
+        return mongoTemplate.find(query, Invoice.class, "invoice");
     }
 
     @Override
@@ -93,7 +107,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
         Invoice resultedInvoice = this.mongoTemplate.aggregate(aggregation, "invoice", Invoice.class).getUniqueMappedResult();
-        return resultedInvoice != null ? resultedInvoice.getTotalAmount() : null;
+        return resultedInvoice != null ? resultedInvoice.getTotalAmount() : 0f;
     }
 
     @Override
@@ -102,9 +116,7 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         return this.findAllByAggregation(aggregation);
     }
 
-    private List<Invoice> findAll() {
-        return this.mongoTemplate.findAll(Invoice.class);
-    }
+    private List<Invoice> findAll(){return this.mongoTemplate.findAll(Invoice.class);}
 
     private List<Invoice> findAllByQuery(Query query) {
         return mongoTemplate.find(query, Invoice.class);

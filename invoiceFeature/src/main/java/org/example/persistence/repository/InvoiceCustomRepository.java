@@ -25,5 +25,7 @@ public interface InvoiceCustomRepository {
 
     Page<Invoice> findByFiltersPageable(List<InvoiceFilter> filters, Pageable pageable);
 
+    List<Invoice> findLastMonthPaidInvoicesByBuyerUUIDAndSellerUUID(UUID buyerUUID, UUID sellerUUID);
+
     List<CompanyInvoiceStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp);
 }

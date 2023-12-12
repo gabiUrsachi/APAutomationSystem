@@ -1,5 +1,6 @@
 package org.example.persistence.utils;
 
+import org.example.persistence.collections.Invoice;
 import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public class InvoiceHelper {
                 .orElse(null);
     }
 
-    public static List<InvoiceStatusHistoryObject> initStatusHistory(InvoiceStatus invoiceStatus){
+    public static List<InvoiceStatusHistoryObject> initStatusHistory(InvoiceStatus invoiceStatus) {
         return List.of(
                 InvoiceStatusHistoryObject
                         .builder()
@@ -22,5 +23,21 @@ public class InvoiceHelper {
                         .status(invoiceStatus)
                         .build()
         );
+    }
+
+    public static Float computeTotalDiscountedAmount(List<Invoice> invoices) {
+
+        return invoices.stream()
+                .map(invoice -> invoice.getTotalAmount() * invoice.getDiscountRate())
+                .reduce(Float::sum)
+                .orElse(0f);
+    }
+
+    public static Integer computeTotalNumberOfItems(List<Invoice> invoices) {
+
+        return invoices.stream()
+                .map(invoice -> invoice.getItems().size())
+                .reduce(Integer::sum)
+                .orElse(0);
     }
 }

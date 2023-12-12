@@ -2,6 +2,10 @@ package org.example.business.discountStrategies.formulas;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * This discount formula uses some threshold values in order to establish the discount
+ * rate according to the received base value(s)
+ */
 @Component
 public class AmountBasedFormulaStrategy implements DiscountFormulaStrategy {
     @Override
