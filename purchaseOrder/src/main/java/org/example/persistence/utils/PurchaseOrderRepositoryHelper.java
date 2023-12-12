@@ -19,7 +19,7 @@ import static org.springframework.data.mongodb.core.aggregation.ArrayOperators.F
 import static org.springframework.data.mongodb.core.aggregation.BooleanOperators.And.and;
 
 
-public class PurchaseOrderHelper {
+public class PurchaseOrderRepositoryHelper {
     public static Criteria createQueryCriteria(List<PurchaseOrderFilter> filters) {
         List<Criteria> criteriaList = new ArrayList<>(filters.size());
 

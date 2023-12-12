@@ -17,7 +17,7 @@ public interface PurchaseOrderCustomRepository{
     PurchaseOrder findByUUIDAndFilters(UUID identifier,List<PurchaseOrderFilter> filters);
     List<PurchaseOrder> findByBuyerUUIDAndDate(UUID sellerId, Date lowerTimestamp, Date upperTimestamp);
 
-    int updateByIdentifierAndVersion(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder);
+    int updateByIdentifierAndVersion(UUID identifier, Integer version, PurchaseOrder purchaseOrder);
 
     Page<PurchaseOrder> findByFiltersPageable(List<PurchaseOrderFilter> filters, Pageable pageable);
 

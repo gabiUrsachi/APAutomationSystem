@@ -2,7 +2,7 @@ package org.example.business.services;
 
 import org.example.SQSOps;
 import org.example.business.utils.CompanyOrderStatusTaxMap;
-import org.example.persistence.utils.PurchaseOrderHelper;
+import org.example.persistence.utils.PurchaseOrderRepositoryHelper;
 import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.business.utils.PurchaseOrderStatusPrecedence;
 import org.example.business.utils.PurchaseOrderTaxationRate;
@@ -124,9 +124,26 @@ public class PurchaseOrderService {
      * @return updated order
      */
     public PurchaseOrder updatePurchaseOrder(PurchaseOrder purchaseOrder) {
+
         int oldVersion = purchaseOrder.getVersion();
 
         OrderStatus requiredOldStatus = PurchaseOrderStatusPrecedence.PREDECESSORS.get(getLatestOrderHistoryObject(purchaseOrder.getStatusHistory()).getStatus());
+
+        Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
+
+        if (existingPurchaseOrder.isEmpty()) {
+            throw new ResourceNotFoundException(ErrorMessages.ORDER_NOT_FOUND, purchaseOrder.getIdentifier().toString());
+        }
+
+        if (!Objects.equals(existingPurchaseOrder.get().getVersion(), purchaseOrder.getVersion())) {
+            throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
+        }
+
+        OrderStatus latestOrderStatus = getLatestOrderHistoryObject(existingPurchaseOrder.get().getStatusHistory()).getStatus();
+        if (!latestOrderStatus.equals(requiredOldStatus)) {
+            throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
+        }
+
 
         PurchaseOrder updatedPurchaseOrder = PurchaseOrder.builder()
                 .identifier(purchaseOrder.getIdentifier())
@@ -138,24 +155,7 @@ public class PurchaseOrderService {
                 .uri(purchaseOrder.getUri())
                 .build();
 
-        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersion(purchaseOrder.getIdentifier(), oldVersion, requiredOldStatus, updatedPurchaseOrder);
-
-        if (updateCount == 0) {
-            Optional<PurchaseOrder> existingPurchaseOrder = purchaseOrderRepository.findById(purchaseOrder.getIdentifier());
-
-            if (existingPurchaseOrder.isEmpty()) {
-                throw new ResourceNotFoundException(ErrorMessages.ORDER_NOT_FOUND, purchaseOrder.getIdentifier().toString());
-            }
-
-            if (!Objects.equals(existingPurchaseOrder.get().getVersion(), purchaseOrder.getVersion())) {
-                throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
-            }
-
-            OrderStatus latestOrderStatus = getLatestOrderHistoryObject(existingPurchaseOrder.get().getStatusHistory()).getStatus();
-            if (!latestOrderStatus.equals(requiredOldStatus)) {
-                throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingPurchaseOrder.get().getIdentifier());
-            }
-        }
+        int updateCount = purchaseOrderRepository.updateByIdentifierAndVersion(purchaseOrder.getIdentifier(), oldVersion, updatedPurchaseOrder);
 
         if (getLatestOrderHistoryObject(updatedPurchaseOrder.getStatusHistory()).getStatus().equals(OrderStatus.SAVED)) {
             // buyerCompany/documentId/sellerCompany
@@ -207,7 +207,6 @@ public class PurchaseOrderService {
                 Long statusChangesAmount = entry.getValue();
                 taxAmount += statusTax * statusChangesAmount;
             }
-
             return taxAmount;
 
         } catch (Exception e) {
@@ -219,14 +218,15 @@ public class PurchaseOrderService {
     public List<CompanyOrderStatusTaxMap> computePurchaseOrderTotalTax(Integer month, Integer year) {
         Date[] timestampsArray;
         try {
-           timestampsArray = generateMonthInterval(month, year);
+            timestampsArray = generateMonthInterval(month, year);
         } catch (Exception e) {
             throw new DateTimeException("Invalid date format");
         }
 
         List<CompanyOrderStatusChangeMap> purchaseOrderCountMapList = purchaseOrderRepository.findStatusCountMapByDate(timestampsArray[0], timestampsArray[1]);
-        return PurchaseOrderHelper.createCompanyStatusTaxByCounts(purchaseOrderCountMapList);
+        return PurchaseOrderRepositoryHelper.createCompanyStatusTaxByCounts(purchaseOrderCountMapList);
     }
+
     public Date[] generateMonthInterval(Integer month, Integer year) {
 
         ZonedDateTime firstDay = ZonedDateTime.of(year, month, 1, 0, 0, 0, 0, ZoneId.of("Z"));
