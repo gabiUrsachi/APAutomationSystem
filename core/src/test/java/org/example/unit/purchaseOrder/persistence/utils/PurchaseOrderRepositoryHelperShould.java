@@ -3,7 +3,7 @@ package org.example.unit.purchaseOrder.persistence.utils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.example.persistence.utils.CompanyRole;
-import org.example.persistence.utils.PurchaseOrderHelper;
+import org.example.persistence.utils.PurchaseOrderRepositoryHelper;
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PurchaseOrderHelperShould {
+public class PurchaseOrderRepositoryHelperShould {
 
     @Test
     public void createValidQueryCriteriaFromOneFilter() {
@@ -29,7 +29,7 @@ public class PurchaseOrderHelperShould {
                 .build();
 
         // when
-        Criteria createdCriteria = PurchaseOrderHelper.createQueryCriteria(List.of(purchaseOrderFilter));
+        Criteria createdCriteria = PurchaseOrderRepositoryHelper.createQueryCriteria(List.of(purchaseOrderFilter));
 
         // then
         Document criteriaObject = createdCriteria.getCriteriaObject();
@@ -67,7 +67,7 @@ public class PurchaseOrderHelperShould {
         );
 
         // When
-        Criteria createdCriteria = PurchaseOrderHelper.createQueryCriteria(purchaseOrderFilters);
+        Criteria createdCriteria = PurchaseOrderRepositoryHelper.createQueryCriteria(purchaseOrderFilters);
 
         // Then
         Document criteriaObject = createdCriteria.getCriteriaObject();
