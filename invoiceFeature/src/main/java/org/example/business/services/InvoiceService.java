@@ -1,14 +1,17 @@
 package org.example.business.services;
 
 import org.example.SQSOps;
+import org.example.business.utils.CompanyInvoiceStatusTaxMap;
 import org.example.business.utils.InvoiceStatusPrecedence;
 import org.example.business.utils.InvoiceTaxationRate;
 import org.example.customexceptions.InvalidResourceUpdateException;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
-import org.example.persistence.utils.InvoiceStatus;
 import org.example.persistence.utils.InvoiceHelper;
+import org.example.persistence.utils.InvoiceRepositoryHelper;
+import org.example.persistence.utils.InvoiceStatus;
+import org.example.persistence.utils.data.CompanyInvoiceStatusChangeMap;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.example.utils.ErrorMessages;
@@ -183,5 +186,17 @@ public class InvoiceService {
 
         return new Date[]{lowerTimestamp, upperTimestamp};
 
+    }
+
+    public List<CompanyInvoiceStatusTaxMap> computeInvoiceTotalTax(Integer month, Integer year) {
+        Date[] timestampsArray;
+        try {
+            timestampsArray = generateMonthInterval(month, year);
+        } catch (Exception e) {
+            throw new DateTimeException("Invalid date format");
+        }
+
+        List<CompanyInvoiceStatusChangeMap> companyStatusCountMapList = invoiceRepository.findStatusCountMapByDate(timestampsArray[0], timestampsArray[1]);
+        return InvoiceRepositoryHelper.createCompanyStatusTaxByCounts(companyStatusCountMapList);
     }
 }

@@ -1,9 +1,10 @@
 package org.example.persistence.repository;
 
 import org.example.persistence.collections.Invoice;
+import org.example.persistence.utils.InvoiceHelper;
 import org.example.persistence.utils.InvoiceRepositoryHelper;
 import org.example.persistence.utils.InvoiceStatus;
-import org.example.persistence.utils.InvoiceHelper;
+import org.example.persistence.utils.data.CompanyInvoiceStatusChangeMap;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.persistence.utils.data.PagedInvoices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.*;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -143,4 +146,12 @@ public class InvoiceCustomRepositoryImpl implements InvoiceCustomRepository {
         return null;
     }
 
+    public List<CompanyInvoiceStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp) {
+
+        List<AggregationOperation> aggregationOperations = InvoiceRepositoryHelper.createStatusCountsDateBasedAggregation(lowerTimestamp, upperTimestamp);
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
+
+        return this.mongoTemplate.aggregate(aggregation, "invoice", CompanyInvoiceStatusChangeMap.class).getMappedResults();
+
+    }
 }

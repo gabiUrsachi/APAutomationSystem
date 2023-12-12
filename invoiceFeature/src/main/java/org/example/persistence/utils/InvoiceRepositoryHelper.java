@@ -1,6 +1,12 @@
 package org.example.persistence.utils;
 
+import com.mongodb.BasicDBObject;
+import org.example.business.utils.CompanyInvoiceStatusTaxMap;
+import org.example.business.utils.InvoiceStatusTaxPair;
+import org.example.business.utils.InvoiceTaxationRate;
+import org.example.persistence.utils.data.CompanyInvoiceStatusChangeMap;
 import org.example.persistence.utils.data.InvoiceFilter;
+import org.example.persistence.utils.data.InvoiceOccurrencePair;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -171,7 +177,7 @@ public class InvoiceRepositoryHelper {
         AggregationExpression dateLt = ComparisonOperators.Lt.valueOf("status.date")
                 .lessThanValue(upperTimestamp);
 
-        AggregationExpression dateFilterExpression = BooleanOperators.And.and(dateGt, dateLt);
+        AggregationExpression dateFilterExpression = BooleanOperators.And.and(dateGt,dateLt);
 
         AddFieldsOperation addFieldsStage = Aggregation.addFields().addFieldWithValue("statusHistory",
                 ArrayOperators.Filter.filter("statusHistory")
@@ -181,5 +187,45 @@ public class InvoiceRepositoryHelper {
         MatchOperation matchStage2 = Aggregation.match(new Criteria("statusHistory.0").exists(true));
 
         return Aggregation.newAggregation(matchStage, addFieldsStage, matchStage2);
+    }
+
+    public static List<AggregationOperation> createStatusCountsDateBasedAggregation(Date lowerTimestamp, Date upperTimestamp) {
+
+        List<AggregationOperation> aggregationOperationList = new ArrayList<>();
+        MatchOperation matchOperation = Aggregation.match(Criteria.where("statusHistory.date").gte(lowerTimestamp).lte(upperTimestamp));
+        UnwindOperation unwindOperation = Aggregation.unwind("statusHistory");
+        MatchOperation dateCriteria = Aggregation.match(Criteria.where("statusHistory.date").gte(lowerTimestamp).lte(upperTimestamp));
+        GroupOperation groupOperation = Aggregation.group(Fields.fields().and("sellerId").and("statusHistory.status")).count().as("count");
+        GroupOperation groupByStatusCountsOperation = Aggregation.group("_id.sellerId").push(
+                new BasicDBObject("status", "$_id.status").append("count", "$count")
+        ).as("statusCounts");
+
+        aggregationOperationList.add(matchOperation);
+        aggregationOperationList.add(unwindOperation);
+        aggregationOperationList.add(dateCriteria);
+        aggregationOperationList.add(groupOperation);
+        aggregationOperationList.add(groupByStatusCountsOperation);
+
+        return aggregationOperationList;
+
+
+    }
+
+    public static List<CompanyInvoiceStatusTaxMap> createCompanyStatusTaxByCounts(List<CompanyInvoiceStatusChangeMap> invoiceCountMapList) {
+
+        List<CompanyInvoiceStatusTaxMap> invoiceCompanyTax = new ArrayList<>();
+        for (CompanyInvoiceStatusChangeMap companyStatusMap : invoiceCountMapList) {
+            List<InvoiceStatusTaxPair> invoiceStatusTaxPairs = new ArrayList<>();
+            for (InvoiceOccurrencePair invoiceOccurrencePair : companyStatusMap.getStatusCounts()) {
+                invoiceStatusTaxPairs.add(new InvoiceStatusTaxPair(invoiceOccurrencePair.getStatus(),invoiceOccurrencePair.getCount() * InvoiceTaxationRate.invoiceTaxRate.get(invoiceOccurrencePair.getStatus())));
+            }
+            CompanyInvoiceStatusTaxMap companyTaxMap = CompanyInvoiceStatusTaxMap.builder()
+                    .companyUUID(companyStatusMap.get_id())
+                    .invoiceStatusTaxPairs(invoiceStatusTaxPairs)
+                    .build();
+            invoiceCompanyTax.add(companyTaxMap);
+        }
+
+        return invoiceCompanyTax;
     }
 }

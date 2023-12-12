@@ -1,12 +1,15 @@
 package org.example.business.services;
 
 import org.example.SQSOps;
+import org.example.business.utils.CompanyOrderStatusTaxMap;
 import org.example.business.utils.PurchaseOrderStatusPrecedence;
 import org.example.business.utils.PurchaseOrderTaxationRate;
 import org.example.customexceptions.InvalidResourceUpdateException;
 import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.repository.PurchaseOrderRepository;
+import org.example.persistence.utils.PurchaseOrderRepositoryHelper;
+import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.persistence.utils.data.OrderHistoryObject;
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.PurchaseOrderFilter;
@@ -183,7 +186,7 @@ public class PurchaseOrderService {
      * @param year   Integer
      * @param filter PurchaseOrderFilter Filter containing the company uuid
      */
-    public Float computePurchaseOrderTax(Integer month, Integer year, PurchaseOrderFilter filter) {
+    public Float computePurchaseOrderCompanyTax(Integer month, Integer year, PurchaseOrderFilter filter) {
 
         try {
             Date[] timestampsArray = generateMonthInterval(month, year);
@@ -213,6 +216,17 @@ public class PurchaseOrderService {
 
     }
 
+    public List<CompanyOrderStatusTaxMap> computePurchaseOrderTotalTax(Integer month, Integer year) {
+        Date[] timestampsArray;
+        try {
+           timestampsArray = generateMonthInterval(month, year);
+        } catch (Exception e) {
+            throw new DateTimeException("Invalid date format");
+        }
+
+        List<CompanyOrderStatusChangeMap> purchaseOrderCountMapList = purchaseOrderRepository.findStatusCountMapByDate(timestampsArray[0], timestampsArray[1]);
+        return PurchaseOrderRepositoryHelper.createCompanyStatusTaxByCounts(purchaseOrderCountMapList);
+    }
     public Date[] generateMonthInterval(Integer month, Integer year) {
 
         ZonedDateTime firstDay = ZonedDateTime.of(year, month, 1, 0, 0, 0, 0, ZoneId.of("Z"));
@@ -225,4 +239,5 @@ public class PurchaseOrderService {
         return new Date[]{lowerTimestamp, upperTimestamp};
 
     }
+
 }

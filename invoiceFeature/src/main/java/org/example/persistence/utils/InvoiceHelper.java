@@ -15,7 +15,7 @@ public class InvoiceHelper {
                 .orElse(null);
     }
 
-    public static List<InvoiceStatusHistoryObject> initStatusHistory(InvoiceStatus invoiceStatus){
+    public static List<InvoiceStatusHistoryObject> initStatusHistory(InvoiceStatus invoiceStatus) {
         return List.of(
                 InvoiceStatusHistoryObject
                         .builder()
@@ -25,7 +25,7 @@ public class InvoiceHelper {
         );
     }
 
-    public static Float computeTotalDiscountedAmount(List<Invoice> invoices){
+    public static Float computeTotalDiscountedAmount(List<Invoice> invoices) {
 
         return invoices.stream()
                 .map(invoice -> invoice.getTotalAmount() * invoice.getDiscountRate())
@@ -33,7 +33,7 @@ public class InvoiceHelper {
                 .orElse(0f);
     }
 
-    public static Integer computeTotalNumberOfItems(List<Invoice> invoices){
+    public static Integer computeTotalNumberOfItems(List<Invoice> invoices) {
 
         return invoices.stream()
                 .map(invoice -> invoice.getItems().size())

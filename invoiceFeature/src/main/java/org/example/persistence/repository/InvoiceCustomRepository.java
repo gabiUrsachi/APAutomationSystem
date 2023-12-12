@@ -1,6 +1,8 @@
 package org.example.persistence.repository;
 
 import org.example.persistence.collections.Invoice;
+import org.example.persistence.utils.data.CompanyInvoiceStatusChangeMap;
+import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +27,5 @@ public interface InvoiceCustomRepository {
 
     List<Invoice> findLastMonthPaidInvoicesByBuyerUUIDAndSellerUUID(UUID buyerUUID, UUID sellerUUID);
 
+    List<CompanyInvoiceStatusChangeMap> findStatusCountMapByDate(Date lowerTimestamp, Date upperTimestamp);
 }
