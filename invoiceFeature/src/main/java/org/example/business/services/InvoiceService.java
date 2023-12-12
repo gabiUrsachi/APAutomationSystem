@@ -1,11 +1,7 @@
 package org.example.business.services;
 
 import org.example.SQSOps;
-import org.example.business.discountStrategies.DiscountByAmountStrategy;
-import org.example.business.discountStrategies.DiscountStrategy;
-import org.example.business.discountStrategies.formulas.AmountBasedFormulaStrategy;
 import org.example.business.utils.CompanyInvoiceStatusTaxMap;
-import org.example.business.utils.CompanyOrderStatusTaxMap;
 import org.example.business.utils.InvoiceStatusPrecedence;
 import org.example.business.utils.InvoiceTaxationRate;
 import org.example.customexceptions.InvalidResourceUpdateException;
@@ -13,10 +9,9 @@ import org.example.customexceptions.ResourceNotFoundException;
 import org.example.persistence.collections.Invoice;
 import org.example.persistence.repository.InvoiceRepository;
 import org.example.persistence.utils.InvoiceHelper;
+import org.example.persistence.utils.InvoiceRepositoryHelper;
 import org.example.persistence.utils.InvoiceStatus;
-import org.example.persistence.utils.InvoiceStatusHistoryHelper;
 import org.example.persistence.utils.data.CompanyInvoiceStatusChangeMap;
-import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.persistence.utils.data.InvoiceFilter;
 import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.example.utils.ErrorMessages;
@@ -39,12 +34,11 @@ import java.util.stream.Collectors;
 public class InvoiceService {
 
     private InvoiceRepository invoiceRepository;
+    private InvoiceDiscountService invoiceDiscountService;
 
-    private DiscountStrategy discountStrategy;
-
-    public InvoiceService(InvoiceRepository invoiceRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceDiscountService invoiceDiscountService) {
         this.invoiceRepository = invoiceRepository;
-        this.discountStrategy = new DiscountByAmountStrategy(this.invoiceRepository, new AmountBasedFormulaStrategy());
+        this.invoiceDiscountService = invoiceDiscountService;
     }
 
 
@@ -56,7 +50,7 @@ public class InvoiceService {
                 .sellerId(invoiceEntity.getSellerId())
                 .items(invoiceEntity.getItems())
                 .version(0)
-                .statusHistory(InvoiceStatusHistoryHelper.initStatusHistory(InvoiceStatus.CREATED))
+                .statusHistory(InvoiceHelper.initStatusHistory(InvoiceStatus.CREATED))
                 .totalAmount(invoiceEntity.getTotalAmount())
                 .build();
         initializedInvoice.setUri(initializedInvoice.getIdentifier() + "." + invoiceEntity.getUri());
@@ -89,7 +83,7 @@ public class InvoiceService {
     public Invoice updateInvoice(UUID identifier, Invoice invoice) {
 
         int currentVersion = invoice.getVersion();
-        InvoiceStatus updatedInvoiceStatus = InvoiceStatusHistoryHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus();
+        InvoiceStatus updatedInvoiceStatus = InvoiceHelper.getMostRecentHistoryObject(invoice.getStatusHistory()).getStatus();
         InvoiceStatus requiredInvoiceStatus = InvoiceStatusPrecedence.PREDECESSORS.get(updatedInvoiceStatus);
 
         Invoice updatedInvoice = Invoice.builder()
@@ -99,6 +93,7 @@ public class InvoiceService {
                 .items(invoice.getItems())
                 .statusHistory(invoice.getStatusHistory())
                 .totalAmount(invoice.getTotalAmount())
+                .discountRate(invoice.getDiscountRate())
                 .version(currentVersion + 1)
                 .uri(invoice.getUri())
                 .build();
@@ -106,7 +101,7 @@ public class InvoiceService {
         Optional<Invoice> oldInvoice = invoiceRepository.findByIdentifier(identifier);
 
         if (oldInvoice.isPresent()) {
-            if (InvoiceStatusHistoryHelper.getMostRecentHistoryObject(oldInvoice.get().getStatusHistory()).getStatus() != requiredInvoiceStatus) {
+            if (InvoiceHelper.getMostRecentHistoryObject(oldInvoice.get().getStatusHistory()).getStatus() != requiredInvoiceStatus) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, oldInvoice.get().getIdentifier());
             }
         }
@@ -116,7 +111,7 @@ public class InvoiceService {
         }
 
         if (updatedInvoiceStatus.equals(InvoiceStatus.SENT)) {
-            updatedInvoice = applyDiscount(updatedInvoice);
+            updatedInvoice = invoiceDiscountService.applyDiscount(updatedInvoice);
         }
 
         int updateCount = invoiceRepository.updateByIdentifierAndVersion(identifier, currentVersion, updatedInvoice);
@@ -132,7 +127,7 @@ public class InvoiceService {
                 throw new OptimisticLockingFailureException(ErrorMessages.INVALID_VERSION);
             }
 
-            if (!InvoiceStatusHistoryHelper.getMostRecentHistoryObject(existingInvoice.get().getStatusHistory()).getStatus().equals(requiredInvoiceStatus)) {
+            if (!InvoiceHelper.getMostRecentHistoryObject(existingInvoice.get().getStatusHistory()).getStatus().equals(requiredInvoiceStatus)) {
                 throw new InvalidResourceUpdateException(ErrorMessages.INVALID_UPDATE, existingInvoice.get().getIdentifier());
             }
         }
@@ -141,31 +136,6 @@ public class InvoiceService {
             // sellerCompany/documentId/buyerCompany
             SQSOps.sendMessage(updatedInvoice.getSellerId() + "/" + updatedInvoice.getIdentifier() + "/" + updatedInvoice.getBuyerId());
         }
-
-        return updatedInvoice;
-    }
-
-    /**
-     * This method is responsible for updating an invoice by adding a new field
-     * related to the discount rate which should be applied to the total amount
-     *
-     * @param invoice document to be updated
-     * @return updated document
-     */
-    private Invoice applyDiscount(Invoice invoice) {
-        Invoice updatedInvoice = Invoice.builder()
-                .identifier(invoice.getIdentifier())
-                .buyerId(invoice.getBuyerId())
-                .sellerId(invoice.getSellerId())
-                .items(invoice.getItems())
-                .statusHistory(invoice.getStatusHistory())
-                .totalAmount(invoice.getTotalAmount())
-                .version(invoice.getVersion())
-                .uri(invoice.getUri())
-                .build();
-
-        Float discountRate = this.discountStrategy.computeDiscount(invoice.getBuyerId(), invoice.getSellerId());
-        updatedInvoice.setDiscountRate(discountRate);
 
         return updatedInvoice;
     }
@@ -227,6 +197,6 @@ public class InvoiceService {
         }
 
         List<CompanyInvoiceStatusChangeMap> companyStatusCountMapList = invoiceRepository.findStatusCountMapByDate(timestampsArray[0], timestampsArray[1]);
-        return InvoiceHelper.createCompanyStatusTaxByCounts(companyStatusCountMapList);
+        return InvoiceRepositoryHelper.createCompanyStatusTaxByCounts(companyStatusCountMapList);
     }
 }

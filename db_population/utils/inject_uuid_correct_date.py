@@ -93,7 +93,7 @@ if __name__ == "__main__":
                 element = inject_history_array(element, collection_name, statuses_count=unpaid_statuses_count)
             elif status_distribution == 1:  # 1 --> 100% PAID
                 element = inject_history_array(element, collection_name, statuses_count=3)
-            elif status_distribution == 2:  # 1 --> RANDOM
+            elif status_distribution == 2:  # 2 --> RANDOM
                 random_statuses_count = random.randint(1, 3)
                 element = inject_history_array(element, collection_name, statuses_count=random_statuses_count)
             elif status_distribution == 3:  # 3 --> 50% PAID

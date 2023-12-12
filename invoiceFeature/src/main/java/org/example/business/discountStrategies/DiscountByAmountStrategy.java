@@ -1,7 +1,8 @@
 package org.example.business.discountStrategies;
 
 import org.example.business.discountStrategies.formulas.DiscountFormulaStrategy;
-import org.example.persistence.repository.InvoiceCustomRepository;
+import org.example.persistence.collections.Invoice;
+import org.example.persistence.repository.InvoiceRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -12,20 +13,18 @@ import java.util.UUID;
  */
 @Component
 public class DiscountByAmountStrategy extends DiscountStrategy {
-    private final int MONTHS_NUMBER;
+    private final int MONTHS_NUMBER = 3;
 
-    public DiscountByAmountStrategy(InvoiceCustomRepository invoiceRepository, DiscountFormulaStrategy discountFormulaStrategy) {
+    public DiscountByAmountStrategy(InvoiceRepository invoiceRepository, DiscountFormulaStrategy discountFormulaStrategy) {
         super(invoiceRepository, discountFormulaStrategy);
-        MONTHS_NUMBER = 3;
     }
 
     @Override
-    public Float computeDiscount(UUID buyerUUID, UUID sellerUUID) {
-        Float paidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(buyerUUID, sellerUUID, MONTHS_NUMBER);
+    public Float computeDiscount(Invoice invoice) {
+        UUID buyerUUID = invoice.getBuyerId();
+        UUID sellerUUID = invoice.getSellerId();
 
-        if(paidAmountForLast3Months == null){
-            return null;
-        }
+        Float paidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(buyerUUID, sellerUUID, MONTHS_NUMBER);
 
         return this.discountFormulaStrategy.computeDiscountRate(paidAmountForLast3Months);
     }

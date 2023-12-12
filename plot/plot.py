@@ -10,7 +10,11 @@ status_pattern = re.compile(r"STATUS DISTRIBUTION: (\d+) -> (.+?) invoices PAID"
 index_pattern = re.compile(r"WITH INDEXES|WITHOUT INDEXES")
 operation_pattern = re.compile(r"\[Operation: (.+?)\]")
 time_pattern = re.compile(r"Execution time: (\d+) ms")
-targeted_operations = ["InvoiceCustomRepository.findByFiltersPageable(..)", "InvoiceCustomRepository.getPaidAmountForLastNMonths(..)"]
+targeted_operations = [
+    "InvoiceCustomRepository.findByFiltersPageable(..)",
+    "InvoiceCustomRepository.getPaidAmountForLastNMonths(..)",
+    "InvoiceCustomRepository.findLastMonthPaidInvoicesByBuyerUUIDAndSellerUUID(..)"
+]
 
 data = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
 
@@ -52,22 +56,23 @@ index_positions = range(len(indexes))
 
 for i, status in enumerate(statuses):
     num_operations = len(averages[status])
-    num_rows = math.ceil(num_operations / 3)
+    num_rows = num_operations
+    num_columns = math.ceil(num_operations / 3)
 
-    plt.figure(figsize=(15, 4 * num_rows))
-    plt.suptitle(f'Status distribution: {status}', fontsize=16)
+    plt.figure(figsize=(9, 2 * num_rows))
+    plt.suptitle(f'Status distribution: {status}', fontsize=10)
 
     for j, (operation, avg_data) in enumerate(averages[status].items()):
-        ax = plt.subplot(num_rows, 2, j + 1)
+        ax = plt.subplot(num_rows, num_columns, j + 1)
         bars = ax.bar(index_positions, [avg_data[index] for index in indexes], bar_width, label=operation)
-        plt.xlabel('Index Usage')
+        # plt.xlabel('Index Usage')
         plt.ylabel('Average Execution Time (ms)')
         plt.xticks(index_positions, indexes)
         plt.legend()
 
         for idx, bar in enumerate(bars):
             height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width() / 2, 0, f'{height:.2f}', ha='center', va='bottom', color='yellow', fontsize=10)
+            ax.text(bar.get_x() + bar.get_width() / 2, 0, f'{height:.2f}', ha='center', va='bottom', color='red', fontsize=10)
 
         ax.set_ylim(0, max([bar.get_height() for bar in bars]) * 1.4)
 

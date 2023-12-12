@@ -1,31 +1,29 @@
 package org.example.business.discountStrategies;
 
 import org.example.business.discountStrategies.formulas.DiscountFormulaStrategy;
-import org.example.persistence.repository.InvoiceCustomRepository;
+import org.example.persistence.collections.Invoice;
+import org.example.persistence.repository.InvoiceRepository;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 /**
  * This class declares the behaviour which should be applied for different types of discount strategies
  */
 @Component
 public abstract class DiscountStrategy {
-    protected InvoiceCustomRepository invoiceRepository;
+    protected InvoiceRepository invoiceRepository;
     protected DiscountFormulaStrategy discountFormulaStrategy;
 
-    public DiscountStrategy(InvoiceCustomRepository invoiceRepository, DiscountFormulaStrategy discountFormulaStrategy) {
+    public DiscountStrategy(InvoiceRepository invoiceRepository, DiscountFormulaStrategy discountFormulaStrategy) {
         this.invoiceRepository = invoiceRepository;
         this.discountFormulaStrategy = discountFormulaStrategy;
     }
 
     /**
-     * It computes a discount for a specific customer/buyer
+     * It computes a discount for a specific invoice
      *
-     * @param buyerUUID The buyer company which will receive the discount
-     * @param sellerUUID The seller company which will applies the discount
+     * @param invoice The document on which the discount will be applied
      * @return The discount rate to be applied
      */
-    public abstract Float computeDiscount(UUID buyerUUID, UUID sellerUUID);
+    public abstract Float computeDiscount(Invoice invoice);
 }
 

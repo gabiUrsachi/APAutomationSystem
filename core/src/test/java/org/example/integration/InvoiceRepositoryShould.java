@@ -45,50 +45,6 @@ public class InvoiceRepositoryShould {
     }
 
     @Test
-    public void returnNullPaidAmountOverSomeMonthsIfNoPaidInvoicesExists() {
-        // given
-        List<Invoice> unpaidInvoices = generateInvoices(InvoiceStatus.SENT, randomValue(), null, null);
-
-        this.invoices.addAll(unpaidInvoices);
-        this.invoiceRepository.saveAll(invoices);
-
-        // when
-        Float computedPaidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(BUYER_ID, SELLER_ID, 3);
-
-        // then
-        Assertions.assertNull(computedPaidAmountForLast3Months);
-    }
-
-    @Test
-    public void correctlyComputePaidAmountOverSomeMonths() {
-        // given
-        Float oneMonthAgoPaidAmount = 10000f;
-        List<Invoice> oneMonthAgoPaidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), oneMonthAgoPaidAmount, 1);
-
-        Float twoMonthsAgoPaidAmount = 300f;
-        List<Invoice> twoMonthsAgoPaidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), twoMonthsAgoPaidAmount, 2);
-
-        Float fourMonthsAgoPaidAmount = 23500f;
-        List<Invoice> fourMonthsAgoPaidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), fourMonthsAgoPaidAmount, 4);
-
-        List<Invoice> unpaidInvoices = generateInvoices(InvoiceStatus.SENT, RANDOM.nextInt(10) + 1, null, null);
-
-        this.invoices.addAll(oneMonthAgoPaidInvoices);
-        this.invoices.addAll(twoMonthsAgoPaidInvoices);
-        this.invoices.addAll(fourMonthsAgoPaidInvoices);
-        this.invoices.addAll(unpaidInvoices);
-
-        this.invoiceRepository.saveAll(invoices);
-
-        // when
-        Float computedPaidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(BUYER_ID, SELLER_ID, 3);
-
-        // then
-        Float expectedPaidAmountForLast3Months = oneMonthAgoPaidAmount + twoMonthsAgoPaidAmount;
-        Assertions.assertEquals(expectedPaidAmountForLast3Months, computedPaidAmountForLast3Months);
-    }
-
-    @Test
     public void properlySearchForInvoicesThatMatchCriteria() {
         // given
         List<Invoice> paidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), null, null);
@@ -148,7 +104,7 @@ public class InvoiceRepositoryShould {
     }
 
     @Test
-    public void returnPagedInvoicesAccordingToTheGivenPAgingParams() {
+    public void returnPagedInvoicesAccordingToTheGivenPagingParams() {
         // given
         List<Invoice> paidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), null, null);
         List<Invoice> sentInvoices = generateInvoices(InvoiceStatus.SENT, randomValue(), null, null);
@@ -162,7 +118,7 @@ public class InvoiceRepositoryShould {
 
         // when
         int page = 0;
-        int pageSize = invoices.size()/2;
+        int pageSize = invoices.size() / 2;
 
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Invoice> foundInvoices = this.invoiceRepository.findByFiltersPageable(null, pageable);
@@ -172,6 +128,108 @@ public class InvoiceRepositoryShould {
         Integer searchedInvoicesCount = pageSize;
 
         Assertions.assertEquals(searchedInvoicesCount, foundInvoicesCount);
+    }
+
+    @Test
+    public void returnAnEmptyListOfPaidInvoicesForTheLastMonthIfIfNoPaidInvoicesExists() {
+        // given
+        List<Invoice> unpaidInvoices = generateInvoices(InvoiceStatus.SENT, randomValue(), null, null);
+
+        this.invoices.addAll(unpaidInvoices);
+        this.invoiceRepository.saveAll(invoices);
+
+        // when
+        List<Invoice> paidInvoices = this.invoiceRepository.findLastMonthPaidInvoicesByBuyerUUIDAndSellerUUID(BUYER_ID, SELLER_ID);
+
+        // then
+        Assertions.assertEquals(0, paidInvoices.size());
+    }
+
+    @Test
+    public void returnAllExistingDiscountedPaidInvoicesForTheLastMonthIfExists() {
+        // given
+        List<Invoice> withinLastMonthPaidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), null, 0);
+        List<Invoice> twoMonthsAgoPaidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), null, 2);
+        List<Invoice> unpaidInvoices = generateInvoices(InvoiceStatus.SENT, randomValue(), null, null);
+
+        assignRandomDiscountRate(withinLastMonthPaidInvoices);
+
+        this.invoices.addAll(withinLastMonthPaidInvoices);
+        this.invoices.addAll(twoMonthsAgoPaidInvoices);
+        this.invoices.addAll(unpaidInvoices);
+        this.invoiceRepository.saveAll(invoices);
+
+        // when
+        List<Invoice> foundInvoices = this.invoiceRepository.findLastMonthPaidInvoicesByBuyerUUIDAndSellerUUID(BUYER_ID, SELLER_ID);
+
+        // then
+        List<Invoice> searchedInvoices = new ArrayList<>(withinLastMonthPaidInvoices);
+
+        List<UUID> foundInvoicesIdentifiers = foundInvoices.stream().map(Invoice::getIdentifier).collect(Collectors.toList());
+        List<UUID> searchedInvoicesIdentifiers = searchedInvoices.stream().map(Invoice::getIdentifier).collect(Collectors.toList());
+
+        Assertions.assertEquals(searchedInvoicesIdentifiers, foundInvoicesIdentifiers);
+    }
+
+    @Test
+    public void NotReturnPaidInvoicesForLastMonthIfExistButAreNotDiscounted() {
+        // given
+        List<Invoice> withinLastMonthPaidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), null, 0);
+        List<Invoice> unpaidInvoices = generateInvoices(InvoiceStatus.SENT, randomValue(), null, null);
+
+        this.invoices.addAll(withinLastMonthPaidInvoices);
+        this.invoices.addAll(unpaidInvoices);
+        this.invoiceRepository.saveAll(invoices);
+
+        // when
+        List<Invoice> foundInvoices = this.invoiceRepository.findLastMonthPaidInvoicesByBuyerUUIDAndSellerUUID(BUYER_ID, SELLER_ID);
+
+        // then
+        Assertions.assertEquals(0, foundInvoices.size());
+    }
+
+    @Test
+    public void returnZeroPaidAmountOverSomeMonthsIfNoPaidInvoicesExists() {
+        // given
+        List<Invoice> unpaidInvoices = generateInvoices(InvoiceStatus.SENT, randomValue(), null, null);
+
+        this.invoices.addAll(unpaidInvoices);
+        this.invoiceRepository.saveAll(invoices);
+
+        // when
+        Float computedPaidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(BUYER_ID, SELLER_ID, 3);
+
+        // then
+        Assertions.assertEquals(0f, computedPaidAmountForLast3Months);
+    }
+
+    @Test
+    public void correctlyComputePaidAmountOverSomeMonths() {
+        // given
+        Float oneMonthAgoPaidAmount = 10000f;
+        List<Invoice> oneMonthAgoPaidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), oneMonthAgoPaidAmount, 1);
+
+        Float twoMonthsAgoPaidAmount = 300f;
+        List<Invoice> twoMonthsAgoPaidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), twoMonthsAgoPaidAmount, 2);
+
+        Float fourMonthsAgoPaidAmount = 23500f;
+        List<Invoice> fourMonthsAgoPaidInvoices = generateInvoices(InvoiceStatus.PAID, randomValue(), fourMonthsAgoPaidAmount, 4);
+
+        List<Invoice> unpaidInvoices = generateInvoices(InvoiceStatus.SENT, RANDOM.nextInt(10) + 1, null, null);
+
+        this.invoices.addAll(oneMonthAgoPaidInvoices);
+        this.invoices.addAll(twoMonthsAgoPaidInvoices);
+        this.invoices.addAll(fourMonthsAgoPaidInvoices);
+        this.invoices.addAll(unpaidInvoices);
+
+        this.invoiceRepository.saveAll(invoices);
+
+        // when
+        Float computedPaidAmountForLast3Months = this.invoiceRepository.getPaidAmountForLastNMonths(BUYER_ID, SELLER_ID, 3);
+
+        // then
+        Float expectedPaidAmountForLast3Months = oneMonthAgoPaidAmount + twoMonthsAgoPaidAmount;
+        Assertions.assertEquals(expectedPaidAmountForLast3Months, computedPaidAmountForLast3Months);
     }
 
     private List<Invoice> generateInvoices(InvoiceStatus invoicesStatus, Integer invoicesCount, Float totalAmount, Integer monthsPassedFromStatusChange) {
@@ -194,7 +252,7 @@ public class InvoiceRepositoryShould {
         Float[] amounts = new Float[amountsCount];
         Arrays.fill(amounts, 0f);
 
-        if(totalAmount != null){
+        if (totalAmount != null) {
             for (int i = 0; i < totalAmount; i++) {
                 amounts[(int) (Math.random() * amountsCount)]++;
             }
@@ -210,7 +268,16 @@ public class InvoiceRepositoryShould {
 
         for (int i = 0; i <= lastStatusOrdinal; i++) {
             InvoiceStatus currentStatus = InvoiceStatus.values()[i];
-            LocalDateTime currentStatusDate = currentTime.minusMonths(Objects.requireNonNullElseGet(monthsPassedFromStatusChange, () -> RANDOM.nextInt(100)));
+            LocalDateTime currentStatusDate;
+
+            if (monthsPassedFromStatusChange == null) {
+                currentStatusDate = currentTime.minusMonths(RANDOM.nextInt(100));
+            } else if (monthsPassedFromStatusChange == 0) {
+                currentStatusDate = currentTime.minusDays(RANDOM.nextInt(30));
+            } else {
+                currentStatusDate = currentTime.minusMonths(monthsPassedFromStatusChange);
+            }
+
 
             InvoiceStatusHistoryObject invoiceStatusHistoryObject = createStatusHistoryObject(currentStatus, currentStatusDate);
 
@@ -220,7 +287,7 @@ public class InvoiceRepositoryShould {
         return statusHistory;
     }
 
-    private InvoiceStatusHistoryObject createStatusHistoryObject(InvoiceStatus invoiceStatus, LocalDateTime invoiceStatusDate){
+    private InvoiceStatusHistoryObject createStatusHistoryObject(InvoiceStatus invoiceStatus, LocalDateTime invoiceStatusDate) {
 
         return InvoiceStatusHistoryObject.builder()
                 .status(invoiceStatus)
@@ -240,7 +307,11 @@ public class InvoiceRepositoryShould {
                 .build();
     }
 
-    private Integer randomValue(){
+    private void assignRandomDiscountRate(List<Invoice> invoices) {
+        invoices.forEach(invoice -> invoice.setDiscountRate(Float.valueOf(randomValue())));
+    }
+
+    private Integer randomValue() {
         return RANDOM.nextInt(10) + 1;
     }
 }
