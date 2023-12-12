@@ -49,13 +49,15 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
 
         OrderStatus randomOrderStatus = createRandomStatus();
-        OrderStatus requiredOrderStatus = PurchaseOrderStatusPrecedence.PREDECESSORS.get(randomOrderStatus);
         purchaseOrder = createPurchaseOrderWithStatusAndUUID(randomOrderStatus, uuid);
 
-        given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, purchaseOrder.getVersion(), requiredOrderStatus, purchaseOrder)).willReturn(0);
+        given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, purchaseOrder.getVersion(), purchaseOrder)).willReturn(0);
+
+        purchaseOrderRepository.updateByIdentifierAndVersion(uuid, purchaseOrder.getVersion(), purchaseOrder);
 
         assertThrows(ResourceNotFoundException.class, () -> purchaseOrderService.updatePurchaseOrder(purchaseOrder));
-        verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, purchaseOrder.getVersion(), requiredOrderStatus, purchaseOrder);
+
+        verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, purchaseOrder.getVersion(), purchaseOrder);
     }
 
     @Test
@@ -63,37 +65,43 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
 
         OrderStatus updatedOrderStatus = OrderStatus.CREATED;
-        OrderStatus requiredOrderStatus = PurchaseOrderStatusPrecedence.PREDECESSORS.get(updatedOrderStatus);
         OrderStatus existingOrderStatus = OrderStatus.SAVED;
 
         PurchaseOrder existingPurchaseOrder = createPurchaseOrderWithStatusAndUUID(existingOrderStatus, uuid);
         PurchaseOrder updatedPurchaseOrder = createPurchaseOrderWithStatusAndUUID(updatedOrderStatus, uuid);
 
-        given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder)).willReturn(0);
+        given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), updatedPurchaseOrder)).willReturn(0);
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.of(existingPurchaseOrder));
 
+        purchaseOrderRepository.updateByIdentifierAndVersion(uuid,updatedPurchaseOrder.getVersion(),updatedPurchaseOrder);
+
         assertThrows(InvalidResourceUpdateException.class, () -> purchaseOrderService.updatePurchaseOrder(updatedPurchaseOrder));
-        verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder);
+
+        verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), updatedPurchaseOrder);
         verify(purchaseOrderRepository).findById(uuid);
+
     }
 
     @Test
     public void throwOptimisticLockingFailureExceptionWhenTryingToUpdateAModifiedOrder() {
         UUID uuid = UUID.randomUUID();
         OrderStatus randomStatus = createRandomStatus();
-        OrderStatus requiredOldStatus = PurchaseOrderStatusPrecedence.PREDECESSORS.get(randomStatus);
 
         PurchaseOrder existingPurchaseOrder = createPurchaseOrderWithStatusAndUUID(randomStatus, uuid);
         PurchaseOrder updatedPurchaseOrder = createPurchaseOrderWithStatusAndUUID(randomStatus, uuid);
 
         existingPurchaseOrder.setVersion(3);
         updatedPurchaseOrder.setVersion(existingPurchaseOrder.getVersion() - 1);
+        List<OrderHistoryObject> updatedPurchaseOrderStatusHistory = updatedPurchaseOrder.getStatusHistory();
 
-        given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), requiredOldStatus, updatedPurchaseOrder)).willReturn(0);
+        given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), updatedPurchaseOrder)).willReturn(0);
         given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.of(existingPurchaseOrder));
 
+        purchaseOrderRepository.updateByIdentifierAndVersion(uuid,updatedPurchaseOrder.getVersion(),updatedPurchaseOrder);
+
         assertThrows(OptimisticLockingFailureException.class, () -> purchaseOrderService.updatePurchaseOrder(updatedPurchaseOrder));
-        verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), requiredOldStatus, updatedPurchaseOrder);
+
+        verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), updatedPurchaseOrder);
         verify(purchaseOrderRepository).findById(uuid);
     }
 
@@ -102,23 +110,25 @@ public class PurchaseOrderServiceShould {
         UUID uuid = UUID.randomUUID();
 
         OrderStatus updatedOrderStatus = OrderStatus.SAVED;
-        OrderStatus requiredOrderStatus = PurchaseOrderStatusPrecedence.PREDECESSORS.get(updatedOrderStatus);
 
+        PurchaseOrder existingPurchaseOrder = createPurchaseOrderWithStatusAndUUID(OrderStatus.CREATED, uuid);
         PurchaseOrder updatedPurchaseOrder = createPurchaseOrderWithStatusAndUUID(updatedOrderStatus, uuid);
 
-        try(MockedStatic<SQSOps> sqsOpsMockedStatic = Mockito.mockStatic(SQSOps.class)){
-            given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder)).willReturn(1);
-            sqsOpsMockedStatic.when(()->SQSOps.sendMessage(any())).thenAnswer((Answer<Void>) invocation -> null);
+        try (MockedStatic<SQSOps> sqsOpsMockedStatic = Mockito.mockStatic(SQSOps.class)) {
+            given(purchaseOrderRepository.updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), updatedPurchaseOrder)).willReturn(1);
+            given(purchaseOrderRepository.findById(uuid)).willReturn(Optional.of(existingPurchaseOrder));
+
+            sqsOpsMockedStatic.when(() -> SQSOps.sendMessage(any())).thenAnswer((Answer<Void>) invocation -> null);
 
             PurchaseOrder savedPurchaseOrder = purchaseOrderService.updatePurchaseOrder(updatedPurchaseOrder);
 
-            verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), requiredOrderStatus, updatedPurchaseOrder);
+            verify(purchaseOrderRepository).updateByIdentifierAndVersion(uuid, updatedPurchaseOrder.getVersion(), updatedPurchaseOrder);
             sqsOpsMockedStatic.verify(() -> SQSOps.sendMessage(any()));
 
             OrderStatus updatedPurchaseOrderStatus = PurchaseOrderHistoryHelper.getLatestOrderHistoryObject(updatedPurchaseOrder.getStatusHistory()).getStatus();
             OrderStatus savedPurchaseOrderStatus = PurchaseOrderHistoryHelper.getLatestOrderHistoryObject(savedPurchaseOrder.getStatusHistory()).getStatus();
             Assertions.assertEquals(uuid, savedPurchaseOrder.getIdentifier());
-            Assertions.assertEquals(updatedPurchaseOrderStatus,savedPurchaseOrderStatus);
+            Assertions.assertEquals(updatedPurchaseOrderStatus, savedPurchaseOrderStatus);
         }
     }
 

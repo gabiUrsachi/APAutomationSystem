@@ -2,6 +2,7 @@ package org.example.persistence.repository;
 
 import org.example.persistence.collections.PurchaseOrder;
 import org.example.persistence.utils.PurchaseOrderRepositoryHelper;
+
 import org.example.persistence.utils.data.OrderStatus;
 import org.example.persistence.utils.data.CompanyOrderStatusChangeMap;
 import org.example.persistence.utils.data.PagedPurchaseOrders;
@@ -62,10 +63,9 @@ public class PurchaseOrderCustomRepositoryImpl implements PurchaseOrderCustomRep
     }
 
     @Override
-    public int updateByIdentifierAndVersion(UUID identifier, Integer version, OrderStatus orderStatus, PurchaseOrder purchaseOrder) {
+    public int updateByIdentifierAndVersion(UUID identifier, Integer version, PurchaseOrder purchaseOrder) {
         Query query = new Query(Criteria.where("identifier").is(identifier)
                 .and("version").is(version));
-
         Update update = new Update()
                 .set("buyer", purchaseOrder.getBuyer())
                 .set("seller", purchaseOrder.getSeller())
