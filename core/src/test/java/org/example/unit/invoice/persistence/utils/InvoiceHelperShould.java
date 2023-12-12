@@ -1,7 +1,7 @@
 package org.example.unit.invoice.persistence.utils;
 
 import org.example.persistence.utils.InvoiceStatus;
-import org.example.persistence.utils.InvoiceStatusHistoryHelper;
+import org.example.persistence.utils.InvoiceHelper;
 import org.example.persistence.utils.data.InvoiceStatusHistoryObject;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -15,11 +15,11 @@ import java.util.Map;
 import java.util.Random;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InvoiceStatusHistoryHelperShould {
+public class InvoiceHelperShould {
 
     @Test
     public void returnNullForEmptyStatusHistory() {
-        InvoiceStatusHistoryObject statusHistoryObject = InvoiceStatusHistoryHelper.getMostRecentHistoryObject(List.of());
+        InvoiceStatusHistoryObject statusHistoryObject = InvoiceHelper.getMostRecentHistoryObject(List.of());
 
         Assertions.assertNull(statusHistoryObject);
     }
@@ -31,7 +31,7 @@ public class InvoiceStatusHistoryHelperShould {
         Map<LocalDateTime, InvoiceStatusHistoryObject> invoiceStatusHistoryObjectsMap = initStatusHistoryMap(mostRecentDate);
 
         // when
-        InvoiceStatusHistoryObject mostRecentStatusHistoryObject = InvoiceStatusHistoryHelper.getMostRecentHistoryObject(new ArrayList<>(invoiceStatusHistoryObjectsMap.values()));
+        InvoiceStatusHistoryObject mostRecentStatusHistoryObject = InvoiceHelper.getMostRecentHistoryObject(new ArrayList<>(invoiceStatusHistoryObjectsMap.values()));
 
         // then
         Assertions.assertEquals(invoiceStatusHistoryObjectsMap.get(mostRecentDate), mostRecentStatusHistoryObject);
@@ -43,7 +43,7 @@ public class InvoiceStatusHistoryHelperShould {
         InvoiceStatus invoiceStatus = createRandomInvoiceStatus();
 
         // when
-        List<InvoiceStatusHistoryObject> invoiceStatusHistory = InvoiceStatusHistoryHelper.initStatusHistory(invoiceStatus);
+        List<InvoiceStatusHistoryObject> invoiceStatusHistory = InvoiceHelper.initStatusHistory(invoiceStatus);
 
         // then
         Assertions.assertEquals(1, invoiceStatusHistory.size());
