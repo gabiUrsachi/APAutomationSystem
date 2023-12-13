@@ -26,7 +26,6 @@ public class Invoice {
     @Id
     private UUID identifier;
 
-    @Indexed
     private UUID buyerId;
 
     @Indexed
