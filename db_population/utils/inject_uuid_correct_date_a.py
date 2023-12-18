@@ -69,7 +69,7 @@ if __name__=="__main__":
 	output_file_path = sys.argv[4]
 	
 	val_range = [1,2,3]
-	weights = [0.9,0.05,0.05]
+	weights = [0.33,0.33,0.33]
 	##stats_dict=dict([(1,0),(2,0),(3,0)])
 
 

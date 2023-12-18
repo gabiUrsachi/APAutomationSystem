@@ -6,6 +6,7 @@ import lombok.*;
 import org.example.persistence.utils.data.OrderHistoryObject;
 import org.example.persistence.utils.data.OrderStatus;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -28,13 +29,16 @@ public class PurchaseOrder {
     private UUID identifier;
 
     @NonNull
+    @Indexed
     private UUID buyer;
 
     @NonNull
+    @Indexed
     private UUID seller;
 
     private Set<Item> items;
 
+    @Indexed
     private List<OrderHistoryObject> statusHistory;
 
     private Integer version;
