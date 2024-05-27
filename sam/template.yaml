@@ -105,11 +105,11 @@ Parameters:
     Default: new-key
   MyVPC:
     Type: String
-    Default: "vpc-0fcee45077774efaf"
+    Default: "vpc-066e54ddf31df5912"
     Description: Enter the desired VPC ID
   MySubnets:
     Type: String
-    Default: "subnet-06388355200fe04c9,subnet-08d169670134cbf5d,subnet-004cc7786a38573c2,subnet-0234970d947bdcb43,subnet-0adf456119d1e986b,subnet-071589cac00667e69"
+    Default: "subnet-0fdc82fd991142f3a,subnet-0fff8317b2b88d3a0,subnet-0796ad9ec023f52f9,subnet-07ab65af361e9c14a,subnet-0a30e3f61ec080bdb,subnet-0ed124b3ceb66b248"
     Description: Enter a comma-separated list of strings representing your desired subnets
   MyAZs:
     Type: String
@@ -127,7 +127,7 @@ Resources:
     Properties:
       CodeUri: code/
       Handler: app.lambda_handler
-      Runtime: python3.9
+      Runtime: python3.12
       Role: !GetAtt LambdaExecutionRole.Arn
       Architectures:
         - x86_64
